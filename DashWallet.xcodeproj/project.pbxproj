@@ -20,7 +20,15 @@
 		04657087200A1ABA00E76BDD /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04657073200A1ABA00E76BDD /* RightViewController.m */; };
 		04657088200A1ABA00E76BDD /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04657076200A1ABA00E76BDD /* NavigationController.m */; };
 		0465708B200A1ABA00E76BDD /* UIViewController+LGSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465707C200A1ABA00E76BDD /* UIViewController+LGSideMenuController.m */; };
-		0465708D200F8C2300E76BDD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0465708C200F8C2200E76BDD /* Images.xcassets */; };
+		048719092010E2D700A586CF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 048719082010E2D700A586CF /* Images.xcassets */; };
+		130A283B2010769A002B4527 /* WOCSafetyNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A283A2010769A002B4527 /* WOCSafetyNotesViewController.m */; };
+		130A284020109636002B4527 /* WOCBackupWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A283F20109635002B4527 /* WOCBackupWalletViewController.m */; };
+		130A28452010A277002B4527 /* WOCRestoreWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A28442010A277002B4527 /* WOCRestoreWalletViewController.m */; };
+		130A28472010A558002B4527 /* Screenshot_20180118-105954.png in Resources */ = {isa = PBXBuildFile; fileRef = 130A28462010A53C002B4527 /* Screenshot_20180118-105954.png */; };
+		130A284A2010ABB2002B4527 /* WOCSpendingPINViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A28492010ABB2002B4527 /* WOCSpendingPINViewController.m */; };
+		130A284D2010B66D002B4527 /* WOCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A284C2010B66D002B4527 /* WOCSettingsViewController.m */; };
+		130A28502010CB6F002B4527 /* WOCExchangeRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A284F2010CB6F002B4527 /* WOCExchangeRatesViewController.m */; };
+		130A28532010CC3C002B4527 /* WOCExchangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A28522010CC3C002B4527 /* WOCExchangeCell.m */; };
 		13627690200F50E70011A0AF /* WOCExpandedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1362768F200F50E70011A0AF /* WOCExpandedCell.m */; };
 		13627693200F51540011A0AF /* WOCCollapsedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13627692200F51540011A0AF /* WOCCollapsedCell.m */; };
 		1389B96A200F0C5A00A13C97 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B95C200F0C5A00A13C97 /* APIManager.m */; };
@@ -255,7 +263,22 @@
 		04657076200A1ABA00E76BDD /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
 		0465707B200A1ABA00E76BDD /* UIViewController+LGSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LGSideMenuController.h"; sourceTree = "<group>"; };
 		0465707C200A1ABA00E76BDD /* UIViewController+LGSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LGSideMenuController.m"; sourceTree = "<group>"; };
-		0465708C200F8C2200E76BDD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		048719082010E2D700A586CF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		130A28392010769A002B4527 /* WOCSafetyNotesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSafetyNotesViewController.h; sourceTree = "<group>"; };
+		130A283A2010769A002B4527 /* WOCSafetyNotesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSafetyNotesViewController.m; sourceTree = "<group>"; };
+		130A283E20109635002B4527 /* WOCBackupWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBackupWalletViewController.h; sourceTree = "<group>"; };
+		130A283F20109635002B4527 /* WOCBackupWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBackupWalletViewController.m; sourceTree = "<group>"; };
+		130A28432010A277002B4527 /* WOCRestoreWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCRestoreWalletViewController.h; sourceTree = "<group>"; };
+		130A28442010A277002B4527 /* WOCRestoreWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCRestoreWalletViewController.m; sourceTree = "<group>"; };
+		130A28462010A53C002B4527 /* Screenshot_20180118-105954.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screenshot_20180118-105954.png"; sourceTree = "<group>"; };
+		130A28482010ABB2002B4527 /* WOCSpendingPINViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSpendingPINViewController.h; sourceTree = "<group>"; };
+		130A28492010ABB2002B4527 /* WOCSpendingPINViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSpendingPINViewController.m; sourceTree = "<group>"; };
+		130A284B2010B66D002B4527 /* WOCSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSettingsViewController.h; sourceTree = "<group>"; };
+		130A284C2010B66D002B4527 /* WOCSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSettingsViewController.m; sourceTree = "<group>"; };
+		130A284E2010CB6F002B4527 /* WOCExchangeRatesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCExchangeRatesViewController.h; sourceTree = "<group>"; };
+		130A284F2010CB6F002B4527 /* WOCExchangeRatesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCExchangeRatesViewController.m; sourceTree = "<group>"; };
+		130A28512010CC3C002B4527 /* WOCExchangeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCExchangeCell.h; sourceTree = "<group>"; };
+		130A28522010CC3C002B4527 /* WOCExchangeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCExchangeCell.m; sourceTree = "<group>"; };
 		1362768E200F50E70011A0AF /* WOCExpandedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCExpandedCell.h; sourceTree = "<group>"; };
 		1362768F200F50E70011A0AF /* WOCExpandedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCExpandedCell.m; sourceTree = "<group>"; };
 		13627691200F51540011A0AF /* WOCCollapsedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCCollapsedCell.h; sourceTree = "<group>"; };
@@ -745,6 +768,18 @@
 				1389B967200F0C5A00A13C97 /* WOCOpeningScreenViewController.m */,
 				1389B968200F0C5A00A13C97 /* WOCSendDashViewController.h */,
 				1389B969200F0C5A00A13C97 /* WOCSendDashViewController.m */,
+				130A28392010769A002B4527 /* WOCSafetyNotesViewController.h */,
+				130A283A2010769A002B4527 /* WOCSafetyNotesViewController.m */,
+				130A283E20109635002B4527 /* WOCBackupWalletViewController.h */,
+				130A283F20109635002B4527 /* WOCBackupWalletViewController.m */,
+				130A28432010A277002B4527 /* WOCRestoreWalletViewController.h */,
+				130A28442010A277002B4527 /* WOCRestoreWalletViewController.m */,
+				130A28482010ABB2002B4527 /* WOCSpendingPINViewController.h */,
+				130A28492010ABB2002B4527 /* WOCSpendingPINViewController.m */,
+				130A284B2010B66D002B4527 /* WOCSettingsViewController.h */,
+				130A284C2010B66D002B4527 /* WOCSettingsViewController.m */,
+				130A284E2010CB6F002B4527 /* WOCExchangeRatesViewController.h */,
+				130A284F2010CB6F002B4527 /* WOCExchangeRatesViewController.m */,
 			);
 			path = WOC;
 			sourceTree = "<group>";
@@ -769,6 +804,8 @@
 				1362768F200F50E70011A0AF /* WOCExpandedCell.m */,
 				13627691200F51540011A0AF /* WOCCollapsedCell.h */,
 				13627692200F51540011A0AF /* WOCCollapsedCell.m */,
+				130A28512010CC3C002B4527 /* WOCExchangeCell.h */,
+				130A28522010CC3C002B4527 /* WOCExchangeCell.m */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -1047,6 +1084,7 @@
 		75D5F3C7191EC270004AB296 /* DashWallet */ = {
 			isa = PBXGroup;
 			children = (
+				130A28462010A53C002B4527 /* Screenshot_20180118-105954.png */,
 				FBF267A61E414A58001A1C8B /* x11 */,
 				BAC7B6BF1BD9C2B500165B84 /* AppleWatch */,
 				752E289C19234A4700DB5A3C /* Models */,
@@ -1057,7 +1095,7 @@
 				75D5F3D1191EC270004AB296 /* BRAppDelegate.m */,
 				BA4EECDF1B351AE200D443A3 /* BRAppGroupConstants.h */,
 				22F45A0F1C3329EB00B07A15 /* BRUserDefaultsConstants.h */,
-				0465708C200F8C2200E76BDD /* Images.xcassets */,
+				048719082010E2D700A586CF /* Images.xcassets */,
 				75D5F3DC191EC270004AB296 /* Main.storyboard */,
 				75F2E0D21BE9803900EAE861 /* Launch Screen.storyboard */,
 				752E2898192349CE00DB5A3C /* DashWallet.xcdatamodeld */,
@@ -1474,13 +1512,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				048719092010E2D700A586CF /* Images.xcassets in Resources */,
 				757E09991ADB8EEB006FD352 /* Localizable.strings in Resources */,
-				0465708D200F8C2300E76BDD /* Images.xcassets in Resources */,
 				75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */,
 				75C0E3BF1B1BA294007BC531 /* BIP39Words.plist in Resources */,
 				75E83CF61B5F997A0038FB70 /* coinflip.aiff in Resources */,
 				755FC9ED1BF1DF1B00164ABB /* BREventConfirmView.xib in Resources */,
 				752E28F719235B3000DB5A3C /* FixedPeers.plist in Resources */,
+				130A28472010A558002B4527 /* Screenshot_20180118-105954.png in Resources */,
 				75D5F3DE191EC270004AB296 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1569,13 +1608,16 @@
 				22F04A001C9714EF00F137D8 /* BRUserDefaultsSwitchCell.m in Sources */,
 				752E28AA19234AE300DB5A3C /* BRAddressEntity.m in Sources */,
 				0465707E200A1ABA00E76BDD /* LGSideMenuController.m in Sources */,
+				130A284D2010B66D002B4527 /* WOCSettingsViewController.m in Sources */,
 				75AA5F55194143D5003F23BD /* BRBouncyBurgerButton.m in Sources */,
+				130A284020109636002B4527 /* WOCBackupWalletViewController.m in Sources */,
 				752E28AB19234AE300DB5A3C /* BRMerkleBlockEntity.m in Sources */,
 				BA7B53501BDA9A2800355E8D /* BRAppleWatchData.m in Sources */,
 				752E28AC19234AE300DB5A3C /* BRPeerEntity.m in Sources */,
 				1389B96F200F0C5A00A13C97 /* WOCOpeningScreenViewController.m in Sources */,
 				1389B970200F0C5A00A13C97 /* WOCSendDashViewController.m in Sources */,
 				FBF2680E1E419318001A1C8B /* DSShapeshiftEntity+CoreDataClass.m in Sources */,
+				130A28532010CC3C002B4527 /* WOCExchangeCell.m in Sources */,
 				FBF268041E414B93001A1C8B /* NSData+Dash.m in Sources */,
 				1389B96C200F0C5A00A13C97 /* WOCAddressBookCell.m in Sources */,
 				04657084200A1ABA00E76BDD /* LeftViewController.m in Sources */,
@@ -1605,10 +1647,12 @@
 				752E28CF19234C3600DB5A3C /* BRBIP39Mnemonic.m in Sources */,
 				752E28DA19234C3600DB5A3C /* BRWallet.m in Sources */,
 				FB021E561E47E17200D17638 /* FBShimmeringLayer.m in Sources */,
+				130A28452010A277002B4527 /* WOCRestoreWalletViewController.m in Sources */,
 				752E28DB19234C3600DB5A3C /* BRWalletManager.m in Sources */,
 				752E28D319234C3600DB5A3C /* BRMerkleBlock.m in Sources */,
 				0465708B200A1ABA00E76BDD /* UIViewController+LGSideMenuController.m in Sources */,
 				752E28D019234C3600DB5A3C /* BRBloomFilter.m in Sources */,
+				130A283B2010769A002B4527 /* WOCSafetyNotesViewController.m in Sources */,
 				752E28D619234C3600DB5A3C /* BRPeer.m in Sources */,
 				752E28D819234C3600DB5A3C /* BRPeerManager.m in Sources */,
 				752E28D419234C3600DB5A3C /* BRPaymentProtocol.m in Sources */,
@@ -1626,6 +1670,7 @@
 				757BE7E9192D4E880061CB20 /* BRSeedViewController.m in Sources */,
 				752E28E719234DA200DB5A3C /* NSData+Bitcoin.m in Sources */,
 				FB9CC2711F8E27B80079309F /* DWGenerateViewController.m in Sources */,
+				130A284A2010ABB2002B4527 /* WOCSpendingPINViewController.m in Sources */,
 				220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */,
 				752E28E919234DA200DB5A3C /* NSManagedObject+Sugar.m in Sources */,
 				BA7B53541BDAA0A800355E8D /* BRAppleWatchTransactionData.m in Sources */,
@@ -1637,6 +1682,7 @@
 				751B2B5C1B68911700EA87FB /* BRTxHistoryViewController.m in Sources */,
 				752E28EA19234DA200DB5A3C /* NSMutableData+Bitcoin.m in Sources */,
 				752E28EB19234DA200DB5A3C /* NSString+Bitcoin.m in Sources */,
+				130A28502010CB6F002B4527 /* WOCExchangeRatesViewController.m in Sources */,
 				13627690200F50E70011A0AF /* WOCExpandedCell.m in Sources */,
 				757C89521A2FCE420076B373 /* BRSettingsViewController.m in Sources */,
 				1389B96E200F0C5A00A13C97 /* WOCBuyDashViewController.m in Sources */,

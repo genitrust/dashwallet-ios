@@ -55,3 +55,13 @@ https://projects.invisionapp.com/d/main#/console/11024098/233342118/preview#proj
         CREATE HOLD API
         CAPTURE HOLD API
         CONFIRM DEPOSIT API
+        
+#### Work on 18 JAN 2018 Sujal Bandhara
+        
+1. Worked on Exchange rates screen
+2. Worked on Safety UI
+3. Worked on Safety Notes POPUP UI
+4. Worked on Back Up Wallet POPUP UI
+5. Worked on Restore Wallet POPUP UI
+6. Worked on Spending PIN POPUP UI
+7. Worked on Settings UI

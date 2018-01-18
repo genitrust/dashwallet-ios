@@ -11,6 +11,7 @@
 #import "WOCExpandedCell.h"
 #import "WOCBuyDashViewController.h"
 #import "WOCSendDashViewController.h"
+#import "WOCSafetyNotesViewController.h"
 
 @interface WOCOpeningScreenViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -58,6 +59,21 @@
 }
 
 - (IBAction)safetyNotesClicked:(id)sender {
+    
+    [self viewSafetyNotesPopup];
+}
+
+- (void)viewSafetyNotesPopup{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Important safety notes:\n" message:@"Dash are stored on the device. If you lose it, you'll lose your Dash.\n\nThis means you need to back up your wallet! Use the in-app backup facility for this, rather than a third party backup app. Keep your backup safe and remember the password. This is an HD wallet. Only one backup is required.\n\nBefore uninstalling  (or clearing app data/wiping your device), transfer your Dash to another wallet. Remaining Dash will be lost.\n\nPayments are irreversible. If you send your Dash into the void, there is almost no way to get them back.\n\nKeep your mobile device safe! Do not root your device. Don only install apps you fully trust. Malicious app could be trying to steal your wallet.\n\nKepp the risk low! Only use with small amounts for day use." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:@"DISMISS" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alert addAction:dismissAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
