@@ -65,3 +65,17 @@ https://projects.invisionapp.com/d/main#/console/11024098/233342118/preview#proj
 5. Worked on Restore Wallet POPUP UI
 6. Worked on Spending PIN POPUP UI
 7. Worked on Settings UI
+
+#### Work on 19 JAN 2018 Sujal Bandhara
+
+1. Worked on Settings screen
+    1.1 Worked on Settings - Denomination and precision screen
+    1.2 Worked on Settings - Own name screen
+    1.3 Worked on Settings - Trusted peer screen
+    1.4 Worked on Settings - Block explorer screen
+2. Worked on Diagnostics UI
+    2.1 Worked on Diagnostics - Report issue screen
+    2.2 Worked on Diagnostics - Reset block chain screen
+    2.3 Worked on Diagnostics - Show xPub screen
+3. Worked on About UI
+

@@ -7,6 +7,7 @@
 //
 
 #import "WOCSettingsViewController.h"
+#import "WOCSettingsDetailViewController.h"
 
 @interface WOCSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -53,6 +54,16 @@
     cell.textLabel.text = self.settings[indexPath.row];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    WOCSettingsDetailViewController *settingsDetail = [storyboard instantiateViewControllerWithIdentifier:@"WOCSettingsDetailViewController"];
+    settingsDetail.index = indexPath.row;
+    [self.navigationController pushViewController:settingsDetail animated:YES];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

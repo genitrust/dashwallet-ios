@@ -24,13 +24,20 @@
 		130A283B2010769A002B4527 /* WOCSafetyNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A283A2010769A002B4527 /* WOCSafetyNotesViewController.m */; };
 		130A284020109636002B4527 /* WOCBackupWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A283F20109635002B4527 /* WOCBackupWalletViewController.m */; };
 		130A28452010A277002B4527 /* WOCRestoreWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A28442010A277002B4527 /* WOCRestoreWalletViewController.m */; };
-		130A28472010A558002B4527 /* Screenshot_20180118-105954.png in Resources */ = {isa = PBXBuildFile; fileRef = 130A28462010A53C002B4527 /* Screenshot_20180118-105954.png */; };
 		130A284A2010ABB2002B4527 /* WOCSpendingPINViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A28492010ABB2002B4527 /* WOCSpendingPINViewController.m */; };
 		130A284D2010B66D002B4527 /* WOCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A284C2010B66D002B4527 /* WOCSettingsViewController.m */; };
 		130A28502010CB6F002B4527 /* WOCExchangeRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A284F2010CB6F002B4527 /* WOCExchangeRatesViewController.m */; };
 		130A28532010CC3C002B4527 /* WOCExchangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 130A28522010CC3C002B4527 /* WOCExchangeCell.m */; };
 		13627690200F50E70011A0AF /* WOCExpandedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1362768F200F50E70011A0AF /* WOCExpandedCell.m */; };
 		13627693200F51540011A0AF /* WOCCollapsedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13627692200F51540011A0AF /* WOCCollapsedCell.m */; };
+		1381DA132012342200443CD5 /* Screenshot_20180119-190632.png in Resources */ = {isa = PBXBuildFile; fileRef = 1381DA0F2012340A00443CD5 /* Screenshot_20180119-190632.png */; };
+		1381DA142012342200443CD5 /* Screenshot_20180119-190651.png in Resources */ = {isa = PBXBuildFile; fileRef = 1381DA102012341100443CD5 /* Screenshot_20180119-190651.png */; };
+		1381DA152012342200443CD5 /* Screenshot_20180119-190626.png in Resources */ = {isa = PBXBuildFile; fileRef = 1381DA112012341600443CD5 /* Screenshot_20180119-190626.png */; };
+		1381DA162012342200443CD5 /* Screenshot_20180119-190710.png in Resources */ = {isa = PBXBuildFile; fileRef = 1381DA122012341C00443CD5 /* Screenshot_20180119-190710.png */; };
+		1381DA1920123A6800443CD5 /* WOCDenominationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1381DA1820123A6800443CD5 /* WOCDenominationViewController.m */; };
+		1381DA1C20123D4F00443CD5 /* WOCOwnNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1381DA1B20123D4F00443CD5 /* WOCOwnNameViewController.m */; };
+		1381DA1F20123D6D00443CD5 /* WOCTrustedPeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1381DA1E20123D6D00443CD5 /* WOCTrustedPeerViewController.m */; };
+		1381DA2220123D9B00443CD5 /* WOCBlockExplorerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1381DA2120123D9B00443CD5 /* WOCBlockExplorerViewController.m */; };
 		1389B96A200F0C5A00A13C97 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B95C200F0C5A00A13C97 /* APIManager.m */; };
 		1389B96B200F0C5A00A13C97 /* BuyDashCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B95F200F0C5A00A13C97 /* BuyDashCell.m */; };
 		1389B96C200F0C5A00A13C97 /* WOCAddressBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B961200F0C5A00A13C97 /* WOCAddressBookCell.m */; };
@@ -38,6 +45,11 @@
 		1389B96E200F0C5A00A13C97 /* WOCBuyDashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B965200F0C5A00A13C97 /* WOCBuyDashViewController.m */; };
 		1389B96F200F0C5A00A13C97 /* WOCOpeningScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B967200F0C5A00A13C97 /* WOCOpeningScreenViewController.m */; };
 		1389B970200F0C5A00A13C97 /* WOCSendDashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1389B969200F0C5A00A13C97 /* WOCSendDashViewController.m */; };
+		13A432BA2011B7A0000E51A4 /* WOCSettingsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A432B92011B7A0000E51A4 /* WOCSettingsDetailViewController.m */; };
+		13A432BD2011C678000E51A4 /* WOCAboutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A432BC2011C678000E51A4 /* WOCAboutCell.m */; };
+		13A432C02011FA73000E51A4 /* WOCReportIssueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A432BF2011FA73000E51A4 /* WOCReportIssueViewController.m */; };
+		13A432C920121EA8000E51A4 /* WOCBlockChainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A432C820121EA8000E51A4 /* WOCBlockChainViewController.m */; };
+		13A432CC2012248B000E51A4 /* WOCShowXPubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A432CB2012248B000E51A4 /* WOCShowXPubViewController.m */; };
 		220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 220128D11C753C670001CAC1 /* BRSocketHelpers.c */; };
 		2204604E1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
 		2204604F1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
@@ -270,7 +282,6 @@
 		130A283F20109635002B4527 /* WOCBackupWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBackupWalletViewController.m; sourceTree = "<group>"; };
 		130A28432010A277002B4527 /* WOCRestoreWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCRestoreWalletViewController.h; sourceTree = "<group>"; };
 		130A28442010A277002B4527 /* WOCRestoreWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCRestoreWalletViewController.m; sourceTree = "<group>"; };
-		130A28462010A53C002B4527 /* Screenshot_20180118-105954.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screenshot_20180118-105954.png"; sourceTree = "<group>"; };
 		130A28482010ABB2002B4527 /* WOCSpendingPINViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSpendingPINViewController.h; sourceTree = "<group>"; };
 		130A28492010ABB2002B4527 /* WOCSpendingPINViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSpendingPINViewController.m; sourceTree = "<group>"; };
 		130A284B2010B66D002B4527 /* WOCSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSettingsViewController.h; sourceTree = "<group>"; };
@@ -283,6 +294,18 @@
 		1362768F200F50E70011A0AF /* WOCExpandedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCExpandedCell.m; sourceTree = "<group>"; };
 		13627691200F51540011A0AF /* WOCCollapsedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCCollapsedCell.h; sourceTree = "<group>"; };
 		13627692200F51540011A0AF /* WOCCollapsedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCCollapsedCell.m; sourceTree = "<group>"; };
+		1381DA0F2012340A00443CD5 /* Screenshot_20180119-190632.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screenshot_20180119-190632.png"; sourceTree = "<group>"; };
+		1381DA102012341100443CD5 /* Screenshot_20180119-190651.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screenshot_20180119-190651.png"; sourceTree = "<group>"; };
+		1381DA112012341600443CD5 /* Screenshot_20180119-190626.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screenshot_20180119-190626.png"; sourceTree = "<group>"; };
+		1381DA122012341C00443CD5 /* Screenshot_20180119-190710.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screenshot_20180119-190710.png"; sourceTree = "<group>"; };
+		1381DA1720123A6800443CD5 /* WOCDenominationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCDenominationViewController.h; sourceTree = "<group>"; };
+		1381DA1820123A6800443CD5 /* WOCDenominationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCDenominationViewController.m; sourceTree = "<group>"; };
+		1381DA1A20123D4F00443CD5 /* WOCOwnNameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCOwnNameViewController.h; sourceTree = "<group>"; };
+		1381DA1B20123D4F00443CD5 /* WOCOwnNameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCOwnNameViewController.m; sourceTree = "<group>"; };
+		1381DA1D20123D6D00443CD5 /* WOCTrustedPeerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCTrustedPeerViewController.h; sourceTree = "<group>"; };
+		1381DA1E20123D6D00443CD5 /* WOCTrustedPeerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCTrustedPeerViewController.m; sourceTree = "<group>"; };
+		1381DA2020123D9B00443CD5 /* WOCBlockExplorerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBlockExplorerViewController.h; sourceTree = "<group>"; };
+		1381DA2120123D9B00443CD5 /* WOCBlockExplorerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBlockExplorerViewController.m; sourceTree = "<group>"; };
 		1389B95B200F0C5A00A13C97 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
 		1389B95C200F0C5A00A13C97 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		1389B95E200F0C5A00A13C97 /* BuyDashCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyDashCell.h; sourceTree = "<group>"; };
@@ -297,6 +320,16 @@
 		1389B967200F0C5A00A13C97 /* WOCOpeningScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCOpeningScreenViewController.m; sourceTree = "<group>"; };
 		1389B968200F0C5A00A13C97 /* WOCSendDashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCSendDashViewController.h; sourceTree = "<group>"; };
 		1389B969200F0C5A00A13C97 /* WOCSendDashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCSendDashViewController.m; sourceTree = "<group>"; };
+		13A432B82011B7A0000E51A4 /* WOCSettingsDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSettingsDetailViewController.h; sourceTree = "<group>"; };
+		13A432B92011B7A0000E51A4 /* WOCSettingsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSettingsDetailViewController.m; sourceTree = "<group>"; };
+		13A432BB2011C678000E51A4 /* WOCAboutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCAboutCell.h; sourceTree = "<group>"; };
+		13A432BC2011C678000E51A4 /* WOCAboutCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCAboutCell.m; sourceTree = "<group>"; };
+		13A432BE2011FA73000E51A4 /* WOCReportIssueViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCReportIssueViewController.h; sourceTree = "<group>"; };
+		13A432BF2011FA73000E51A4 /* WOCReportIssueViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCReportIssueViewController.m; sourceTree = "<group>"; };
+		13A432C720121EA8000E51A4 /* WOCBlockChainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBlockChainViewController.h; sourceTree = "<group>"; };
+		13A432C820121EA8000E51A4 /* WOCBlockChainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBlockChainViewController.m; sourceTree = "<group>"; };
+		13A432CA2012248B000E51A4 /* WOCShowXPubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCShowXPubViewController.h; sourceTree = "<group>"; };
+		13A432CB2012248B000E51A4 /* WOCShowXPubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCShowXPubViewController.m; sourceTree = "<group>"; };
 		220128D11C753C670001CAC1 /* BRSocketHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BRSocketHelpers.c; sourceTree = "<group>"; };
 		220128D21C753C670001CAC1 /* BRSocketHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSocketHelpers.h; sourceTree = "<group>"; };
 		2204604C1B9F61E600D07B61 /* BREventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BREventManager.h; sourceTree = "<group>"; };
@@ -780,6 +813,22 @@
 				130A284C2010B66D002B4527 /* WOCSettingsViewController.m */,
 				130A284E2010CB6F002B4527 /* WOCExchangeRatesViewController.h */,
 				130A284F2010CB6F002B4527 /* WOCExchangeRatesViewController.m */,
+				13A432B82011B7A0000E51A4 /* WOCSettingsDetailViewController.h */,
+				13A432B92011B7A0000E51A4 /* WOCSettingsDetailViewController.m */,
+				13A432BE2011FA73000E51A4 /* WOCReportIssueViewController.h */,
+				13A432BF2011FA73000E51A4 /* WOCReportIssueViewController.m */,
+				13A432C720121EA8000E51A4 /* WOCBlockChainViewController.h */,
+				13A432C820121EA8000E51A4 /* WOCBlockChainViewController.m */,
+				13A432CA2012248B000E51A4 /* WOCShowXPubViewController.h */,
+				13A432CB2012248B000E51A4 /* WOCShowXPubViewController.m */,
+				1381DA1720123A6800443CD5 /* WOCDenominationViewController.h */,
+				1381DA1820123A6800443CD5 /* WOCDenominationViewController.m */,
+				1381DA1A20123D4F00443CD5 /* WOCOwnNameViewController.h */,
+				1381DA1B20123D4F00443CD5 /* WOCOwnNameViewController.m */,
+				1381DA1D20123D6D00443CD5 /* WOCTrustedPeerViewController.h */,
+				1381DA1E20123D6D00443CD5 /* WOCTrustedPeerViewController.m */,
+				1381DA2020123D9B00443CD5 /* WOCBlockExplorerViewController.h */,
+				1381DA2120123D9B00443CD5 /* WOCBlockExplorerViewController.m */,
 			);
 			path = WOC;
 			sourceTree = "<group>";
@@ -806,6 +855,8 @@
 				13627692200F51540011A0AF /* WOCCollapsedCell.m */,
 				130A28512010CC3C002B4527 /* WOCExchangeCell.h */,
 				130A28522010CC3C002B4527 /* WOCExchangeCell.m */,
+				13A432BB2011C678000E51A4 /* WOCAboutCell.h */,
+				13A432BC2011C678000E51A4 /* WOCAboutCell.m */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -1084,7 +1135,10 @@
 		75D5F3C7191EC270004AB296 /* DashWallet */ = {
 			isa = PBXGroup;
 			children = (
-				130A28462010A53C002B4527 /* Screenshot_20180118-105954.png */,
+				1381DA112012341600443CD5 /* Screenshot_20180119-190626.png */,
+				1381DA0F2012340A00443CD5 /* Screenshot_20180119-190632.png */,
+				1381DA102012341100443CD5 /* Screenshot_20180119-190651.png */,
+				1381DA122012341C00443CD5 /* Screenshot_20180119-190710.png */,
 				FBF267A61E414A58001A1C8B /* x11 */,
 				BAC7B6BF1BD9C2B500165B84 /* AppleWatch */,
 				752E289C19234A4700DB5A3C /* Models */,
@@ -1515,11 +1569,14 @@
 				048719092010E2D700A586CF /* Images.xcassets in Resources */,
 				757E09991ADB8EEB006FD352 /* Localizable.strings in Resources */,
 				75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */,
+				1381DA132012342200443CD5 /* Screenshot_20180119-190632.png in Resources */,
+				1381DA152012342200443CD5 /* Screenshot_20180119-190626.png in Resources */,
 				75C0E3BF1B1BA294007BC531 /* BIP39Words.plist in Resources */,
 				75E83CF61B5F997A0038FB70 /* coinflip.aiff in Resources */,
+				1381DA162012342200443CD5 /* Screenshot_20180119-190710.png in Resources */,
 				755FC9ED1BF1DF1B00164ABB /* BREventConfirmView.xib in Resources */,
+				1381DA142012342200443CD5 /* Screenshot_20180119-190651.png in Resources */,
 				752E28F719235B3000DB5A3C /* FixedPeers.plist in Resources */,
-				130A28472010A558002B4527 /* Screenshot_20180118-105954.png in Resources */,
 				75D5F3DE191EC270004AB296 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1611,6 +1668,7 @@
 				130A284D2010B66D002B4527 /* WOCSettingsViewController.m in Sources */,
 				75AA5F55194143D5003F23BD /* BRBouncyBurgerButton.m in Sources */,
 				130A284020109636002B4527 /* WOCBackupWalletViewController.m in Sources */,
+				13A432CC2012248B000E51A4 /* WOCShowXPubViewController.m in Sources */,
 				752E28AB19234AE300DB5A3C /* BRMerkleBlockEntity.m in Sources */,
 				BA7B53501BDA9A2800355E8D /* BRAppleWatchData.m in Sources */,
 				752E28AC19234AE300DB5A3C /* BRPeerEntity.m in Sources */,
@@ -1620,6 +1678,7 @@
 				130A28532010CC3C002B4527 /* WOCExchangeCell.m in Sources */,
 				FBF268041E414B93001A1C8B /* NSData+Dash.m in Sources */,
 				1389B96C200F0C5A00A13C97 /* WOCAddressBookCell.m in Sources */,
+				1381DA2220123D9B00443CD5 /* WOCBlockExplorerViewController.m in Sources */,
 				04657084200A1ABA00E76BDD /* LeftViewController.m in Sources */,
 				752E28AD19234AE300DB5A3C /* BRTransactionEntity.m in Sources */,
 				752E28AE19234AE300DB5A3C /* BRTxInputEntity.m in Sources */,
@@ -1632,6 +1691,7 @@
 				BA7B535C1BDBC36700355E8D /* BRTransaction+Utils.m in Sources */,
 				758DBD0E1980634900389E2A /* BRTxDetailViewController.m in Sources */,
 				13627693200F51540011A0AF /* WOCCollapsedCell.m in Sources */,
+				13A432BD2011C678000E51A4 /* WOCAboutCell.m in Sources */,
 				FB021E4F1E42EB5F00D17638 /* NSAttributedString+Attachments.m in Sources */,
 				04657088200A1ABA00E76BDD /* NavigationController.m in Sources */,
 				7548CF3719556FD700EF827F /* BRCopyLabel.m in Sources */,
@@ -1652,6 +1712,7 @@
 				752E28D319234C3600DB5A3C /* BRMerkleBlock.m in Sources */,
 				0465708B200A1ABA00E76BDD /* UIViewController+LGSideMenuController.m in Sources */,
 				752E28D019234C3600DB5A3C /* BRBloomFilter.m in Sources */,
+				13A432C02011FA73000E51A4 /* WOCReportIssueViewController.m in Sources */,
 				130A283B2010769A002B4527 /* WOCSafetyNotesViewController.m in Sources */,
 				752E28D619234C3600DB5A3C /* BRPeer.m in Sources */,
 				752E28D819234C3600DB5A3C /* BRPeerManager.m in Sources */,
@@ -1670,6 +1731,7 @@
 				757BE7E9192D4E880061CB20 /* BRSeedViewController.m in Sources */,
 				752E28E719234DA200DB5A3C /* NSData+Bitcoin.m in Sources */,
 				FB9CC2711F8E27B80079309F /* DWGenerateViewController.m in Sources */,
+				1381DA1C20123D4F00443CD5 /* WOCOwnNameViewController.m in Sources */,
 				130A284A2010ABB2002B4527 /* WOCSpendingPINViewController.m in Sources */,
 				220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */,
 				752E28E919234DA200DB5A3C /* NSManagedObject+Sugar.m in Sources */,
@@ -1681,6 +1743,8 @@
 				04657081200A1ABA00E76BDD /* LGSideMenuSegue.m in Sources */,
 				751B2B5C1B68911700EA87FB /* BRTxHistoryViewController.m in Sources */,
 				752E28EA19234DA200DB5A3C /* NSMutableData+Bitcoin.m in Sources */,
+				13A432C920121EA8000E51A4 /* WOCBlockChainViewController.m in Sources */,
+				13A432BA2011B7A0000E51A4 /* WOCSettingsDetailViewController.m in Sources */,
 				752E28EB19234DA200DB5A3C /* NSString+Bitcoin.m in Sources */,
 				130A28502010CB6F002B4527 /* WOCExchangeRatesViewController.m in Sources */,
 				13627690200F50E70011A0AF /* WOCExpandedCell.m in Sources */,
@@ -1689,7 +1753,9 @@
 				75D5F3D2191EC270004AB296 /* BRAppDelegate.m in Sources */,
 				759FBB36193290F600AB4465 /* BRRootViewController.m in Sources */,
 				752E289A192349CE00DB5A3C /* DashWallet.xcdatamodeld in Sources */,
+				1381DA1920123A6800443CD5 /* WOCDenominationViewController.m in Sources */,
 				0465707D200A1ABA00E76BDD /* LGSideMenuBorderView.m in Sources */,
+				1381DA1F20123D6D00443CD5 /* WOCTrustedPeerViewController.m in Sources */,
 				759FBB37193290F600AB4465 /* BRSendViewController.m in Sources */,
 				752E28F119234E8100DB5A3C /* Reachability.m in Sources */,
 				1389B96D200F0C5A00A13C97 /* WOCAddressBookViewController.m in Sources */,
