@@ -10,6 +10,8 @@
 
 @interface WOCOpeningScreenViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIButton *btnBackupWallet;
+@property (weak, nonatomic) IBOutlet UIButton *btnloadWallet;
 @property (weak, nonatomic) IBOutlet UIButton *btnSafetyNotes;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)backBtnClicked:(id)sender;

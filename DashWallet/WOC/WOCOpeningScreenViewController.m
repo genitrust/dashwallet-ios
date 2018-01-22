@@ -31,7 +31,19 @@
     // making text property to underline text-
     [titleString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(31, 12)];
     // using text on button
-    [self.btnSafetyNotes setAttributedTitle: titleString forState:UIControlStateNormal];
+    [self.btnSafetyNotes setAttributedTitle:titleString forState:UIControlStateNormal];
+    
+    UIFont *font = [UIFont systemFontOfSize:10 weight:UIFontWeightRegular];
+    
+    NSMutableAttributedString *titleString1 = [[NSMutableAttributedString alloc] initWithString:self.btnBackupWallet.titleLabel.text];
+    [titleString1 addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(12, 19)];
+    [titleString1 addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, [titleString1 length] - 1)];
+    [self.btnBackupWallet setAttributedTitle:titleString1 forState:UIControlStateNormal];
+    
+    NSMutableAttributedString *titleString2 = [[NSMutableAttributedString alloc] initWithString:self.btnloadWallet.titleLabel.text];
+    [titleString2 addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(26, 25)];
+    [titleString2 addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, [titleString2 length] - 1)];
+    [self.btnloadWallet setAttributedTitle:titleString2 forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
