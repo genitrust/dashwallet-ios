@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Exchange_Rates.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "burger.png",
       "scale" : "2x"
     },
     {
@@ -19,6 +19,6 @@
     "author" : "xcode"
   },
   "properties" : {
-    "template-rendering-intent" : "template"
+    "template-rendering-intent" : "original"
   }
 }
