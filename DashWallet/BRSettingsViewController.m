@@ -35,6 +35,7 @@
 #import <sys/socket.h>
 #import <netdb.h>
 #import <arpa/inet.h>
+#import "WOCBuyDashStep1ViewController.h"
 
 @interface BRSettingsViewController ()
 
@@ -342,7 +343,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.selectorController.tableView) return 1;
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -353,6 +354,7 @@
         case 0: return 2;
         case 1: return (self.touchId) ? 3 : 2;
         case 2: return 3;
+        case 3: return 1;
     }
     
     return 0;
@@ -440,6 +442,16 @@ _switch_cell:
                     cell.textLabel.text = NSLocalizedString(@"rescan blockchain", nil);
                     break;
 
+            }
+            break;
+            
+        case 3:
+            switch (indexPath.row) {
+                case 0:
+                    cell = [tableView dequeueReusableCellWithIdentifier:disclosureIdent];
+                    cell.textLabel.text = NSLocalizedString(@"buy dash with cash", nil);
+                    break;
+                    
             }
             break;
             
@@ -665,6 +677,9 @@ _switch_cell:
         return;
     }
     
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
@@ -720,6 +735,15 @@ _deselect_switch:
                     [[BRPeerManager sharedInstance] rescan];
                     [BREventManager saveEvent:@"settings:rescan"];
                     [self done:nil];
+                    break;
+            }
+            
+            break;
+            
+        case 3:
+            switch (indexPath.row) {
+                case 0: // buy dash with cash
+                    [self.navigationController pushViewController:myViewController animated:YES];
                     break;
             }
             
