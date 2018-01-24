@@ -30,6 +30,7 @@
 #import "BRPhoneWCSessionManager.h"
 #import "DSShapeshiftManager.h"
 #import <UserNotifications/UserNotifications.h>
+#import "APIManager.h"
 
 #if DASH_TESTNET
 #pragma message "testnet build"
@@ -88,6 +89,7 @@
     
     [BRWalletManager sharedInstance];
 
+    [[APIManager sharedInstance] testAPI];
     //TODO: bitcoin protocol/payment protocol over multipeer connectivity
 
     //TODO: accessibility for the visually impaired
