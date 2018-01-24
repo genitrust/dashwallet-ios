@@ -120,12 +120,12 @@
 
 -(void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/banks/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@banks/",BASE_URL];
     NSDictionary *params =
     @{
-      @"id": @14,
+      /*@"id": @14,
       @"country": @"us",
-      @"payFields": @false
+      @"payFields": @false*/
       };
     
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params  header: nil andCompletionBlock:^(id responseDict, NSError *error) {

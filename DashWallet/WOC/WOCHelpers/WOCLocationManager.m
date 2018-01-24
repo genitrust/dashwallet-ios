@@ -59,9 +59,11 @@
 
     if (status == kCLAuthorizationStatusDenied) {
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openBuyDashStep2" object:nil];
+        
     } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"openRecommendedList" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openBuyDashStep4" object:nil];
     }
 }
 

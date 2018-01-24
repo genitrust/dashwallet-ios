@@ -8,6 +8,9 @@
 
 #import "WOCBuyDashStep1ViewController.h"
 #import "WOCLocationManager.h"
+#import "WOCBuyDashStep2ViewController.h"
+#import "WOCBuyDashStep3ViewController.h"
+#import "WOCBuyDashStep4ViewController.h"
 
 @interface WOCBuyDashStep1ViewController ()
 
@@ -31,6 +34,14 @@
     self.title = @"Buy Dash With Cash";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:@"openBuyDashStep4" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:@"openBuyDashStep2" object:nil];
+    
+    self.btnLocation.layer.cornerRadius = 3.0;
+    self.btnLocation.layer.masksToBounds = YES;
+    self.btnNoThanks.layer.cornerRadius = 3.0;
+    self.btnNoThanks.layer.masksToBounds = YES;
+    [self setShadow:self.btnLocation];
+    [self setShadow:self.btnNoThanks];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,17 +58,66 @@
 - (IBAction)findLocationClicked:(id)sender {
     
     // Enable Location services
-    [[WOCLocationManager sharedInstance] startLocationService];
+    if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
+        [self openBuyDashStep4];
+    }
+    else{
+        [[WOCLocationManager sharedInstance] startLocationService];
+    }
 }
 
 - (IBAction)noThanksClicked:(id)sender {
+    
+    [self showAlert];
 }
 
 #pragma mark - Function
 - (void)openBuyDashStep4 {
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
     [self.navigationController pushViewController:myViewController animated:YES];
 }
+
+- (void)openBuyDashStep2 {
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    WOCBuyDashStep2ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep2ViewController"];
+    [self.navigationController pushViewController:myViewController animated:YES];
+}
+
+- (void)setShadow:(UIView *)view{
+    
+    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
+    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
+    
+    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
+    view.layer.shadowRadius = 1; //1
+    view.layer.shadowOpacity = 1;//1
+    view.layer.masksToBounds = false;
+}
+
+- (void)showAlert{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Dash" message:@"Are they in the USA?" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [self openBuyDashStep2];
+    }];
+    
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep3ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep3ViewController"];
+        [self.navigationController pushViewController:myViewController animated:YES];
+    }];
+    
+    [alert addAction:yesAction];
+    [alert addAction:noAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 @end

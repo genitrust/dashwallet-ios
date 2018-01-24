@@ -29,34 +29,43 @@ git clone https://github.com/genitrust/dashwallet-ios
 6. Understanding Code project and API documentation
 7. Setup Restlet Client
 
-#### Work on 13 JAN 2018 Sujal Bandhara
+#### Work on 13 JAN 2018 (SAT) Sujal Bandhara
 
 1. Create API Manager
 2. Create Menu for iOS App as per projects.invisionapp.com
 https://projects.invisionapp.com/d/main#/console/11024098/233342118/preview#project_console
 
-#### Work on 16 JAN 2018 Sujal Bandhara
+### [STATUS] 14 JAN 2018 (SUN)
+
+Holiday
+
+## [WEEK-2] 15 JAN 2018
+### [STATUS] 15 JAN 2018 (MON)
+
+Festival Holiday
+
+#### Work on 16 JAN 2018 (TUE) Sujal Bandhara
 
 1. Worked on Request-Dash screen UI Design
 2. Worked on Address-Book screen UI Design
 3. Worked on Send-Dash screen UI Design
 4. Completed Dash-Hash Menu Screen UI Design
 
-#### Work on 17 JAN 2018 Sujal Bandhara
+#### Work on 17 JAN 2018 (WED) Sujal Bandhara
 
 1. Completed  Request-Dash screen UI Design
 2. Completed  Address-Book screen UI Design
 3. Completed  Send-Dash screen UI Design
 4. Completed  Opening Screen UI Design
 5. Added  6 following API's in API Manager
-        GET AVAILABLE PAYMENT CENTERS (OPTIONAL)
-        SEARCH & DISCOVERY
-        GET OFFERS API
-        CREATE HOLD API
-        CAPTURE HOLD API
-        CONFIRM DEPOSIT API
+5. 1 GET AVAILABLE PAYMENT CENTERS (OPTIONAL)
+5. 2 SEARCH & DISCOVERY
+5. 3 GET OFFERS API
+5. 4 CREATE HOLD API
+5. 5 CAPTURE HOLD API
+5. 6 CONFIRM DEPOSIT API
         
-#### Work on 18 JAN 2018 Sujal Bandhara
+#### Work on 18 JAN 2018 (THU) Sujal Bandhara
         
 1. Worked on Exchange rates screen
 2. Worked on Safety UI
@@ -66,45 +75,59 @@ https://projects.invisionapp.com/d/main#/console/11024098/233342118/preview#proj
 6. Worked on Spending PIN POPUP UI
 7. Worked on Settings UI
 
-#### Work on 19 JAN 2018 Sujal Bandhara
+#### Work on 19 JAN 2018 (FRI) Sujal Bandhara
 
 1. Worked on Settings screen
-    1.1 Worked on Settings - Denomination and precision screen
-    1.2 Worked on Settings - Own name screen
-    1.3 Worked on Settings - Trusted peer screen
-    1.4 Worked on Settings - Block explorer screen
+1. 1 Worked on Settings - Denomination and precision screen
+1. 2 Worked on Settings - Own name screen
+1. 3 Worked on Settings - Trusted peer screen
+1. 4 Worked on Settings - Block explorer screen
+
 2. Worked on Diagnostics UI
-    2.1 Worked on Diagnostics - Report issue screen
-    2.2 Worked on Diagnostics - Reset block chain screen
-    2.3 Worked on Diagnostics - Show xPub screen
+2. 1 Worked on Diagnostics - Report issue screen
+2. 2 Worked on Diagnostics - Reset block chain screen
+2. 3 Worked on Diagnostics - Show xPub screen
+
 3. Worked on About UI
 
-#### Work on 22 JAN 2018 Sujal Bandhara
+### [STATUS] 20 JAN 2018 (SAT)
+
+Holiday
+
+### [STATUS] 21 JAN 2018 (SUN)
+
+Holiday
+
+## [WEEK-3] 22 JAN 2018
+#### Work on 22 JAN 2018 (MON) Sujal Bandhara
 
 1. Created Buy Dash with Cash screen UI
-    Step 1 - Backup wallet and Load Wallet UI
-    Step 2 - Find my location UI
-    Step 3 - Zip code UI
-    Step 4 - Enter Dash or Dollar UI
-    Step 5 - Get offers UI
-    Step 6 - Send or Do not send me email UI
-    Step 7 - Enter mobile number UI
-    Step 8 - Confirm purchase code UI
-    Step 9 - Buying Instructions UI - 50%
+1. 1 Step 1 - Backup wallet and Load Wallet UI
+1. 2 Step 2 - Find my location UI
+1. 3  Step 3 - Zip code UI
+1. 4 Step 4 - Enter Dash or Dollar UI
+1. 5 Step 5 - Get offers UI
+1. 6 Step 6 - Send or Do not send me email UI
+1. 7 Step 7 - Enter mobile number UI
+1. 8 Step 8 - Confirm purchase code UI
+1. 9 Step 9 - Buying Instructions UI - 50%
 
 
-#### Work on 23 JAN 2018 Sujal Bandhara
+#### Work on 23 JAN 2018 (TUE) Sujal Bandhara
 
 1. Recheck-out code from "origin/wallofcoins-buying-wizard"
 
 2. Created new branch "buyDashWithCash"
 
 3. Buy Dash with Cash screen UI
-    Step 9 - Buying Instructions UI
-    Step 10 - Buying Summary UI
-    Select Payment Center UI
+3. 1 Step 9 - Buying Instructions UI
+3. 2 Step 10 - Buying Summary UI
+3. 3 Select Payment Center UI
     
 4. Added Location Manager Class
 
+#### Work on 24 JAN 2018 (WED) Sujal Bandhara
 
+1. BuyingWizard navigation flow completed.
+2. Implementation of "GET AVAILABLE PAYMENT CENTERS" API
     
