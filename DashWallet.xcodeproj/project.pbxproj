@@ -219,13 +219,13 @@
 		135FD5B92017029700FD8770 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		135FD5BC201706D100FD8770 /* WOCBuyDashStep1ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep1ViewController.h; sourceTree = "<group>"; };
 		135FD5BD201706D100FD8770 /* WOCBuyDashStep1ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep1ViewController.m; sourceTree = "<group>"; };
-		135FD5C320173D4A00FD8770 /* WOCUserDefaultsConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCUserDefaultsConstants.h; sourceTree = "<group>"; };
 		135FD5C820175EBA00FD8770 /* WOCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCLocationManager.h; sourceTree = "<group>"; };
 		135FD5C920175EBA00FD8770 /* WOCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCLocationManager.m; sourceTree = "<group>"; };
 		135FD5CC201766AF00FD8770 /* WOCBuyDashStep3ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep3ViewController.h; sourceTree = "<group>"; };
 		135FD5CD201766AF00FD8770 /* WOCBuyDashStep3ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep3ViewController.m; sourceTree = "<group>"; };
 		135FD5D12017772E00FD8770 /* WOCBuyDashStep2ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep2ViewController.h; sourceTree = "<group>"; };
 		135FD5D22017772E00FD8770 /* WOCBuyDashStep2ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep2ViewController.m; sourceTree = "<group>"; };
+		138D8C9620184D1E00AFD954 /* WOCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCConstants.h; sourceTree = "<group>"; };
 		220128D11C753C670001CAC1 /* BRSocketHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BRSocketHelpers.c; sourceTree = "<group>"; };
 		220128D21C753C670001CAC1 /* BRSocketHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSocketHelpers.h; sourceTree = "<group>"; };
 		2204604C1B9F61E600D07B61 /* BREventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BREventManager.h; sourceTree = "<group>"; };
@@ -626,7 +626,7 @@
 			children = (
 				135FD5C4201759A400FD8770 /* WOCHelpers */,
 				135FD5B72017029700FD8770 /* APIManager */,
-				135FD5C320173D4A00FD8770 /* WOCUserDefaultsConstants.h */,
+				138D8C9620184D1E00AFD954 /* WOCConstants.h */,
 				135FD5BC201706D100FD8770 /* WOCBuyDashStep1ViewController.h */,
 				135FD5BD201706D100FD8770 /* WOCBuyDashStep1ViewController.m */,
 				135FD5D12017772E00FD8770 /* WOCBuyDashStep2ViewController.h */,

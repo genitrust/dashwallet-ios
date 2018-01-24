@@ -9,10 +9,7 @@
 #import "APIManager.h"
 #import <Foundation/Foundation.h>
 
-#define IS_PRODUCTION FALSE
 #define API_ERROR_TITLE @"Wallofcoins"
-#define BASE_URL_DEVELOPMENT @"http://woc.reference.genitrust.com/api/v1"
-#define BASE_URL_PRODUCTION @"http://woc.reference.genitrust.com/api/v1"
 #define BASE_URL (IS_PRODUCTION)?BASE_URL_PRODUCTION:BASE_URL_DEVELOPMENT
 #define TIMEOUT_INTERVAL 30.0
 

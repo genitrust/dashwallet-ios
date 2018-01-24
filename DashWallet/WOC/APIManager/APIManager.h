@@ -7,7 +7,7 @@
 //
 
 #define SHOW_LOGS TRUE
-#import "WOCUserDefaultsConstants.h"
+#import "WOCConstants.h"
 
 @interface APIManager : NSObject
 
