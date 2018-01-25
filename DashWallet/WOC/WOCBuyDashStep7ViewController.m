@@ -30,9 +30,22 @@
 #pragma mark - Action
 - (IBAction)nextClicked:(id)sender {
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-    [self.navigationController pushViewController:myViewController animated:YES];
+    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ([txtPhone length] > 0) {
+        
+        NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",txtPhone,txtPhone,txtPhone,txtPhone,txtPhone];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+        myViewController.offerId = self.offerId;
+        myViewController.phoneNo = [NSString stringWithFormat:@"+1%@",txtPhone];
+        myViewController.deviceCode = deviceCode;
+        [self.navigationController pushViewController:myViewController animated:YES];
+    }
+    else{
+
+    }
 }
 
 #pragma mark - Function
@@ -47,4 +60,5 @@
     view.layer.shadowOpacity = 1;//1
     view.layer.masksToBounds = false;
 }
+
 @end

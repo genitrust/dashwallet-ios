@@ -32,12 +32,15 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
+    myViewController.offerId = self.offerId;
     [self.navigationController pushViewController:myViewController animated:YES];
 }
+
 - (IBAction)nextClicked:(id)sender {
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
+    myViewController.offerId = self.offerId;
     [self.navigationController pushViewController:myViewController animated:YES];
 }
 

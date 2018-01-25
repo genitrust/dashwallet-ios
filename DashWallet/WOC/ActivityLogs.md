@@ -130,4 +130,10 @@ Holiday
 
 1. BuyingWizard navigation flow completed.
 2. Implementation of "GET AVAILABLE PAYMENT CENTERS" API
-    
+
+#### Work on 25 JAN 2018 (THU) Sujal Bandhara
+
+1. Implementation of "STEP 0: SEARCH & DISCOVERY" API
+2. Implementation of "STEP 1: GET OFFERS" API
+3. Implementation of "STEP 2: CREATE HOLD" API
+4. Implementation of "STEP 3: CAPTURE HOLD" API 

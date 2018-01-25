@@ -45,6 +45,7 @@
 #import "MBProgressHUD.h"
 #import "DSShapeshiftManager.h"
 #import "BRBIP32Sequence.h"
+#import "WOCBuyDashStep1ViewController.h"
 
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
 "You can send a payment to anyone with an address.", nil)
@@ -80,7 +81,7 @@ static NSString *sanitizeString(NSString *s)
 
 @property (nonatomic, strong) IBOutlet UILabel *sendLabel;
 @property (nonatomic, strong) IBOutlet UISwitch *instantSwitch;
-@property (nonatomic, strong) IBOutlet UIButton *scanButton, *clipboardButton;
+@property (nonatomic, strong) IBOutlet UIButton *scanButton, *clipboardButton, *buyDashButton;
 @property (nonatomic, strong) IBOutlet UIView * shapeshiftView;
 @property (nonatomic, strong) IBOutlet UILabel * shapeshiftLabel;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * NFCWidthConstraint;
@@ -98,11 +99,13 @@ static NSString *sanitizeString(NSString *s)
     // TODO: XXX redesign page with round buttons like the iOS power down screen... apple watch also has round buttons
     self.scanButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.buyDashButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.scanButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
+    self.buyDashButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
 #pragma clang diagnostic pop
     
     FBShimmeringView *shimmeringView = [[FBShimmeringView alloc] initWithFrame:CGRectMake(0, self.shapeshiftView.frame.origin.y, self.view.frame.size.width, self.shapeshiftView.frame.size.height)];
@@ -1596,6 +1599,15 @@ static NSString *sanitizeString(NSString *s)
     [self payFirstFromArray:set.array];
 }
 
+- (IBAction)buyDash:(id)sender {
+    
+    [sender setEnabled:NO];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    [self.navigationController pushViewController:myViewController animated:YES];
+}
+
 - (IBAction)reset:(id)sender
 {
     if (self.navigationController.topViewController != self.parentViewController.parentViewController) {
@@ -1621,7 +1633,7 @@ static NSString *sanitizeString(NSString *s)
     self.okAddress = self.okIdentity = nil;
     self.clearClipboard = self.useClipboard = NO;
     self.canChangeAmount = self.showBalance = NO;
-    self.scanButton.enabled = self.clipboardButton.enabled = YES;
+    self.scanButton.enabled = self.clipboardButton.enabled = self.buyDashButton.enabled = YES;
     [self updateClipboardText];
 }
 

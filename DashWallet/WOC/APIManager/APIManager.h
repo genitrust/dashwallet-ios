@@ -18,4 +18,9 @@
 -(void)testAPI;
 -(void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock ;
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
+
 @end

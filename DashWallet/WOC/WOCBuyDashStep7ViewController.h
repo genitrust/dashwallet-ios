@@ -10,6 +10,8 @@
 
 @interface WOCBuyDashStep7ViewController : UIViewController
 
+@property (strong, nonatomic) NSString *offerId;
+
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (weak, nonatomic) IBOutlet UITextField *txtCountryCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;

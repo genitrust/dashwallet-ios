@@ -829,6 +829,7 @@
 		7579F7FE19231D4600CA56F4 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				135FD5BB201706B200FD8770 /* WOC */,
 				FB021E581E4DEFD300D17638 /* MBProgressHUD */,
 				FB021E501E47E17200D17638 /* FBShimmering */,
 				752E28EF19234E8100DB5A3C /* Reachability.h */,
@@ -897,7 +898,6 @@
 		75BA5D02192296010040304C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				135FD5BB201706B200FD8770 /* WOC */,
 				759FBB32193290F600AB4465 /* BRRootViewController.h */,
 				759FBB33193290F600AB4465 /* BRRootViewController.m */,
 				759FBB34193290F600AB4465 /* BRSendViewController.h */,

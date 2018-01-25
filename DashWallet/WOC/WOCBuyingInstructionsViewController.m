@@ -9,6 +9,8 @@
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "WOCBuyDashStep1ViewController.h"
+#import "APIManager.h"
+#import "WOCConstants.h"
 
 @interface WOCBuyingInstructionsViewController ()
 
@@ -22,6 +24,7 @@
     
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];
+    [self captureHold];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -108,4 +111,25 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+#pragma mark - API
+
+- (void)captureHold {
+    
+    NSDictionary *params =
+    @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+      @"verificationCode": self.purchaseCode,
+      //@"JSONPara":@"YES"
+      };
+    
+    [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
+        if (error == nil) {
+            
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
 @end

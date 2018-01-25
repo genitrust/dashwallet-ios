@@ -9,6 +9,7 @@
 #import "WOCBuyDashStep2ViewController.h"
 #import "WOCBuyDashStep3ViewController.h"
 #import "WOCBuyDashStep4ViewController.h"
+#import "APIManager.h"
 
 @interface WOCBuyDashStep2ViewController ()
 

@@ -12,6 +12,7 @@
 #define API_ERROR_TITLE @"Wallofcoins"
 #define BASE_URL (IS_PRODUCTION)?BASE_URL_PRODUCTION:BASE_URL_DEVELOPMENT
 #define TIMEOUT_INTERVAL 30.0
+#define JSONParameter @"JSONPara"
 
 @interface APIManager()
 
@@ -70,26 +71,6 @@
             }
         }
     }];
-    
-    [self discoverInfo:^(id responseDict, NSError *error) {
-        APILog(@"discoverInfo Called");
-    }];
-    
-    [self discoveryInputs:@"1" response:^(id responseDict, NSError *error) {
-        APILog(@"discoveryInputs Called");
-    }];
-    
-    [self createHold:^(id responseDict, NSError *error) {
-        APILog(@"createHold Called");
-    }];
-    
-    [self captureHold:@"1" response:^(id responseDict, NSError *error) {
-        APILog(@"captureHold Called");
-    }];
-    
-    [self confirmDeposit:@"1" response:^(id responseDict, NSError *error) {
-        APILog(@"confirmDeposit Called");
-    }];
 }
      
 ////////////////////////////////////////////////////////////////////
@@ -127,8 +108,11 @@
       @"country": @"us",
       @"payFields": @false*/
       };
-    
-    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params  header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    NSDictionary *header =
+    @{
+      @"Content-Type" : @"application/x-www-form-urlencoded"
+      };
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params  header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -185,20 +169,14 @@
  }
  ```
 */
--(void)discoverInfo:(void (^)(id responseDict, NSError *error))completionBlock {
+-(void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/discoveryInputs/",BASE_URL];
-    NSDictionary *params =
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/",BASE_URL];
+    NSDictionary *header =
     @{
-      @"publisherId": @"",
-      @"cryptoAddress": @"",
-      @"usdAmount": @"500",
-      @"crypto": @"DASH",
-      @"bank": @"",
-      @"zipCode": @"34236"
+      @"Content-Type" : @"application/x-www-form-urlencoded"
       };
-    
-    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -213,13 +191,13 @@ GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/off
 
 -(void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/discoveryInputs/%@/offers/",BASE_URL,dicoverId];
-    NSDictionary *params =
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/%@/offers/",BASE_URL,dicoverId];
+    NSDictionary *header =
     @{
-      
+      @"Content-Type" : @"application/x-www-form-urlencoded"
       };
     
-    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -248,19 +226,19 @@ It need X-Coins-Api-Token as a header parameter which is five time mobile number
 }
 ```*/
 
--(void)createHold:(void (^)(id responseDict, NSError *error))completionBlock {
+-(void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/holds/",BASE_URL];
-    NSDictionary *params =
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
+    
+    NSString *phNo = [NSString stringWithFormat:@"%@",[params valueForKey:@"deviceCode"]];
+    
+    NSDictionary *header =
     @{
-        @"publisherId": @"",
-        @"offer": @"eyJ1c2QiOiAiNTA...",
-        @"phone": @"+19411101467",
-        @"deviceName": @"Ref Client",
-        @"password": @"94111014679411101467941110146794111014679411101467"
-    };
+      //@"X-Coins-Api-Token": @"",
+      @"Content-Type":@"application/json"
+      };
     
-    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -284,16 +262,16 @@ POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
 }
 ```*/
 
--(void)captureHold:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
+-(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/holds/%@/capture",BASE_URL,holdId];
-    NSDictionary *params =
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/capture/",BASE_URL,holdId];
+    
+    NSDictionary *header =
     @{
-        @"publisherId": @"",
-        @"verificationCode": @"CK99K"
-    };
+      @"Content-Type" : @"application/x-www-form-urlencoded"
+      };
     
-    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -328,18 +306,31 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     
     if ([httpMethord isEqualToString:@"GET"] == FALSE)
     {
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+       // [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPMethod:httpMethord];
-        [request setHTTPBody:[self httpBodyForParamsDictionary:parameter]];
+        if ([parameter isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary *para = (NSDictionary*)parameter;
+            if ([[para allKeys] containsObject:JSONParameter])
+            {
+                NSData *postData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:nil];
+                [request setHTTPBody:postData];
+            }
+            else
+            {
+                [request setHTTPBody:[self httpBodyForParamsDictionary:parameter]];
+            }
+        }
     }
     
     if (header!= nil)
     {
-        for (NSString *key in header.allKeys)
-        {
-            NSString *headerValue = [header[key] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-            [request setValue:headerValue forHTTPHeaderField:key];
-        }
+        [request setAllHTTPHeaderFields:header];
+//        for (NSString *key in header.allKeys)
+//        {
+//            NSString *headerValue = [header[key] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//            [request setValue:headerValue forHTTPHeaderField:key];
+//        }
     }
     
     NSURLSession *session = [NSURLSession sharedSession];
