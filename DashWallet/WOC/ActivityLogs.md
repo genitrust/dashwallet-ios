@@ -136,4 +136,10 @@ Holiday
 1. Implementation of "STEP 0: SEARCH & DISCOVERY" API
 2. Implementation of "STEP 1: GET OFFERS" API
 3. Implementation of "STEP 2: CREATE HOLD" API
-4. Implementation of "STEP 3: CAPTURE HOLD" API 
+4. Implementation of "STEP 3: CAPTURE HOLD" API
+
+#### Work on 26 JAN 2018 (FRI) Sujal Bandhara
+
+1. Implementation of "STEP 4: CONFIRM DEPOSIT" API
+2. Implementation of "CANCEL ORDER" API
+3. Implementation of "GET ORDERS" API 

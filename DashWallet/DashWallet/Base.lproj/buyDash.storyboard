@@ -487,7 +487,7 @@
                                         <color key="textColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HnD-od-cii">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HnD-od-cii">
                                         <rect key="frame" x="0.0" y="81.5" width="414" height="634.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
@@ -855,7 +855,7 @@
                                             <constraint firstAttribute="height" constant="1" id="yRv-2Y-zv0"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6sm-T9-wiC">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="6sm-T9-wiC">
                                         <rect key="frame" x="212" y="61.5" width="194" height="29"/>
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -1101,7 +1101,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U4V-Pw-H8H">
-                                                <rect key="frame" x="0.0" y="22" width="414" height="624"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="624"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xed-AC-Tj1" userLabel="1">
                                                         <rect key="frame" x="15" y="8" width="384" height="90"/>
@@ -1242,17 +1242,22 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OyP-zU-9aa" userLabel="4">
                                                         <rect key="frame" x="15" y="298" width="384" height="290"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="15" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EJp-yv-Az2">
-                                                                <rect key="frame" x="0.0" y="0.0" width="384" height="290"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are ordering: 0.00434814 Dash." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuE-2C-XZU">
+                                                                <rect key="frame" x="0.0" y="0.0" width="384" height="28"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="15" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="EJp-yv-Az2">
+                                                                <rect key="frame" x="0.0" y="23" width="384" height="267"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <string key="text">You are ordering: 0.00434814 Dash.
-You must deposit cash at the above Payment Center. Additional fees may apply. Paying in another method other than cash may delay your order.
+                                                                <mutableString key="text">You must deposit cash at the above Payment Center. Additional fees may apply. Paying in another method other than cash may delay your order.
 
 Do not throw away or misplace your receipt. A receipt is required before you will receive Dash!
 For your convenience, we are texting you these payment instructions.
 When you are finished making the payment, you must press Deposit Finished to receive your Dash.
 
-If you have any questions, there is a live chat window at wallofcoins.com or you may call the phone number that sent you a text message.</string>
+If you have any questions, there is a live chat window at wallofcoins.com or you may call the phone number that sent you a text message.</mutableString>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1260,10 +1265,14 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstItem="EJp-yv-Az2" firstAttribute="top" secondItem="OyP-zU-9aa" secondAttribute="top" id="Gct-mw-AxX"/>
                                                             <constraint firstAttribute="trailing" secondItem="EJp-yv-Az2" secondAttribute="trailing" id="HFK-AJ-ega"/>
                                                             <constraint firstItem="EJp-yv-Az2" firstAttribute="leading" secondItem="OyP-zU-9aa" secondAttribute="leading" id="VT2-oj-cM5"/>
+                                                            <constraint firstItem="cuE-2C-XZU" firstAttribute="height" secondItem="OyP-zU-9aa" secondAttribute="height" multiplier="28/290" id="atP-3y-Ysb"/>
+                                                            <constraint firstItem="cuE-2C-XZU" firstAttribute="top" secondItem="OyP-zU-9aa" secondAttribute="top" id="dea-N0-fyc"/>
                                                             <constraint firstAttribute="bottom" secondItem="EJp-yv-Az2" secondAttribute="bottom" id="hHG-vk-WcK"/>
+                                                            <constraint firstAttribute="trailing" secondItem="cuE-2C-XZU" secondAttribute="trailing" id="ltJ-Mc-yYd"/>
+                                                            <constraint firstItem="cuE-2C-XZU" firstAttribute="leading" secondItem="OyP-zU-9aa" secondAttribute="leading" id="q2t-IH-3fZ"/>
+                                                            <constraint firstItem="EJp-yv-Az2" firstAttribute="top" secondItem="cuE-2C-XZU" secondAttribute="bottom" constant="-5" id="wlW-tS-5aE"/>
                                                             <constraint firstAttribute="height" constant="290" id="wmJ-Do-Gtp"/>
                                                         </constraints>
                                                     </view>
@@ -1288,7 +1297,7 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="U4V-Pw-H8H" firstAttribute="top" secondItem="evA-SI-SNc" secondAttribute="top" constant="22" id="Dpi-HC-CIr"/>
+                                            <constraint firstItem="U4V-Pw-H8H" firstAttribute="top" secondItem="evA-SI-SNc" secondAttribute="top" id="Dpi-HC-CIr"/>
                                             <constraint firstItem="U4V-Pw-H8H" firstAttribute="leading" secondItem="evA-SI-SNc" secondAttribute="leading" id="caU-ct-yt4"/>
                                             <constraint firstAttribute="trailing" secondItem="U4V-Pw-H8H" secondAttribute="trailing" id="e4p-t7-OHN"/>
                                             <constraint firstItem="U4V-Pw-H8H" firstAttribute="centerX" secondItem="evA-SI-SNc" secondAttribute="centerX" id="oNs-Oq-nvL"/>
@@ -1328,7 +1337,7 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                         <outlet property="lblBankName" destination="R5c-Xp-OXm" id="pR9-nI-QNo"/>
                         <outlet property="lblCashDeposit" destination="EyX-1W-f2l" id="zZn-Pg-GuF"/>
                         <outlet property="lblDepositDue" destination="AP4-v9-CAe" id="4u1-5Y-cZm"/>
-                        <outlet property="lblInstructions" destination="EJp-yv-Az2" id="eI1-lT-sP1"/>
+                        <outlet property="lblInstructions" destination="cuE-2C-XZU" id="JV9-EF-eot"/>
                         <outlet property="lblPhone" destination="WKp-nl-2ro" id="kMi-nc-x9V"/>
                     </connections>
                 </viewController>
@@ -1412,7 +1421,7 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                             <constraint firstItem="kyi-2f-nQu" firstAttribute="leading" secondItem="y4f-dL-mfu" secondAttribute="leading" constant="12" id="t1p-BF-Jvu"/>
                                         </constraints>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="unJ-V2-uuc">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="unJ-V2-uuc">
                                         <rect key="frame" x="0.0" y="139" width="414" height="441"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
@@ -1435,9 +1444,8 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location's phone #: 3342702340" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3J-Db-1OW">
-                                                                    <rect key="frame" x="87" y="36" width="297" height="28"/>
-                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location's phone #: 3342702340" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3J-Db-1OW">
+                                                                    <rect key="frame" x="87" y="36" width="297" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -1458,11 +1466,14 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstItem="uNe-gp-vmD" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="28/170" id="1Wk-C4-Z43"/>
+                                                                <constraint firstItem="E3J-Db-1OW" firstAttribute="top" secondItem="uNe-gp-vmD" secondAttribute="bottom" id="49Q-ih-r4z"/>
                                                                 <constraint firstItem="z2t-zq-e3V" firstAttribute="leading" secondItem="G77-Th-ndU" secondAttribute="leading" id="AnR-fu-mfO"/>
                                                                 <constraint firstItem="fxg-77-GKN" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="28/170" id="JaZ-Ae-9nG"/>
                                                                 <constraint firstItem="dMV-2Z-bkl" firstAttribute="leading" secondItem="G77-Th-ndU" secondAttribute="leading" constant="5" id="M5t-S4-Co7"/>
+                                                                <constraint firstItem="E3J-Db-1OW" firstAttribute="leading" secondItem="z2t-zq-e3V" secondAttribute="trailing" constant="5" id="MLN-Oz-Sqp"/>
                                                                 <constraint firstAttribute="trailing" secondItem="fxg-77-GKN" secondAttribute="trailing" id="MWn-GO-tTW"/>
                                                                 <constraint firstAttribute="trailing" secondItem="uNe-gp-vmD" secondAttribute="trailing" id="QLM-xv-aba"/>
+                                                                <constraint firstAttribute="trailing" secondItem="E3J-Db-1OW" secondAttribute="trailing" id="SEa-Z4-zlk"/>
                                                                 <constraint firstItem="z2t-zq-e3V" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="82/170" id="TiD-au-ceg"/>
                                                                 <constraint firstItem="dMV-2Z-bkl" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="28/170" id="UNW-kY-TcB"/>
                                                                 <constraint firstItem="uNe-gp-vmD" firstAttribute="top" secondItem="G77-Th-ndU" secondAttribute="top" constant="8" id="WDR-aX-vlQ"/>
@@ -1493,24 +1504,24 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                     <outlet property="mainView" destination="G77-Th-ndU" id="B0f-b9-kTL"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="signOutCell" rowHeight="105" id="dl4-bN-kgJ" customClass="WOCSignOutCell">
-                                                <rect key="frame" x="0.0" y="186" width="414" height="105"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="signOutCell" rowHeight="110" id="dl4-bN-kgJ" customClass="WOCSignOutCell">
+                                                <rect key="frame" x="0.0" y="186" width="414" height="110"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dl4-bN-kgJ" id="6lt-HD-acS">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="105"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqg-DR-fFF">
-                                                            <rect key="frame" x="15" y="0.0" width="384" height="104.5"/>
+                                                            <rect key="frame" x="15" y="0.0" width="384" height="105"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number +12397777777" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feb-xX-zZP">
-                                                                    <rect key="frame" x="8" y="0.0" width="368" height="50"/>
+                                                                    <rect key="frame" x="8" y="0.0" width="368" height="50.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CXD-0i-PrO">
-                                                                    <rect key="frame" x="10" y="57" width="364" height="38"/>
+                                                                    <rect key="frame" x="10" y="57.5" width="364" height="38"/>
                                                                     <color key="backgroundColor" red="0.9882352941176471" green="0.76470588235294112" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                                     <state key="normal" title="SIGN OUT"/>
@@ -1531,7 +1542,7 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="cqg-DR-fFF" secondAttribute="trailing" constant="15" id="Jpa-bJ-RsZ"/>
-                                                        <constraint firstAttribute="bottom" secondItem="cqg-DR-fFF" secondAttribute="bottom" id="Xk8-Zk-UYc"/>
+                                                        <constraint firstAttribute="bottom" secondItem="cqg-DR-fFF" secondAttribute="bottom" constant="5" id="Xk8-Zk-UYc"/>
                                                         <constraint firstItem="cqg-DR-fFF" firstAttribute="leading" secondItem="6lt-HD-acS" secondAttribute="leading" constant="15" id="mTd-Z1-7BJ"/>
                                                         <constraint firstItem="cqg-DR-fFF" firstAttribute="top" secondItem="6lt-HD-acS" secondAttribute="top" id="xhM-fQ-Xkc"/>
                                                     </constraints>

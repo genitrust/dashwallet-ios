@@ -101,7 +101,7 @@
 
 -(void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@banks/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/banks/",BASE_URL];
     NSDictionary *params =
     @{
       /*@"id": @14,
@@ -266,9 +266,10 @@ POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/capture/",BASE_URL,holdId];
     
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
     NSDictionary *header =
     @{
-      @"Content-Type" : @"application/x-www-form-urlencoded"
+        @"X-Coins-Api-Token": token
       };
     
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -286,17 +287,45 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 
 -(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/confirmDeposit/%@/confirmDeposit",BASE_URL,orderId];
-    NSDictionary *params =
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/confirmDeposit/",BASE_URL,orderId];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSDictionary *header =
     @{
-      
+      @"X-Coins-Api-Token": token
       };
     
-    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
 
+-(void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/",BASE_URL,orderId];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSDictionary *header =
+    @{
+      @"X-Coins-Api-Token": token
+      };
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
+
+-(void)getOrders:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/",BASE_URL];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSDictionary *header =
+    @{
+      @"X-Coins-Api-Token": token
+      };
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
 
 #pragma mark - API calls
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock {
@@ -335,7 +364,9 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
-        if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError) {
+        
+        if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError)
+        {
             NSError * returnError = connectionError;
             if (!returnError) {
                 returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
@@ -346,6 +377,13 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
             });
             return;
         }
+        else if (((NSHTTPURLResponse*)response).statusCode == 204)
+        {
+            NSDictionary *responseDict = @{@"content":@"NO"} ;
+            completionBlock(responseDict,nil);
+            return;
+        }
+        
         NSError *error = nil;
         id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         if (error) {
@@ -382,3 +420,53 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 }
 
 @end
+/*
+ When specifying an existing phone number, we are not obtaining the existing user's WOC password to register a new device.
+ 
+ Request: POST /api/v1/auth/+12397776832/authorize/ HTTP/1.1" 400
+ 
+ Expected results when this request gets status response 400:
+ 
+ Give a message to the user, "It appears that you already have a [Wall of Coins] user account!" [Wall of Coins] will link to https://wallofcoins.com
+ Ask the user, "Input your Wall of Coins password below:" followed by a Password Input on the next line.
+ The next line will say in smaller text, "(your password is only sent to Wall of Coins)"
+ Provide a web link at the bottom of the page, "Forgot your Wall of Coins password? [Reset] it here." -- and have the [Reset] link go to: https://wallofcoins.com/forgotPassword/
+ When the user inputs their password, then attempt to login using the authorize endpoint. When you have logged in, grab the token from the API response.
+ With the token, you will create a new device using the /api/v1/device(s??) endpoint.
+ After creating the new device, you will need to use /api/v1/auth/{phone number}/authorize/ to get a token using the device code instead of the password.
+ Use the new token in the HEADER to create this hold via /api/v1/holds
+ 
+ 
+ 
+ 
+ 
+ TestNet: new Order gives me unexpected Buying Instructions (#23)
+ 
+ uninstall testnet
+ reinstall testnet
+ Go to Buying Wizard from Transactions Page link.
+ "Find my location" -> approve to use location
+ Search for $50 to spend. Click to get Offers.
+ Select first offer (Wells Fargo)
+ No email, and specify phone: 2397776832
+ Input password "abc123"
+ 
+ Here are the immediate problems I noticed: Then, I do not see the view to input my Purchase Code! I am immediately brought to the Buying Instructions screen.
+ 
+ On the buying instructions screen, furthermore I see...
+ 
+ Deposit Due is 0 minutes and 0 seconds.
+ The "deposit finished" and "cancel order" buttons were visible.
+ When I looked at the Django backend of my development instance, I see that a new Hold and a new Order were both NEVER created for my phone number. However, I did see the creation of a Discovery Input.
+ 
+ I do not know which Order you were showing me. Was there an API error you did not catch? From an error, did you fall back on showing me my last order?
+ 
+ The expected response is:
+ 
+ The Hold is created and captured and a new Order is created on the web admin page.
+ I see the Buying Instructions for my new order.
+ Or, I receive an error when attempting to create the Hold.
+ 
+ 
+
+ */

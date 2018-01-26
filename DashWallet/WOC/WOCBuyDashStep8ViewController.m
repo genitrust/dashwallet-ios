@@ -43,6 +43,7 @@
         WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
         myViewController.purchaseCode = self.txtPurchaseCode.text;
         myViewController.holdId = self.holdId;
+        myViewController.phoneNo = self.phoneNo;
         [self.navigationController pushViewController:myViewController animated:YES];
     }
     else{

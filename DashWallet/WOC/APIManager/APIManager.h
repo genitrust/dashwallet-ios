@@ -22,5 +22,8 @@
 -(void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)getOrders:(void (^)(id responseDict, NSError *error))completionBlock;
 
 @end

@@ -10,6 +10,8 @@
 
 @interface WOCBuyingSummaryViewController : UIViewController
 
+@property (strong, nonatomic) NSString *phoneNo;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *btnBuyMoreDash;
 - (IBAction)buyMoreDashClicked:(id)sender;

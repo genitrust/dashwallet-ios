@@ -162,17 +162,13 @@
         
         NSString *dollarString = [textField.text stringByReplacingCharactersInRange:range withString:string];
         
-        if (dollarString.length > 0) {
-            
-            BRWalletManager *manager = [BRWalletManager sharedInstance];
-            uint64_t amount;
-            amount = [manager amountForLocalCurrencyString:dollarString];
-            NSString *dashString = [manager stringForDashAmount:amount];
-            //NSArray *array = [dashString componentsSeparatedByString:@" "];
-            self.txtDash.attributedText = [manager attributedStringForDashAmount:amount];
-            
-            return true;
-        }
+        BRWalletManager *manager = [BRWalletManager sharedInstance];
+        uint64_t amount;
+        amount = [manager amountForLocalCurrencyString:dollarString];
+        NSString *dashString = [manager stringForDashAmount:amount];
+        self.txtDash.attributedText = [manager attributedStringForDashAmount:amount];
+        
+        return true;
     }
     return false;
 }
