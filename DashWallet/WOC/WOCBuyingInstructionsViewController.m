@@ -23,7 +23,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];

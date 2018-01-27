@@ -10,11 +10,10 @@
 #import "WOCSummaryCell.h"
 #import "WOCSignOutCell.h"
 #import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyDashStep4ViewController.h"
 #import "APIManager.h"
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate>
-
-@property (strong, nonatomic) NSArray *orders;
 
 @end
 
@@ -22,10 +21,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnBuyMoreDash];
-    [self getOrders];
+    
+    if (self.orders.count == 0) {
+        [self getOrders];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,20 +41,24 @@
     
     for (UIViewController *controller in self.navigationController.viewControllers)
     {
-        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
+        if ([controller isKindOfClass:[WOCBuyDashStep4ViewController class]])
         {
             [self.navigationController popToViewController:controller animated:YES];
             
             break;
+        }
+        else{
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
+            [self.navigationController pushViewController:myViewController animated:YES];
         }
     }
 }
 
 - (IBAction)signOutClicked:(id)sender {
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self pushToHome];
+    [self signOut];
 }
 
 #pragma mark - Function
@@ -83,13 +90,37 @@
 #pragma mark - API
 - (void)getOrders {
     
-    [[APIManager sharedInstance] getOrders:^(id responseDict, NSError *error) {
+    NSDictionary *params = @{
+                            @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                            };
     
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+
         if (error == nil) {
             
             NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             self.orders = response;
             [self.tableView reloadData];
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)signOut {
+    
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] signOut:params phone:self.phoneNo response:^(id responseDict, NSError *error) {
+      
+        if (error == nil) {
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self pushToHome];
         }
         else{
             NSLog(@"Error: %@", error.localizedDescription);

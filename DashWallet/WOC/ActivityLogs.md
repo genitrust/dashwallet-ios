@@ -143,3 +143,10 @@ Holiday
 1. Implementation of "STEP 4: CONFIRM DEPOSIT" API
 2. Implementation of "CANCEL ORDER" API
 3. Implementation of "GET ORDERS" API 
+
+#### Work on 27 JAN 2018 (SAT) Sujal Bandhara
+
+1. Created Enter Password UI
+2. Implementation of "/auth/" API
+3. Implementation of "/auth/#phoneNo/authorize/" API
+4. Implementation of "/auth/#phoneNo/" API 

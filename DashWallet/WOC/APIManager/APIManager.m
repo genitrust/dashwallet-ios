@@ -101,7 +101,11 @@
 
 -(void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/banks/",BASE_URL];
+    NSString *version = @"v1";
+    NSString *constant = @"/banks/";
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/%@%@",BASE_URL,version,constant];
+    
+    
     NSDictionary *params =
     @{
       /*@"id": @14,
@@ -238,6 +242,17 @@ It need X-Coins-Api-Token as a header parameter which is five time mobile number
       @"Content-Type":@"application/json"
       };
     
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    
+    if (token != nil) {
+        
+        header =
+        @{
+          @"X-Coins-Api-Token": token,
+          @"Content-Type":@"application/json"
+          };
+    }
+   
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
@@ -313,7 +328,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     }];
 }
 
--(void)getOrders:(void (^)(id responseDict, NSError *error))completionBlock {
+-(void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/",BASE_URL];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
@@ -322,7 +337,38 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
       @"X-Coins-Api-Token": token
       };
     
-    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
+
+-(void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
+
+-(void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/authorize/",BASE_URL,phoneNo];
+    NSDictionary *header =
+    @{
+      @"Content-Type" : @"application/x-www-form-urlencoded"
+      };
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
+
+-(void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }

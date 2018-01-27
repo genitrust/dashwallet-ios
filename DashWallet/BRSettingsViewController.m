@@ -36,6 +36,9 @@
 #import <netdb.h>
 #import <arpa/inet.h>
 #import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingSummaryViewController.h"
+#import "APIManager.h"
+#import "WOCConstants.h"
 
 @interface BRSettingsViewController ()
 
@@ -336,6 +339,40 @@
                                      [manager localCurrencyStringForDashAmount:DUFFS/manager.localCurrencyDashPrice.doubleValue],
                                      [manager stringForDashAmount:DUFFS/manager.localCurrencyDashPrice.doubleValue]];
     [self.tableView reloadData];
+}
+
+// MARK: - API
+- (void)getOrders {
+    
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0) {
+                
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone"];
+                UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                myViewController.phoneNo = phoneNo;
+                [self.navigationController pushViewController:myViewController animated:YES];
+            }
+            else{
+                
+                [self pushToStep1];
+            }
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+            
+            [self pushToStep1];
+        }
+    }];
 }
 
 // MARK: - UITableViewDataSource
@@ -649,6 +686,25 @@ _switch_cell:
     }
 }
 
+- (void)checkToken
+{
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    
+    if (token != nil) {
+        [self getOrders];
+    }
+    else{
+        [self pushToStep1];
+    }
+}
+
+- (void)pushToStep1
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    [self.navigationController pushViewController:myViewController animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //TODO: include an option to generate a new wallet and sweep old balance if backup may have been compromized
@@ -676,9 +732,6 @@ _switch_cell:
         [self.tableView reloadData];
         return;
     }
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
     
     switch (indexPath.section) {
         case 0:
@@ -743,7 +796,7 @@ _deselect_switch:
         case 3:
             switch (indexPath.row) {
                 case 0: // buy dash with cash
-                    [self.navigationController pushViewController:myViewController animated:YES];
+                    [self checkToken];
                     break;
             }
             

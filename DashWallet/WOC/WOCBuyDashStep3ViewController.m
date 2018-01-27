@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSArray *paymentCenters;
 @property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) NSString *bankId;
 
 @end
 
@@ -21,8 +22,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.title = @"Buy Dash With Cash";
+    
     self.btnNext.layer.cornerRadius = 3.0;
     self.btnNext.layer.masksToBounds = YES;
     [self setShadow:self.btnNext];
@@ -43,9 +45,16 @@
 #pragma mark - Action
 - (IBAction)nextClicked:(id)sender {
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
-    [self.navigationController pushViewController:myViewController animated:YES];
+    if ([self.bankId length] > 0) {
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
+        myViewController.bankId = self.bankId;
+        [self.navigationController pushViewController:myViewController animated:YES];
+    }
+    else{
+        NSLog(@"Alert: Select payment center.");
+    }
 }
 
 #pragma mark - Function
@@ -90,6 +99,6 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
    
     self.txtPaymentCenter.text = self.paymentCenters[row][@"name"];
-    
+    self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
 @end

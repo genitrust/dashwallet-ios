@@ -18,16 +18,15 @@
 
 @interface WOCBuyDashStep4ViewController () <UITextFieldDelegate>
 
-@property (strong, nonatomic) NSString *zipCode;
-
 @end
 
 @implementation WOCBuyDashStep4ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.title = @"Buy Dash With Cash";
+    
     self.btnGetOffers.layer.cornerRadius = 3.0;
     self.btnGetOffers.layer.masksToBounds = YES;
     [self setShadow:self.btnGetOffers];
@@ -37,8 +36,6 @@
     self.line1Height.constant = 1;
     self.line2Height.constant = 2;
     [self.txtDollar becomeFirstResponder];
-    
-    [self findZipCode];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,9 +46,29 @@
 #pragma mark - Action
 - (IBAction)getOffersClicked:(id)sender {
     
-    if (self.zipCode != nil && [self.zipCode length] > 0) {
+    NSString *dollarString = [self.txtDollar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ([dollarString length] > 0 && [dollarString intValue] != 0) {
         
-        [self sendUserData:self.zipCode];
+        if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
+            
+            if ([self.zipCode length] > 0) {
+                
+                [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
+            }
+            else if ([self.bankId length] > 0){
+                
+                [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
+            }
+        }
+        else{
+            
+            NSLog(@"Alert: zipCode or bankId is empty.");
+        }
+    }
+    else{
+        
+        NSLog(@"Alert: Enter amount");
     }
 }
 
@@ -68,59 +85,17 @@
     view.layer.masksToBounds = false;
 }
 
-- (void)findZipCode {
-    
-    // Your location from latitude and longitude
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLatitude"];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLongitude"];
-    
-    if (latitude != nil && longitude != nil) {
-        
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
-        // Call the method to find the address
-        [self getAddressFromLocation:location completionHandler:^(NSMutableDictionary *d) {
-            NSLog(@"address informations : %@", d);
-            //NSLog(@"formatted address : %@", [placemark.addressDictionary valueForKey:@"FormattedAddressLines"]);
-            NSLog(@"Street : %@", [d valueForKey:@"Street"]);
-            NSLog(@"ZIP code : %@", [d valueForKey:@"ZIP"]);
-            NSLog(@"City : %@", [d valueForKey:@"City"]);
-            
-            self.zipCode = [d valueForKey:@"ZIP"];
-            
-            // etc.
-        } failureHandler:^(NSError *error) {
-            NSLog(@"Error : %@", error);
-        }];
-    }
-}
-
-- (void)getAddressFromLocation:(CLLocation *)location completionHandler:(void (^)(NSMutableDictionary *placemark))completionHandler failureHandler:(void (^)(NSError *error))failureHandler
-{
-    NSMutableDictionary *d = [NSMutableDictionary new];
-    CLGeocoder *geocoder = [CLGeocoder new];
-    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-        if (failureHandler && (error || placemarks.count == 0)) {
-            failureHandler(error);
-        } else {
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            if(completionHandler) {
-                completionHandler(placemark.addressDictionary);
-            }
-        }
-    }];
-}
-
 #pragma mark - API
-- (void)sendUserData:(NSString*)zipCode {
+- (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     
     NSDictionary *params =
     @{
       @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       //@"cryptoAddress": @"",
-      @"usdAmount": self.txtDollar.text,
+      @"usdAmount": amount,
       @"crypto": @"DASH",
-      @"bank": @"",
-      @"zipCode": @"34236"//zipCode
+      @"bank": bankId,
+      @"zipCode": zipCode//zipCode
       };
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {

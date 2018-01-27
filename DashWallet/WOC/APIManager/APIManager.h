@@ -24,6 +24,9 @@
 -(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)getOrders:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
 
 @end

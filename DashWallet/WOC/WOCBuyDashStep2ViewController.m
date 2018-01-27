@@ -19,14 +19,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.title = @"Buy Dash With Cash";
+    
     [self.navigationItem.backBarButtonItem setTitle:@""];
     self.btnNext.layer.cornerRadius = 3.0;
     self.btnNext.layer.masksToBounds = YES;
     [self setShadow:self.btnNext];
-    
-    self.isZipCodeBlank = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,7 +36,9 @@
 #pragma mark - Action
 - (IBAction)nextClicked:(id)sender {
     
-    if (self.isZipCodeBlank) {
+    NSString *zipCode = [self.txtZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ([zipCode length] == 0) {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep3ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep3ViewController"];
@@ -47,6 +48,7 @@
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
+        myViewController.zipCode = zipCode;
         [self.navigationController pushViewController:myViewController animated:YES];
     }
     

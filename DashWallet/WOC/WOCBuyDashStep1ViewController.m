@@ -14,13 +14,14 @@
 
 @interface WOCBuyDashStep1ViewController ()
 
+@property (strong, nonatomic) NSString *zipCode;
+
 @end
 
 @implementation WOCBuyDashStep1ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     //[self.navigationController.navigationBar setHidden:YES];
     
@@ -58,7 +59,7 @@
 - (IBAction)findLocationClicked:(id)sender {
     
     if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
-        [self openBuyDashStep4];
+        [self findZipCode];
     }
     else{
         // Enable Location services
@@ -76,6 +77,7 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
+    myViewController.zipCode = self.zipCode;
     [self.navigationController pushViewController:myViewController animated:YES];
 }
 
@@ -120,4 +122,43 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)findZipCode {
+    
+    // Your location from latitude and longitude
+    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLatitude"];
+    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLongitude"];
+    
+    if (latitude != nil && longitude != nil) {
+        
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
+        // Call the method to find the address
+        [self getAddressFromLocation:location completionHandler:^(NSMutableDictionary *d) {
+            
+            NSLog(@"address informations : %@", d);
+            NSLog(@"ZIP code : %@", [d valueForKey:@"ZIP"]);
+            
+            self.zipCode = [d valueForKey:@"ZIP"];
+            [self openBuyDashStep4];
+            
+        } failureHandler:^(NSError *error) {
+            NSLog(@"Error : %@", error);
+        }];
+    }
+}
+
+- (void)getAddressFromLocation:(CLLocation *)location completionHandler:(void (^)(NSMutableDictionary *placemark))completionHandler failureHandler:(void (^)(NSError *error))failureHandler
+{
+    NSMutableDictionary *d = [NSMutableDictionary new];
+    CLGeocoder *geocoder = [CLGeocoder new];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (failureHandler && (error || placemarks.count == 0)) {
+            failureHandler(error);
+        } else {
+            CLPlacemark *placemark = [placemarks objectAtIndex:0];
+            if(completionHandler) {
+                completionHandler(placemark.addressDictionary);
+            }
+        }
+    }];
+}
 @end

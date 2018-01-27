@@ -46,6 +46,9 @@
 #import "DSShapeshiftManager.h"
 #import "BRBIP32Sequence.h"
 #import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingSummaryViewController.h"
+#import "APIManager.h"
+#import "WOCConstants.h"
 
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
 "You can send a payment to anyone with an address.", nil)
@@ -1529,6 +1532,12 @@ static NSString *sanitizeString(NSString *s)
     self.shapeshiftView.hidden = FALSE;
 }
 
+-(void)pushToStep1{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    [self.navigationController pushViewController:myViewController animated:YES];
+}
 
 // MARK: - IBAction
 
@@ -1603,9 +1612,14 @@ static NSString *sanitizeString(NSString *s)
     
     [sender setEnabled:NO];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-    [self.navigationController pushViewController:myViewController animated:YES];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    
+    if (token != nil) {
+        [self getOrders];
+    }
+    else{
+        [self pushToStep1];
+    }
 }
 
 - (IBAction)reset:(id)sender
@@ -1641,6 +1655,36 @@ static NSString *sanitizeString(NSString *s)
     [BREventManager saveEvent:@"send:nfc"];
         NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
         [session beginSession];
+}
+
+// MARK: - API
+- (void)getOrders {
+    
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0) {
+                
+                UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingViewController"];
+                [self.navigationController pushViewController:myViewController animated:YES];
+            }
+            else{
+                
+                [self pushToStep1];
+            }
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
 }
 
 // MARK: - NFCNDEFReaderSessionDelegate
