@@ -42,7 +42,7 @@
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-        myViewController.purchaseCode = self.txtPurchaseCode.text;
+        myViewController.purchaseCode = txtCode;
         myViewController.holdId = self.holdId;
         myViewController.phoneNo = self.phoneNo;
         [self.navigationController pushViewController:myViewController animated:YES];
@@ -68,13 +68,20 @@
 #pragma mark - API
 - (void)createHold {
     
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
+    
+    if (token != nil) {
+        deviceCode = token;
+    }
+    
     NSDictionary *params =
     @{
       @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
       @"phone": self.phoneNo,
       @"deviceName": @"Ref Client",
-      @"deviceCode": self.deviceCode,
+      @"deviceCode": deviceCode,
       @"JSONPara":@"YES"
       };
     
@@ -86,7 +93,7 @@
             
             self.txtPurchaseCode.text = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
             self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"token"]] forKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         else{
@@ -94,4 +101,5 @@
         }
     }];
 }
+
 @end

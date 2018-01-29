@@ -22,4 +22,9 @@
 #define BASE_URL_DEVELOPMENT @"http://woc.reference.genitrust.com/api/v1"
 #define BASE_URL_PRODUCTION @"http://woc.reference.genitrust.com/api/v1"
 
+#define kDeviceCode @"deviceCode"
+#define kToken @"token"
+#define kPhone @"phone"
+#define kLaunchStatus @"first"
+
 #endif /* WOCUserDefaultsConstants_h */

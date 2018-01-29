@@ -10,6 +10,8 @@
 
 @interface WOCBuyDashStep1ViewController : UIViewController
 
+@property (assign) BOOL isFromSend;
+
 - (IBAction)backBtnClicked:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnLocation;
 @property (weak, nonatomic) IBOutlet UIButton *btnNoThanks;

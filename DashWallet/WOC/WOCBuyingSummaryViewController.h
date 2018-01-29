@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSString *phoneNo;
 @property (strong, nonatomic) NSArray *orders;
+@property (assign) BOOL isFromSend;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *btnBuyMoreDash;

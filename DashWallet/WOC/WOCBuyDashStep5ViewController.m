@@ -7,8 +7,9 @@
 //
 
 #import "WOCBuyDashStep5ViewController.h"
-#import "WOCOfferCell.h"
 #import "WOCBuyDashStep6ViewController.h"
+#import "WOCBuyingInstructionsViewController.h"
+#import "WOCOfferCell.h"
 #import "APIManager.h"
 #import "BRWalletManager.h"
 
@@ -44,6 +45,7 @@
     WOCBuyDashStep6ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep6ViewController"];
     myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"id"]];
     [self.navigationController pushViewController:myViewController animated:YES];
+    
 }
 
 #pragma mark - API

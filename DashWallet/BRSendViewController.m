@@ -46,9 +46,11 @@
 #import "DSShapeshiftManager.h"
 #import "BRBIP32Sequence.h"
 #import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
+#import "BRAppDelegate.h"
 
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
 "You can send a payment to anyone with an address.", nil)
@@ -1535,8 +1537,12 @@ static NSString *sanitizeString(NSString *s)
 -(void)pushToStep1{
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-    [self.navigationController pushViewController:myViewController animated:YES];
+    WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+    vc.isFromSend = YES;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = navigationController;
 }
 
 // MARK: - IBAction
@@ -1635,7 +1641,7 @@ static NSString *sanitizeString(NSString *s)
     self.scheme = nil;
     self.associatedShapeshift = nil;
     [self cancel:sender];
-    
+
 }
 
 - (IBAction)cancel:(id)sender
@@ -1672,9 +1678,30 @@ static NSString *sanitizeString(NSString *s)
             
             if (orders.count > 0) {
                 
-                UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingViewController"];
-                [self.navigationController pushViewController:myViewController animated:YES];
+                NSDictionary *orderDict = [orders objectAtIndex:0];
+                
+                if ([[orderDict valueForKey:@"status"] isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    vc.isFromSend = YES;
+                    vc.orderDict = orderDict;
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+                    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+                    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                    appDelegate.window.rootViewController = navigationController;
+                }
+                else{
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    vc.isFromSend = YES;
+                    vc.orders = orders;
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+                    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+                    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                    appDelegate.window.rootViewController = navigationController;
+                }
             }
             else{
                 

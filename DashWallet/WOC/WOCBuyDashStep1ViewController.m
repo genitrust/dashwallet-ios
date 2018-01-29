@@ -11,6 +11,10 @@
 #import "WOCBuyDashStep2ViewController.h"
 #import "WOCBuyDashStep3ViewController.h"
 #import "WOCBuyDashStep4ViewController.h"
+#import "WOCConstants.h"
+#import "BRAppDelegate.h"
+#import "BRRootViewController.h"
+
 
 @interface WOCBuyDashStep1ViewController ()
 
@@ -34,6 +38,10 @@
     
     self.title = @"Buy Dash With Cash";
     
+    if (self.isFromSend) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:@"openBuyDashStep4" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:@"openBuyDashStep2" object:nil];
     
@@ -43,6 +51,16 @@
     self.btnNoThanks.layer.masksToBounds = YES;
     [self setShadow:self.btnLocation];
     [self setShadow:self.btnNoThanks];
+    
+    //store deviceCode in userDefault
+    int launched = [[NSUserDefaults standardUserDefaults] integerForKey:kLaunchStatus];
+    if (launched == 0) {
+        
+        NSString *uuid = [[NSUUID UUID] UUIDString];
+        [[NSUserDefaults standardUserDefaults] setValue:uuid forKey:kDeviceCode];
+        [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:kLaunchStatus];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,6 +104,21 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep2ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep2ViewController"];
     [self.navigationController pushViewController:myViewController animated:YES];
+}
+
+- (void)back:(id)sender{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];// Or any VC with Id
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [nav.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+    UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+    
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = nav;
 }
 
 - (void)setShadow:(UIView *)view{

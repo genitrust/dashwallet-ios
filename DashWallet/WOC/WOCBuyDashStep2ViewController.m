@@ -23,6 +23,7 @@
     self.title = @"Buy Dash With Cash";
     
     [self.navigationItem.backBarButtonItem setTitle:@""];
+    
     self.btnNext.layer.cornerRadius = 3.0;
     self.btnNext.layer.masksToBounds = YES;
     [self setShadow:self.btnNext];

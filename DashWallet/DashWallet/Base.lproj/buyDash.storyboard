@@ -1451,13 +1451,32 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cash to Deposit: $5.03" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMV-2Z-bkl">
-                                                                    <rect key="frame" x="5" y="82" width="379" height="28"/>
+                                                                    <rect key="frame" x="5" y="82" width="379" height="25"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4sN-bO-v0e">
+                                                                    <rect key="frame" x="3" y="107" width="255" height="30"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status: Waiting Deposit Verification" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="TB7-nm-oIA">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
+                                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="bottom" secondItem="TB7-nm-oIA" secondAttribute="bottom" id="E4n-ax-hfH"/>
+                                                                        <constraint firstItem="TB7-nm-oIA" firstAttribute="top" secondItem="4sN-bO-v0e" secondAttribute="top" id="JpZ-cm-eqV"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="TB7-nm-oIA" secondAttribute="trailing" constant="5" id="jR5-9k-BOo"/>
+                                                                        <constraint firstItem="TB7-nm-oIA" firstAttribute="leading" secondItem="4sN-bO-v0e" secondAttribute="leading" id="kMu-iD-6fC"/>
+                                                                    </constraints>
+                                                                </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Dash: 0.00434814 (434.81 dots)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fxg-77-GKN">
-                                                                    <rect key="frame" x="5" y="134" width="379" height="28"/>
+                                                                    <rect key="frame" x="5" y="137" width="379" height="25"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -1468,14 +1487,18 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                                 <constraint firstItem="uNe-gp-vmD" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="28/170" id="1Wk-C4-Z43"/>
                                                                 <constraint firstItem="E3J-Db-1OW" firstAttribute="top" secondItem="uNe-gp-vmD" secondAttribute="bottom" id="49Q-ih-r4z"/>
                                                                 <constraint firstItem="z2t-zq-e3V" firstAttribute="leading" secondItem="G77-Th-ndU" secondAttribute="leading" id="AnR-fu-mfO"/>
-                                                                <constraint firstItem="fxg-77-GKN" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="28/170" id="JaZ-Ae-9nG"/>
+                                                                <constraint firstItem="fxg-77-GKN" firstAttribute="top" secondItem="4sN-bO-v0e" secondAttribute="bottom" id="DXP-qE-k3v"/>
+                                                                <constraint firstItem="4sN-bO-v0e" firstAttribute="leading" secondItem="G77-Th-ndU" secondAttribute="leading" constant="3" id="I8W-Rv-gsJ"/>
+                                                                <constraint firstItem="fxg-77-GKN" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="25/170" id="JaZ-Ae-9nG"/>
                                                                 <constraint firstItem="dMV-2Z-bkl" firstAttribute="leading" secondItem="G77-Th-ndU" secondAttribute="leading" constant="5" id="M5t-S4-Co7"/>
                                                                 <constraint firstItem="E3J-Db-1OW" firstAttribute="leading" secondItem="z2t-zq-e3V" secondAttribute="trailing" constant="5" id="MLN-Oz-Sqp"/>
+                                                                <constraint firstItem="4sN-bO-v0e" firstAttribute="width" secondItem="G77-Th-ndU" secondAttribute="width" multiplier="255/384" id="MLQ-zr-7pR"/>
                                                                 <constraint firstAttribute="trailing" secondItem="fxg-77-GKN" secondAttribute="trailing" id="MWn-GO-tTW"/>
                                                                 <constraint firstAttribute="trailing" secondItem="uNe-gp-vmD" secondAttribute="trailing" id="QLM-xv-aba"/>
+                                                                <constraint firstItem="4sN-bO-v0e" firstAttribute="top" secondItem="dMV-2Z-bkl" secondAttribute="bottom" id="Rsv-Xx-fim"/>
                                                                 <constraint firstAttribute="trailing" secondItem="E3J-Db-1OW" secondAttribute="trailing" id="SEa-Z4-zlk"/>
                                                                 <constraint firstItem="z2t-zq-e3V" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="82/170" id="TiD-au-ceg"/>
-                                                                <constraint firstItem="dMV-2Z-bkl" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="28/170" id="UNW-kY-TcB"/>
+                                                                <constraint firstItem="dMV-2Z-bkl" firstAttribute="height" secondItem="G77-Th-ndU" secondAttribute="height" multiplier="25/170" id="UNW-kY-TcB"/>
                                                                 <constraint firstItem="uNe-gp-vmD" firstAttribute="top" secondItem="G77-Th-ndU" secondAttribute="top" constant="8" id="WDR-aX-vlQ"/>
                                                                 <constraint firstAttribute="bottom" secondItem="fxg-77-GKN" secondAttribute="bottom" constant="8" id="bpB-OA-Bch"/>
                                                                 <constraint firstAttribute="trailing" secondItem="dMV-2Z-bkl" secondAttribute="trailing" id="dgN-No-vlg"/>
@@ -1500,8 +1523,10 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                     <outlet property="lblCashDeposit" destination="dMV-2Z-bkl" id="MCZ-KG-6JX"/>
                                                     <outlet property="lblName" destination="uNe-gp-vmD" id="bzm-eU-VBV"/>
                                                     <outlet property="lblPhone" destination="E3J-Db-1OW" id="X93-zE-xvh"/>
+                                                    <outlet property="lblStatus" destination="TB7-nm-oIA" id="tqg-Dh-owL"/>
                                                     <outlet property="lblTotalDash" destination="fxg-77-GKN" id="aov-Ch-8Mf"/>
                                                     <outlet property="mainView" destination="G77-Th-ndU" id="B0f-b9-kTL"/>
+                                                    <outlet property="statusView" destination="4sN-bO-v0e" id="JmS-ng-zQN"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="signOutCell" rowHeight="110" id="dl4-bN-kgJ" customClass="WOCSignOutCell">

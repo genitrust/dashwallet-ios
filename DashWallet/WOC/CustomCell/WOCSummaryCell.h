@@ -16,5 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPhone;
 @property (weak, nonatomic) IBOutlet UILabel *lblCashDeposit;
 @property (weak, nonatomic) IBOutlet UILabel *lblTotalDash;
+@property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 
 @end

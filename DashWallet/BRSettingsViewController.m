@@ -356,7 +356,7 @@
             
             if (orders.count > 0) {
                 
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:@"phone"];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
                 UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                 WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                 myViewController.phoneNo = phoneNo;

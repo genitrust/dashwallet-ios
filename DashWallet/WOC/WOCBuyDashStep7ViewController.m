@@ -29,6 +29,20 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:@"openBuyDashStep8" object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    
+    if (phone != nil) {
+        
+        if ([phone hasPrefix:@"+1"]) {
+            phone = [phone stringByReplacingOccurrencesOfString:@"+1" withString:@""];
+        }
+        
+        self.txtPhoneNumber.text = phone;
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -129,7 +143,12 @@
             if ([error code] == 404) {
                 
                 //new number
-                NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
+                //NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
+                
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
+                
+                NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
                 
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                 WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
@@ -137,6 +156,9 @@
                 myViewController.offerId = self.offerId;
                 myViewController.deviceCode = deviceCode;
                 [self.navigationController pushViewController:myViewController animated:YES];
+                
+                [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
+                [[NSUserDefaults standardUserDefaults] synchronize];
             }
             
             NSLog(@"Error: %@", error.localizedDescription);
@@ -146,9 +168,12 @@
 
 - (void)login:(NSString*)phone{
     
-    NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
+    //NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     
     NSDictionary *params = @{
+
                              @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                              @"deviceCode": deviceCode
                              };
@@ -161,7 +186,7 @@
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:@"token"] forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:@"phone"];
+            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:@"phone"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];

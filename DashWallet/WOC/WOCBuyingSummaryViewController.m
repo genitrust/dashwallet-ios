@@ -6,12 +6,34 @@
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
+#define WD @"WD"
+#define WDV @"WDV"
+#define RERR @"RERR"
+#define DERR @"DERR"
+#define RSD @"RSD"
+#define RMIT @"RMIT"
+#define UCRV @"UCRV"
+#define PAYP @"PAYP"
+#define SENT @"SENT"
+
+#define STATUS_WD @"Waiting Deposit"
+#define STATUS_WDV @"Waiting Deposit Verification"
+#define STATUS_RERR @"Issue w/ Receipt"
+#define STATUS_DERR @"Issue with Deposit"
+#define STATUS_RSD @"Reserved for Deposit"
+#define STATUS_RMIT @"Remit Address Missing"
+#define STATUS_UCRV @"Under Review"
+#define STATUS_PAYP @"Done - Pending Delivery"
+#define STATUS_SENT @"Done - Units Delivered"
+
 #import "WOCBuyingSummaryViewController.h"
 #import "WOCSummaryCell.h"
 #import "WOCSignOutCell.h"
 #import "WOCBuyDashStep1ViewController.h"
 #import "WOCBuyDashStep4ViewController.h"
 #import "APIManager.h"
+#import "BRRootViewController.h"
+#import "BRAppDelegate.h"
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -26,6 +48,11 @@
     
     [self setShadow:self.btnBuyMoreDash];
     
+    if (self.isFromSend) {
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+    }
+    
     if (self.orders.count == 0) {
         [self getOrders];
     }
@@ -39,20 +66,25 @@
 #pragma mark - Action
 - (IBAction)buyMoreDashClicked:(id)sender {
     
+    BOOL viewFound = NO;
+    
+    
     for (UIViewController *controller in self.navigationController.viewControllers)
     {
-        if ([controller isKindOfClass:[WOCBuyDashStep4ViewController class]])
+        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
         {
             [self.navigationController popToViewController:controller animated:YES];
-            
+            viewFound = YES;
             break;
         }
-        else{
-            
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-            WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
-            [self.navigationController pushViewController:myViewController animated:YES];
-        }
+    }
+    
+    if (viewFound == NO) {
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+        myViewController.isFromSend = YES;
+        [self.navigationController pushViewController:myViewController animated:YES];
     }
 }
 
@@ -76,15 +108,64 @@
 
 - (void)pushToHome{
     
-    for (UIViewController *controller in self.navigationController.viewControllers)
-    {
-        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
-        {
-            [self.navigationController popToViewController:controller animated:YES];
-            
-            break;
-        }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [nav.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+    UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+    
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = nav;
+}
+
+- (void)back:(id)sender{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [nav.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+    UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+    
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = nav;
+}
+
+- (NSString*)checkStatus:(NSString*)status {
+    
+    NSString *string = STATUS_WD;
+    
+    if ([status isEqualToString:WD]){
+        string = STATUS_WD;
     }
+    else if ([status isEqualToString:WDV]){
+        string = STATUS_WDV;
+    }
+    else if ([status isEqualToString:RERR]){
+        string = STATUS_RERR;
+    }
+    else if ([status isEqualToString:DERR]){
+        string = STATUS_DERR;
+    }
+    else if ([status isEqualToString:RMIT]){
+        string = STATUS_RMIT;
+    }
+    else if ([status isEqualToString:UCRV]){
+        string = STATUS_UCRV;
+    }
+    else if ([status isEqualToString:PAYP]){
+        string = STATUS_PAYP;
+    }
+    else if ([status isEqualToString:SENT]){
+        string = STATUS_SENT;
+    }
+    
+    return string;
 }
 
 #pragma mark - API
@@ -158,6 +239,7 @@
         NSString *phoneNo = [NSString stringWithFormat:@"%@",[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
         float depositAmount = [[orderDict valueForKey:@"payment"] floatValue];
         NSString *totalDash = [orderDict valueForKey:@"total"];
+        NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
         
         //bankLogo
         /*if ([bankLogo length] > 0) {
@@ -171,6 +253,10 @@
         cell.lblPhone.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];
         cell.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
         cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@",totalDash];
+        cell.lblStatus.text = [NSString stringWithFormat:@"Status: %@",[self checkStatus:status]];
+        
+        //cell.statusView.layer.borderColor = [UIColor colorWithRed:252.0/255.0 green:48.0/255.0 blue:109.0/255.0 alpha:1.0].CGColor;
+        //cell.statusView.layer.borderWidth = 3.0;
         
         return cell;
     }
@@ -178,7 +264,7 @@
         
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
         
-        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
+        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number +1%@",self.phoneNo];
         [cell.btnSignOut addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         return cell;

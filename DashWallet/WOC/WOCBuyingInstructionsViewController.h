@@ -13,6 +13,8 @@
 @property (strong, nonatomic) NSString *purchaseCode;
 @property (strong, nonatomic) NSString *holdId;
 @property (strong, nonatomic) NSString *phoneNo;
+@property (strong, nonatomic) NSDictionary *orderDict;
+@property (assign) BOOL isFromSend;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblBankName;

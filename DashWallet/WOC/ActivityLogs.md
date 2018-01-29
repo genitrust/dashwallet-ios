@@ -149,4 +149,13 @@ Holiday
 1. Created Enter Password UI
 2. Implementation of "/auth/" API
 3. Implementation of "/auth/#phoneNo/authorize/" API
-4. Implementation of "/auth/#phoneNo/" API 
+4. Implementation of "/auth/#phoneNo/" API
+
+## [WEEK-4] 29 JAN 2018
+#### Work on 29 JAN 2018 (MON) Sujal Bandhara
+
+1. Add order status in BuyingSummary
+2. Navigation from Home screen
+3. Pass unique deviceId in "deviceCode" to resolve "MultipleObjectsReturned" issue
+4. Implemented all BuyingWizard APIs.
+

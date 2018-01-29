@@ -12,6 +12,8 @@
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "WOCBuyingSummaryViewController.h"
+#import "BRRootViewController.h"
+#import "BRAppDelegate.h"
 
 @interface WOCBuyingInstructionsViewController ()
 
@@ -28,7 +30,24 @@
     
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];
-    [self captureHold];
+    
+    
+    if (self.isFromSend) {
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+        
+        if (self.orderDict.count > 0) {
+            [self updateData:self.orderDict];
+        }
+        else{
+            [self captureHold];
+        }
+    }
+    else{
+        [self captureHold];
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,6 +97,21 @@
         }
     }
     
+}
+
+- (void)back:(id)sender{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [nav.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+    UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+    
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = nav;
 }
 
 - (void)showDepositAlert
@@ -167,6 +201,42 @@
     NSLog(@"currentTime UTC : %@",currentTime);
     
     self.lblDepositDue.text = [NSString stringWithFormat:@"Deposit Due: %@",currentTime];
+}
+
+-(NSMutableString*) timeLeftSinceDate: (NSDate *) dateT {
+    
+    NSMutableString *timeLeft = [[NSMutableString alloc]init];
+    
+    NSDate *today10am =[NSDate date];
+    
+    NSInteger seconds = [today10am timeIntervalSinceDate:dateT];
+    
+    NSInteger days = (int) (floor(seconds / (3600 * 24)));
+    if(days) seconds -= days * 3600 * 24;
+    
+    NSInteger hours = (int) (floor(seconds / 3600));
+    if(hours) seconds -= hours * 3600;
+    
+    NSInteger minutes = (int) (floor(seconds / 60));
+    if(minutes) seconds -= minutes * 60;
+    
+    if(days) {
+        [timeLeft appendString:[NSString stringWithFormat:@"%ld Days", (long)days*-1]];
+    }
+    
+    if(hours) {
+        [timeLeft appendString:[NSString stringWithFormat: @"%ld H", (long)hours*-1]];
+    }
+    
+    if(minutes) {
+        [timeLeft appendString: [NSString stringWithFormat: @"%ld M",(long)minutes*-1]];
+    }
+    
+    if(seconds) {
+        [timeLeft appendString:[NSString stringWithFormat: @"%lds", (long)seconds*-1]];
+    }
+    
+    return timeLeft;
 }
 
 #pragma mark - API

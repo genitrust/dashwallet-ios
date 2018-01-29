@@ -1,9 +1,9 @@
 //
 //  WOCPasswordViewController.m
-//  dashwallet
+//  Wallofcoins
 //
-//  Created by iMac03 on 27/01/18.
-//  Copyright © 2018 Aaron Voisine. All rights reserved.
+//  Created by Sujal Bandhara on 27/01/18.
+//  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
 #import "WOCPasswordViewController.h"
