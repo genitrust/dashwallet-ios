@@ -34,7 +34,7 @@
                                 style:UIBarButtonItemStylePlain
                                 target:self
                                 action:@selector(backBtnClicked:)];
-    [btnBack setImage:[UIImage imageNamed:@"ic_arrow_back_white_24dp"]];*/
+    [btnBack setImage:[UIImage imageNamed:@"ic_arrow_back_white"]];*/
     
     self.title = @"Buy Dash With Cash";
     
@@ -70,16 +70,21 @@
 
 #pragma mark - Action
 - (IBAction)backBtnClicked:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController.navigationBar setHidden:NO];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController.navigationBar setHidden:NO];
+    });
 }
 
 - (IBAction)findLocationClicked:(id)sender {
     
-    if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
+    if ([[WOCLocationManager sharedInstance] locationServiceEnabled])
+    {
         [self findZipCode];
     }
-    else{
+    else
+    {
         // Enable Location services
         [[WOCLocationManager sharedInstance] startLocationService];
     }
@@ -108,17 +113,19 @@
 
 - (void)back:(id)sender{
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];// Or any VC with Id
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    [nav.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-    UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
-    
-    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-    appDelegate.window.rootViewController = nav;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];// Or any VC with Id
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        [nav.navigationBar setTintColor:[UIColor whiteColor]];
+        
+        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+        
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = nav;
+    });
 }
 
 - (void)setShadow:(UIView *)view{

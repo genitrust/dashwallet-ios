@@ -53,9 +53,12 @@
     if ([locations count]) {
         self.lastLocation = [locations lastObject];
         
-        [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:@"locationLatitude"];
-        [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:@"locationLongitude"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil)
+        {
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:@"locationLatitude"];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:@"locationLongitude"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     }
 }
 

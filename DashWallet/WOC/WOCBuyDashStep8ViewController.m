@@ -69,21 +69,36 @@
 - (void)createHold {
     
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
-    
-    if (token != nil) {
-        deviceCode = token;
+   
+    if (self.deviceCode == nil)
+    {
+        self.deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     }
     
-    NSDictionary *params =
-    @{
-      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-      @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
-      @"phone": self.phoneNo,
-      @"deviceName": @"Ref Client",
-      @"deviceCode": deviceCode,
-      @"JSONPara":@"YES"
-      };
+    NSDictionary *params ;
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
+    {
+        params =  @{
+                    @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                    @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
+                    @"deviceName": @"Dash Wallet (iOS)",
+                    @"deviceCode": self.deviceCode,
+                    @"JSONPara":@"YES"
+                    };
+    }
+    else
+    {
+        
+        params =  @{
+                    @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                    @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
+                    @"phone": self.phoneNo,
+                    @"deviceName": @"Dash Wallet (iOS)",
+                    @"deviceCode": self.deviceCode,
+                    @"JSONPara":@"YES"
+                    };
+    }
     
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
         
@@ -93,10 +108,15 @@
             
             self.txtPurchaseCode.text = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
             self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            if ([responseDictionary valueForKey:kToken] != nil && [[responseDictionary valueForKey:kToken] isEqualToString:@"(null)"] == FALSE)
+            {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
         }
-        else{
+        else
+        {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];

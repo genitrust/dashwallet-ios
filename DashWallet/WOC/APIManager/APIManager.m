@@ -242,10 +242,10 @@ It need X-Coins-Api-Token as a header parameter which is five time mobile number
       @"Content-Type":@"application/json"
       };
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     
-    if (token != nil) {
-        
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
         header =
         @{
           @"X-Coins-Api-Token": token,
@@ -281,7 +281,7 @@ POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/capture/",BASE_URL,holdId];
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
         @"X-Coins-Api-Token": token
@@ -303,7 +303,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 -(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/confirmDeposit/",BASE_URL,orderId];
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
       @"X-Coins-Api-Token": token
@@ -317,7 +317,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 -(void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/",BASE_URL,orderId];
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
       @"X-Coins-Api-Token": token
@@ -331,7 +331,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 -(void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/",BASE_URL];
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
       @"X-Coins-Api-Token": token
@@ -376,15 +376,18 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 #pragma mark - API calls
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    APILog(@"**>API REQUEST URL: \n%@",apiURL);
+    APILog(@"**>API REQUEST URL: %@\n%@",httpMethord,apiURL);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:apiURL] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT_INTERVAL];
     
     if ([httpMethord isEqualToString:@"GET"] == FALSE)
     {
+
        // [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPMethod:httpMethord];
         if ([parameter isKindOfClass:[NSDictionary class]])
         {
+            APILog(@"**>API REQUEST Parameter: \n%@",parameter);
+
             NSDictionary *para = (NSDictionary*)parameter;
             if ([[para allKeys] containsObject:JSONParameter])
             {
@@ -400,6 +403,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     
     if (header!= nil)
     {
+        APILog(@"**>API REQUEST Header: \n%@",header);
         [request setAllHTTPHeaderFields:header];
 //        for (NSString *key in header.allKeys)
 //        {
@@ -513,6 +517,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
  I see the Buying Instructions for my new order.
  Or, I receive an error when attempting to create the Hold.
  
- 
+ "lat" : 27.3331293,
+ "lng" : -82.54563739999999
 
  */

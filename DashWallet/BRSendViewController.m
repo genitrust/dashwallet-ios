@@ -1536,13 +1536,15 @@ static NSString *sanitizeString(NSString *s)
 
 -(void)pushToStep1{
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
-    vc.isFromSend = YES;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-    appDelegate.window.rootViewController = navigationController;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
 }
 
 // MARK: - IBAction
@@ -1618,12 +1620,14 @@ static NSString *sanitizeString(NSString *s)
     
     [sender setEnabled:NO];
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     
-    if (token != nil) {
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
         [self getOrders];
     }
-    else{
+    else
+    {
         [self pushToStep1];
     }
 }
@@ -1676,31 +1680,31 @@ static NSString *sanitizeString(NSString *s)
             
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
-            if (orders.count > 0) {
+            if (orders.count > 0){
                 
-                NSDictionary *orderDict = [orders objectAtIndex:0];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
                 
-                if ([[orderDict valueForKey:@"status"] isEqualToString:@"WD"]) {
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                
+                if ([status isEqualToString:@"WD"]) {
                     
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                    WOCBuyingInstructionsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-                    vc.isFromSend = YES;
-                    vc.orderDict = orderDict;
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-                    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-                    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-                    appDelegate.window.rootViewController = navigationController;
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
                 }
                 else{
-                    
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                    WOCBuyingSummaryViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                    vc.isFromSend = YES;
-                    vc.orders = orders;
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-                    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-                    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-                    appDelegate.window.rootViewController = navigationController;
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
                 }
             }
             else{
@@ -1710,6 +1714,8 @@ static NSString *sanitizeString(NSString *s)
         }
         else{
             NSLog(@"Error: %@", error.localizedDescription);
+            
+            [self pushToStep1];
         }
     }];
 }

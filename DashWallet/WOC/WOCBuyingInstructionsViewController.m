@@ -31,22 +31,39 @@
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];
     
+    if (self.orderDict.count > 0) {
+        [self updateData:self.orderDict];
+    }
     
     if (self.isFromSend) {
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
         
-        if (self.orderDict.count > 0) {
-            [self updateData:self.orderDict];
+    }
+    else if (self.isFromOffer){
+        
+        NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+        
+        if (![phone hasPrefix:@"+1"]) {
+            phone = [NSString stringWithFormat:@"+1%@",phone];
+        }
+        
+        if (self.offerId != nil && [self.offerId length] > 0) {
+            [self createHold:self.offerId phoneNo:phone];
         }
         else{
-            [self captureHold];
+            NSLog(@"Alert: Please select offer.");
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
     else{
-        [self captureHold];
-        
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+        if ([self.purchaseCode length] > 0 && [self.holdId length] > 0) {
+            
+            [self captureHold:self.purchaseCode holdId:self.holdId];
+        }
+        else{
+            NSLog(@"Alert: Please enter purchase code.");
+        }
     }
 }
 
@@ -56,14 +73,17 @@
 }
 
 #pragma mark - Action
-- (IBAction)showMapClicked:(id)sender {
+- (IBAction)showMapClicked:(id)sender
+{
+    
 }
+
 - (IBAction)depositFinishedClicked:(id)sender {
     
     [self showDepositAlert];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-    [self.navigationController pushViewController:myViewController animated:YES];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+//    WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+//    [self.navigationController pushViewController:myViewController animated:YES];
 }
 
 - (IBAction)cancelOrderClicked:(id)sender {
@@ -87,14 +107,36 @@
 
 - (void)pushToHome{
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
+    return;
+    
+    BOOL viewFound = NO;
+    
     for (UIViewController *controller in self.navigationController.viewControllers)
     {
         if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
         {
-            [self.navigationController popToViewController:controller animated:YES];
-            
+            [self.navigationController popToViewController:controller animated:NO];
+            viewFound = YES;
             break;
         }
+    }
+    
+    if (viewFound == NO) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+            [self.navigationController pushViewController:myViewController animated:YES];
+        });
     }
     
 }
@@ -240,12 +282,66 @@
 }
 
 #pragma mark - API
-- (void)captureHold {
+
+- (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone {
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
+    NSDictionary *params ;
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
+    {
+        params = @{
+                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"offer": [NSString stringWithFormat:@"%@==",offerId],
+                   @"deviceName": @"Dash Wallet (iOS)",
+                   @"deviceCode": deviceCode,
+                   @"JSONPara":@"YES"
+                   };
+    }
+    else
+    {
+        params = @{
+                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"offer": [NSString stringWithFormat:@"%@==",offerId],
+                   @"phone": phone,
+                   @"deviceName": @"Dash Wallet (iOS)",
+                   @"deviceCode": deviceCode,
+                   @"JSONPara":@"YES"
+                   };
+    }
+   
+    [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            
+            
+            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
+            self.holdId = holdId;
+            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
+            
+            if ([responseDictionary valueForKey:kToken] != nil && [[responseDictionary valueForKey:kToken] isEqualToString:@"(null)"] == FALSE)
+            {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            [self captureHold:purchaseCode holdId:holdId];
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId{
     
     NSDictionary *params =
     @{
       @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-      @"verificationCode": self.purchaseCode,
+      @"verificationCode": purchaseCode,
       };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
@@ -270,34 +366,40 @@
 
 - (void)confirmDeposit {
     
-    [[APIManager sharedInstance] confirmDeposit:self.orderId response:^(id responseDict, NSError *error) {
- 
-        if (error == nil) {
+    if (self.orderId != nil)
+    {
+        [[APIManager sharedInstance] confirmDeposit:self.orderId response:^(id responseDict, NSError *error) {
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-            WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-            myViewController.phoneNo = self.phoneNo;
-            [self.navigationController pushViewController:myViewController animated:YES];
-        }
-        else{
-            NSLog(@"Error: %@", error.localizedDescription);
-        }
-    }];
+            if (error == nil) {
+                
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                myViewController.phoneNo = self.phoneNo;
+                [self.navigationController pushViewController:myViewController animated:YES];
+            }
+            else{
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+    }
 }
 
 - (void)cancelOrder {
     
-    [[APIManager sharedInstance] cancelOrder:self.orderId response:^(id responseDict, NSError *error) {
-   
-        if (error == nil) {
+    if (self.orderId != nil)
+    {
+        [[APIManager sharedInstance] cancelOrder:self.orderId response:^(id responseDict, NSError *error) {
             
-            NSLog(@"responseDict: %@", responseDict);
-            
-            [self pushToHome];
-        }
-        else{
-            NSLog(@"Error: %@", error.localizedDescription);
-        }
-    }];
+            if (error == nil) {
+                
+                NSLog(@"responseDict: %@", responseDict);
+                
+                [self pushToHome];
+            }
+            else{
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+    }
 }
 @end

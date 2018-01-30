@@ -66,31 +66,16 @@
 #pragma mark - Action
 - (IBAction)buyMoreDashClicked:(id)sender {
     
-    BOOL viewFound = NO;
-    
-    
-    for (UIViewController *controller in self.navigationController.viewControllers)
-    {
-        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
-        {
-            [self.navigationController popToViewController:controller animated:YES];
-            viewFound = YES;
-            break;
-        }
-    }
-    
-    if (viewFound == NO) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-        myViewController.isFromSend = YES;
-        [self.navigationController pushViewController:myViewController animated:YES];
-    }
+    [self pushToStep1];
 }
 
 - (IBAction)signOutClicked:(id)sender {
     
-    [self signOut];
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    if (![phoneNo hasPrefix:@"+1"]) {
+        phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
+    }
+    [self signOut:phoneNo];
 }
 
 #pragma mark - Function
@@ -134,6 +119,42 @@
     
     BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.window.rootViewController = nav;
+}
+
+- (void)pushToStep1{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
+    return;
+    
+    BOOL viewFound = NO;
+    
+    for (UIViewController *controller in self.navigationController.viewControllers)
+    {
+        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
+        {
+            [self.navigationController popToViewController:controller animated:NO];
+            viewFound = YES;
+            break;
+        }
+    }
+    
+    if (viewFound == NO) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+            myViewController.isFromSend = YES;
+            [self.navigationController pushViewController:myViewController animated:YES];
+        });
+    }
 }
 
 - (NSString*)checkStatus:(NSString*)status {
@@ -183,27 +204,30 @@
             self.orders = response;
             [self.tableView reloadData];
         }
-        else{
+        else
+        {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
 }
 
-- (void)signOut {
+- (void)signOut:(NSString*)phone {
     
     NSDictionary *params = @{
                              @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    [[APIManager sharedInstance] signOut:params phone:self.phoneNo response:^(id responseDict, NSError *error) {
+    [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
       
-        if (error == nil) {
-            
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+        if (error == nil)
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [self pushToHome];
+            [self pushToStep1];
         }
-        else{
+        else
+        {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
@@ -264,7 +288,10 @@
         
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
         
-        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number +1%@",self.phoneNo];
+        if (![self.phoneNo hasPrefix:@"+1"]) {
+            self.phoneNo = [NSString stringWithFormat:@"+1%@",self.phoneNo];
+        }
+        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
         [cell.btnSignOut addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         return cell;

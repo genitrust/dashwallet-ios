@@ -9,6 +9,7 @@
 #import "WOCBuyDashStep5ViewController.h"
 #import "WOCBuyDashStep6ViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
+#import "WOCBuyingSummaryViewController.h"
 #import "WOCOfferCell.h"
 #import "APIManager.h"
 #import "BRWalletManager.h"
@@ -37,15 +38,26 @@
 
 - (IBAction)orderClicked:(id)sender{
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[sender tag] inSection:0];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        [self getOrders:[sender tag]];
+    }
+    else
+    {
+        [self pushToStep6:[sender tag]];
+    }
+}
+
+- (void)pushToStep6:(NSInteger)sender{
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
     NSDictionary *offerDict = self.offers[indexPath.row];
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep6ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep6ViewController"];
     myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"id"]];
     [self.navigationController pushViewController:myViewController animated:YES];
-    
 }
 
 #pragma mark - API
@@ -69,6 +81,58 @@
             }
         }];
     }
+}
+
+- (void)getOrders:(NSInteger)sender {
+    
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0){
+                
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                
+                if ([status isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.isFromSend = YES;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    //[self pushToStep6:sender];
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.offerId = [NSString stringWithFormat:@"%@",[[self.offers objectAtIndex:sender] valueForKey:@"id"]];
+                    myViewController.isFromOffer = YES;
+                    myViewController.isFromSend = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+            }
+            else{
+                [self pushToStep6:sender];
+            }
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
 }
 
 #pragma mark - UITableView Delegate & DataSource

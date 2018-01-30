@@ -36,6 +36,7 @@
 #import <netdb.h>
 #import <arpa/inet.h>
 #import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
@@ -354,13 +355,32 @@
             
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
-            if (orders.count > 0) {
+            if (orders.count > 0){
                 
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-                UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                myViewController.phoneNo = phoneNo;
-                [self.navigationController pushViewController:myViewController animated:YES];
+                
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                
+                if ([status isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
             }
             else{
                 
@@ -688,12 +708,14 @@ _switch_cell:
 
 - (void)checkToken
 {
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"token"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     
-    if (token != nil) {
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
         [self getOrders];
     }
-    else{
+    else
+    {
         [self pushToStep1];
     }
 }

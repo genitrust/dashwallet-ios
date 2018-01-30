@@ -87,7 +87,9 @@
             [self dismissViewControllerAnimated:YES completion:nil];
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:@"token"] forKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:kToken] forKey:kToken];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+
             [[NSUserDefaults standardUserDefaults] setValue:phone forKey:@"phone"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             

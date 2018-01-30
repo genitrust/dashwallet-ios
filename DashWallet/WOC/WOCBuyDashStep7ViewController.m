@@ -66,7 +66,8 @@
         myViewController.deviceCode = deviceCode;
         [self.navigationController pushViewController:myViewController animated:YES];*/
     }
-    else{
+    else
+    {
 
     }
 }
@@ -173,7 +174,6 @@
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     
     NSDictionary *params = @{
-
                              @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                              @"deviceCode": deviceCode
                              };
@@ -185,7 +185,9 @@
         if (error == nil) {
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:@"token"] forKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:kToken] forKey:kToken];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+
             [[NSUserDefaults standardUserDefaults] setValue:phone forKey:@"phone"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
