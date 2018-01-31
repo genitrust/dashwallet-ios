@@ -50,6 +50,21 @@
     }
 }
 
+- (IBAction)checkLocationClicked:(id)sender{
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[sender tag] inSection:0];
+    NSDictionary *offerDict = self.offers[indexPath.row];
+    if ([[offerDict valueForKey:@"bankLocationUrl"] isEqual:[NSNull null]]) {
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                NSLog(@"URL opened!");
+            }];
+        }
+    }
+}
+
 - (void)pushToStep6:(NSInteger)sender{
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];

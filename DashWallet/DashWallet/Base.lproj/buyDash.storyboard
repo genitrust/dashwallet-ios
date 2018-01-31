@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BZs-Dv-J9R">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BZs-Dv-J9R">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1101,25 +1101,25 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U4V-Pw-H8H">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="624"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="744"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xed-AC-Tj1" userLabel="1">
                                                         <rect key="frame" x="15" y="8" width="384" height="90"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="QfX-BU-6gP">
-                                                                <rect key="frame" x="0.0" y="10" width="70" height="70"/>
+                                                                <rect key="frame" x="0.0" y="10.5" width="70" height="69.5"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="QfX-BU-6gP" secondAttribute="height" multiplier="1:1" id="oqf-lr-OpI"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wells Fargo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="R5c-Xp-OXm">
-                                                                <rect key="frame" x="80" y="10" width="304" height="28"/>
+                                                                <rect key="frame" x="80" y="10.5" width="304" height="28"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="krM-lP-mGi">
-                                                                <rect key="frame" x="80" y="38" width="296" height="25"/>
+                                                                <rect key="frame" x="80" y="38.5" width="296" height="25"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <state key="normal" title="Show on Map Nearby">
                                                                     <color key="titleColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -1129,7 +1129,7 @@
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location's phone #: 3342702340" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="WKp-nl-2ro">
-                                                                <rect key="frame" x="80" y="63" width="304" height="25"/>
+                                                                <rect key="frame" x="80" y="63.5" width="304" height="25"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
@@ -1276,10 +1276,44 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                             <constraint firstAttribute="height" constant="290" id="wmJ-Do-Gtp"/>
                                                         </constraints>
                                                     </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmv-vA-02b">
+                                                        <rect key="frame" x="0.0" y="588" width="414" height="146"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number +12397777777" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVz-eg-Dss">
+                                                                <rect key="frame" x="8" y="0.0" width="398" height="76.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oh5-Gx-57V">
+                                                                <rect key="frame" x="10" y="83.5" width="394" height="53"/>
+                                                                <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                                <state key="normal" title="SIGN OUT"/>
+                                                                <connections>
+                                                                    <action selector="signOutClicked:" destination="SIk-RQ-6HJ" eventType="touchUpInside" id="A6T-l0-gnW"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstItem="Oh5-Gx-57V" firstAttribute="height" secondItem="xmv-vA-02b" secondAttribute="height" multiplier="38/105" id="17C-Dk-os3"/>
+                                                            <constraint firstItem="Oh5-Gx-57V" firstAttribute="leading" secondItem="xmv-vA-02b" secondAttribute="leading" constant="10" id="7a0-Gt-pYZ"/>
+                                                            <constraint firstItem="KVz-eg-Dss" firstAttribute="leading" secondItem="xmv-vA-02b" secondAttribute="leading" constant="8" id="GXW-tc-t2n"/>
+                                                            <constraint firstAttribute="trailing" secondItem="Oh5-Gx-57V" secondAttribute="trailing" constant="10" id="JxV-ye-vN6"/>
+                                                            <constraint firstItem="Oh5-Gx-57V" firstAttribute="top" secondItem="KVz-eg-Dss" secondAttribute="bottom" constant="7" id="Kvv-Fu-dYm"/>
+                                                            <constraint firstAttribute="bottom" secondItem="Oh5-Gx-57V" secondAttribute="bottom" constant="9" id="TPv-DF-iAM"/>
+                                                            <constraint firstAttribute="trailing" secondItem="KVz-eg-Dss" secondAttribute="trailing" constant="8" id="g2s-V2-aUX"/>
+                                                            <constraint firstItem="KVz-eg-Dss" firstAttribute="top" secondItem="xmv-vA-02b" secondAttribute="top" id="yUX-0y-jc2"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="xmv-vA-02b" firstAttribute="leading" secondItem="U4V-Pw-H8H" secondAttribute="leading" id="DH0-Qb-Xqm"/>
+                                                    <constraint firstItem="xmv-vA-02b" firstAttribute="top" secondItem="OyP-zU-9aa" secondAttribute="bottom" id="IZq-6C-hGA"/>
                                                     <constraint firstAttribute="trailing" secondItem="ZPF-12-Qak" secondAttribute="trailing" constant="15" id="O6Y-Ho-f1v"/>
+                                                    <constraint firstAttribute="bottom" secondItem="xmv-vA-02b" secondAttribute="bottom" constant="10" id="Ohj-dN-Gm7"/>
                                                     <constraint firstItem="OyP-zU-9aa" firstAttribute="leading" secondItem="U4V-Pw-H8H" secondAttribute="leading" constant="15" id="V8M-WA-upR"/>
                                                     <constraint firstItem="ZPF-12-Qak" firstAttribute="top" secondItem="Xek-Mn-lfe" secondAttribute="bottom" id="VK1-uW-GUj"/>
                                                     <constraint firstAttribute="trailing" secondItem="OyP-zU-9aa" secondAttribute="trailing" constant="15" id="WEu-VY-DEU"/>
@@ -1288,9 +1322,10 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
                                                     <constraint firstItem="Xed-AC-Tj1" firstAttribute="top" secondItem="U4V-Pw-H8H" secondAttribute="top" constant="8" id="eD9-0g-QfW"/>
                                                     <constraint firstAttribute="trailing" secondItem="Xed-AC-Tj1" secondAttribute="trailing" constant="15" id="fjT-F7-Fab"/>
                                                     <constraint firstItem="Xed-AC-Tj1" firstAttribute="leading" secondItem="U4V-Pw-H8H" secondAttribute="leading" constant="15" id="i8g-QH-ThX"/>
-                                                    <constraint firstAttribute="height" constant="624" id="iMg-RW-9Fp"/>
+                                                    <constraint firstAttribute="height" constant="744" id="iMg-RW-9Fp"/>
                                                     <constraint firstItem="OyP-zU-9aa" firstAttribute="top" secondItem="ZPF-12-Qak" secondAttribute="bottom" id="pCC-Wp-vzv"/>
                                                     <constraint firstItem="Xek-Mn-lfe" firstAttribute="leading" secondItem="U4V-Pw-H8H" secondAttribute="leading" constant="15" id="rZl-OX-GTq"/>
+                                                    <constraint firstAttribute="trailing" secondItem="xmv-vA-02b" secondAttribute="trailing" id="x0P-XJ-c6A"/>
                                                     <constraint firstAttribute="trailing" secondItem="Xek-Mn-lfe" secondAttribute="trailing" constant="15" id="xfT-jO-fWL"/>
                                                 </constraints>
                                             </view>
@@ -1926,7 +1961,7 @@ If you have any questions, there is a live chat window at wallofcoins.com or you
         <image name="Dash-Light" width="44" height="38"/>
         <image name="dropdown_icon" width="30" height="30"/>
         <image name="ic_account_balance_black" width="24" height="24"/>
-        <image name="ic_arrow_back_white" width="16" height="16"/>
+        <image name="ic_arrow_back_white" width="24" height="24"/>
         <image name="tab-bar-dash" width="621" height="107"/>
     </resources>
 </document>

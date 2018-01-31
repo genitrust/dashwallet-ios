@@ -86,10 +86,9 @@
 //    [self.navigationController pushViewController:myViewController animated:YES];
 }
 
-- (IBAction)cancelOrderClicked:(id)sender {
-    
+- (IBAction)cancelOrderClicked:(id)sender
+{
     [self showCancelOrderAlert];
-    
 }
 
 #pragma mark - Function
@@ -234,6 +233,11 @@
     NSString *localTime = [formatter stringFromDate:local];
     NSLog(@"localTime: %@",localTime);
     
+    formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+    formatter.timeZone = [NSTimeZone localTimeZone];
+    NSDate *localDate = [formatter dateFromString:localTime];
+    NSLog(@"localDate: %@",localDate);
+    
     formatter.timeZone = [NSTimeZone localTimeZone];
     NSString *currentLocalTime = [formatter stringFromDate:[NSDate date]];
     NSLog(@"currentTime Local: %@",currentLocalTime);
@@ -242,7 +246,22 @@
     NSString *currentTime = [formatter stringFromDate:[NSDate date]];
     NSLog(@"currentTime UTC : %@",currentTime);
     
-    self.lblDepositDue.text = [NSString stringWithFormat:@"Deposit Due: %@",currentTime];
+    self.lblDepositDue.attributedText = [NSString stringWithFormat:@"Deposit Due: %@",currentTime];//[self timeLeftSinceDate:localDate];
+    
+    /*NSDateComponents *components;
+    NSInteger days;
+    NSInteger hours;
+    NSInteger minutes;
+    NSInteger seconds;
+    
+    components = [[NSCalendar currentCalendar] components: NSCalendarUnitDay
+                                                 fromDate: [NSDate date] toDate: localDate options: 0];
+    days = [components day];
+    hours = [components hour];
+    minutes = [components minute];
+    seconds = [components second];
+    
+    NSLog(@"day: %ld, hours: %@ minutes: %@, seconds: %@",(long)days,hours,minutes,seconds);*/
 }
 
 -(NSMutableString*) timeLeftSinceDate: (NSDate *) dateT {
@@ -401,5 +420,50 @@
             }
         }];
     }
+}
+
+- (IBAction)signOutClicked:(id)sender {
+    
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    if (![phoneNo hasPrefix:@"+1"]) {
+        phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
+    }
+    [self signOut:phoneNo];
+}
+
+- (void)signOut:(NSString*)phone
+{
+    
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
+        
+        if (error == nil)
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self pushToStep1];
+        }
+        else
+        {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)pushToStep1{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
 }
 @end
