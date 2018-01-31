@@ -159,3 +159,10 @@ Holiday
 3. Pass unique deviceId in "deviceCode" to resolve "MultipleObjectsReturned" issue
 4. Implemented all BuyingWizard APIs.
 
+#### Work on 30 JAN 2018 (Tue) Sujal Bandhara
+
+#### Work on 31 JAN 2018 (Wed) Sujal Bandhara
+
+1. Added checkLocation button in Offers Screen
+2. Added Timer in Buying Instuctions
+3. Added Signout button in Buying Instuctions
