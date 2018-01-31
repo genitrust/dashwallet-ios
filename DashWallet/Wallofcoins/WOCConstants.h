@@ -19,8 +19,8 @@
 #define WALLOFCOINS_PUBLISHER_ID 52
 
 #define IS_PRODUCTION FALSE
-#define BASE_URL_DEVELOPMENT @"http://woc.reference.genitrust.com/api/v1"
-#define BASE_URL_PRODUCTION @"http://woc.reference.genitrust.com/api/v1"
+#define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
+#define BASE_URL_PRODUCTION @"https://wallofcoins.com"
 
 #define kDeviceCode @"deviceCode"
 #define kToken @"token"

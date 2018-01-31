@@ -15,7 +15,6 @@
 #import "BRAppDelegate.h"
 #import "BRRootViewController.h"
 
-
 @interface WOCBuyDashStep1ViewController ()
 
 @property (strong, nonatomic) NSString *zipCode;

@@ -654,7 +654,7 @@
 			path = APIManager;
 			sourceTree = "<group>";
 		};
-		135FD5BB201706B200FD8770 /* WOC */ = {
+		135FD5BB201706B200FD8770 /* Wallofcoins */ = {
 			isa = PBXGroup;
 			children = (
 				138D8CB82018949E00AFD954 /* CustomCell */,
@@ -684,7 +684,7 @@
 				13A9334E201C64DD00028670 /* WOCPasswordViewController.h */,
 				13A9334F201C64DD00028670 /* WOCPasswordViewController.m */,
 			);
-			path = WOC;
+			path = Wallofcoins;
 			sourceTree = "<group>";
 		};
 		135FD5C4201759A400FD8770 /* WOCHelpers */ = {
@@ -834,7 +834,7 @@
 		7579F7FE19231D4600CA56F4 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				135FD5BB201706B200FD8770 /* WOC */,
+				135FD5BB201706B200FD8770 /* Wallofcoins */,
 				FB021E581E4DEFD300D17638 /* MBProgressHUD */,
 				FB021E501E47E17200D17638 /* FBShimmering */,
 				752E28EF19234E8100DB5A3C /* Reachability.h */,
