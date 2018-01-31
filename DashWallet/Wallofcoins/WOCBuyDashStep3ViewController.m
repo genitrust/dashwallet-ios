@@ -43,7 +43,7 @@
 }
 
 #pragma mark - Action
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)nextStepClicked:(id)sender {
     
     if ([self.bankId length] > 0) {
         
@@ -51,6 +51,8 @@
         WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
         myViewController.bankId = self.bankId;
         [self.navigationController pushViewController:myViewController animated:YES];
+        
+        return;
     }
     else{
         NSLog(@"Alert: Select payment center.");

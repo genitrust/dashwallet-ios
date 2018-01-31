@@ -13,6 +13,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtPaymentCenter;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 
-- (IBAction)nextClicked:(id)sender;
+- (IBAction)nextStepClicked:(id)sender;
 
 @end

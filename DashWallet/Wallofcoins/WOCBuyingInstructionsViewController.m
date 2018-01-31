@@ -18,6 +18,9 @@
 @interface WOCBuyingInstructionsViewController ()
 
 @property (strong, nonatomic) NSString *orderId;
+@property (strong, nonatomic) NSString *dueTime;
+@property (assign, nonatomic) int seconds;
+@property (strong, nonatomic) NSTimer *timer;
 
 @end
 
@@ -232,6 +235,7 @@
     formatter.timeZone = [NSTimeZone localTimeZone];
     NSString *localTime = [formatter stringFromDate:local];
     NSLog(@"localTime: %@",localTime);
+    self.dueTime = localTime;
     
     formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
     formatter.timeZone = [NSTimeZone localTimeZone];
@@ -246,22 +250,93 @@
     NSString *currentTime = [formatter stringFromDate:[NSDate date]];
     NSLog(@"currentTime UTC : %@",currentTime);
     
-    self.lblDepositDue.attributedText = [NSString stringWithFormat:@"Deposit Due: %@",currentTime];//[self timeLeftSinceDate:localDate];
+    NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:localTime];
+    NSMutableAttributedString *dueString = [[NSMutableAttributedString alloc] initWithString:@"Deposit Due: "];
+    [dueString appendAttributedString:timeString];
     
-    /*NSDateComponents *components;
+    self.lblDepositDue.attributedText = dueString;
+    
+    self.timer = [[NSTimer alloc] init];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTime) userInfo:nil repeats:YES];
+}
+
+-(void)checkTime{
+    
+    if (self.seconds > 0) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+        formatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        NSString *currentTime = [formatter stringFromDate:[NSDate date]];
+        NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:self.dueTime];
+        NSMutableAttributedString *dueString = [[NSMutableAttributedString alloc] initWithString:@"Deposit Due: "];
+        [dueString appendAttributedString:timeString];
+        self.lblDepositDue.attributedText = dueString;
+    }
+    else{
+        
+        self.lblDepositDue.text = @"Deposit Due: time expired";
+        [self.timer invalidate];
+    }
+}
+
+-(NSMutableAttributedString*)dateDiffrenceBetweenTwoDates:(NSString*)startDate endDate:(NSString*)endDate{
+    
+    NSMutableAttributedString *timeLeft = [[NSMutableAttributedString alloc] init];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+    
+    NSDate *startDateT = [formatter dateFromString:startDate];
+    NSDate *endDateT = [formatter dateFromString:endDate];
+    
+    NSDateComponents *components;
+    
     NSInteger days;
     NSInteger hours;
-    NSInteger minutes;
-    NSInteger seconds;
+    NSInteger minutes = 0;
+    NSInteger seconds = 0;
     
-    components = [[NSCalendar currentCalendar] components: NSCalendarUnitDay
-                                                 fromDate: [NSDate date] toDate: localDate options: 0];
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay fromDate:startDateT toDate:endDateT options:0];
     days = [components day];
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour fromDate:startDateT toDate:endDateT options:0];
     hours = [components hour];
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitMinute fromDate:startDateT toDate:endDateT options:0];
     minutes = [components minute];
+    components = [[NSCalendar currentCalendar] components:NSCalendarUnitSecond fromDate:startDateT toDate:endDateT options:0];
     seconds = [components second];
+    NSString *secondsInString = [NSString stringWithFormat:@"%ld ", (long)minutes];
     
-    NSLog(@"day: %ld, hours: %@ minutes: %@, seconds: %@",(long)days,hours,minutes,seconds);*/
+    self.seconds = [secondsInString intValue];
+    
+    NSLog(@"day: %ld, hours: %ld minutes: %ld, seconds: %ld",(long)days,(long)hours,(long)minutes,(long)seconds);
+    
+    NSInteger daysN = (int) (floor(seconds / (3600 * 24)));
+    //if(daysN) seconds -= daysN * 3600 * 24;
+    
+    NSInteger hoursN = (int) (floor(seconds / 3600));
+    //if(hoursN) seconds -= hoursN * 3600;
+    
+    NSInteger minutesN = (int) (floor(seconds / 60));
+    //if(minutesN) seconds -= minutesN * 60;
+    
+    if(daysN) {
+        [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld Days ", (long)daysN*1]]];
+    }
+    
+    if(hoursN) {
+        [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%ld Hour ", (long)hoursN*1]]];
+    }
+    
+    if(minutesN) {
+        [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%ld Minutes ",(long)minutesN*1]]];
+    }
+    
+    /*if(seconds) {
+        [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%ld Seconds", (long)seconds*-1]]];
+    }*/
+    
+    return timeLeft;
 }
 
 -(NSMutableString*) timeLeftSinceDate: (NSDate *) dateT {

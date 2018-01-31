@@ -54,7 +54,7 @@
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[sender tag] inSection:0];
     NSDictionary *offerDict = self.offers[indexPath.row];
-    if ([[offerDict valueForKey:@"bankLocationUrl"] isEqual:[NSNull null]]) {
+    if (![[offerDict valueForKey:@"bankLocationUrl"] isEqual:[NSNull null]]) {
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
         if ([[UIApplication sharedApplication] canOpenURL:url]) {
@@ -185,6 +185,8 @@
     
     if ([offerDict valueForKey:@"bankLocationUrl"] != [NSNull null]) {
         [cell.btnLocation setHidden:NO];
+        cell.btnLocation.tag = indexPath.row;
+        [cell.btnLocation addTarget:self action:@selector(checkLocationClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     /*if ([bankLogo length] > 0) {
