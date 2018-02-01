@@ -30,9 +30,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCancelOrder;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblInstructions;
+@property (weak, nonatomic) IBOutlet UITextView *txtInstruction;
+@property (weak, nonatomic) IBOutlet UIButton *btnWallOfCoins;
+@property (weak, nonatomic) IBOutlet UILabel *lblLoginPhone;
+@property (weak, nonatomic) IBOutlet UIButton *btnSignOut;
 
 - (IBAction)showMapClicked:(id)sender;
 - (IBAction)depositFinishedClicked:(id)sender;
 - (IBAction)cancelOrderClicked:(id)sender;
+- (IBAction)wallOfCoinsClicked:(id)sender;
 - (IBAction)signOutClicked:(id)sender;
 @end

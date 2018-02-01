@@ -166,3 +166,11 @@ Holiday
 1. Added checkLocation button in Offers Screen
 2. Added Timer in Buying Instuctions
 3. Added Signout button in Buying Instuctions
+
+#### Work on 01 FEB 2018 (THU) Sujal Bandhara
+
+1. Added links in Buying Instruction
+2. Added Call instruction in Buying Instruction
+3. Added user info instead of account detail in Buying Summary
+4. Added mail composer on "click here" in Buying Summary
+

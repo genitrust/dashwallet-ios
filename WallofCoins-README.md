@@ -200,7 +200,7 @@ HEADER X-Coins-Api-Token:
 POST http://woc.reference.genitrust.com/api/v1/holds/
 ```
 
-It need X-Coins-Api-Token as a header parameter which is five time mobile number without space and country code.
+It need X-Coins-Api-Token as a header parameter which will not pass for new Phone number. If Phone number is already registered with application then we need to authorize that Phone number using "auth/{phoneNumber}/authorize" API and if you will get token in the response of API then that will be used as header parameter.
 
 ##### Request :
 

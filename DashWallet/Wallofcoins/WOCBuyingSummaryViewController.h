@@ -14,6 +14,8 @@
 @property (strong, nonatomic) NSArray *orders;
 @property (assign) BOOL isFromSend;
 
+@property (weak, nonatomic) IBOutlet UITextView *txtInstruction;
+@property (weak, nonatomic) IBOutlet UILabel *lblInstruction;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *btnBuyMoreDash;
 - (IBAction)buyMoreDashClicked:(id)sender;

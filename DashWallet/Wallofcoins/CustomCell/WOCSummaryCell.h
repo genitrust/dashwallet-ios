@@ -18,5 +18,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTotalDash;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;
+@property (weak, nonatomic) IBOutlet UILabel *lblFirstName;
+@property (weak, nonatomic) IBOutlet UILabel *lblLastName;
+@property (weak, nonatomic) IBOutlet UILabel *lblBirthCountry;
+@property (weak, nonatomic) IBOutlet UILabel *lblPickupState;
 
 @end

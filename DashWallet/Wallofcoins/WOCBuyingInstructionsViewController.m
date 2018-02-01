@@ -15,11 +15,11 @@
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
 
-@interface WOCBuyingInstructionsViewController ()
+@interface WOCBuyingInstructionsViewController () <UITextViewDelegate>
 
 @property (strong, nonatomic) NSString *orderId;
 @property (strong, nonatomic) NSString *dueTime;
-@property (assign, nonatomic) int seconds;
+@property (assign, nonatomic) int minutes;
 @property (strong, nonatomic) NSTimer *timer;
 
 @end
@@ -33,6 +33,8 @@
     
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];
+    [self setShadow:self.btnWallOfCoins];
+    [self setShadow:self.btnSignOut];
     
     if (self.orderDict.count > 0) {
         [self updateData:self.orderDict];
@@ -68,6 +70,22 @@
             NSLog(@"Alert: Please enter purchase code.");
         }
     }
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"If you have any questions, there is a live chat window at wallofcoins.com or you may call the phone number that sent you a text message." attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.5]}];
+    
+    [attributedString addAttribute:NSLinkAttributeName
+                             value:@"https://wallofcoins.com"
+                             range:[[attributedString string] rangeOfString:@"wallofcoins.com"]];
+    
+    
+    NSDictionary *linkAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                     NSUnderlineColorAttributeName: [UIColor blackColor],
+                                     NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
+    
+    // assume that textView is a UITextView previously created (either by code or Interface Builder)
+    self.txtInstruction.linkTextAttributes = linkAttributes; // customizes the appearance of links
+    self.txtInstruction.attributedText = attributedString;
+    self.txtInstruction.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,7 +96,14 @@
 #pragma mark - Action
 - (IBAction)showMapClicked:(id)sender
 {
+    // Your location from latitude and longitude
+    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLatitude"];
+    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLongitude"];
     
+    NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
+    }
 }
 
 - (IBAction)depositFinishedClicked:(id)sender {
@@ -92,6 +117,20 @@
 - (IBAction)cancelOrderClicked:(id)sender
 {
     [self showCancelOrderAlert];
+}
+
+- (IBAction)wallOfCoinsClicked:(id)sender {
+    
+    [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
+}
+
+- (IBAction)signOutClicked:(id)sender {
+    
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    if (![phoneNo hasPrefix:@"+1"]) {
+        phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
+    }
+    [self signOut:phoneNo];
 }
 
 #pragma mark - Function
@@ -158,6 +197,34 @@
     appDelegate.window.rootViewController = nav;
 }
 
+- (void)pushToStep1{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
+}
+
+- (void)openSite:(NSURL*)url{
+
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+            NSLog(@"URL opened...");
+        }];
+    }
+}
+
+- (void)stopTimer{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.timer invalidate];
+    });
+}
+
 - (void)showDepositAlert
 {
     
@@ -209,6 +276,11 @@
     NSString *depositDue = [dictionary valueForKey:@"paymentDue"];
     NSString *totalDash = [dictionary valueForKey:@"total"];
     self.orderId = [dictionary valueForKey:@"id"];
+    if (![self.phoneNo hasPrefix:@"+1"]) {
+        self.phoneNo = [NSString stringWithFormat:@"+1%@",self.phoneNo];
+    }
+    NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
+    
     //bankLogo
     /*if ([bankLogo length] > 0) {
      
@@ -224,7 +296,8 @@
     self.lblAccountNo.text = [NSString stringWithFormat:@"Account #: %@",accountNo];
     self.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
     self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ Dash.",totalDash];
-    
+    self.lblLoginPhone.text = loginPhone;
+
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     formatter.timeZone = [NSTimeZone localTimeZone];
@@ -236,15 +309,6 @@
     NSString *localTime = [formatter stringFromDate:local];
     NSLog(@"localTime: %@",localTime);
     self.dueTime = localTime;
-    
-    formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
-    formatter.timeZone = [NSTimeZone localTimeZone];
-    NSDate *localDate = [formatter dateFromString:localTime];
-    NSLog(@"localDate: %@",localDate);
-    
-    formatter.timeZone = [NSTimeZone localTimeZone];
-    NSString *currentLocalTime = [formatter stringFromDate:[NSDate date]];
-    NSLog(@"currentTime Local: %@",currentLocalTime);
     
     formatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
     NSString *currentTime = [formatter stringFromDate:[NSDate date]];
@@ -258,11 +322,20 @@
     
     self.timer = [[NSTimer alloc] init];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTime) userInfo:nil repeats:YES];
+    
+    if ([[self.orderDict valueForKey:@"account"] length] > 16) {
+        
+        NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[self.orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+        
+        self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",[[accountArray objectAtIndex:0] valueForKey:@"value"], [[accountArray objectAtIndex:1] valueForKey:@"value"]];
+        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
+        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+    }
 }
 
 -(void)checkTime{
     
-    if (self.seconds > 0) {
+    if (self.minutes > 0) {
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
@@ -276,7 +349,7 @@
     else{
         
         self.lblDepositDue.text = @"Deposit Due: time expired";
-        [self.timer invalidate];
+        [self stopTimer];
     }
 }
 
@@ -307,18 +380,16 @@
     seconds = [components second];
     NSString *secondsInString = [NSString stringWithFormat:@"%ld ", (long)minutes];
     
-    self.seconds = [secondsInString intValue];
-    
-    NSLog(@"day: %ld, hours: %ld minutes: %ld, seconds: %ld",(long)days,(long)hours,(long)minutes,(long)seconds);
+    self.minutes = [secondsInString intValue];
     
     NSInteger daysN = (int) (floor(seconds / (3600 * 24)));
-    //if(daysN) seconds -= daysN * 3600 * 24;
+    if(daysN) seconds -= daysN * 3600 * 24;
     
     NSInteger hoursN = (int) (floor(seconds / 3600));
-    //if(hoursN) seconds -= hoursN * 3600;
+    if(hoursN) seconds -= hoursN * 3600;
     
     NSInteger minutesN = (int) (floor(seconds / 60));
-    //if(minutesN) seconds -= minutesN * 60;
+    if(minutesN) seconds -= minutesN * 60;
     
     if(daysN) {
         [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld Days ", (long)daysN*1]]];
@@ -330,46 +401,6 @@
     
     if(minutesN) {
         [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%ld Minutes ",(long)minutesN*1]]];
-    }
-    
-    /*if(seconds) {
-        [timeLeft appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%ld Seconds", (long)seconds*-1]]];
-    }*/
-    
-    return timeLeft;
-}
-
--(NSMutableString*) timeLeftSinceDate: (NSDate *) dateT {
-    
-    NSMutableString *timeLeft = [[NSMutableString alloc]init];
-    
-    NSDate *today10am =[NSDate date];
-    
-    NSInteger seconds = [today10am timeIntervalSinceDate:dateT];
-    
-    NSInteger days = (int) (floor(seconds / (3600 * 24)));
-    if(days) seconds -= days * 3600 * 24;
-    
-    NSInteger hours = (int) (floor(seconds / 3600));
-    if(hours) seconds -= hours * 3600;
-    
-    NSInteger minutes = (int) (floor(seconds / 60));
-    if(minutes) seconds -= minutes * 60;
-    
-    if(days) {
-        [timeLeft appendString:[NSString stringWithFormat:@"%ld Days", (long)days*-1]];
-    }
-    
-    if(hours) {
-        [timeLeft appendString:[NSString stringWithFormat: @"%ld H", (long)hours*-1]];
-    }
-    
-    if(minutes) {
-        [timeLeft appendString: [NSString stringWithFormat: @"%ld M",(long)minutes*-1]];
-    }
-    
-    if(seconds) {
-        [timeLeft appendString:[NSString stringWithFormat: @"%lds", (long)seconds*-1]];
     }
     
     return timeLeft;
@@ -466,6 +497,8 @@
             
             if (error == nil) {
                 
+                [self stopTimer];
+                
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                 WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                 myViewController.phoneNo = self.phoneNo;
@@ -486,8 +519,8 @@
             
             if (error == nil) {
                 
+                [self stopTimer];
                 NSLog(@"responseDict: %@", responseDict);
-                
                 [self pushToHome];
             }
             else{
@@ -495,15 +528,6 @@
             }
         }];
     }
-}
-
-- (IBAction)signOutClicked:(id)sender {
-    
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-    if (![phoneNo hasPrefix:@"+1"]) {
-        phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
-    }
-    [self signOut:phoneNo];
 }
 
 - (void)signOut:(NSString*)phone
@@ -517,6 +541,7 @@
         
         if (error == nil)
         {
+            [self stopTimer];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -529,16 +554,15 @@
     }];
 }
 
-- (void)pushToStep1{
+#pragma mark - UITextView Delegate
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
-        vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
-    });
+    if ([[URL scheme] isEqualToString:@"https"]) {
+        
+        [self openSite:URL];
+    
+        return NO;
+    }
+    return YES; // let the system open this URL
 }
 @end

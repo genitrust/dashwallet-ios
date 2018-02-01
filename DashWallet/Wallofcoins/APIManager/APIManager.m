@@ -114,6 +114,7 @@
       };
     NSDictionary *header =
     @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"Content-Type" : @"application/x-www-form-urlencoded"
       };
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params  header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -178,6 +179,7 @@
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/",BASE_URL];
     NSDictionary *header =
     @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"Content-Type" : @"application/x-www-form-urlencoded"
       };
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -239,6 +241,7 @@ It need X-Coins-Api-Token as a header parameter which is five time mobile number
     NSDictionary *header =
     @{
       //@"X-Coins-Api-Token": @"",
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"Content-Type":@"application/json"
       };
     
@@ -248,6 +251,7 @@ It need X-Coins-Api-Token as a header parameter which is five time mobile number
     {
         header =
         @{
+          @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
           @"X-Coins-Api-Token": token,
           @"Content-Type":@"application/json"
           };
@@ -284,6 +288,7 @@ POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
+        @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
         @"X-Coins-Api-Token": token
       };
     
@@ -334,6 +339,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"X-Coins-Api-Token": token
       };
     
@@ -346,7 +352,12 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
     
-    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    NSDictionary *header =
+    @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+      };
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -356,6 +367,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/authorize/",BASE_URL,phoneNo];
     NSDictionary *header =
     @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"Content-Type" : @"application/x-www-form-urlencoded"
       };
     
@@ -367,8 +379,12 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 -(void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
+    NSDictionary *header =
+    @{
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+      };
     
-    [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: params header: nil andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }

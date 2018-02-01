@@ -24,9 +24,13 @@
 
 - (void)startLocationService {
     self.manager = [[CLLocationManager alloc] init];
-    self.manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+    self.manager.desiredAccuracy = kCLLocationAccuracyBest;
     self.manager.delegate = self;
-    [self.manager requestWhenInUseAuthorization];
+    
+    if ([self.manager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.manager requestWhenInUseAuthorization];
+    }
+    //[self.manager requestWhenInUseAuthorization];
     [self.manager startUpdatingLocation];
 }
 

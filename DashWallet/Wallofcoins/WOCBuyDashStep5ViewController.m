@@ -145,6 +145,7 @@
             }
         }
         else{
+            [self pushToStep6:sender];
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];

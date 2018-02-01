@@ -34,8 +34,9 @@
 #import "APIManager.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
 @end
 
@@ -48,14 +49,27 @@
     
     [self setShadow:self.btnBuyMoreDash];
     
-    if (self.isFromSend) {
-        
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
-    }
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     
     if (self.orders.count == 0) {
         [self getOrders];
     }
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins." attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
+    
+    [attributedString addAttribute:NSLinkAttributeName
+                             value:@"support@wallofcoins.com"
+                             range:[[attributedString string] rangeOfString:@"click here"]];
+    
+    
+    NSDictionary *linkAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                     NSUnderlineColorAttributeName: [UIColor blackColor],
+                                     NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
+    
+    // assume that textView is a UITextView previously created (either by code or Interface Builder)
+    self.txtInstruction.linkTextAttributes = linkAttributes; // customizes the appearance of links
+    self.txtInstruction.attributedText = attributedString;
+    self.txtInstruction.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -258,6 +272,19 @@
         
         NSDictionary *orderDict = self.orders[indexPath.row];
         
+        if ([[orderDict valueForKey:@"account"] length] > 16) {
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
+            
+            NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+            cell.lblPhone.hidden = YES;
+            
+            cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
+            cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+            cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
+            cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+        }
+
         NSString *bankLogo = [orderDict valueForKey:@"bankLogo"];
         NSString *bankName = [orderDict valueForKey:@"bankName"];
         NSString *phoneNo = [NSString stringWithFormat:@"%@",[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
@@ -279,8 +306,6 @@
         cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@",totalDash];
         cell.lblStatus.text = [NSString stringWithFormat:@"Status: %@",[self checkStatus:status]];
         
-        //cell.statusView.layer.borderColor = [UIColor colorWithRed:252.0/255.0 green:48.0/255.0 blue:109.0/255.0 alpha:1.0].CGColor;
-        //cell.statusView.layer.borderWidth = 3.0;
         
         return cell;
     }
@@ -306,11 +331,48 @@
     
     if (indexPath.section == 0) {
         
+        NSDictionary *orderDict = self.orders[indexPath.row];
+        
+        if ([[orderDict valueForKey:@"account"] length] > 16) {
+            return 250.0;
+        }
         return 185.0;
     }
     else{
         
         return 110.0;
     }
+}
+
+#pragma mark - UITextView Delegate
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+    
+    if ([[URL absoluteString] hasPrefix:@"support"]) {
+        
+        if([MFMailComposeViewController canSendMail]) {
+            
+            MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+            mailController.mailComposeDelegate = self;
+            
+            NSDictionary *orderDict = [self.orders objectAtIndex:0];
+            
+            if (![self.phoneNo hasPrefix:@"+1"]) {
+                self.phoneNo = [NSString stringWithFormat:@"+1%@",self.phoneNo];
+            }
+            [mailController setSubject:[NSString stringWithFormat:@"Order #{%@} - {%@}",[orderDict valueForKey:@"id"],self.phoneNo]];
+            [mailController setToRecipients:[NSArray arrayWithObject:@"support@wallofcoins.com"]];
+            [mailController setMessageBody:@"" isHTML:NO];
+            
+            [self presentViewController:mailController animated:YES completion:nil];
+        }
+        
+        return NO;
+    }
+    return YES; // let the system open this URL
+}
+
+#pragma mark - MFMailComposer Delegate
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

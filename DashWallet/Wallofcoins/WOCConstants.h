@@ -16,7 +16,7 @@
 #endif
 #define Str(str) (str != [NSNull null])?str:@""
 
-#define WALLOFCOINS_PUBLISHER_ID 52
+#define WALLOFCOINS_PUBLISHER_ID "52"
 
 #define IS_PRODUCTION FALSE
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"

@@ -183,6 +183,9 @@
             NSLog(@"Error : %@", error);
         }];
     }
+    else{
+        [[WOCLocationManager sharedInstance] startLocationService];
+    }
 }
 
 - (void)getAddressFromLocation:(CLLocation *)location completionHandler:(void (^)(NSMutableDictionary *placemark))completionHandler failureHandler:(void (^)(NSError *error))failureHandler
