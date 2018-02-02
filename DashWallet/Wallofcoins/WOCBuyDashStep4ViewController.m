@@ -28,7 +28,7 @@
     [super viewDidLoad];
 
     self.title = @"Buy Dash With Cash";
-    
+    self.txtDash.text = @"to acquire Dash (Đ) (1,000,000 đots = 1 ĐASH)";
     self.btnGetOffers.layer.cornerRadius = 3.0;
     self.btnGetOffers.layer.masksToBounds = YES;
     [self setShadow:self.btnGetOffers];
@@ -136,7 +136,7 @@
         self.line2Height.constant = 2;
     }
 }
-
+/*
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
     if (textField.tag == dollarTextField) {
@@ -153,5 +153,5 @@
     }
     return false;
 }
-
+*/
 @end

@@ -144,7 +144,8 @@
                 }
             }
         }
-        else{
+        else
+        {
             if ([error code] == 404) {
 
                 //new number
@@ -217,8 +218,21 @@
             myViewController.emailId = self.emailId;
             [self.navigationController pushViewController:myViewController animated:YES];
         }
-        else{
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
+            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
+            [[NSUserDefaults standardUserDefaults] setValue:countryCode forKey:kCountryCode];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+            myViewController.phoneNo = phoneNo;
+            myViewController.offerId = self.offerId;
+            myViewController.deviceCode = deviceCode;
+            myViewController.emailId = self.emailId;
+            [self.navigationController pushViewController:myViewController animated:YES];
+            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
