@@ -431,14 +431,31 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
         
+        NSError *error = nil;
+        id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
+        if (connectionError != nil)
+        {
+            APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
+             APILog(@"==>API Error RESPONSE : \n%@",dictionary);
+        }
+        
         if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError)
         {
             NSError * returnError = connectionError;
             if (!returnError) {
-                returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
+                
+                if (dictionary[@"detail"] != nil)
+                {
+                    returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:dictionary];
+                }
+                else
+                {
+                    returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
+                }
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                APILog(@"XX>API RESPONSE ERROR: \n%@",returnError.localizedDescription);
+                
                 completionBlock(nil,returnError);
             });
             return;
@@ -450,8 +467,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
             return;
         }
         
-        NSError *error = nil;
-        id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 APILog(@"XX>API RESPONSE ERROR: \n%@",error.localizedDescription);

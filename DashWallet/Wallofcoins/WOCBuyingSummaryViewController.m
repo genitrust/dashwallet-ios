@@ -35,6 +35,7 @@
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
 #import <MessageUI/MFMailComposeViewController.h>
+#import "WOCAlertController.h"
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
@@ -66,8 +67,7 @@
                                      NSUnderlineColorAttributeName: [UIColor blackColor],
                                      NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
     
-    // assume that textView is a UITextView previously created (either by code or Interface Builder)
-    self.txtInstruction.linkTextAttributes = linkAttributes; // customizes the appearance of links
+    self.txtInstruction.linkTextAttributes = linkAttributes;
     self.txtInstruction.attributedText = attributedString;
     self.txtInstruction.delegate = self;
 }
@@ -85,23 +85,31 @@
 
 - (IBAction)signOutClicked:(id)sender {
     
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-    if (![phoneNo hasPrefix:@"+1"]) {
-        phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
-    }
+    NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    NSString *code = [[NSUserDefaults standardUserDefaults] valueForKey:kCountryCode];
+    NSString *phoneNo = [NSString stringWithFormat:@"%@%@",code,phone];
+    
     [self signOut:phoneNo];
+}
+
+- (IBAction)wallOfCoinsClicked:(id)sender {
+    
+    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+            NSLog(@"URL opened...");
+        }];
+    }
 }
 
 #pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 
@@ -139,7 +147,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
         [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
@@ -220,7 +228,7 @@
         }
         else
         {
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -242,7 +250,7 @@
         }
         else
         {
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -251,7 +259,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -292,7 +300,7 @@
         NSString *totalDash = [orderDict valueForKey:@"total"];
         NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
         
-        //bankLogo
+        //bankLogo - inproper url in development
         /*if ([bankLogo length] > 0) {
          
          NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
@@ -303,9 +311,27 @@
         cell.lblName.text = bankName;
         cell.lblPhone.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];
         cell.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
-        cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@",totalDash];
+        
+        NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
+        
+        NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+        [numFormatter setUsesGroupingSeparator:YES];
+        [numFormatter setGroupingSeparator:@","];
+        [numFormatter setGroupingSize:3];
+        
+        NSString *stringNum = [numFormatter stringFromNumber:num];
+        
+        cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@ (%@ dots)",totalDash,stringNum];
         cell.lblStatus.text = [NSString stringWithFormat:@"Status: %@",[self checkStatus:status]];
         
+        
+        return cell;
+    }
+    else if (indexPath.section == 1) {
+        
+        WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"linkCell"];
+        
+        [cell.btnSignOut addTarget:self action:@selector(wallOfCoinsClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
     }
@@ -313,18 +339,11 @@
         
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
         
-        if (![self.phoneNo hasPrefix:@"+1"]) {
-            self.phoneNo = [NSString stringWithFormat:@"+1%@",self.phoneNo];
-        }
         cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
         [cell.btnSignOut addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
     }
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -356,9 +375,6 @@
             
             NSDictionary *orderDict = [self.orders objectAtIndex:0];
             
-            if (![self.phoneNo hasPrefix:@"+1"]) {
-                self.phoneNo = [NSString stringWithFormat:@"+1%@",self.phoneNo];
-            }
             [mailController setSubject:[NSString stringWithFormat:@"Order #{%@} - {%@}",[orderDict valueForKey:@"id"],self.phoneNo]];
             [mailController setToRecipients:[NSArray arrayWithObject:@"support@wallofcoins.com"]];
             [mailController setMessageBody:@"" isHTML:NO];
@@ -368,7 +384,7 @@
         
         return NO;
     }
-    return YES; // let the system open this URL
+    return YES;
 }
 
 #pragma mark - MFMailComposer Delegate

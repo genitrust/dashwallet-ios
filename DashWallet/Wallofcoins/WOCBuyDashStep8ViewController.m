@@ -10,6 +10,9 @@
 #import "WOCBuyingInstructionsViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
+#import "WOCAlertController.h"
+#import "BRRootViewController.h"
+#import "BRAppDelegate.h"
 
 @interface WOCBuyDashStep8ViewController ()
 
@@ -48,18 +51,15 @@
         [self.navigationController pushViewController:myViewController animated:YES];
     }
     else{
-        NSLog(@"Alert: %@", @"Enter Purchase Code");
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Purchase Code" viewController:self.navigationController.visibleViewController];
     }
 }
 
 #pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
     view.layer.shadowRadius = 1; //1
     view.layer.shadowOpacity = 1;//1
     view.layer.masksToBounds = false;
@@ -75,7 +75,7 @@
         self.deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     }
     
-    NSDictionary *params ;
+    NSDictionary *params;
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
@@ -96,6 +96,7 @@
                     @"phone": self.phoneNo,
                     @"deviceName": @"Dash Wallet (iOS)",
                     @"deviceCode": self.deviceCode,
+                    @"email": self.emailId,
                     @"JSONPara":@"YES"
                     };
     }
@@ -117,7 +118,22 @@
         }
         else
         {
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+                
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [nav.navigationBar setTintColor:[UIColor whiteColor]];
+                
+                UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+                UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+                
+                BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                appDelegate.window.rootViewController = nav;
+            });
         }
     }];
 }

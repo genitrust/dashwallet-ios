@@ -13,6 +13,8 @@
 #import "WOCLocationManager.h"
 #import <CoreLocation/CoreLocation.h>
 #import "BRWalletManager.h"
+#import "WOCAlertController.h"
+
 #define dashTextField 101
 #define dollarTextField 102
 
@@ -50,25 +52,29 @@
     
     if ([dollarString length] > 0 && [dollarString intValue] != 0) {
         
-        if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
+        if ([dollarString intValue] >= 5) {
             
-            if ([self.zipCode length] > 0) {
+            if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
                 
-                [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
+                if ([self.zipCode length] > 0) {
+                    
+                    [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
+                }
+                else if ([self.bankId length] > 0){
+                    
+                    [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
+                }
             }
-            else if ([self.bankId length] > 0){
-                
-                [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
+            else{
+                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
             }
         }
         else{
-            
-            NSLog(@"Alert: zipCode or bankId is empty.");
+            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Amount must be more than $5." viewController:self.navigationController.visibleViewController];
         }
     }
     else{
-        
-        NSLog(@"Alert: Enter amount");
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Enter amount." viewController:self.navigationController.visibleViewController];
     }
 }
 
@@ -95,7 +101,7 @@
       @"usdAmount": amount,
       @"crypto": @"DASH",
       @"bank": bankId,
-      @"zipCode": zipCode//zipCode
+      @"zipCode": zipCode
       };
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
@@ -112,7 +118,7 @@
         }
         else{
             
-            NSLog(@"Error: %@",error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }

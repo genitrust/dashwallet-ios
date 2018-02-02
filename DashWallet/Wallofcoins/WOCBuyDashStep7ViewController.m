@@ -11,9 +11,13 @@
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "WOCPasswordViewController.h"
-#import "WOCBuyDashStep8ViewController.h"
+#import "WOCAlertController.h"
 
-@interface WOCBuyDashStep7ViewController ()
+@interface WOCBuyDashStep7ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
+
+@property (strong, nonatomic) NSArray *countries;
+@property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) NSString *countryCode;
 
 @end
 
@@ -27,20 +31,17 @@
     [self setShadow:self.btnNext];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:@"openBuyDashStep8" object:nil];
+    
+    self.pickerView = [[UIPickerView alloc] init];
+    self.pickerView.delegate = self;
+    self.pickerView.dataSource = self;
+    self.txtCountryCode.inputView = self.pickerView;
+    
+    [self loadJSON];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    
-    NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-    
-    if (phone != nil) {
-        
-        if ([phone hasPrefix:@"+1"]) {
-            phone = [phone stringByReplacingOccurrencesOfString:@"+1" withString:@""];
-        }
-        
-        self.txtPhoneNumber.text = phone;
-    }
+   
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,67 +54,71 @@
     
     NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if ([txtPhone length] > 0) {
-        
-        [self checkPhone:txtPhone];
-        
-        /*NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",txtPhone,txtPhone,txtPhone,txtPhone,txtPhone];
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-        myViewController.offerId = self.offerId;
-        myViewController.phoneNo =
-        myViewController.deviceCode = deviceCode;
-        [self.navigationController pushViewController:myViewController animated:YES];*/
+    if ([self.countryCode length] == 0) {
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Select country code." viewController:self.navigationController.visibleViewController];
     }
-    else
-    {
-
+    else if ([txtPhone length] == 0) {
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter phone number." viewController:self.navigationController.visibleViewController];
+    }
+    else{
+        [self checkPhone:txtPhone code:self.countryCode];
     }
 }
 
 #pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
+}
+
+- (void)loadJSON{
+
+    // Retrieve local JSON file called example.json
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"countries" ofType:@"json"];
+    
+    // Load the file into an NSData object called JSONData
+    NSError *error = nil;
+    NSData *JSONData = [NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:&error];
+    
+    // Create an Objective-C object from JSON Data
+    NSDictionary *countriesDict = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingMutableContainers error:nil];
+    NSArray *countries = [countriesDict valueForKey:@"countries"];
+    
+    self.countries = countries;
+    if (self.countries.count > 0) {
+        self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[0][@"name"],self.countries[0][@"code"]];
+        self.countryCode = [NSString stringWithFormat:@"%@",self.countries[0][@"code"]];
+    }
+    
+    [self.pickerView reloadAllComponents];
 }
 
 - (void)openBuyDashStep8:(NSNotification*)notification {
     
     NSString *phone = [NSString stringWithFormat:@"%@",notification.object];
-    
-    NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
-    
-    if ([phone hasPrefix:@"+1"]) {
-        
-        NSString *phoneNo = [phone stringByReplacingOccurrencesOfString:@"+1" withString:@""];
-        
-        deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phoneNo,phoneNo,phoneNo,phoneNo,phoneNo];
-    }
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
     myViewController.phoneNo = phone;
     myViewController.offerId = self.offerId;
     myViewController.deviceCode = deviceCode;
+    myViewController.emailId = self.emailId;
     [self.navigationController pushViewController:myViewController animated:YES];
 }
 
 #pragma mark - API
-- (void)checkPhone:(NSString*)phone {
+- (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
     
     NSDictionary *params = @{
                              @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    NSString *phoneNo = [NSString stringWithFormat:@"+1%@",phone];
+    NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
     
     [[APIManager sharedInstance] authorizeDevice:params phone:phoneNo response:^(id responseDict, NSError *error) {
    
@@ -135,19 +140,17 @@
                 }
                 else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
                     
-                    [self login:phone];
+                    [self login:phone code:countryCode];
                 }
             }
         }
         else{
-            
             if ([error code] == 404) {
-                
+
                 //new number
-                //NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
-                
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCountryCode];
                 
                 NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
                 
@@ -156,20 +159,36 @@
                 myViewController.phoneNo = phoneNo;
                 myViewController.offerId = self.offerId;
                 myViewController.deviceCode = deviceCode;
+                myViewController.emailId = self.emailId;
                 [self.navigationController pushViewController:myViewController animated:YES];
                 
                 [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
-            
-            NSLog(@"Error: %@", error.localizedDescription);
+            else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.userInfo != nil)
+                    {
+                        if (error.userInfo[@"detail"] != nil)
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
+                        }
+                        else
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                        }
+                    }
+                    else
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                    }
+                });
+            }
         }
     }];
 }
 
-- (void)login:(NSString*)phone{
-    
-    //NSString *deviceCode = [NSString stringWithFormat:@"%@%@%@%@%@",phone,phone,phone,phone,phone];
+- (void)login:(NSString*)phone code:(NSString*)countryCode{
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     
@@ -178,7 +197,7 @@
                              @"deviceCode": deviceCode
                              };
     
-    NSString *phoneNo = [NSString stringWithFormat:@"+1%@",phone];
+    NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
     
@@ -186,9 +205,8 @@
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:kToken] forKey:kToken];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-
-            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:@"phone"];
+            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
+            [[NSUserDefaults standardUserDefaults] setValue:countryCode forKey:kCountryCode];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -196,12 +214,32 @@
             myViewController.phoneNo = phoneNo;
             myViewController.offerId = self.offerId;
             myViewController.deviceCode = deviceCode;
+            myViewController.emailId = self.emailId;
             [self.navigationController pushViewController:myViewController animated:YES];
         }
         else{
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
+}
+
+#pragma mark - UIPickerView Delegates
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
+    return self.countries.count;
+}
+
+- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+
+    self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
+    self.countryCode = [NSString stringWithFormat:@"%@",self.countries[row][@"code"]];
 }
 
 @end

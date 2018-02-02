@@ -14,6 +14,7 @@
 #import "WOCBuyingSummaryViewController.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
+#import "WOCAlertController.h"
 
 @interface WOCBuyingInstructionsViewController () <UITextViewDelegate>
 
@@ -48,16 +49,14 @@
     else if (self.isFromOffer){
         
         NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-        
-        if (![phone hasPrefix:@"+1"]) {
-            phone = [NSString stringWithFormat:@"+1%@",phone];
-        }
+        NSString *code = [[NSUserDefaults standardUserDefaults] valueForKey:kCountryCode];
+        NSString *phoneNo = [NSString stringWithFormat:@"%@%@",code,phone];
         
         if (self.offerId != nil && [self.offerId length] > 0) {
-            [self createHold:self.offerId phoneNo:phone];
+            [self createHold:self.offerId phoneNo:phoneNo];
         }
         else{
-            NSLog(@"Alert: Please select offer.");
+            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please select offer." viewController:self.navigationController.visibleViewController];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -67,7 +66,7 @@
             [self captureHold:self.purchaseCode holdId:self.holdId];
         }
         else{
-            NSLog(@"Alert: Please enter purchase code.");
+            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please enter purchase code." viewController:self.navigationController.visibleViewController];
         }
     }
     
@@ -109,9 +108,6 @@
 - (IBAction)depositFinishedClicked:(id)sender {
     
     [self showDepositAlert];
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-//    WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-//    [self.navigationController pushViewController:myViewController animated:YES];
 }
 
 - (IBAction)cancelOrderClicked:(id)sender
@@ -127,22 +123,17 @@
 - (IBAction)signOutClicked:(id)sender {
     
     NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-    if (![phoneNo hasPrefix:@"+1"]) {
-        phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
-    }
+    
     [self signOut:phoneNo];
 }
 
 #pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 
@@ -150,7 +141,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
         [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
@@ -201,7 +192,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
         [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
@@ -276,17 +267,15 @@
     NSString *depositDue = [dictionary valueForKey:@"paymentDue"];
     NSString *totalDash = [dictionary valueForKey:@"total"];
     self.orderId = [dictionary valueForKey:@"id"];
-    if (![self.phoneNo hasPrefix:@"+1"]) {
-        self.phoneNo = [NSString stringWithFormat:@"+1%@",self.phoneNo];
-    }
+    
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
     
-    //bankLogo
+    //bankLogo - inproper url in development
     /*if ([bankLogo length] > 0) {
      
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
-        self.imgView.image = [UIImage imageWithData: imageData];
-    }*/
+     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
+     self.imgView.image = [UIImage imageWithData: imageData];
+     }*/
     
     self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     
@@ -295,7 +284,17 @@
     self.lblAccountName.text = [NSString stringWithFormat:@"Name on Account: %@",accountName];
     self.lblAccountNo.text = [NSString stringWithFormat:@"Account #: %@",accountNo];
     self.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
-    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ Dash.",totalDash];
+    
+    NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
+    
+    NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+    [numFormatter setUsesGroupingSeparator:YES];
+    [numFormatter setGroupingSeparator:@","];
+    [numFormatter setGroupingSize:3];
+    
+    NSString *stringNum = [numFormatter stringFromNumber:num];
+    
+    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ Dash (%@ dots)",totalDash, stringNum];
     self.lblLoginPhone.text = loginPhone;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -323,9 +322,9 @@
     self.timer = [[NSTimer alloc] init];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTime) userInfo:nil repeats:YES];
     
-    if ([[self.orderDict valueForKey:@"account"] length] > 16) {
+    if ([[dictionary valueForKey:@"account"] length] > 16) {
         
-        NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[self.orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+        NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[dictionary valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
         
         self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",[[accountArray objectAtIndex:0] valueForKey:@"value"], [[accountArray objectAtIndex:1] valueForKey:@"value"]];
         self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
@@ -347,7 +346,6 @@
         self.lblDepositDue.attributedText = dueString;
     }
     else{
-        
         self.lblDepositDue.text = @"Deposit Due: time expired";
         [self stopTimer];
     }
@@ -442,7 +440,6 @@
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             
-            
             NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
             self.holdId = holdId;
             NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
@@ -456,7 +453,7 @@
             [self captureHold:purchaseCode holdId:holdId];
         }
         else{
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -484,7 +481,7 @@
             }
         }
         else{
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -505,7 +502,23 @@
                 [self.navigationController pushViewController:myViewController animated:YES];
             }
             else{
-                NSLog(@"Error: %@", error.localizedDescription);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.userInfo != nil)
+                    {
+                        if (error.userInfo[@"detail"] != nil)
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
+                        }
+                        else
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                        }
+                    }
+                    else
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                    }
+                });
             }
         }];
     }
@@ -520,11 +533,26 @@
             if (error == nil) {
                 
                 [self stopTimer];
-                NSLog(@"responseDict: %@", responseDict);
                 [self pushToHome];
             }
             else{
-                NSLog(@"Error: %@", error.localizedDescription);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.userInfo != nil)
+                    {
+                        if (error.userInfo[@"detail"] != nil)
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
+                        }
+                        else
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                        }
+                    }
+                    else
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                    }
+                });
             }
         }];
     }
@@ -549,7 +577,7 @@
         }
         else
         {
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -563,6 +591,6 @@
     
         return NO;
     }
-    return YES; // let the system open this URL
+    return YES;
 }
 @end

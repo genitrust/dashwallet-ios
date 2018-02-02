@@ -18,13 +18,16 @@
 
 #define WALLOFCOINS_PUBLISHER_ID "52"
 
-#define IS_PRODUCTION FALSE
-#define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
+//#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
+#define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
+
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
+#define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 
 #define kDeviceCode @"deviceCode"
 #define kToken @"token"
 #define kPhone @"phone"
+#define kCountryCode @"countryCode"
 #define kLaunchStatus @"first"
 
 #endif /* WOCUserDefaultsConstants_h */

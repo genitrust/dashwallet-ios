@@ -13,6 +13,7 @@
 #import "WOCOfferCell.h"
 #import "APIManager.h"
 #import "BRWalletManager.h"
+#import "WOCAlertController.h"
 
 @interface WOCBuyDashStep5ViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -92,7 +93,23 @@
                 [self.tableView reloadData];
             }
             else{
-                NSLog(@"Error: %@", error.localizedDescription);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.userInfo != nil)
+                    {
+                        if (error.userInfo[@"detail"] != nil)
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
+                        }
+                        else
+                        {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                        }
+                    }
+                    else
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                    }
+                });
             }
         }];
     }
@@ -146,7 +163,7 @@
         }
         else{
             [self pushToStep6:sender];
-            NSLog(@"Error: %@", error.localizedDescription);
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -165,7 +182,7 @@
     NSDictionary *offerDict = self.offers[indexPath.row];
     
     NSString *dashAmount = [NSString stringWithFormat:@"%@",[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"]];
-    NSString *bits = [NSString stringWithFormat:@"%@",[[offerDict valueForKey:@"amount"] valueForKey:@"bits"]];
+    NSString *bits = [NSString stringWithFormat:@"(%@)",[[offerDict valueForKey:@"amount"] valueForKey:@"dots"]];
     NSString *bankName = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankName"]];
     NSString *bankAddress = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"address"]];
     NSString *bankLocationUrl = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]];
@@ -177,8 +194,7 @@
     
     uint64_t dshAmt = [[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"] longLongValue];
     uint64_t bitsAmt = [[[offerDict valueForKey:@"amount"] valueForKey:@"bits"] longLongValue];
-    //[manager attributedStringForDashAmount:dshAmt]
-    //[manager bitcoinCurrencyStringForAmount:bitsAmt]
+
     cell.lblDashTitle.text = dashAmount;
     cell.lblDashSubTitle.text = bits;
     cell.lblBankName.text = bankName;
@@ -190,6 +206,7 @@
         [cell.btnLocation addTarget:self action:@selector(checkLocationClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     
+    //bankLogo - inproper url in development
     /*if ([bankLogo length] > 0) {
      
         NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
@@ -202,10 +219,6 @@
     cell.btnOrder.tag = indexPath.row;
     
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

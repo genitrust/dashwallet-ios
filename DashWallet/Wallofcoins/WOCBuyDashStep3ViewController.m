@@ -9,6 +9,7 @@
 #import "WOCBuyDashStep3ViewController.h"
 #import "WOCBuyDashStep4ViewController.h"
 #import "APIManager.h"
+#import "WOCAlertController.h"
 
 @interface WOCBuyDashStep3ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -54,8 +55,9 @@
         
         return;
     }
-    else{
-        NSLog(@"Alert: Select payment center.");
+    else
+    {
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Select payment center." viewController:self.navigationController.visibleViewController];
     }
 }
 
@@ -79,7 +81,11 @@
         
         if (error == nil) {
             
-            self.paymentCenters = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
+            NSArray *responseArray = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
+            
+            NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+            self.paymentCenters = [responseArray sortedArrayUsingDescriptors:@[sort]];
+            
             [self.pickerView reloadAllComponents];
         }
     }];

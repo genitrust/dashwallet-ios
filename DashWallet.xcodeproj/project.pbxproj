@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		131934432023369900304901 /* Screenshot_20180131-114226.png in Resources */ = {isa = PBXBuildFile; fileRef = 131934422023369800304901 /* Screenshot_20180131-114226.png */; };
+		132AC7B42024388600D8D55E /* WOCAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132AC7B32024388600D8D55E /* WOCAlertController.m */; };
+		132AC7B72024926800D8D55E /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 132AC7B62024926800D8D55E /* countries.json */; };
 		135FD5B62017016C00FD8770 /* buyDash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135FD5B42017016C00FD8770 /* buyDash.storyboard */; };
 		135FD5BA2017029700FD8770 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5B92017029700FD8770 /* APIManager.m */; };
 		135FD5BE201706D100FD8770 /* WOCBuyDashStep1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5BD201706D100FD8770 /* WOCBuyDashStep1ViewController.m */; };
@@ -226,7 +227,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		131934422023369800304901 /* Screenshot_20180131-114226.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Screenshot_20180131-114226.png"; path = "../../../../Volumes/Macintosh HD/Users/imac03/Desktop/BuyDashWithCash/Screenshot_20180131-114226.png"; sourceTree = "<group>"; };
+		132AC7B22024388600D8D55E /* WOCAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCAlertController.h; sourceTree = "<group>"; };
+		132AC7B32024388600D8D55E /* WOCAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCAlertController.m; sourceTree = "<group>"; };
+		132AC7B62024926800D8D55E /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
 		135FD5B52017016C00FD8770 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = DashWallet/Base.lproj/buyDash.storyboard; sourceTree = "<group>"; };
 		135FD5B82017029700FD8770 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
 		135FD5B92017029700FD8770 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
@@ -647,6 +650,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		132AC7B52024925600D8D55E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				132AC7B62024926800D8D55E /* countries.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		135FD5B72017029700FD8770 /* APIManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -659,6 +670,7 @@
 		135FD5BB201706B200FD8770 /* Wallofcoins */ = {
 			isa = PBXGroup;
 			children = (
+				132AC7B52024925600D8D55E /* Resources */,
 				138D8CB82018949E00AFD954 /* CustomCell */,
 				135FD5C4201759A400FD8770 /* WOCHelpers */,
 				135FD5B72017029700FD8770 /* APIManager */,
@@ -694,6 +706,8 @@
 			children = (
 				135FD5C820175EBA00FD8770 /* WOCLocationManager.h */,
 				135FD5C920175EBA00FD8770 /* WOCLocationManager.m */,
+				132AC7B22024388600D8D55E /* WOCAlertController.h */,
+				132AC7B32024388600D8D55E /* WOCAlertController.m */,
 			);
 			path = WOCHelpers;
 			sourceTree = "<group>";
@@ -984,7 +998,6 @@
 		75D5F3C7191EC270004AB296 /* DashWallet */ = {
 			isa = PBXGroup;
 			children = (
-				131934422023369800304901 /* Screenshot_20180131-114226.png */,
 				FBF267A61E414A58001A1C8B /* x11 */,
 				BAC7B6BF1BD9C2B500165B84 /* AppleWatch */,
 				752E289C19234A4700DB5A3C /* Models */,
@@ -1418,10 +1431,10 @@
 				75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */,
 				75C0E3BF1B1BA294007BC531 /* BIP39Words.plist in Resources */,
 				75E83CF61B5F997A0038FB70 /* coinflip.aiff in Resources */,
-				131934432023369900304901 /* Screenshot_20180131-114226.png in Resources */,
 				755FC9ED1BF1DF1B00164ABB /* BREventConfirmView.xib in Resources */,
 				752E28F719235B3000DB5A3C /* FixedPeers.plist in Resources */,
 				75D5F3DE191EC270004AB296 /* Main.storyboard in Resources */,
+				132AC7B72024926800D8D55E /* countries.json in Resources */,
 				135FD5B62017016C00FD8770 /* buyDash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1512,6 +1525,7 @@
 				752E28AA19234AE300DB5A3C /* BRAddressEntity.m in Sources */,
 				75AA5F55194143D5003F23BD /* BRBouncyBurgerButton.m in Sources */,
 				752E28AB19234AE300DB5A3C /* BRMerkleBlockEntity.m in Sources */,
+				132AC7B42024388600D8D55E /* WOCAlertController.m in Sources */,
 				BA7B53501BDA9A2800355E8D /* BRAppleWatchData.m in Sources */,
 				752E28AC19234AE300DB5A3C /* BRPeerEntity.m in Sources */,
 				FBF2680E1E419318001A1C8B /* DSShapeshiftEntity+CoreDataClass.m in Sources */,

@@ -357,7 +357,7 @@
             
             if (orders.count > 0){
                 
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
                 
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
@@ -367,7 +367,7 @@
                     
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
+                    myViewController.phoneNo = phone;
                     myViewController.isFromSend = YES;
                     myViewController.isFromOffer = NO;
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
@@ -376,7 +376,7 @@
                 else{
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = [NSString stringWithFormat:@"+1%@",phoneNo];
+                    myViewController.phoneNo = phone;
                     myViewController.orders = orders;
                     myViewController.isFromSend = YES;
                     [self.navigationController pushViewController:myViewController animated:YES];

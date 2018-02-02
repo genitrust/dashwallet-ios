@@ -15,9 +15,11 @@
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UILabel *lblWOCLink;
+@property (weak, nonatomic) IBOutlet UIButton *btnWOCLink;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnForgotPassword;
+- (IBAction)linkClicked:(id)sender;
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)forgotPasswordClicked:(id)sender;
 @end

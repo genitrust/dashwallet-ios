@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *phoneNo;
+@property (strong, nonatomic) NSString *emailId;
 @property (strong, nonatomic) NSString *deviceCode;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPurchaseCode;

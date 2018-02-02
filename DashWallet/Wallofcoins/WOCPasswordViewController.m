@@ -10,8 +10,9 @@
 #import "WOCBuyDashStep8ViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
+#import "WOCAlertController.h"
 
-@interface WOCPasswordViewController ()
+@interface WOCPasswordViewController () <UITextViewDelegate>
 
 @end
 
@@ -20,13 +21,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+    
     self.mainView.layer.cornerRadius = 3.0;
     self.mainView.layer.masksToBounds = YES;
     
     [self setShadow:self.btnLogin];
     [self setShadow:self.btnForgotPassword];
     
-    self.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:self.btnWOCLink.titleLabel.text];
+    // making text property to underline text-
+    [titleString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(30, 13)];
+    [titleString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(30, 13)];
+    // using text on button
+    [self.btnWOCLink setAttributedTitle:titleString forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,6 +43,16 @@
 }
 
 #pragma mark - Action
+
+- (IBAction)linkClicked:(id)sender {
+    
+    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    }
+}
+
 - (IBAction)loginClicked:(id)sender {
     
     NSString *password = [self.txtPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -44,8 +62,7 @@
         [self login:self.phoneNo password:password];
     }
     else{
-        
-        NSLog(@"Alert: Enter password.");
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter password." viewController:self.navigationController.visibleViewController];
     }
 }
 
@@ -62,13 +79,10 @@
 #pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 
@@ -95,8 +109,25 @@
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"openBuyDashStep8" object:phone];
         }
-        else{
-            NSLog(@"Error: %@", error.localizedDescription);
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error.userInfo != nil)
+                {
+                    if (error.userInfo[@"detail"] != nil)
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self];
+                    }
+                    else
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
+                    }
+                }
+                else
+                {
+                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
+                }
+            });
         }
     }];
 }
