@@ -45,6 +45,12 @@
 #import "MBProgressHUD.h"
 #import "DSShapeshiftManager.h"
 #import "BRBIP32Sequence.h"
+#import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingInstructionsViewController.h"
+#import "WOCBuyingSummaryViewController.h"
+#import "APIManager.h"
+#import "WOCConstants.h"
+#import "BRAppDelegate.h"
 
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
 "You can send a payment to anyone with an address.", nil)
@@ -80,7 +86,7 @@ static NSString *sanitizeString(NSString *s)
 
 @property (nonatomic, strong) IBOutlet UILabel *sendLabel;
 @property (nonatomic, strong) IBOutlet UISwitch *instantSwitch;
-@property (nonatomic, strong) IBOutlet UIButton *scanButton, *clipboardButton;
+@property (nonatomic, strong) IBOutlet UIButton *scanButton, *clipboardButton, *buyDashButton;
 @property (nonatomic, strong) IBOutlet UIView * shapeshiftView;
 @property (nonatomic, strong) IBOutlet UILabel * shapeshiftLabel;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * NFCWidthConstraint;
@@ -98,11 +104,13 @@ static NSString *sanitizeString(NSString *s)
     // TODO: XXX redesign page with round buttons like the iOS power down screen... apple watch also has round buttons
     self.scanButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.buyDashButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.scanButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
+    self.buyDashButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
 #pragma clang diagnostic pop
     
     FBShimmeringView *shimmeringView = [[FBShimmeringView alloc] initWithFrame:CGRectMake(0, self.shapeshiftView.frame.origin.y, self.view.frame.size.width, self.shapeshiftView.frame.size.height)];
@@ -1526,6 +1534,18 @@ static NSString *sanitizeString(NSString *s)
     self.shapeshiftView.hidden = FALSE;
 }
 
+-(void)pushToStep1{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
+}
 
 // MARK: - IBAction
 
@@ -1596,6 +1616,22 @@ static NSString *sanitizeString(NSString *s)
     [self payFirstFromArray:set.array];
 }
 
+- (IBAction)buyDash:(id)sender {
+    
+    [sender setEnabled:NO];
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        [self getOrders];
+    }
+    else
+    {
+        [self pushToStep1];
+    }
+}
+
 - (IBAction)reset:(id)sender
 {
     if (self.navigationController.topViewController != self.parentViewController.parentViewController) {
@@ -1609,7 +1645,7 @@ static NSString *sanitizeString(NSString *s)
     self.scheme = nil;
     self.associatedShapeshift = nil;
     [self cancel:sender];
-    
+
 }
 
 - (IBAction)cancel:(id)sender
@@ -1621,7 +1657,7 @@ static NSString *sanitizeString(NSString *s)
     self.okAddress = self.okIdentity = nil;
     self.clearClipboard = self.useClipboard = NO;
     self.canChangeAmount = self.showBalance = NO;
-    self.scanButton.enabled = self.clipboardButton.enabled = YES;
+    self.scanButton.enabled = self.clipboardButton.enabled = self.buyDashButton.enabled = YES;
     [self updateClipboardText];
 }
 
@@ -1629,6 +1665,59 @@ static NSString *sanitizeString(NSString *s)
     [BREventManager saveEvent:@"send:nfc"];
         NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
         [session beginSession];
+}
+
+// MARK: - API
+- (void)getOrders {
+    
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0){
+                
+                NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                
+                if ([status isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phone;
+                    myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = phone;
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+            }
+            else{
+                
+                [self pushToStep1];
+            }
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+            
+            [self pushToStep1];
+        }
+    }];
 }
 
 // MARK: - NFCNDEFReaderSessionDelegate
