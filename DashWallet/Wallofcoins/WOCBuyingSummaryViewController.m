@@ -85,9 +85,7 @@
 
 - (IBAction)signOutClicked:(id)sender {
     
-    NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-    NSString *code = [[NSUserDefaults standardUserDefaults] valueForKey:kCountryCode];
-    NSString *phoneNo = [NSString stringWithFormat:@"%@%@",code,phone];
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
     
     [self signOut:phoneNo];
 }
@@ -215,7 +213,7 @@
 - (void)getOrders {
     
     NSDictionary *params = @{
-                            @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                            @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
                             };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
@@ -236,7 +234,7 @@
 - (void)signOut:(NSString*)phone {
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {

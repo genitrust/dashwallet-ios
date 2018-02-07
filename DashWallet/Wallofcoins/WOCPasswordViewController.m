@@ -90,7 +90,7 @@
 - (void)login:(NSString*)phone password:(NSString*)password{
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
                              @"password": password
                              };
     

@@ -99,12 +99,14 @@
 
 - (void)openBuyDashStep8:(NSNotification*)notification {
     
-    NSString *phone = [NSString stringWithFormat:@"%@",notification.object];
+    NSString *phoneNo = [NSString stringWithFormat:@"%@",notification.object];
+    [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:kPhone];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-    myViewController.phoneNo = phone;
+    myViewController.phoneNo = phoneNo;
     myViewController.offerId = self.offerId;
     myViewController.deviceCode = deviceCode;
     myViewController.emailId = self.emailId;
@@ -115,7 +117,7 @@
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
@@ -140,7 +142,7 @@
                 }
                 else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
                     
-                    [self login:phone code:countryCode];
+                    [self getDeviceId:phone code:countryCode];
                 }
             }
         }
@@ -151,7 +153,6 @@
                 //new number
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCountryCode];
                 
                 NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
                 
@@ -163,7 +164,7 @@
                 myViewController.emailId = self.emailId;
                 [self.navigationController pushViewController:myViewController animated:YES];
                 
-                [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
+                [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:kPhone];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
             else{
@@ -189,14 +190,47 @@
     }];
 }
 
+- (void)getDeviceId:(NSString*)phone code:(NSString*)countryCode{
+    
+    [[APIManager sharedInstance] getDevice:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *response = (NSArray*)responseDict;
+            
+            if (response.count > 0) {
+                
+                NSDictionary *dictionary = [response objectAtIndex:0];
+                               
+                [[NSUserDefaults standardUserDefaults] setValue:[dictionary valueForKey:@"id"] forKey:@"deviceId"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            [self login:phone code:countryCode];
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
 - (void)login:(NSString*)phone code:(NSString*)countryCode{
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceId"];
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
                              @"deviceCode": deviceCode
                              };
+    
+    if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
+        
+        params = @{
+                   @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"deviceCode": deviceCode,
+                   @"deviceId": deviceId
+                   };
+    }
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
     
@@ -206,8 +240,7 @@
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:kToken] forKey:kToken];
-            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
-            [[NSUserDefaults standardUserDefaults] setValue:countryCode forKey:kCountryCode];
+            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -221,8 +254,7 @@
         else
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
-            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:kPhone];
-            [[NSUserDefaults standardUserDefaults] setValue:countryCode forKey:kCountryCode];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];

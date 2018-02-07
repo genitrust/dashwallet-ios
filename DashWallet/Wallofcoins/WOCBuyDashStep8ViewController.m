@@ -80,7 +80,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params =  @{
-                    @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                    @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
                     @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
                     @"deviceName": @"Dash Wallet (iOS)",
                     @"deviceCode": self.deviceCode,
@@ -91,7 +91,7 @@
     {
         
         params =  @{
-                    @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                    @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
                     @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
                     @"phone": self.phoneNo,
                     @"deviceName": @"Dash Wallet (iOS)",
@@ -118,22 +118,63 @@
         }
         else
         {
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self getOrders];
+        }
+    }];
+}
+
+- (void)getOrders {
+    
+    NSDictionary *params = @{
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0){
                 
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
                 
-                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                [nav.navigationBar setTintColor:[UIColor whiteColor]];
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
-                UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-                UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
-                BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-                appDelegate.window.rootViewController = nav;
-            });
+                if ([status isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                     
+                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                     BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+                     
+                     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                     [nav.navigationBar setTintColor:[UIColor whiteColor]];
+                     
+                     UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+                     UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+                     
+                     BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                     appDelegate.window.rootViewController = nav;
+                     });
+                }
+            }
+        }
+        else
+        {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }

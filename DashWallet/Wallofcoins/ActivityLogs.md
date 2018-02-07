@@ -174,3 +174,31 @@ Holiday
 3. Added user info instead of account detail in Buying Summary
 4. Added mail composer on "click here" in Buying Summary
 
+#### Work on 02 FEB 2018 (FRI) Sujal Bandhara
+
+1. Added country picker
+2. Sorted payment centers alphabetically
+3. Handled error messages
+4. Testing and bug solving
+
+#### Work on 03 FEB 2018 (SAT) Sujal Bandhara
+
+Holiday
+
+#### Work on 04 FEB 2018 (SUN) Sujal Bandhara
+
+Holiday
+
+#### Work on 05 FEB 2018 (MON) Sujal Bandhara
+
+
+#### Work on 06 FEB 2018 (TUE) Sujal Bandhara
+
+
+#### Work on 07 FEB 2018 (WED) Sujal Bandhara
+
+1. POST /api/v1/holds/ status code 400 is not handled.
+2. Changed publisherId to "publisher-id"
+3. Updated "WallofCoins-README.md"
+4. Testing and bug solving
+

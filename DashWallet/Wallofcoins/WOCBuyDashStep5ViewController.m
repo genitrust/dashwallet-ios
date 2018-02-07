@@ -118,7 +118,7 @@
 - (void)getOrders:(NSInteger)sender {
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {

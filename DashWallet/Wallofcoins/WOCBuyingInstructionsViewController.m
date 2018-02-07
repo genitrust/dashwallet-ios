@@ -41,16 +41,21 @@
         [self updateData:self.orderDict];
     }
     
-    if (self.isFromSend) {
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+    
+    if (!self.isFromSend && !self.isFromOffer){
         
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
-        
+        if ([self.purchaseCode length] > 0 && [self.holdId length] > 0) {
+            
+            [self captureHold:self.purchaseCode holdId:self.holdId];
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please enter purchase code." viewController:self.navigationController.visibleViewController];
+        }
     }
-    else if (self.isFromOffer){
+    else if (self.isFromOffer) {
         
-        NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
-        NSString *code = [[NSUserDefaults standardUserDefaults] valueForKey:kCountryCode];
-        NSString *phoneNo = [NSString stringWithFormat:@"%@%@",code,phone];
+        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
         
         if (self.offerId != nil && [self.offerId length] > 0) {
             [self createHold:self.offerId phoneNo:phoneNo];
@@ -58,15 +63,6 @@
         else{
             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please select offer." viewController:self.navigationController.visibleViewController];
             [self.navigationController popViewControllerAnimated:YES];
-        }
-    }
-    else{
-        if ([self.purchaseCode length] > 0 && [self.holdId length] > 0) {
-            
-            [self captureHold:self.purchaseCode holdId:self.holdId];
-        }
-        else{
-            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please enter purchase code." viewController:self.navigationController.visibleViewController];
         }
     }
     
@@ -303,7 +299,7 @@
     NSDate *local = [formatter dateFromString:depositDue];
     NSLog(@"local: %@",local);
     
-    formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     formatter.timeZone = [NSTimeZone localTimeZone];
     NSString *localTime = [formatter stringFromDate:local];
     NSLog(@"localTime: %@",localTime);
@@ -337,7 +333,7 @@
     if (self.minutes > 0) {
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+        formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
         formatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         NSString *currentTime = [formatter stringFromDate:[NSDate date]];
         NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:self.dueTime];
@@ -356,7 +352,7 @@
     NSMutableAttributedString *timeLeft = [[NSMutableAttributedString alloc] init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
+    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     
     NSDate *startDateT = [formatter dateFromString:startDate];
     NSDate *endDateT = [formatter dateFromString:endDate];
@@ -415,7 +411,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params = @{
-                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
                    @"offer": [NSString stringWithFormat:@"%@==",offerId],
                    @"deviceName": @"Dash Wallet (iOS)",
                    @"deviceCode": deviceCode,
@@ -425,7 +421,7 @@
     else
     {
         params = @{
-                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
                    @"offer": [NSString stringWithFormat:@"%@==",offerId],
                    @"phone": phone,
                    @"deviceName": @"Dash Wallet (iOS)",
@@ -462,7 +458,7 @@
     
     NSDictionary *params =
     @{
-      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+      @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"verificationCode": purchaseCode,
       };
     
@@ -562,7 +558,7 @@
 {
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {

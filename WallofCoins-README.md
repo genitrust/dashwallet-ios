@@ -21,13 +21,14 @@ In order to be authenticated you should send a token within every API request. T
 
 **POST /api/v1/auth/<phone>/authorize/**
 
-Use this endpoint to obtain an auth token (and auth cookie) in exchange to a valid authentication data. Currently you can post either your **‘password’** or your **‘deviceCode’**. In case of successful authentication, response will contain current registration info, authentication source name (device or password) and authentication token along with its expiration time.
+Use this endpoint to obtain an auth token (and auth cookie) in exchange to a valid authentication data. Currently you can post either your **‘password’** or your **‘deviceCode’**. In case of successful authentication, response will contain current registration info, authentication source name (device or password) and authentication token along with its expiration time. It should require to pass **‘deviceId’**, which will get from **GET /api/v1/devices/** API and for that you need to pass **‘token’** in header called **‘X-Coins-Api-Token’**. For new phone number, you must register a device by calling **POST /api/v1/devices/** and it will give **‘id’** in response, that you need to use as **‘deviceId’** and need to pass in this API.
 Example:
 
 **POST /api/v1/auth/15005550006/authorize/**
 ```
 {
 “deviceCode”: “aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa”
+"deviceId": "430"
 }
 ```
 Response:
@@ -351,7 +352,7 @@ POST http://woc.reference.genitrust.com/api/v1/discoveryInputs/
 
 ```json
 {
-  "publisherId": "",
+  "publisher-id": "",
   "cryptoAddress": "",
   "usdAmount": "500",
   "crypto": "DASH",
@@ -360,7 +361,7 @@ POST http://woc.reference.genitrust.com/api/v1/discoveryInputs/
 }
 ```
 
->   Publisher Id: an Unique ID generated for commit transections.
+>   publisher-id: an Unique ID generated for commit transections.
 >   cryptoAddress: Cryptographic Address for user, it's optional parameter.
 >   usdAmount: Amount in USD (Need to apply conversation from DASH to USD)
 >   crypto: crypto type either DASH or BTC for bitcoin.
@@ -510,7 +511,7 @@ It need X-Coins-Api-Token as a header parameter which will not pass for new Phon
 
 ```json
 {
-  "publisherId": "",
+  "publisher-id": "",
   "offer": "eyJ1c2QiOiAiNTA...",
   "phone": "+12397772701",
   "deviceName": "Dash Wallet (iOS)",
@@ -554,7 +555,7 @@ POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
 
 ```
 {
-  "publisherId": "",
+  "publisher-id": "",
   "verificationCode": "CK99K"
 }
 ```

@@ -24,6 +24,7 @@
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 
+#define kPublisherId @"publisher-id"
 #define kDeviceCode @"deviceCode"
 #define kToken @"token"
 #define kPhone @"phone"

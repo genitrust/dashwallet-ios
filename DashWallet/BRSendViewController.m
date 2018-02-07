@@ -1671,7 +1671,7 @@ static NSString *sanitizeString(NSString *s)
 - (void)getOrders {
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
@@ -1682,7 +1682,7 @@ static NSString *sanitizeString(NSString *s)
             
             if (orders.count > 0){
                 
-                NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
                 
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
@@ -1692,7 +1692,7 @@ static NSString *sanitizeString(NSString *s)
                     
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phone;
+                    myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = YES;
                     myViewController.isFromOffer = NO;
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
@@ -1701,7 +1701,7 @@ static NSString *sanitizeString(NSString *s)
                 else{
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = phone;
+                    myViewController.phoneNo = phoneNo;
                     myViewController.orders = orders;
                     myViewController.isFromSend = YES;
                     [self.navigationController pushViewController:myViewController animated:YES];
