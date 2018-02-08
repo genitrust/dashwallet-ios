@@ -202,3 +202,8 @@ Holiday
 3. Updated "WallofCoins-README.md"
 4. Testing and bug solving
 
+#### Work on 08 FEB 2018 (THU) Sujal Bandhara
+
+1. Displayed 'WDV' orders before SignOut section and other orders after SignOut section in Buying Summary
+2. Testing and bug solving
+

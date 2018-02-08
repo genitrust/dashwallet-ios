@@ -18,7 +18,7 @@
 
 #define STATUS_WD @"Waiting Deposit"
 #define STATUS_WDV @"Waiting Deposit Verification"
-#define STATUS_RERR @"Issue w/ Receipt"
+#define STATUS_RERR @"Issue with Receipt"
 #define STATUS_DERR @"Issue with Deposit"
 #define STATUS_RSD @"Reserved for Deposit"
 #define STATUS_RMIT @"Remit Address Missing"
@@ -39,6 +39,9 @@
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
+@property (strong, nonatomic) NSArray *wdvOrders;
+@property (strong, nonatomic) NSArray *otherOrders;
+
 @end
 
 @implementation WOCBuyingSummaryViewController
@@ -54,6 +57,19 @@
     
     if (self.orders.count == 0) {
         [self getOrders];
+    }
+    else{
+        NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV'"];
+        NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
+        self.wdvOrders = [[NSArray alloc] initWithArray:wdvArray];
+        
+        NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
+        NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
+        self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
+        
+        NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
+        
+        [self.tableView reloadData];
     }
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins." attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
@@ -213,7 +229,7 @@
 - (void)getOrders {
     
     NSDictionary *params = @{
-                            @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                             };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
@@ -222,6 +238,17 @@
             
             NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             self.orders = response;
+            
+            NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV'"];
+            NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
+            self.wdvOrders = [[NSArray alloc] initWithArray:wdvArray];
+            
+            NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
+            NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
+            self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
+            
+            NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
+            
             [self.tableView reloadData];
         }
         else
@@ -234,7 +261,7 @@
 - (void)signOut:(NSString*)phone {
     
     NSDictionary *params = @{
-                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
@@ -257,40 +284,74 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if (section == 0) {
-        return self.orders.count;
+        return self.wdvOrders.count;
     }
-    else{
+    else if (section == 1) {
         return 1;
+    }
+    else if (section == 2){
+        return 1;
+    }
+    else {
+        return self.otherOrders.count;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == 1) {
+        
+        WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"linkCell"];
+        
+        [cell.btnSignOut addTarget:self action:@selector(wallOfCoinsClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return cell;
+        
+    }
+    else if (indexPath.section == 2) {
+        
+        WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
+        
+        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
+        [cell.btnSignOut addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return cell;
+    }
+    else{
         
         WOCSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell"];
         
-        NSDictionary *orderDict = self.orders[indexPath.row];
+        NSDictionary *orderDict = [[NSDictionary alloc] init];
         
-        if ([[orderDict valueForKey:@"account"] length] > 16) {
-            
-            cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
-            
-            NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-            cell.lblPhone.hidden = YES;
-            
-            cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
-            cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
-            cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
-            cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+        if (indexPath.section == 0) {
+            orderDict = self.wdvOrders[indexPath.row];
         }
-
+        else{
+            orderDict = self.otherOrders[indexPath.row];
+        }
+        
+        if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
+            
+            if ([[orderDict valueForKey:@"account"] length] > 16) {
+                
+                cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
+                
+                NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+                cell.lblPhone.hidden = YES;
+                
+                cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
+                cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+                cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
+                cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+            }
+        }
+        
         NSString *bankLogo = [orderDict valueForKey:@"bankLogo"];
         NSString *bankName = [orderDict valueForKey:@"bankName"];
         NSString *phoneNo = [NSString stringWithFormat:@"%@",[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
@@ -322,42 +383,32 @@
         cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@ (%@ dots)",totalDash,stringNum];
         cell.lblStatus.text = [NSString stringWithFormat:@"Status: %@",[self checkStatus:status]];
         
-        
-        return cell;
-    }
-    else if (indexPath.section == 1) {
-        
-        WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"linkCell"];
-        
-        [cell.btnSignOut addTarget:self action:@selector(wallOfCoinsClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
-        return cell;
-    }
-    else{
-        
-        WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
-        
-        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
-        [cell.btnSignOut addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
         return cell;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section == 0) {
-        
-        NSDictionary *orderDict = self.orders[indexPath.row];
-        
-        if ([[orderDict valueForKey:@"account"] length] > 16) {
-            return 250.0;
-        }
-        return 185.0;
-    }
-    else{
+    if (indexPath.section == 1 || indexPath.section == 2) {
         
         return 110.0;
+    }
+    else{
+        NSDictionary *orderDict = [[NSDictionary alloc] init];
+        
+        if (indexPath.section == 0) {
+            orderDict = self.wdvOrders[indexPath.row];
+        }
+        else{
+            orderDict = self.otherOrders[indexPath.row];
+        }
+        
+        if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
+            if ([[orderDict valueForKey:@"account"] length] > 16) {
+                return 250.0;
+            }
+        }
+        return 185.0;
     }
 }
 

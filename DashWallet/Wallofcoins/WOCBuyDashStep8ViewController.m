@@ -80,7 +80,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params =  @{
-                    @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+                    @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                     @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
                     @"deviceName": @"Dash Wallet (iOS)",
                     @"deviceCode": self.deviceCode,
@@ -91,7 +91,7 @@
     {
         
         params =  @{
-                    @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+                    @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                     @"offer": [NSString stringWithFormat:@"%@==",self.offerId],
                     @"phone": self.phoneNo,
                     @"deviceName": @"Dash Wallet (iOS)",
@@ -113,6 +113,7 @@
             if ([responseDictionary valueForKey:kToken] != nil && [[responseDictionary valueForKey:kToken] isEqualToString:@"(null)"] == FALSE)
             {
                 [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kDeviceId]] forKey:kDeviceId];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }
@@ -126,7 +127,7 @@
 - (void)getOrders {
     
     NSDictionary *params = @{
-                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {

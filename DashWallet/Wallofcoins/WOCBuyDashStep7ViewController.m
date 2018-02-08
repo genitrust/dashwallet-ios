@@ -117,7 +117,7 @@
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
     
     NSDictionary *params = @{
-                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
@@ -142,7 +142,15 @@
                 }
                 else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
                     
-                    [self getDeviceId:phone code:countryCode];
+                    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+                    
+                    if (token != nil && [token isEqualToString:@"(null)"] == FALSE){
+                        
+                       [self getDeviceId:phone code:countryCode];
+                    }
+                    else{
+                        [self login:phone code:countryCode];
+                    }
                 }
             }
         }
@@ -202,7 +210,7 @@
                 
                 NSDictionary *dictionary = [response objectAtIndex:0];
                                
-                [[NSUserDefaults standardUserDefaults] setValue:[dictionary valueForKey:@"id"] forKey:@"deviceId"];
+                [[NSUserDefaults standardUserDefaults] setValue:[dictionary valueForKey:@"id"] forKey:kDeviceId];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
             [self login:phone code:countryCode];
@@ -217,19 +225,22 @@
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceId"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     
     NSDictionary *params = @{
-                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                              @"deviceCode": deviceCode
                              };
     
-    if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
-        
-        params = @{
-                   @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
-                   @"deviceCode": deviceCode,
-                   @"deviceId": deviceId
-                   };
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+        if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
+            
+            params = @{
+                       @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+                       @"deviceCode": deviceCode,
+                       @"deviceId": deviceId
+                       };
+        }
     }
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
@@ -253,7 +264,7 @@
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
+            /*[[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
@@ -263,8 +274,8 @@
             myViewController.offerId = self.offerId;
             myViewController.deviceCode = deviceCode;
             myViewController.emailId = self.emailId;
-            [self.navigationController pushViewController:myViewController animated:YES];
-            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self.navigationController pushViewController:myViewController animated:YES];*/
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }

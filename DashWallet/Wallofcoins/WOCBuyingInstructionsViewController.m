@@ -411,7 +411,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params = @{
-                   @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                    @"offer": [NSString stringWithFormat:@"%@==",offerId],
                    @"deviceName": @"Dash Wallet (iOS)",
                    @"deviceCode": deviceCode,
@@ -421,7 +421,7 @@
     else
     {
         params = @{
-                   @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
                    @"offer": [NSString stringWithFormat:@"%@==",offerId],
                    @"phone": phone,
                    @"deviceName": @"Dash Wallet (iOS)",
@@ -458,7 +458,7 @@
     
     NSDictionary *params =
     @{
-      @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
       @"verificationCode": purchaseCode,
       };
     
@@ -558,7 +558,7 @@
 {
     
     NSDictionary *params = @{
-                             @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {

@@ -96,8 +96,8 @@
     
     NSDictionary *params =
     @{
-      @"kPublisherId": @WALLOFCOINS_PUBLISHER_ID,
-      //@"cryptoAddress": @"",
+      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
+      @"cryptoAmount": @"0",
       @"usdAmount": amount,
       @"crypto": @"DASH",
       @"bank": bankId,
