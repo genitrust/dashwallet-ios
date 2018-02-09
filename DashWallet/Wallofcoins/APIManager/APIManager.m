@@ -200,6 +200,7 @@ GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/off
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/%@/offers/",BASE_URL,dicoverId];
     NSDictionary *header =
     @{
+      kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID,
       @"Content-Type" : @"application/x-www-form-urlencoded"
       };
     
@@ -311,6 +312,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
+      kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID,
       @"X-Coins-Api-Token": token
       };
     
@@ -325,6 +327,7 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     NSDictionary *header =
     @{
+      kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID,
       @"X-Coins-Api-Token": token
       };
     
@@ -336,12 +339,21 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 -(void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/",BASE_URL];
+    
+    NSDictionary *header = @{
+                             kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
-    NSDictionary *header =
-    @{
-      kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-      @"X-Coins-Api-Token": token
-      };
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        header = @{
+                   kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+                   @"X-Coins-Api-Token": token
+                   };
+    }
+    
     
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);

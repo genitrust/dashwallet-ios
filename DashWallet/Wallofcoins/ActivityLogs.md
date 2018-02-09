@@ -207,3 +207,9 @@ Holiday
 1. Displayed 'WDV' orders before SignOut section and other orders after SignOut section in Buying Summary
 2. Testing and bug solving
 
+#### Work on 09 FEB 2018 (FRI) Sujal Bandhara
+
+1. Set Header "X-Coins-Publisher"  to Publisher ID “52” in every API call.
+2. Added “cryptoAddress” in discoveryInputs API
+3. Added constants for body parameters in Constants.h file
+4. Testing and bug solving

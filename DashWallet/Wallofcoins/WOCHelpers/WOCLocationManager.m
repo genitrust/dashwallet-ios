@@ -7,6 +7,7 @@
 //
 
 #import "WOCLocationManager.h"
+#import "WOCConstants.h"
 
 @implementation WOCLocationManager
 
@@ -59,8 +60,8 @@
         
         if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil)
         {
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:@"locationLatitude"];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:@"locationLongitude"];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:kLocationLatitude];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:kLocationLongitude];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
@@ -70,11 +71,11 @@
 
     if (status == kCLAuthorizationStatusDenied) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"openBuyDashStep2" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationObserverStep2Id object:nil];
         
     } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"openBuyDashStep4" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationObserverStep4Id object:nil];
     }
 }
 

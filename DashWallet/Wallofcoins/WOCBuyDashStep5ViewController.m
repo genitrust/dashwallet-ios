@@ -14,6 +14,7 @@
 #import "APIManager.h"
 #import "BRWalletManager.h"
 #import "WOCAlertController.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyDashStep5ViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -117,11 +118,15 @@
 
 - (void)getOrders:(NSInteger)sender {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
         
         if (error == nil) {
             
@@ -181,7 +186,7 @@
     
     NSDictionary *offerDict = self.offers[indexPath.row];
     
-    NSString *dashAmount = [NSString stringWithFormat:@"%@",[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"]];
+    NSString *dashAmount = [NSString stringWithFormat:@"Đ %@",[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"]];
     NSString *bits = [NSString stringWithFormat:@"(%@)",[[offerDict valueForKey:@"amount"] valueForKey:@"dots"]];
     NSString *bankName = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankName"]];
     NSString *bankAddress = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"address"]];

@@ -30,7 +30,7 @@
     
     [self setShadow:self.btnNext];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:@"openBuyDashStep8" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:kNotificationObserverStep8Id object:nil];
     
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
@@ -117,7 +117,7 @@
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
@@ -224,21 +224,21 @@
 - (void)login:(NSString*)phone code:(NSString*)countryCode{
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
-    NSString *deviceId = [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceId"];
+    NSString *deviceId = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-                             @"deviceCode": deviceCode
+                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+                             kDeviceCode: deviceCode
                              };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
         if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
             
             params = @{
-                       @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-                       @"deviceCode": deviceCode,
-                       @"deviceId": deviceId
+                       kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+                       kDeviceCode: deviceCode,
+                       kDeviceId: deviceId
                        };
         }
     }
@@ -264,8 +264,9 @@
         }
         else
         {
-            /*[[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
+            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -274,8 +275,8 @@
             myViewController.offerId = self.offerId;
             myViewController.deviceCode = deviceCode;
             myViewController.emailId = self.emailId;
-            [self.navigationController pushViewController:myViewController animated:YES];*/
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self.navigationController pushViewController:myViewController animated:YES];
+            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }

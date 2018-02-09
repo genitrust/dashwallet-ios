@@ -71,13 +71,10 @@
 #pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 @end

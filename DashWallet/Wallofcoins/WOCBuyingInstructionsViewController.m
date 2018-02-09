@@ -92,8 +92,8 @@
 - (IBAction)showMapClicked:(id)sender
 {
     // Your location from latitude and longitude
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLatitude"];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLongitude"];
+    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLatitude];
+    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLongitude];
     
     NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
@@ -294,12 +294,12 @@
     self.lblLoginPhone.text = loginPhone;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    formatter.dateFormat = API_DATE_FORMAT;
     formatter.timeZone = [NSTimeZone localTimeZone];
     NSDate *local = [formatter dateFromString:depositDue];
     NSLog(@"local: %@",local);
     
-    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    formatter.dateFormat = LOCAL_DATE_FORMAT;
     formatter.timeZone = [NSTimeZone localTimeZone];
     NSString *localTime = [formatter stringFromDate:local];
     NSLog(@"localTime: %@",localTime);
@@ -333,7 +333,7 @@
     if (self.minutes > 0) {
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        formatter.dateFormat = LOCAL_DATE_FORMAT;
         formatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         NSString *currentTime = [formatter stringFromDate:[NSDate date]];
         NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:self.dueTime];
@@ -352,7 +352,7 @@
     NSMutableAttributedString *timeLeft = [[NSMutableAttributedString alloc] init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    formatter.dateFormat = LOCAL_DATE_FORMAT;
     
     NSDate *startDateT = [formatter dateFromString:startDate];
     NSDate *endDateT = [formatter dateFromString:endDate];
@@ -411,22 +411,22 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params = @{
-                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-                   @"offer": [NSString stringWithFormat:@"%@==",offerId],
-                   @"deviceName": @"Dash Wallet (iOS)",
-                   @"deviceCode": deviceCode,
-                   @"JSONPara":@"YES"
+                   kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+                   kOffer: [NSString stringWithFormat:@"%@==",offerId],
+                   kDeviceName: kDeviceNameIOS,
+                   kDeviceCode: deviceCode,
+                   kJSONParameter:@"YES"
                    };
     }
     else
     {
         params = @{
-                   @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-                   @"offer": [NSString stringWithFormat:@"%@==",offerId],
-                   @"phone": phone,
-                   @"deviceName": @"Dash Wallet (iOS)",
-                   @"deviceCode": deviceCode,
-                   @"JSONPara":@"YES"
+                   kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+                   kOffer: [NSString stringWithFormat:@"%@==",offerId],
+                   kPhone: phone,
+                   kDeviceName: kDeviceNameIOS,
+                   kDeviceCode: deviceCode,
+                   kJSONParameter:@"YES"
                    };
     }
    
@@ -458,8 +458,8 @@
     
     NSDictionary *params =
     @{
-      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-      @"verificationCode": purchaseCode,
+      kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+      kVerificationCode: purchaseCode,
       };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
@@ -556,9 +556,8 @@
 
 - (void)signOut:(NSString*)phone
 {
-    
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
@@ -566,10 +565,11 @@
         if (error == nil)
         {
             [self stopTimer];
+            [self cancelOrder];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [self pushToStep1];
+            //[self pushToStep1];
         }
         else
         {

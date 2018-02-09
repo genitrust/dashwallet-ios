@@ -90,8 +90,8 @@
 - (void)login:(NSString*)phone password:(NSString*)password{
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-                             @"password": password
+                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+                             kPassword: password
                              };
     
     [[APIManager sharedInstance] login:params phone:phone response:^(id responseDict, NSError *error) {
@@ -107,7 +107,7 @@
             [[NSUserDefaults standardUserDefaults] setValue:phone forKey:@"phone"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"openBuyDashStep8" object:phone];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationObserverStep8Id object:phone];
         }
         else
         {

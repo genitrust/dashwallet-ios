@@ -41,8 +41,8 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:@"openBuyDashStep4" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:@"openBuyDashStep2" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:kNotificationObserverStep4Id object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:kNotificationObserverStep2Id object:nil];
     
     self.btnLocation.layer.cornerRadius = 3.0;
     self.btnLocation.layer.masksToBounds = YES;
@@ -114,7 +114,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];// Or any VC with Id
+        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         [nav.navigationBar setTintColor:[UIColor whiteColor]];
@@ -129,11 +129,8 @@
 
 - (void)setShadow:(UIView *)view{
     
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
+    view.layer.shadowOffset = CGSizeMake(0, 1);
     view.layer.shadowRadius = 1; //1
     view.layer.shadowOpacity = 1;//1
     view.layer.masksToBounds = false;
@@ -164,8 +161,8 @@
 - (void)findZipCode {
     
     // Your location from latitude and longitude
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLatitude"];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:@"locationLongitude"];
+    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLatitude];
+    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLongitude];
     
     if (latitude != nil && longitude != nil) {
         

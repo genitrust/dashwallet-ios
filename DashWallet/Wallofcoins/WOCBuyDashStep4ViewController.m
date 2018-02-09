@@ -94,14 +94,20 @@
 #pragma mark - API
 - (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     
+    //Receive Dash Address...
+    BRWalletManager *manager = [BRWalletManager sharedInstance];
+    NSString *cryptoAddress = manager.wallet.receiveAddress;
+    NSLog(@"cryptoAddress = %@",cryptoAddress);
+    
     NSDictionary *params =
     @{
-      @"publisherId": @WALLOFCOINS_PUBLISHER_ID,
-      @"cryptoAmount": @"0",
-      @"usdAmount": amount,
-      @"crypto": @"DASH",
-      @"bank": bankId,
-      @"zipCode": zipCode
+      kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
+      kCryptoAmount: @"0",
+      kUsdAmount: amount,
+      kCrypto: @"DASH",
+      kCryptoAddress:cryptoAddress,
+      kBank: bankId,
+      kZipCode: zipCode
       };
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
