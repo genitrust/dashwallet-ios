@@ -213,3 +213,22 @@ Holiday
 2. Added “cryptoAddress” in discoveryInputs API
 3. Added constants for body parameters in Constants.h file
 4. Testing and bug solving
+
+#### Work on 10 FEB 2018 (SAT) Sujal Bandhara
+
+1. Bank Logos and Icons: use the non-HQ value specified in response #8 - Done.
+2. CRITICAL UPDATE: All API calls must end with a "/" - Done.
+3. Existing User Password Prompt updates#41
+
+5. Buying Wizard "incremented offers"#36
+
+6. when incremented: true, Instead of saying, "Below are offers for $25.02. You must click....Cash Payment center", the message needs to state, "Below are offers for at least $25. You must click......Cash Payment center." Notice that the word "at least" is inserted, and the dollar amount is equal to their search amount.
+7. Underneath the ORDER button must be the order amount in this format: "Pay ${offer amount}". For example, Figure A will have underneath ORDER button the label "Pay $25.02"; Figure B will have "Pay $25"; and Figure C will have "Pay $25".
+8. When incremented: false, you will continue to display the Screen exactly as you already display it. You must preserve the current implementation state of the Offers Screen when incremented: false.
+
+9. Buy Summary Updates #39
+
+10. BUY MORE DASH button must be in the yellow color with blue text (just like SIGN OUT button currently is).
+11. The SIGN OUT Panel will be directly under the Support Panel (just as it is now).
+12. The SIGN OUT button will be grey with black text, like the WALLOFCOINS.COM button.
+13. Under the SIGN OUT panel will be big, centered text saying, "Previous Orders”.

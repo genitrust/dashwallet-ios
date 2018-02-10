@@ -195,7 +195,7 @@
 
 - (NSString*)checkStatus:(NSString*)status {
     
-    NSString *string = STATUS_WD;
+    NSString *string = status;
     
     if ([status isEqualToString:WD]){
         string = STATUS_WD;
@@ -303,6 +303,35 @@
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+  
+    if (section == 3) {
+        
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
+        headerView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
+        
+        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, headerView.frame.size.height - 20)];
+        lblTitle.text = @"Previous Orders";
+        lblTitle.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightBold];
+        lblTitle.textAlignment = NSTextAlignmentCenter;
+        
+        [headerView addSubview:lblTitle];
+        
+        return headerView;
+    }
+    return  nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+
+    if (section == 3) {
+        if (self.otherOrders.count > 0) {
+            return 50;
+        }
+    }
+    return 0;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 1) {
@@ -359,12 +388,20 @@
         NSString *totalDash = [orderDict valueForKey:@"total"];
         NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
         
-        //bankLogo - inproper url in development
-        /*if ([bankLogo length] > 0) {
-         
-         NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
-         self.imgView.image = [UIImage imageWithData: imageData];
-         }*/
+        //bankLogo
+        if (![[orderDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
+            
+            if ([bankLogo hasPrefix:@"https://"]) {
+                NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
+                cell.imgView.image = [UIImage imageWithData: imageData];
+            }
+            else{
+                cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+            }
+        }
+        else{
+            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        }
         
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         cell.lblName.text = bankName;

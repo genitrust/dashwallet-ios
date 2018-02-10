@@ -22,4 +22,5 @@
 - (IBAction)linkClicked:(id)sender;
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)forgotPasswordClicked:(id)sender;
+- (IBAction)closeClicked:(id)sender;
 @end

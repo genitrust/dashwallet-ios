@@ -216,7 +216,8 @@
             [self login:phone code:countryCode];
         }
         else{
-            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+            [self login:phone code:countryCode];
+            //[[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
         }
     }];
 }

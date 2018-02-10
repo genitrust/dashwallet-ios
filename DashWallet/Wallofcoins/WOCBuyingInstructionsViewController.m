@@ -266,12 +266,20 @@
     
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
     
-    //bankLogo - inproper url in development
-    /*if ([bankLogo length] > 0) {
-     
-     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
-     self.imgView.image = [UIImage imageWithData: imageData];
-     }*/
+    //bankLogo
+    if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
+        
+        if ([bankLogo hasPrefix:@"https://"]) {
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
+            self.imgView.image = [UIImage imageWithData: imageData];
+        }
+        else{
+            self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        }
+    }
+    else{
+        self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+    }
     
     self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     

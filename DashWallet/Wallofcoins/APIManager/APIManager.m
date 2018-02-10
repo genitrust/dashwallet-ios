@@ -431,6 +431,19 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     }];
 }
 
+-(void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/",BASE_URL,holdId];
+    NSDictionary *header =
+    @{
+      kHeaderPublisherId: @WALLOFCOINS_PUBLISHER_ID
+      };
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
+
 #pragma mark - API calls
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock {
     
@@ -474,53 +487,67 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
         
         NSError *error = nil;
-        id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         
-        if (connectionError != nil)
-        {
-            APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
-             APILog(@"==>API Error RESPONSE : \n%@",dictionary);
-        }
-        
-        if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError)
-        {
-            NSError * returnError = connectionError;
-            if (!returnError) {
-                
-                if (dictionary[@"detail"] != nil)
-                {
-                    returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:dictionary];
+        if (data != nil) {
+            
+            id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            
+            if (connectionError != nil)
+            {
+                APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
+                APILog(@"==>API Error RESPONSE : \n%@",dictionary);
+            }
+            
+            if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError)
+            {
+                NSError * returnError = connectionError;
+                if (!returnError) {
+                    
+                    if (dictionary[@"detail"] != nil)
+                    {
+                        returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:dictionary];
+                    }
+                    else
+                    {
+                        returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
+                    }
                 }
-                else
-                {
-                    returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    completionBlock(nil,returnError);
+                });
+                return;
+            }
+            else if (((NSHTTPURLResponse*)response).statusCode == 204)
+            {
+                NSDictionary *responseDict = @{@"content":@"NO"} ;
+                completionBlock(responseDict,nil);
+                return;
+            }
+            
+            
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    APILog(@"XX>API RESPONSE ERROR: \n%@",error.localizedDescription);
+                    completionBlock(nil,error);
+                });
+                return;
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                
-                completionBlock(nil,returnError);
+                if (dictionary != nil) {
+                    APILog(@"==>API RESPONSE : \n%@",dictionary);
+                    completionBlock(dictionary,nil);
+                }
+                else{
+                    APILog(@"==>API RESPONSE : \n%@",@{@"response":@"error"});
+                    completionBlock(@{@"response":@"error"},nil);
+                }
             });
-            return;
         }
-        else if (((NSHTTPURLResponse*)response).statusCode == 204)
-        {
-            NSDictionary *responseDict = @{@"content":@"NO"} ;
-            completionBlock(responseDict,nil);
-            return;
+        else{
+            APILog(@"==>API RESPONSE : \n%@",@{@"response":@"error"});
+            completionBlock(@{@"response":@"error"},nil);
         }
-        
-        
-        if (error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                APILog(@"XX>API RESPONSE ERROR: \n%@",error.localizedDescription);
-                completionBlock(nil,error);
-            });
-            return;
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            APILog(@"==>API RESPONSE : \n%@",dictionary);
-            completionBlock(dictionary,nil);
-        });
     }] resume];
 }
 

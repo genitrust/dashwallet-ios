@@ -19,6 +19,7 @@
 @interface WOCBuyDashStep5ViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray *offers;
+@property (assign) BOOL incremented;
 
 @end
 
@@ -29,7 +30,7 @@
 
     self.title = @"Buy Dash With Cash";
     
-    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
     [self getOffers];
 }
 
@@ -90,6 +91,15 @@
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
                 NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
                 self.offers = [[NSArray alloc] initWithArray:offersArray];
+                
+                if ([[responseDictionary valueForKey:@"incremented"] boolValue] == true) {
+                    self.incremented = true;
+                    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                }
+                else{
+                    self.incremented = false;
+                    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                }
                 
                 [self.tableView reloadData];
             }
@@ -168,7 +178,7 @@
         }
         else{
             [self pushToStep6:sender];
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -186,8 +196,16 @@
     
     NSDictionary *offerDict = self.offers[indexPath.row];
     
+    if (self.incremented) {
+        [cell.lblDollar setHidden:false];
+    }
+    else{
+        [cell.lblDollar setHidden:true];
+    }
+    
     NSString *dashAmount = [NSString stringWithFormat:@"Đ %@",[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"]];
-    NSString *bits = [NSString stringWithFormat:@"(%@)",[[offerDict valueForKey:@"amount"] valueForKey:@"dots"]];
+    NSString *bits = [NSString stringWithFormat:@"(đ %@)",[[offerDict valueForKey:@"amount"] valueForKey:@"dots"]];
+    NSString *dollarAmount = [NSString stringWithFormat:@"Pay $%@",[[offerDict valueForKey:@"deposit"] valueForKey:@"amount"]];
     NSString *bankName = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankName"]];
     NSString *bankAddress = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"address"]];
     NSString *bankLocationUrl = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]];
@@ -202,6 +220,7 @@
 
     cell.lblDashTitle.text = dashAmount;
     cell.lblDashSubTitle.text = bits;
+    cell.lblDollar.text = dollarAmount;
     cell.lblBankName.text = bankName;
     cell.lblLocation.text = bankAddress;
     
@@ -211,14 +230,20 @@
         [cell.btnLocation addTarget:self action:@selector(checkLocationClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     
-    //bankLogo - inproper url in development
-    /*if ([bankLogo length] > 0) {
+    //bankLogo
+    if (![[offerDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
      
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bankLogo,bankLogo]]];
-        cell.imgView.image = [UIImage imageWithData: imageData];
-    }*/
-    
-    cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        if ([bankLogo hasPrefix:@"https://"]) {
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
+            cell.imgView.image = [UIImage imageWithData: imageData];
+        }
+        else{
+            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        }
+    }
+    else{
+        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+    }
     
     [cell.btnOrder addTarget:self action:@selector(orderClicked:) forControlEvents:UIControlEventTouchUpInside];
     cell.btnOrder.tag = indexPath.row;

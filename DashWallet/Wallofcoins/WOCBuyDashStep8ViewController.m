@@ -8,11 +8,13 @@
 
 #import "WOCBuyDashStep8ViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
+#import "WOCBuyingSummaryViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "WOCAlertController.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyDashStep8ViewController ()
 
@@ -126,11 +128,15 @@
 
 - (void)getOrders {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params = @{
                              kPublisherId: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
         
         if (error == nil) {
             
@@ -139,6 +145,9 @@
             if (orders.count > 0){
                 
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                
+                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
                 
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
@@ -149,32 +158,68 @@
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
+                    myViewController.holdId = self.holdId;
                     myViewController.isFromSend = YES;
                     myViewController.isFromOffer = NO;
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else{
+                else if (wdArray.count > 0){
                     
+                    for (int i = 0; i < wdArray.count; i++) {
+                        
+                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:i];
+                        
+                        [self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]]];
+                    }
+                }
+                else if (orders.count > 0){
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
                     dispatch_async(dispatch_get_main_queue(), ^{
-                     
-                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                     BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
-                     
-                     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                     [nav.navigationBar setTintColor:[UIColor whiteColor]];
-                     
-                     UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-                     UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
-                     
-                     BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-                     appDelegate.window.rootViewController = nav;
-                     });
+                        
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+                        
+                        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                        [nav.navigationBar setTintColor:[UIColor whiteColor]];
+                        
+                        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+                        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+                        
+                        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                        appDelegate.window.rootViewController = nav;
+                    });
                 }
             }
         }
         else
         {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)deleteHold:(NSString*)holdId{
+    
+    NSDictionary *params = @{
+                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold with Hold Id: %@ deleted.",holdId);
+        }
+        else{
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
