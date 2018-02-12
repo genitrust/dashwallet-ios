@@ -70,11 +70,11 @@
 #pragma mark - API
 - (void)createHold {
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
    
     if (self.deviceCode == nil)
     {
-        self.deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
+        self.deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     }
     
     NSDictionary *params;
@@ -82,24 +82,24 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params =  @{
-                    kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-                    kOffer: [NSString stringWithFormat:@"%@==",self.offerId],
-                    kDeviceName: @"Dash Wallet (iOS)",
-                    kDeviceCode: self.deviceCode,
-                    kJSONParameter:@"YES"
+                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                    API_BODY_DEVICE_NAME: @"Dash Wallet (iOS)",
+                    API_BODY_DEVICE_CODE: self.deviceCode,
+                    API_BODY_JSON_PARAMETER:@"YES"
                     };
     }
     else
     {
         
         params =  @{
-                    kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-                    kOffer: [NSString stringWithFormat:@"%@==",self.offerId],
-                    kPhone: self.phoneNo,
-                    kDeviceName: kDeviceNameIOS,
-                    kDeviceCode: self.deviceCode,
-                    kEmail: self.emailId,
-                    kJSONParameter:@"YES"
+                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                    API_BODY_PHONE_NUMBER: self.phoneNo,
+                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                    API_BODY_DEVICE_CODE: self.deviceCode,
+                    API_BODY_EMAIL: self.emailId,
+                    API_BODY_JSON_PARAMETER:@"YES"
                     };
     }
     
@@ -112,10 +112,10 @@
             self.txtPurchaseCode.text = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
             self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
             
-            if ([responseDictionary valueForKey:kToken] != nil && [[responseDictionary valueForKey:kToken] isEqualToString:@"(null)"] == FALSE)
+            if ([responseDictionary valueForKey:@"token"] != nil && [[responseDictionary valueForKey:@"token"] isEqualToString:@"(null)"] == FALSE)
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kDeviceId]] forKey:kDeviceId];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"token"]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"token"]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }
@@ -131,7 +131,7 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
@@ -144,7 +144,7 @@
             
             if (orders.count > 0){
                 
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
                 NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
                 NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
@@ -210,7 +210,7 @@
 - (void)deleteHold:(NSString*)holdId{
     
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {

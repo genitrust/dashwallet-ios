@@ -101,7 +101,7 @@
 
 - (IBAction)signOutClicked:(id)sender {
     
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     
     [self signOut:phoneNo];
 }
@@ -229,7 +229,7 @@
 - (void)getOrders {
     
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                             };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
@@ -261,15 +261,15 @@
 - (void)signOut:(NSString*)phone {
     
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
       
         if (error == nil)
         {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [self pushToStep1];
         }

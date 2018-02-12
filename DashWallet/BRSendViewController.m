@@ -1620,7 +1620,7 @@ static NSString *sanitizeString(NSString *s)
     
     [sender setEnabled:NO];
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
@@ -1682,7 +1682,7 @@ static NSString *sanitizeString(NSString *s)
             
             if (orders.count > 0){
                 
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 

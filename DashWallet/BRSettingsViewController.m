@@ -357,7 +357,7 @@
             
             if (orders.count > 0){
                 
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
@@ -708,7 +708,7 @@ _switch_cell:
 
 - (void)checkToken
 {
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {

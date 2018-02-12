@@ -94,8 +94,9 @@
 - (void)login:(NSString*)phone password:(NSString*)password{
     
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-                             kPassword: password
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_BODY_PASSWORD: password,
+                             API_BODY_JSON_PARAMETER: @"YES"
                              };
     
     [[APIManager sharedInstance] login:params phone:phone response:^(id responseDict, NSError *error) {
@@ -105,13 +106,13 @@
             [self dismissViewControllerAnimated:YES completion:nil];
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:kToken] forKey:kToken];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:USER_DEFAULTS_AUTH_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] synchronize];
 
-            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:@"phone"];
+            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationObserverStep8Id object:phone];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phone];
         }
         else
         {

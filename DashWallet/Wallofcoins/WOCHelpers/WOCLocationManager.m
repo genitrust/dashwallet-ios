@@ -60,8 +60,8 @@
         
         if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil)
         {
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:kLocationLatitude];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:kLocationLongitude];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
@@ -71,11 +71,11 @@
 
     if (status == kCLAuthorizationStatusDenied) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationObserverStep2Id object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
         
     } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationObserverStep4Id object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
     }
 }
 

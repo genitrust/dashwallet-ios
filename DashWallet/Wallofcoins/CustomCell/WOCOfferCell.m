@@ -19,8 +19,6 @@
     
     self.btnLocation.layer.cornerRadius = 3.0;
     self.btnLocation.layer.masksToBounds = YES;
-    self.btnLocation.layer.borderWidth = 1.0;
-    self.btnLocation.layer.borderColor = [UIColor colorWithRed:78.0/255.0 green:139.0/255.0 blue:202.0/255.0 alpha:1.0].CGColor;
     
     self.mainView.layer.cornerRadius = 3.0;
     self.mainView.layer.masksToBounds = YES;

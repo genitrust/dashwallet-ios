@@ -41,8 +41,8 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:kNotificationObserverStep4Id object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:kNotificationObserverStep2Id object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
     
     self.btnLocation.layer.cornerRadius = 3.0;
     self.btnLocation.layer.masksToBounds = YES;
@@ -52,12 +52,12 @@
     [self setShadow:self.btnNoThanks];
     
     //store deviceCode in userDefault
-    int launched = [[NSUserDefaults standardUserDefaults] integerForKey:kLaunchStatus];
+    int launched = [[NSUserDefaults standardUserDefaults] integerForKey:USER_DEFAULTS_LAUNCH_STATUS];
     if (launched == 0) {
         
         NSString *uuid = [[NSUUID UUID] UUIDString];
-        [[NSUserDefaults standardUserDefaults] setValue:uuid forKey:kDeviceCode];
-        [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:kLaunchStatus];
+        [[NSUserDefaults standardUserDefaults] setValue:uuid forKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+        [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:USER_DEFAULTS_LAUNCH_STATUS];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -161,8 +161,8 @@
 - (void)findZipCode {
     
     // Your location from latitude and longitude
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLatitude];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLongitude];
+    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
     if (latitude != nil && longitude != nil) {
         

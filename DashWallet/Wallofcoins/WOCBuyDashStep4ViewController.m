@@ -101,13 +101,14 @@
     
     NSDictionary *params =
     @{
-      kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-      kCryptoAmount: @"0",
-      kUsdAmount: amount,
-      kCrypto: @"DASH",
-      kCryptoAddress:cryptoAddress,
-      kBank: bankId,
-      kZipCode: zipCode
+      API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      API_BODY_CRYPTO_AMOUNT: @"0",
+      API_BODY_USD_AMOUNT: amount,
+      API_BODY_CRYPTO: @"DASH",
+      API_BODY_CRYPTO_ADDRESS:cryptoAddress,
+      API_BODY_BANK: bankId,
+      API_BODY_ZIP_CODE: zipCode,
+      API_BODY_JSON_PARAMETER: @"YES"
       };
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {

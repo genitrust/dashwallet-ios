@@ -41,7 +41,7 @@
 
 - (IBAction)orderClicked:(id)sender{
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
@@ -131,7 +131,7 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
@@ -144,7 +144,7 @@
             
             if (orders.count > 0){
                 
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
@@ -210,6 +210,7 @@
     NSString *bankAddress = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"address"]];
     NSString *bankLocationUrl = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]];
     NSString *bankLogo = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLogo"]];
+    NSString *bankIcon = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankIcon"]];
     
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     uint64_t amount;
@@ -241,7 +242,17 @@
             cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
     }
-    else{
+    else if (![[offerDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
+        
+        if ([bankLogo hasPrefix:@"https://"]) {
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]]];
+            cell.imgView.image = [UIImage imageWithData: imageData];
+        }
+        else{
+            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        }
+    }
+    else {
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     }
     

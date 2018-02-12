@@ -55,7 +55,7 @@
     }
     else if (self.isFromOffer) {
         
-        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
         
         if (self.offerId != nil && [self.offerId length] > 0) {
             [self createHold:self.offerId phoneNo:phoneNo];
@@ -92,8 +92,8 @@
 - (IBAction)showMapClicked:(id)sender
 {
     // Your location from latitude and longitude
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLatitude];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:kLocationLongitude];
+    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
     NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
@@ -118,7 +118,7 @@
 
 - (IBAction)signOutClicked:(id)sender {
     
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:kPhone];
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     
     [self signOut:phoneNo];
 }
@@ -412,29 +412,29 @@
 
 - (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone {
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:kToken];
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:kDeviceCode];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSDictionary *params ;
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
     {
         params = @{
-                   kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-                   kOffer: [NSString stringWithFormat:@"%@==",offerId],
-                   kDeviceName: kDeviceNameIOS,
-                   kDeviceCode: deviceCode,
-                   kJSONParameter:@"YES"
+                   API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
+                   API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                   API_BODY_DEVICE_CODE: deviceCode,
+                   API_BODY_JSON_PARAMETER:@"YES"
                    };
     }
     else
     {
         params = @{
-                   kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-                   kOffer: [NSString stringWithFormat:@"%@==",offerId],
-                   kPhone: phone,
-                   kDeviceName: kDeviceNameIOS,
-                   kDeviceCode: deviceCode,
-                   kJSONParameter:@"YES"
+                   API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
+                   API_BODY_PHONE_NUMBER: phone,
+                   API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                   API_BODY_DEVICE_CODE: deviceCode,
+                   API_BODY_JSON_PARAMETER:@"YES"
                    };
     }
    
@@ -448,9 +448,9 @@
             self.holdId = holdId;
             NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
             
-            if ([responseDictionary valueForKey:kToken] != nil && [[responseDictionary valueForKey:kToken] isEqualToString:@"(null)"] == FALSE)
+            if ([responseDictionary valueForKey:@"token"] != nil && [[responseDictionary valueForKey:@"token"] isEqualToString:@"(null)"] == FALSE)
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:kToken]] forKey:kToken];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"token"]] forKey:USER_DEFAULTS_AUTH_TOKEN];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
             
@@ -466,8 +466,9 @@
     
     NSDictionary *params =
     @{
-      kPublisherId: @WALLOFCOINS_PUBLISHER_ID,
-      kVerificationCode: purchaseCode,
+      API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      API_BODY_VERIFICATION_CODE: purchaseCode,
+      API_BODY_JSON_PARAMETER: @"YES"
       };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
@@ -565,7 +566,7 @@
 - (void)signOut:(NSString*)phone
 {
     NSDictionary *params = @{
-                             kPublisherId: @WALLOFCOINS_PUBLISHER_ID
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
@@ -574,8 +575,8 @@
         {
             [self stopTimer];
             [self cancelOrder];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kToken];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kPhone];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             //[self pushToStep1];
         }

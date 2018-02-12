@@ -18,45 +18,51 @@
 
 #define WALLOFCOINS_PUBLISHER_ID "52"
 
-//#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
-#define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
+#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
+//#define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
 
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
 
 #define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 #define LOCAL_DATE_FORMAT @"yyyy-MM-dd HH:mm:ss"
-#define kHeaderPublisherId @"X-Coins-Publisher"
-#define kDeviceCode @"deviceCode"
-#define kDeviceId @"deviceId"
-#define kToken @"token"
-#define kPhone @"phone"
-#define kCountryCode @"countryCode"
-#define kLaunchStatus @"first"
 
-#define kNotificationObserverStep2Id @"openBuyDashStep2"
-#define kNotificationObserverStep4Id @"openBuyDashStep4"
-#define kNotificationObserverStep8Id @"openBuyDashStep8"
+#pragma mark - USER DEFAULT KEYS
 
-#define kLocationLatitude @"locationLatitude"
-#define kLocationLongitude @"locationLongitude"
+#define USER_DEFAULTS_LOCAL_LOCATION_LATITUDE @"USER_DEFAULTS_LOCAL_LOCATION_LATITUDE"
+#define USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE @"USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE"
+#define USER_DEFAULTS_LOCAL_DEVICE_CODE @"USER_DEFAULTS_LOCAL_DEVICE_CODE"
+#define USER_DEFAULTS_LOCAL_DEVICE_ID @"USER_DEFAULTS_LOCAL_DEVICE_ID"
+#define USER_DEFAULTS_AUTH_TOKEN @"USER_DEFAULTS_AUTH_TOKEN"
+#define USER_DEFAULTS_LOCAL_PHONE_NUMBER @"USER_DEFAULTS_PHONE_NUMBER"
+#define USER_DEFAULTS_LOCAL_COUNTRY_CODE @"USER_DEFAULTS_LOCAL_COUNTRY_CODE"
+#define USER_DEFAULTS_LAUNCH_STATUS @"USER_DEFAULTS_LAUNCH_STATUS"
 
-#pragma mark - API Body Keys
-#define kPublisherId @"publisherId"
-#define kCryptoAmount @"cryptoAmount"
-#define kUsdAmount @"usdAmount"
-#define kCrypto @"crypto"
-#define kCryptoAddress @"cryptoAddress"
-#define kBank @"bank"
-#define kZipCode @"zipCode"
+#pragma mark - NOTIFICATION OBSERVER NAME
 
-#define kOffer @"offer"
-#define kDeviceName @"deviceName"
-#define kDeviceNameIOS @"Dash Wallet (iOS)"
-#define kEmail @"email"
-#define kJSONParameter @"JSONPara"
+#define NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 @"NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2"
+#define NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 @"NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4"
+#define NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 @"NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8"
 
-#define kVerificationCode @"verificationCode"
-#define kPassword @"password"
+#pragma mark - API PARAMETERS KEYS
+
+#define API_HEADER_PUBLISHER_ID @"X-Coins-Publisher"
+#define API_BODY_PUBLISHER_ID @"publisherId"
+#define API_BODY_CRYPTO_AMOUNT @"cryptoAmount"
+#define API_BODY_USD_AMOUNT @"usdAmount"
+#define API_BODY_CRYPTO @"crypto"
+#define API_BODY_CRYPTO_ADDRESS @"cryptoAddress"
+#define API_BODY_BANK @"bank"
+#define API_BODY_ZIP_CODE @"zipCode"
+#define API_BODY_OFFER @"offer"
+#define API_BODY_DEVICE_NAME @"deviceName"
+#define API_BODY_DEVICE_CODE @"deviceCode"
+#define API_BODY_DEVICE_ID @"deviceId"
+#define API_BODY_PHONE_NUMBER @"phone"
+#define API_BODY_DEVICE_NAME_IOS @"Dash Wallet (iOS)"
+#define API_BODY_EMAIL @"email"
+#define API_BODY_JSON_PARAMETER @"JSONPara"
+#define API_BODY_VERIFICATION_CODE @"verificationCode"
+#define API_BODY_PASSWORD @"password"
 
 #endif /* WOCUserDefaultsConstants_h */
