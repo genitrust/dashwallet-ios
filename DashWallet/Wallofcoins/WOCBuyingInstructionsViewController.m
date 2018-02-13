@@ -15,6 +15,7 @@
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
 #import "WOCAlertController.h"
+#import "WOCLocationManager.h"
 
 @interface WOCBuyingInstructionsViewController () <UITextViewDelegate>
 
@@ -36,6 +37,10 @@
     [self setShadow:self.btnCancelOrder];
     [self setShadow:self.btnWallOfCoins];
     [self setShadow:self.btnSignOut];
+    
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
+    self.lblLoginPhone.text = loginPhone;
     
     if (self.orderDict.count > 0) {
         [self updateData:self.orderDict];
@@ -264,8 +269,6 @@
     NSString *totalDash = [dictionary valueForKey:@"total"];
     self.orderId = [dictionary valueForKey:@"id"];
     
-    NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
-    
     //bankLogo
     if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
         
@@ -299,7 +302,6 @@
     NSString *stringNum = [numFormatter stringFromNumber:num];
     
     self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ Dash (%@ dots)",totalDash, stringNum];
-    self.lblLoginPhone.text = loginPhone;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;

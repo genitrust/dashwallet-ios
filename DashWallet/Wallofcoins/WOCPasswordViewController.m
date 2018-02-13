@@ -91,7 +91,7 @@
 }
 
 #pragma mark - API
-- (void)login:(NSString*)phone password:(NSString*)password{
+- (void)login:(NSString*)phoneNo password:(NSString*)password{
     
     NSDictionary *params = @{
                              API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
@@ -99,20 +99,22 @@
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
     
-    [[APIManager sharedInstance] login:params phone:phone response:^(id responseDict, NSError *error) {
+    [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         
         if (error == nil) {
             
             [self dismissViewControllerAnimated:YES completion:nil];
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:USER_DEFAULTS_AUTH_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:@"token"] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] synchronize];
 
-            [[NSUserDefaults standardUserDefaults] setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phone];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+            
+            //[self getDeviceId:phoneNo];
         }
         else
         {
@@ -136,4 +138,86 @@
         }
     }];
 }
+
+- (void)getDeviceId:(NSString*)phoneNo{
+    
+    [[APIManager sharedInstance] getDevice:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *response = (NSArray*)responseDict;
+            
+            if (response.count > 0) {
+                
+                NSDictionary *dictionary = [response objectAtIndex:0];
+                NSString *deviceId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
+                
+                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV'"];
+                NSArray *devicesArray = [response filteredArrayUsingPredicate:wdvPredicate];
+                
+                for (int i = 0; i < response.count; i++) {
+                    
+                    
+                }
+                
+                [[NSUserDefaults standardUserDefaults] setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self authorize:phoneNo deviceId:deviceId];
+            }
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)authorize:(NSString*)phoneNo deviceId:(NSString*)deviceId{
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+
+    NSDictionary *params = @{
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_BODY_DEVICE_CODE: deviceCode,
+                             API_BODY_DEVICE_ID: deviceId,
+                             API_BODY_JSON_PARAMETER: @"YES"
+                             };
+    
+    [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",API_RESPONSE_DEVICE_ID] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            //move to step 8
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error.userInfo != nil)
+                {
+                    if (error.userInfo[@"detail"] != nil)
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self];
+                    }
+                    else
+                    {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
+                    }
+                }
+                else
+                {
+                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
+                }
+            });
+        }
+    }];
+}
+
 @end

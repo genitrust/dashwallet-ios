@@ -18,8 +18,8 @@
 
 #define WALLOFCOINS_PUBLISHER_ID "52"
 
-#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
-//#define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
+//#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
+#define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
 
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
@@ -58,11 +58,20 @@
 #define API_BODY_DEVICE_NAME @"deviceName"
 #define API_BODY_DEVICE_CODE @"deviceCode"
 #define API_BODY_DEVICE_ID @"deviceId"
+#define API_BODY_CODE @"code"
+#define API_BODY_NAME @"name"
 #define API_BODY_PHONE_NUMBER @"phone"
 #define API_BODY_DEVICE_NAME_IOS @"Dash Wallet (iOS)"
 #define API_BODY_EMAIL @"email"
 #define API_BODY_JSON_PARAMETER @"JSONPara"
 #define API_BODY_VERIFICATION_CODE @"verificationCode"
 #define API_BODY_PASSWORD @"password"
+
+#pragma mark - API PARAMETERS KEYS
+
+#define API_RESPONSE_TOKEN @"token"
+#define API_RESPONSE_ID @"id"
+#define API_RESPONSE_DEVICE_ID @"deviceId"
+#define API_RESPONSE_PURCHASE_CODE @"__PURCHASE_CODE"
 
 #endif /* WOCUserDefaultsConstants_h */

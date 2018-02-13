@@ -195,31 +195,31 @@
 
 - (NSString*)checkStatus:(NSString*)status {
     
-    NSString *string = status;
+    NSString *string = @"";
     
     if ([status isEqualToString:WD]){
-        string = STATUS_WD;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_WD];
     }
     else if ([status isEqualToString:WDV]){
-        string = STATUS_WDV;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_WDV];
     }
     else if ([status isEqualToString:RERR]){
-        string = STATUS_RERR;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_RERR];
     }
     else if ([status isEqualToString:DERR]){
-        string = STATUS_DERR;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_DERR];
     }
     else if ([status isEqualToString:RMIT]){
-        string = STATUS_RMIT;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_RMIT];
     }
     else if ([status isEqualToString:UCRV]){
-        string = STATUS_UCRV;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_UCRV];
     }
     else if ([status isEqualToString:PAYP]){
-        string = STATUS_PAYP;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_PAYP];
     }
     else if ([status isEqualToString:SENT]){
-        string = STATUS_SENT;
+        string = [NSString stringWithFormat:@"Status: %@",STATUS_SENT];
     }
     
     return string;
@@ -418,7 +418,7 @@
         NSString *stringNum = [numFormatter stringFromNumber:num];
         
         cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@ (%@ dots)",totalDash,stringNum];
-        cell.lblStatus.text = [NSString stringWithFormat:@"Status: %@",[self checkStatus:status]];
+        cell.lblStatus.text = [self checkStatus:status];
         
         return cell;
     }

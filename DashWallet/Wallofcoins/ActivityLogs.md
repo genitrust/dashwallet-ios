@@ -232,3 +232,16 @@ Holiday
 11. The SIGN OUT Panel will be directly under the Support Panel (just as it is now).
 12. The SIGN OUT button will be grey with black text, like the WALLOFCOINS.COM button.
 13. Under the SIGN OUT panel will be big, centered text saying, "Previous Orders”.
+
+#### Work on 12 FEB 2018 (MON) Sujal Bandhara
+
+1. Logos and Icons used must NOT be the "HQ" versio
+2. All API calls must use HTTPS (do not use HTTP anymore)
+3. ALL API UPDATES: Content-Type header must be "application/json"
+4. Testing , Bug resolve and Code refactoring
+
+#### Work on 13 FEB 2018 (TUE) Sujal Bandhara
+
+1. Updated WallofCoins-README.md
+2. Added “deviceId” in authorise API
+3. Testing and bug solving

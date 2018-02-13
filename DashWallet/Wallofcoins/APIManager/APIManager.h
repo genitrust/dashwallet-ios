@@ -29,6 +29,7 @@
 -(void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)getDevice:(void (^)(id responseDict, NSError *error))completionBlock;
+-(void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
 -(void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
 
 @end

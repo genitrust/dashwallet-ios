@@ -10,6 +10,8 @@
 #import "WOCBuyDashStep6ViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
+#import "BRRootViewController.h"
+#import "BRAppDelegate.h"
 #import "WOCOfferCell.h"
 #import "APIManager.h"
 #import "BRWalletManager.h"
@@ -146,6 +148,9 @@
                 
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
+                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
+                
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
@@ -156,24 +161,70 @@
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else{
-                    //[self pushToStep6:sender];
+                else if (wdArray.count > 0){
+                    //delete a hold
+                    for (int i = 0; i < wdArray.count; i++) {
+                        
+                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:i];
+                        
+                        //[self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]]];
+                    }
+                }
+                else if (orders.count > 0){
                     
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
-                    myViewController.offerId = [NSString stringWithFormat:@"%@",[[self.offers objectAtIndex:sender] valueForKey:@"id"]];
-                    myViewController.isFromOffer = YES;
                     myViewController.isFromSend = NO;
-                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    myViewController.isFromOffer = YES;
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
+                    NSDictionary *offerDict = self.offers[indexPath.row];
+                    myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
                     [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else if (orders.count > 0){
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+                        
+                        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                        [nav.navigationBar setTintColor:[UIColor whiteColor]];
+                        
+                        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+                        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+                        
+                        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                        appDelegate.window.rootViewController = nav;
+                    });
                 }
             }
             else{
-                [self pushToStep6:sender];
+                
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                
+                UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                myViewController.phoneNo = phoneNo;
+                myViewController.isFromSend = NO;
+                myViewController.isFromOffer = YES;
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
+                NSDictionary *offerDict = self.offers[indexPath.row];
+                myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+                [self.navigationController pushViewController:myViewController animated:YES];
             }
         }
         else{

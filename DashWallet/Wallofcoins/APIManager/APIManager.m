@@ -420,9 +420,12 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
 -(void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/devices/",BASE_URL];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
     NSDictionary *header =
     @{
       API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      @"X-Coins-Api-Token": token,
       @"Content-Type":@"application/json"
       };
     

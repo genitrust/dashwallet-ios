@@ -8,16 +8,23 @@
 
 #import "WOCBuyDashStep7ViewController.h"
 #import "WOCBuyDashStep8ViewController.h"
+#import "WOCBuyingInstructionsViewController.h"
+#import "WOCBuyingSummaryViewController.h"
+#import "WOCPasswordViewController.h"
+#import "BRRootViewController.h"
+#import "BRAppDelegate.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
-#import "WOCPasswordViewController.h"
 #import "WOCAlertController.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyDashStep7ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (strong, nonatomic) NSArray *countries;
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) NSString *countryCode;
+@property (strong, nonatomic) NSString *purchaseCode;
+@property (strong, nonatomic) NSString *holdId;
 
 @end
 
@@ -102,15 +109,17 @@
     NSString *phoneNo = [NSString stringWithFormat:@"%@",notification.object];
     [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    //NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    [self createHold:phoneNo];
+    
+    /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
     myViewController.phoneNo = phoneNo;
     myViewController.offerId = self.offerId;
     myViewController.deviceCode = deviceCode;
     myViewController.emailId = self.emailId;
-    [self.navigationController pushViewController:myViewController animated:YES];
+    [self.navigationController pushViewController:myViewController animated:YES];*/
 }
 
 #pragma mark - API
@@ -142,15 +151,7 @@
                 }
                 else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
                     
-                    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-                    
-                    if (token != nil && [token isEqualToString:@"(null)"] == FALSE){
-                        
-                       [self getDeviceId:phone code:countryCode];
-                    }
-                    else{
-                        [self login:phone code:countryCode];
-                    }
+                        [self login:phoneNo];
                 }
             }
         }
@@ -161,8 +162,12 @@
                 //new number
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+                [self createHold:phoneNo];
+                
+                /*NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
                 
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                 WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
@@ -170,10 +175,7 @@
                 myViewController.offerId = self.offerId;
                 myViewController.deviceCode = deviceCode;
                 myViewController.emailId = self.emailId;
-                [self.navigationController pushViewController:myViewController animated:YES];
-                
-                [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self.navigationController pushViewController:myViewController animated:YES];*/
             }
             else{
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -198,31 +200,7 @@
     }];
 }
 
-- (void)getDeviceId:(NSString*)phone code:(NSString*)countryCode{
-    
-    [[APIManager sharedInstance] getDevice:^(id responseDict, NSError *error) {
-        
-        if (error == nil) {
-            
-            NSArray *response = (NSArray*)responseDict;
-            
-            if (response.count > 0) {
-                
-                NSDictionary *dictionary = [response objectAtIndex:0];
-                
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            [self login:phone code:countryCode];
-        }
-        else{
-            [self login:phone code:countryCode];
-            //[[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
-        }
-    }];
-}
-
-- (void)login:(NSString*)phone code:(NSString*)countryCode{
+- (void)login:(NSString*)phoneNo{
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
@@ -244,14 +222,12 @@
         }
     }
     
-    NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
-    
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
     
         if (error == nil) {
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:USER_DEFAULTS_AUTH_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
@@ -267,17 +243,342 @@
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            [self createHold:phoneNo];
+            
+            /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
             WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
             myViewController.phoneNo = phoneNo;
             myViewController.offerId = self.offerId;
             myViewController.deviceCode = deviceCode;
             myViewController.emailId = self.emailId;
-            [self.navigationController pushViewController:myViewController animated:YES];
+            [self.navigationController pushViewController:myViewController animated:YES];*/
             //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)createHold:(NSString*)phoneNo {
+    
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *params;
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        params =  @{
+                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                    API_BODY_DEVICE_CODE: deviceCode,
+                    API_BODY_JSON_PARAMETER:@"YES"
+                    };
+    }
+    else
+    {
+        params =  @{
+                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                    API_BODY_PHONE_NUMBER: phoneNo,
+                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                    API_BODY_DEVICE_CODE: deviceCode,
+                    API_BODY_EMAIL: self.emailId,
+                    API_BODY_JSON_PARAMETER:@"YES"
+                    };
+    }
+    
+    [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
+        
+        if (error == nil) {
+            
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            
+            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:API_RESPONSE_TOKEN] == FALSE)
+            {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            self.purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+            self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+            
+            [self deleteHold:self.holdId];
+            [self registerDevice:phoneNo];
+        }
+        else
+        {
+            [self getOrders];
+        }
+    }];
+}
+
+- (void)registerDevice:(NSString*)phoneNo {
+    
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *params =  @{
+                              API_BODY_NAME: API_BODY_DEVICE_NAME_IOS,
+                              API_BODY_CODE: deviceCode,
+                              API_BODY_JSON_PARAMETER:@"YES"
+                              };
+    
+    [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
+        
+        if (error == nil) {
+            
+            NSDictionary *response = (NSDictionary*)responseDict;
+            
+            if (response.count > 0) {
+                
+                NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:API_RESPONSE_ID]];
+                
+                [self authorize:phoneNo deviceId:deviceId];
+            }
+        }
+        else
+        {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)authorize:(NSString*)phoneNo deviceId:(NSString*)deviceId{
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *params = @{
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_BODY_DEVICE_CODE: deviceCode,
+                             API_BODY_JSON_PARAMETER: @"YES"
+                             };
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+        if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
+            
+            params = @{
+                       API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                       API_BODY_DEVICE_CODE: deviceCode,
+                       API_BODY_DEVICE_ID: deviceId,
+                       API_BODY_JSON_PARAMETER: @"YES"
+                       };
+        }
+    }
+    
+    [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            
+            [self createHoldAfterAuthorize:phoneNo];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            //[self createHold:phoneNo];
+            
+            /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+             WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+             myViewController.phoneNo = phoneNo;
+             myViewController.offerId = self.offerId;
+             myViewController.deviceCode = deviceCode;
+             myViewController.emailId = self.emailId;
+             [self.navigationController pushViewController:myViewController animated:YES];*/
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)createHoldAfterAuthorize:(NSString*)phoneNo {
+    
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *params;
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        params =  @{
+                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                    API_BODY_DEVICE_CODE: deviceCode,
+                    API_BODY_JSON_PARAMETER:@"YES"
+                    };
+    }
+    else
+    {
+        params =  @{
+                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                    API_BODY_PHONE_NUMBER: phoneNo,
+                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                    API_BODY_DEVICE_CODE: deviceCode,
+                    API_BODY_EMAIL: self.emailId,
+                    API_BODY_JSON_PARAMETER:@"YES"
+                    };
+    }
+    
+    [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
+        
+        if (error == nil) {
+            
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            
+            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:API_RESPONSE_TOKEN] == FALSE)
+            {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            self.purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+            self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+            myViewController.phoneNo = phoneNo;
+            myViewController.offerId = self.offerId;
+            myViewController.purchaseCode = self.purchaseCode;
+            myViewController.deviceCode = deviceCode;
+            myViewController.emailId = self.emailId;
+            myViewController.holdId = self.holdId;
+            [self.navigationController pushViewController:myViewController animated:YES];
+        }
+        else
+        {
+            [self getOrders];
+        }
+    }];
+}
+
+- (void)getOrders {
+    
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSDictionary *params = @{
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
+        
+        if (error == nil) {
+            
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0){
+                
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                
+                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
+                
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                
+                if ([status isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.holdId = self.holdId;
+                    myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else if (wdArray.count > 0){
+                    
+                    for (int i = 0; i < wdArray.count; i++) {
+                        
+                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:i];
+                        
+                        [self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]]];
+                    }
+                }
+                else if (orders.count > 0){
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
+                        
+                        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                        [nav.navigationBar setTintColor:[UIColor whiteColor]];
+                        
+                        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
+                        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
+                        
+                        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                        appDelegate.window.rootViewController = nav;
+                    });
+                }
+            }
+        }
+        else
+        {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)deleteHold:(NSString*)holdId{
+    
+    NSDictionary *params = @{
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold with Hold Id: %@ deleted.",holdId);
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
