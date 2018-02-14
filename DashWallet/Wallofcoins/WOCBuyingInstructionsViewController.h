@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblBankName;
 @property (weak, nonatomic) IBOutlet UILabel *lblPhone;
+@property (weak, nonatomic) IBOutlet UIButton *btnCheckLocation;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblAccountName;
 @property (weak, nonatomic) IBOutlet UILabel *lblAccountNo;

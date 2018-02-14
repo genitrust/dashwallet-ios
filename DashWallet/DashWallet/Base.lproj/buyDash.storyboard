@@ -1377,6 +1377,7 @@ Help is also available on the website.</string>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
                         <outlet property="btnCancelOrder" destination="xNo-0Q-PfS" id="rzl-zo-fAD"/>
+                        <outlet property="btnCheckLocation" destination="krM-lP-mGi" id="oqn-cw-67c"/>
                         <outlet property="btnDepositFinished" destination="0k0-Z1-iiF" id="x1Q-Io-YdC"/>
                         <outlet property="btnSignOut" destination="Oh5-Gx-57V" id="9qw-pt-prr"/>
                         <outlet property="btnWallOfCoins" destination="YGj-Gd-0Mc" id="9TS-F9-BSq"/>

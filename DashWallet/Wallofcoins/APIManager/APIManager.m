@@ -447,6 +447,22 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
     }];
 }
 
+-(void)getHold:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *header =
+    @{
+      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      @"X-Coins-Api-Token": token
+      };
+    
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        completionBlock(responseDict,error);
+    }];
+}
+
 #pragma mark - API calls
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock {
     

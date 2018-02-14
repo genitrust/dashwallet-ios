@@ -23,6 +23,8 @@
 @property (strong, nonatomic) NSString *dueTime;
 @property (assign, nonatomic) int minutes;
 @property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) NSString *locationUrl;
+
 
 @end
 
@@ -96,13 +98,28 @@
 #pragma mark - Action
 - (IBAction)showMapClicked:(id)sender
 {
-    // Your location from latitude and longitude
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    if (self.locationUrl != nil) {
+        
+        if (![self.locationUrl hasPrefix:@"http"]) {
+            self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
+        }
+        
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
+                NSLog(@"URL opened.");
+            }];
+        }
+    }
+    else{
     
-    NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
+        // Your location from latitude and longitude
+        NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+        NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+        
+        NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
+        }
     }
 }
 
@@ -284,7 +301,16 @@
         self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     }
     
-    self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+    //bankLocationUrl
+    if ([dictionary valueForKey:@"bankUrl"] != [NSNull null]) {
+        
+        [self.btnCheckLocation setTitle:@"Check locations" forState:UIControlStateNormal];
+        self.locationUrl = [dictionary valueForKey:@"bankUrl"];
+        
+        if ([[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"address"] length] > 0) {
+            [self.btnCheckLocation setHidden:YES];
+        }
+    }
     
     self.lblBankName.text = bankName;
     self.lblPhone.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];

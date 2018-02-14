@@ -39,7 +39,7 @@
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
-@property (strong, nonatomic) NSArray *wdvOrders;
+@property (strong, nonatomic) NSArray *wdOrders;
 @property (strong, nonatomic) NSArray *otherOrders;
 
 @end
@@ -59,11 +59,11 @@
         [self getOrders];
     }
     else{
-        NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV'"];
+        NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
         NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
-        self.wdvOrders = [[NSArray alloc] initWithArray:wdvArray];
+        self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
         
-        NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
+        NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV' || status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
         NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
         self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
         
@@ -239,11 +239,11 @@
             NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             self.orders = response;
             
-            NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV'"];
+            NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
             NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
-            self.wdvOrders = [[NSArray alloc] initWithArray:wdvArray];
+            self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
             
-            NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
+            NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV' || status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
             NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
             self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
             
@@ -290,7 +290,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if (section == 0) {
-        return self.wdvOrders.count;
+        return self.wdOrders.count;
     }
     else if (section == 1) {
         return 1;
@@ -310,10 +310,15 @@
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
         headerView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
         
-        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, headerView.frame.size.height - 20)];
-        lblTitle.text = @"Previous Orders";
-        lblTitle.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightBold];
+        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, headerView.frame.size.width - 30, headerView.frame.size.height - 15)];
+        lblTitle.text = @"Order History";
+        lblTitle.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightMedium];
         lblTitle.textAlignment = NSTextAlignmentCenter;
+        lblTitle.backgroundColor = [UIColor whiteColor];
+        lblTitle.layer.cornerRadius = 10.0;
+        lblTitle.layer.masksToBounds = YES;
+        
+        [self setShadow:lblTitle];
         
         [headerView addSubview:lblTitle];
         
@@ -359,7 +364,7 @@
         NSDictionary *orderDict = [[NSDictionary alloc] init];
         
         if (indexPath.section == 0) {
-            orderDict = self.wdvOrders[indexPath.row];
+            orderDict = self.wdOrders[indexPath.row];
         }
         else{
             orderDict = self.otherOrders[indexPath.row];
@@ -382,6 +387,7 @@
         }
         
         NSString *bankLogo = [orderDict valueForKey:@"bankLogo"];
+        NSString *bankIcon = [orderDict valueForKey:@"bankIcon"];
         NSString *bankName = [orderDict valueForKey:@"bankName"];
         NSString *phoneNo = [NSString stringWithFormat:@"%@",[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
         float depositAmount = [[orderDict valueForKey:@"payment"] floatValue];
@@ -399,11 +405,20 @@
                 cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
             }
         }
-        else{
+        else if (![[orderDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
+            
+            if ([bankLogo hasPrefix:@"https://"]) {
+                NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]]];
+                cell.imgView.image = [UIImage imageWithData: imageData];
+            }
+            else{
+                cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+            }
+        }
+        else {
             cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
         
-        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         cell.lblName.text = bankName;
         cell.lblPhone.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];
         cell.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
@@ -434,7 +449,7 @@
         NSDictionary *orderDict = [[NSDictionary alloc] init];
         
         if (indexPath.section == 0) {
-            orderDict = self.wdvOrders[indexPath.row];
+            orderDict = self.wdOrders[indexPath.row];
         }
         else{
             orderDict = self.otherOrders[indexPath.row];

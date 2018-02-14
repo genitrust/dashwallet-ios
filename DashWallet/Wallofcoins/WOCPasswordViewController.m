@@ -11,6 +11,7 @@
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "WOCAlertController.h"
+#import "MBProgressHUD.h"
 
 @interface WOCPasswordViewController () <UITextViewDelegate>
 
@@ -103,18 +104,14 @@
         
         if (error == nil) {
             
-            [self dismissViewControllerAnimated:YES completion:nil];
-            
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:@"token"] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-
+            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+            //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
             
-            //[self getDeviceId:phoneNo];
+            [self getDeviceId:phoneNo];
         }
         else
         {
@@ -141,7 +138,11 @@
 
 - (void)getDeviceId:(NSString*)phoneNo{
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     [[APIManager sharedInstance] getDevice:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
         
         if (error == nil) {
             
@@ -149,19 +150,12 @@
             
             if (response.count > 0) {
                 
-                NSDictionary *dictionary = [response objectAtIndex:0];
+                NSDictionary *dictionary = [response lastObject];
                 NSString *deviceId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
-                
-                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV'"];
-                NSArray *devicesArray = [response filteredArrayUsingPredicate:wdvPredicate];
-                
-                for (int i = 0; i < response.count; i++) {
-                    
-                    
-                }
                 
                 [[NSUserDefaults standardUserDefaults] setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+                
                 [self authorize:phoneNo deviceId:deviceId];
             }
         }
@@ -173,6 +167,8 @@
 
 - (void)authorize:(NSString*)phoneNo deviceId:(NSString*)deviceId{
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
 
     NSDictionary *params = @{
@@ -183,6 +179,8 @@
                              };
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
         
         if (error == nil) {
             

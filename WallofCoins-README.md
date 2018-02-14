@@ -1,4 +1,3 @@
-WallofCoins-README.md
 ### Wall of Coins Platform API
 
 To receive sales affiliate commissions, you must have a Publisher account with Wall of Coins. Visit this page for more information: https://wallofcoins.com/developer-api
@@ -6,7 +5,7 @@ To receive sales affiliate commissions, you must have a Publisher account with W
 API endpoints:
 
 * Production: https://wallofcoins.com/api/v1
-* Development: http://woc.reference.genitrust.com/api/v1
+* Development: https://woc.reference.genitrust.com/api/v1
 
 ### **Authentication methods**
 
@@ -22,7 +21,7 @@ In order to be authenticated you should send a token within every API request. T
 API for get payment center list using GET method...
 
 ```http
-GET http://woc.reference.genitrust.com/api/v1/banks/
+GET https://woc.reference.genitrust.com/api/v1/banks/
 ```
 
 ##### Response :
@@ -34,9 +33,7 @@ GET http://woc.reference.genitrust.com/api/v1/banks/
 "name": "Genitrust",
 "url": "http://genitrust.com/",
 "logo": null,
-"logoHq": null,
 "icon": null,
-"iconHq": null,
 "country": "us",
 "payFields": false
 }
@@ -50,8 +47,15 @@ This method is optional.
 
 An API for discover available option, which will return Discovery ID along with list of information.
 
+
+
 ```http
-POST http://woc.reference.genitrust.com/api/v1/discoveryInputs/
+
+HEADER:
+X-Coins-Publisher: ##
+Content-Type: application/json
+
+POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 ```
 
 ##### Request :
@@ -103,7 +107,7 @@ POST http://woc.reference.genitrust.com/api/v1/discoveryInputs/
 An API for fetch all offers for received Discovery ID.
 
 ```http
-GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/offers/
+GET https://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/offers/
 ```
 
 ##### Response :
@@ -129,9 +133,7 @@ GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/off
 "state": "",
 "bankName": "MoneyGram",
 "bankLogo": "/media/logos/logo_us_MoneyGram.png",
-"bankLogoHq": "/media/logos/logo_us_MoneyGram%402x.png",
 "bankIcon": "/media/logos/icon_us_MoneyGram.png",
-"bankIconHq": "/media/logos/icon_us_MoneyGram%402x.png",
 "bankLocationUrl": "https://secure.moneygram.com/locations",
 "city": ""}
 ],
@@ -155,9 +157,7 @@ GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/off
 "state": "FL",
 "bankName": "Chase",
 "bankLogo": "/media/logos/logo_us_Chase.png",
-"bankLogoHq": "/media/logos/logo_us_Chase%402x.png",
 "bankIcon": "/media/logos/icon_us_Chase.png",
-"bankIconHq": "/media/logos/icon_us_Chase%402x.png",
 "bankLocationUrl": null,
 "city": "Sarasota"
 },
@@ -179,9 +179,7 @@ GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/off
 "state": "FL",
 "bankName": "Chase",
 "bankLogo": "/media/logos/logo_us_Chase.png",
-"bankLogoHq": "/media/logos/logo_us_Chase%402x.png",
 "bankIcon": "/media/logos/icon_us_Chase.png",
-"bankIconHq": "/media/logos/icon_us_Chase%402x.png",
 "bankLocationUrl": null,
 "city": "Sarasota"
 },
@@ -200,6 +198,18 @@ GET http://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/off
 }
 ```
 
+When they Discovery Input offers object contains...
+
+```
+{
+. . .
+incremented: true
+}
+```
+
+This means that the search amount (for example "$25") was not available for all offers--some offers that are available REQUIRE the end user (buyer) to deposit slightly more than $25. This is what is meant by the term ```incremented``` so buyer need to pay that incremented amount for buy dash.
+
+
 #### GET AUTH DETAILS
 
 **GET /api/v1/auth/<phone>/**
@@ -211,6 +221,7 @@ This endpoint will return HTTP 404 if phone is not registered in our system, oth
 ```http
 HEADER:
 X-Coins-Publisher: ##
+Content-Type: application/json
 ```
 It need  X-Coins-Publisher as a header parameter.
 
@@ -237,8 +248,9 @@ From offer list on offer click we have to create an hold on offer for generate i
 ```http
 HEADER:
 X-Coins-Publisher: ##
+Content-Type: application/json
 
-POST http://woc.reference.genitrust.com/api/v1/holds/
+POST https://woc.reference.genitrust.com/api/v1/holds/
 ```
 
 It need  X-Coins-Publisher as a header parameter.
@@ -251,7 +263,7 @@ It need  X-Coins-Publisher as a header parameter.
 "offer": "eyJ1c2QiOiAiNTA...",
 "phone": "+19411101467",
 "deviceName": "Ref Client",
-"deviceCode": "############"
+"deviceCode": "device-code-is-a-password_and_MUST_be_30_characters_or_more"
 }
 ```
 
@@ -261,8 +273,9 @@ It need  X-Coins-Publisher as a header parameter.
 HEADER:
 X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
 X-Coins-Publisher: ##
+Content-Type: application/json
 
-POST http://woc.reference.genitrust.com/api/v1/holds/
+POST https://woc.reference.genitrust.com/api/v1/holds/
 ```
 
 It need X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
@@ -275,7 +288,7 @@ It need X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
 "offer": "eyJ1c2QiOiAiNTA...",
 "phone": "+19411101467",
 "deviceName": "Ref Client",
-"deviceCode": "############"
+"deviceCode": "device-code-is-a-password_and_MUST_be_30_characters_or_more"
 }
 ```
 
@@ -302,9 +315,9 @@ It need X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
 ##### Status Code :
 
 * 201 returned when the hold is created
-* 400 when one of the parameters are missing! for example, if you're creating a new device... you need "phone", "deviceName", and "deviceCode".
-* 403 when a token is required or the phone number supplied needs password?
-* 404 when the offer no-longer is available (either the time expired or the ad will now be negative.)
+* 400 returned when one of the parameters are missing! for example, if you're creating a new device... you need "phone", "deviceName", and "deviceCode".
+* 403 returned when a X-Coins-Api-Token is required or the phone number supplied needs password
+* 404 returned when the offer no-longer is available (either the time expired or the ad will now be negative.)
 
 This API will send purchase code to user's device on his register phone number and it will be same
 as `__PURCHASE_CODE` value.
@@ -318,7 +331,9 @@ We have to match user input code with `__PURCHASE_CODE`  and if verify, we have 
 HEADER:
 X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
 X-Coins-Publisher: ##
-POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
+Content-Type: application/json
+
+POST https://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
 ```
 
 #####Request :
@@ -354,7 +369,6 @@ POST http://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
 "bankUrl": "https://secure.moneygram.com",
 "bankLogo": "/media/logos/logo_us_MoneyGram.png",
 "bankIcon": "/media/logos/icon_us_MoneyGram.png",
-"bankIconHq": "/media/logos/icon_us_MoneyGram%402x.png",
 "privateId": "c149c6e90e13de979ff12e0aaa2a9c4d9f88d510"
 }
 ]
@@ -371,8 +385,9 @@ it will confirm the user authentication with  `__PURCHASE_CODE`  and in next ste
 REQUEST HEADER:
 X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
 X-Coins-Publisher: ##
+Content-Type: application/json
 
-POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
+POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 ```
 
 ##### Response
@@ -397,11 +412,26 @@ POST http://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 "bankUrl": "https://secure.moneygram.com",
 "bankLogo": "/media/logos/logo_us_MoneyGram.png",
 "bankIcon": "/media/logos/icon_us_MoneyGram.png",
-"bankIconHq": "/media/logos/icon_us_MoneyGram%402x.png",
 "privateId": "c149c6e90e13de979ff12e0aaa2a9c4d9f88d510"
 }
 ```
 This method used for confirm user order
+
+#### CANCEL ORDER
+
+```http
+REQUEST HEADER:
+X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
+X-Coins-Publisher: ##
+Content-Type: application/json
+
+DELETE https://woc.reference.genitrust.com/api/v1/orders/{orderId}/?<publisherId>
+```
+
+##### Response
+204 NO CONTENT
+
+This method is used for cancel order by orderId created by user.
 
 #### ORDER LIST
 
@@ -409,10 +439,11 @@ This method used for confirm user order
 REQUEST HEADER:
 X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
 X-Coins-Publisher: ##
+Content-Type: application/json
 
-
-GET http://woc.reference.genitrust.comapi/v1/orders/?<publisherId>
+GET https://woc.reference.genitrust.com/api/v1/orders/?<publisherId>
 ```
+
 
 ##### Response
 
@@ -436,7 +467,6 @@ GET http://woc.reference.genitrust.comapi/v1/orders/?<publisherId>
 "bankUrl": "https://moneygram.com/",
 "bankLogo": "/media/logos/logo_us_Money%20Gram.png",
 "bankIcon": "/media/logos/icon_us_Money%20Gram.png",
-"bankIconHq": "/media/logos/icon_us_Money%20Gram%402x.png",
 "privateId": "d674d55f9e",
 "currencyName": "US Dollar",
 "currencySymbol": "$",
@@ -445,3 +475,87 @@ GET http://woc.reference.genitrust.comapi/v1/orders/?<publisherId>
 }]
 ```
 This method is user for get user order list
+
+Below is the list of order status for user orders history:
+
+WD = Waiting Deposit
+WDV = Waiting Deposit Verification
+RERR = Issue with Receipt
+DERR = Issue with Deposit
+RSD = Reserved for Deposit
+RMIT = Remit Address Missing
+UCRV = Under Review
+PAYP = Done - Pending Delivery
+SENT = Done - Units Delivered
+
+If you get status = 'WD', then you will need to display 'Status: Waiting Deposit' to end user for all orders.
+
+#### CREATE DEVICE
+
+```http
+HEADER:
+X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
+X-Coins-Publisher: ##
+Content-Type: application/json
+
+POST https://woc.reference.genitrust.com/api/v1/devices/
+```
+
+#####Request :
+
+```
+{
+"name": "Test Device",
+"code": "CK99K"
+}
+```
+
+##### Response :
+
+
+```json
+{
+"id": 540,
+"name": "Dash Wallet (Android)",
+"createdOn": "2018-02-12T14:53:55.234Z"
+}
+```
+This method use for register new device with API.
+DeviceID(id) will be used to as Header parameter in "api/v1/auth/{phone}/authorize/" API for
+Authorize user
+
+#### GET DEVICES
+
+```http
+HEADER:
+X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
+X-Coins-Publisher: ##
+Content-Type: application/json
+
+GET https://woc.reference.genitrust.com/api/v1/devices/
+```
+
+##### Response :
+
+
+```json
+[
+{
+"id": 11,
+"name": "rgenito",
+"createdOn": "2015-05-13T00:17:49.210Z"
+},
+{
+"id": 13,
+"name": "rgenito",
+"createdOn": "2015-08-05T00:00:43.421Z"
+},
+{
+"id": 15,
+"name": "rgenito",
+"createdOn": "2015-12-07T17:32:45.992Z"
+}
+]
+```
+This method is use for get all devices for user
+

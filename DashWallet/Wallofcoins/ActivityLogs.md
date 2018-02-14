@@ -245,3 +245,11 @@ Holiday
 1. Updated WallofCoins-README.md
 2. Added “deviceId” in authorise API
 3. Testing and bug solving
+
+#### Work on 14 FEB 2018 (WED) Sujal Bandhara
+
+1. Updated WallofCoins-README.md
+2. Changed API flow to pass deviceId in authorise API
+3. Added check locations in buying instruction
+4. Testing and bug solving
+

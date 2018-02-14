@@ -111,7 +111,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     //NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     
-    [self createHold:phoneNo];
+    [self createHoldAfterAuthorize:phoneNo];
     
     /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
@@ -576,6 +576,20 @@
         if (error == nil) {
             
             NSLog(@"Hold with Hold Id: %@ deleted.",holdId);
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)getHold:(NSString*)holdId{
+    
+    [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold with Hold Id: %@.",responseDict);
         }
         else{
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
