@@ -29,11 +29,11 @@
     //[self.navigationController.navigationBar setHidden:YES];
     
     /*UIBarButtonItem *btnBack = [[UIBarButtonItem alloc]
-                                initWithTitle:@"Buy Dash With Cash"
-                                style:UIBarButtonItemStylePlain
-                                target:self
-                                action:@selector(backBtnClicked:)];
-    [btnBack setImage:[UIImage imageNamed:@"ic_arrow_back_white"]];*/
+     initWithTitle:@"Buy Dash With Cash"
+     style:UIBarButtonItemStylePlain
+     target:self
+     action:@selector(backBtnClicked:)];
+     [btnBack setImage:[UIImage imageNamed:@"ic_arrow_back_white"]];*/
     
     self.title = @"Buy Dash With Cash";
     
@@ -67,34 +67,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
-- (IBAction)backBtnClicked:(id)sender {
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController popViewControllerAnimated:YES];
-        [self.navigationController.navigationBar setHidden:NO];
-    });
-}
-
-- (IBAction)findLocationClicked:(id)sender {
-    
-    if ([[WOCLocationManager sharedInstance] locationServiceEnabled])
-    {
-        [self findZipCode];
-    }
-    else
-    {
-        // Enable Location services
-        [[WOCLocationManager sharedInstance] startLocationService];
-    }
-}
-
-- (IBAction)noThanksClicked:(id)sender {
-    
-    [self showAlert];
-}
-
-#pragma mark - Function
 - (void)openBuyDashStep4 {
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -110,7 +82,7 @@
     [self.navigationController pushViewController:myViewController animated:YES];
 }
 
-- (void)back:(id)sender{
+- (void)back:(id)sender {
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -127,12 +99,12 @@
     });
 }
 
-- (void)setShadow:(UIView *)view{
+- (void)setShadow:(UIView *)view {
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 
@@ -200,4 +172,34 @@
         }
     }];
 }
+
+// MARK: - IBAction
+
+- (IBAction)backBtnClicked:(id)sender {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController.navigationBar setHidden:NO];
+    });
+}
+
+- (IBAction)findLocationClicked:(id)sender {
+    
+    if ([[WOCLocationManager sharedInstance] locationServiceEnabled])
+    {
+        [self findZipCode];
+    }
+    else
+    {
+        // Enable Location services
+        [[WOCLocationManager sharedInstance] startLocationService];
+    }
+}
+
+- (IBAction)noThanksClicked:(id)sender {
+    
+    [self showAlert];
+}
+
 @end
+

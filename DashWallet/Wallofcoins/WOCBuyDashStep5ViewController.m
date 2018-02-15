@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = @"Buy Dash With Cash";
     
     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
@@ -41,37 +41,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)orderClicked:(id)sender{
-    
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
-    {
-        [self getOrders:[sender tag]];
-    }
-    else
-    {
-        [self pushToStep6:[sender tag]];
-    }
-}
 
-- (IBAction)checkLocationClicked:(id)sender{
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[sender tag] inSection:0];
-    NSDictionary *offerDict = self.offers[indexPath.row];
-    if (![[offerDict valueForKey:@"bankLocationUrl"] isEqual:[NSNull null]]) {
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
-        if ([[UIApplication sharedApplication] canOpenURL:url]) {
-            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-                NSLog(@"URL opened!");
-            }];
-        }
-    }
-}
 
 - (void)pushToStep6:(NSInteger)sender{
-
+    
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
     NSDictionary *offerDict = self.offers[indexPath.row];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -80,10 +53,10 @@
     [self.navigationController pushViewController:myViewController animated:YES];
 }
 
-#pragma mark - API
+// MARK: - API
 
 - (void)getOffers {
-
+    
     if (self.discoveryId != nil && [self.discoveryId length] > 0) {
         
         [[APIManager sharedInstance] discoveryInputs:self.discoveryId response:^(id responseDict, NSError *error) {
@@ -234,10 +207,41 @@
     }];
 }
 
-#pragma mark - UITableView Delegate & DataSource
+// MARK: - IBAction
+
+- (IBAction)orderClicked:(id)sender{
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        [self getOrders:[sender tag]];
+    }
+    else
+    {
+        [self pushToStep6:[sender tag]];
+    }
+}
+
+- (IBAction)checkLocationClicked:(id)sender{
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[sender tag] inSection:0];
+    NSDictionary *offerDict = self.offers[indexPath.row];
+    if (![[offerDict valueForKey:@"bankLocationUrl"] isEqual:[NSNull null]]) {
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                NSLog(@"URL opened!");
+            }];
+        }
+    }
+}
+
+// MARK: - UITableView DataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
+    
     return self.offers.count;
 }
 
@@ -269,7 +273,7 @@
     
     uint64_t dshAmt = [[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"] longLongValue];
     uint64_t bitsAmt = [[[offerDict valueForKey:@"amount"] valueForKey:@"bits"] longLongValue];
-
+    
     cell.lblDashTitle.text = dashAmount;
     cell.lblDashSubTitle.text = bits;
     cell.lblDollar.text = dollarAmount;
@@ -284,7 +288,7 @@
     
     //bankLogo
     if (![[offerDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
-     
+        
         if ([bankLogo hasPrefix:@"https://"]) {
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
             cell.imgView.image = [UIImage imageWithData: imageData];
@@ -313,8 +317,11 @@
     return cell;
 }
 
+// MARK: - UITableView Delegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     return 125.0;
 }
 @end
+

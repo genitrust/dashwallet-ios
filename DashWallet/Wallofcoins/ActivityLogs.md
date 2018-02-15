@@ -253,3 +253,11 @@ Holiday
 3. Added check locations in buying instruction
 4. Testing and bug solving
 
+#### Work on 15 FEB 2018 (THU) Sujal Bandhara
+
+1. Unable to create order: zipCode or bankId is empty
+2. Added password as parameter in authorise API instead of deviceCode when login using password
+3. Resolved conflicts
+4. Code optimization
+5. Testing and bug solving
+

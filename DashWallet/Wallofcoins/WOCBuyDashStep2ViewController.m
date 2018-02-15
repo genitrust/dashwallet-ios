@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = @"Buy Dash With Cash";
     
     [self.navigationItem.backBarButtonItem setTitle:@""];
@@ -34,7 +34,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
+
+- (void)setShadow:(UIView *)view{
+    
+    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1; //1
+    view.layer.shadowOpacity = 1;//1
+    view.layer.masksToBounds = false;
+}
+
+// MARK: - IBAction
+
 - (IBAction)nextClicked:(id)sender {
     
     NSString *zipCode = [self.txtZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -55,14 +66,5 @@
     
 }
 
-#pragma mark - Function
-- (void)setShadow:(UIView *)view{
-    
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
-    view.layer.masksToBounds = false;
-}
-
 @end
+

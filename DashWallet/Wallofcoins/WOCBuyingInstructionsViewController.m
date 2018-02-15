@@ -32,7 +32,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnDepositFinished];
@@ -95,57 +95,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
-- (IBAction)showMapClicked:(id)sender
-{
-    if (self.locationUrl != nil) {
-        
-        if (![self.locationUrl hasPrefix:@"http"]) {
-            self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
-        }
-        
-        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
-                NSLog(@"URL opened.");
-            }];
-        }
-    }
-    else{
-    
-        // Your location from latitude and longitude
-        NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-        NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
-        
-        NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
-        }
-    }
-}
-
-- (IBAction)depositFinishedClicked:(id)sender {
-    
-    [self showDepositAlert];
-}
-
-- (IBAction)cancelOrderClicked:(id)sender
-{
-    [self showCancelOrderAlert];
-}
-
-- (IBAction)wallOfCoinsClicked:(id)sender {
-    
-    [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
-}
-
-- (IBAction)signOutClicked:(id)sender {
-    
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    
-    [self signOut:phoneNo];
-}
-
-#pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
@@ -220,7 +169,7 @@
 }
 
 - (void)openSite:(NSURL*)url{
-
+    
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
             NSLog(@"URL opened...");
@@ -264,7 +213,7 @@
     }];
     
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
+        
         
     }];
     
@@ -328,7 +277,7 @@
     NSString *stringNum = [numFormatter stringFromNumber:num];
     
     self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ Dash (%@ dots)",totalDash, stringNum];
-
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;
     formatter.timeZone = [NSTimeZone localTimeZone];
@@ -436,7 +385,7 @@
     return timeLeft;
 }
 
-#pragma mark - API
+// MARK: - API
 
 - (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone {
     
@@ -444,7 +393,7 @@
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSDictionary *params ;
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
         params = @{
                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
@@ -465,7 +414,7 @@
                    API_BODY_JSON_PARAMETER:@"YES"
                    };
     }
-   
+    
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
         
         if (error == nil) {
@@ -500,13 +449,13 @@
       };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
-    
+        
         if (error == nil) {
             
             NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
             if (response.count > 0) {
-             
+                
                 if ([[response objectAtIndex:0] isKindOfClass:[NSDictionary class]]) {
                     
                     [self updateData:[response objectAtIndex:0]];
@@ -615,15 +564,68 @@
     }];
 }
 
-#pragma mark - UITextView Delegate
+// MARK: - IBAction
+
+- (IBAction)showMapClicked:(id)sender
+{
+    if (self.locationUrl != nil) {
+        
+        if (![self.locationUrl hasPrefix:@"http"]) {
+            self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
+        }
+        
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
+                NSLog(@"URL opened.");
+            }];
+        }
+    }
+    else{
+        
+        // Your location from latitude and longitude
+        NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+        NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+        
+        NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
+        }
+    }
+}
+
+- (IBAction)depositFinishedClicked:(id)sender {
+    
+    [self showDepositAlert];
+}
+
+- (IBAction)cancelOrderClicked:(id)sender
+{
+    [self showCancelOrderAlert];
+}
+
+- (IBAction)wallOfCoinsClicked:(id)sender {
+    
+    [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
+}
+
+- (IBAction)signOutClicked:(id)sender {
+    
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    
+    [self signOut:phoneNo];
+}
+
+// MARK: - UITextView Delegate
+
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
     
     if ([[URL scheme] isEqualToString:@"https"]) {
         
         [self openSite:URL];
-    
+        
         return NO;
     }
     return YES;
 }
 @end
+

@@ -48,7 +48,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-   
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,23 +56,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
-- (IBAction)nextClicked:(id)sender {
-    
-    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    if ([self.countryCode length] == 0) {
-        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Select country code." viewController:self.navigationController.visibleViewController];
-    }
-    else if ([txtPhone length] == 0) {
-        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter phone number." viewController:self.navigationController.visibleViewController];
-    }
-    else{
-        [self checkPhone:txtPhone code:self.countryCode];
-    }
-}
-
-#pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
@@ -83,7 +66,7 @@
 }
 
 - (void)loadJSON{
-
+    
     // Retrieve local JSON file called example.json
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"countries" ofType:@"json"];
     
@@ -114,15 +97,16 @@
     [self createHoldAfterAuthorize:phoneNo];
     
     /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-    myViewController.phoneNo = phoneNo;
-    myViewController.offerId = self.offerId;
-    myViewController.deviceCode = deviceCode;
-    myViewController.emailId = self.emailId;
-    [self.navigationController pushViewController:myViewController animated:YES];*/
+     WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+     myViewController.phoneNo = phoneNo;
+     myViewController.offerId = self.offerId;
+     myViewController.deviceCode = deviceCode;
+     myViewController.emailId = self.emailId;
+     [self.navigationController pushViewController:myViewController animated:YES];*/
 }
 
-#pragma mark - API
+// MARK: - API
+
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
     
     NSDictionary *params = @{
@@ -132,7 +116,7 @@
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
     
     [[APIManager sharedInstance] authorizeDevice:params phone:phoneNo response:^(id responseDict, NSError *error) {
-   
+        
         if (error == nil) {
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
@@ -151,14 +135,14 @@
                 }
                 else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
                     
-                        [self login:phoneNo];
+                    [self login:phoneNo];
                 }
             }
         }
         else
         {
             if ([error code] == 404) {
-
+                
                 //new number
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
@@ -168,14 +152,14 @@
                 [self createHold:phoneNo];
                 
                 /*NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-                
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-                myViewController.phoneNo = phoneNo;
-                myViewController.offerId = self.offerId;
-                myViewController.deviceCode = deviceCode;
-                myViewController.emailId = self.emailId;
-                [self.navigationController pushViewController:myViewController animated:YES];*/
+                 
+                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                 WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+                 myViewController.phoneNo = phoneNo;
+                 myViewController.offerId = self.offerId;
+                 myViewController.deviceCode = deviceCode;
+                 myViewController.emailId = self.emailId;
+                 [self.navigationController pushViewController:myViewController animated:YES];*/
             }
             else{
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -223,7 +207,7 @@
     }
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
-    
+        
         if (error == nil) {
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
@@ -250,12 +234,12 @@
             [self createHold:phoneNo];
             
             /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-            WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-            myViewController.phoneNo = phoneNo;
-            myViewController.offerId = self.offerId;
-            myViewController.deviceCode = deviceCode;
-            myViewController.emailId = self.emailId;
-            [self.navigationController pushViewController:myViewController animated:YES];*/
+             WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+             myViewController.phoneNo = phoneNo;
+             myViewController.offerId = self.offerId;
+             myViewController.deviceCode = deviceCode;
+             myViewController.emailId = self.emailId;
+             [self.navigationController pushViewController:myViewController animated:YES];*/
             //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
@@ -597,7 +581,24 @@
     }];
 }
 
-#pragma mark - UIPickerView Delegates
+// MARK: - IBAction
+- (IBAction)nextClicked:(id)sender {
+    
+    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ([self.countryCode length] == 0) {
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Select country code." viewController:self.navigationController.visibleViewController];
+    }
+    else if ([txtPhone length] == 0) {
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter phone number." viewController:self.navigationController.visibleViewController];
+    }
+    else{
+        [self checkPhone:txtPhone code:self.countryCode];
+    }
+}
+
+// MARK: - UIPickerView Delegates
+
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
     return 1;
 }
@@ -611,9 +612,10 @@
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-
+    
     self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
     self.countryCode = [NSString stringWithFormat:@"%@",self.countries[row][@"code"]];
 }
 
 @end
+

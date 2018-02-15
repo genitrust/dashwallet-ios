@@ -26,7 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = @"Buy Dash With Cash";
     self.txtDash.text = @"to acquire Dash (Đ) (1,000,000 đots = 1 ĐASH)";
     self.btnGetOffers.layer.cornerRadius = 3.0;
@@ -45,7 +45,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
+- (void)setShadow:(UIView *)view{
+    
+    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
+    view.layer.masksToBounds = false;
+}
+
+// MARK: - IBAction
+
 - (IBAction)getOffersClicked:(id)sender {
     
     NSString *dollarString = [self.txtDollar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -78,20 +88,8 @@
     }
 }
 
-#pragma mark - Function
-- (void)setShadow:(UIView *)view{
-    
-    //if widthOffset = 1 and heightOffset = 1 then shadow will set to two sides
-    //if widthOffset = 0 and heightOffset = 0 then shadow will set to four sides
-    
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);//CGSize(width: widthOffset, height: heightOffset)//0,1
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
-    view.layer.masksToBounds = false;
-}
+// MARK: - API
 
-#pragma mark - API
 - (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     
     //Receive Dash Address...
@@ -130,7 +128,8 @@
     }];
 }
 
-#pragma mark - UITextField Delegates
+// MARK: - UITextField Delegates
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     
     if (textField.tag == dashTextField) {
@@ -144,21 +143,22 @@
     }
 }
 /*
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
-    if (textField.tag == dollarTextField) {
-        
-        NSString *dollarString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-        
-        BRWalletManager *manager = [BRWalletManager sharedInstance];
-        uint64_t amount;
-        amount = [manager amountForLocalCurrencyString:dollarString];
-        NSString *dashString = [manager stringForDashAmount:amount];
-        self.txtDash.attributedText = [manager attributedStringForDashAmount:amount];
-        
-        return true;
-    }
-    return false;
-}
-*/
+ -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+ 
+ if (textField.tag == dollarTextField) {
+ 
+ NSString *dollarString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+ 
+ BRWalletManager *manager = [BRWalletManager sharedInstance];
+ uint64_t amount;
+ amount = [manager amountForLocalCurrencyString:dollarString];
+ NSString *dashString = [manager stringForDashAmount:amount];
+ self.txtDash.attributedText = [manager attributedStringForDashAmount:amount];
+ 
+ return true;
+ }
+ return false;
+ }
+ */
 @end
+

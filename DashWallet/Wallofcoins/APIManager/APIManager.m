@@ -53,7 +53,7 @@
     [self getAvailablePaymentCenters:^(id responseDict, NSError *error) {
         
         APILog(@"getAvailablePaymentCenters Called");
-
+        
         if ([responseDict isKindOfClass:[NSArray class]])
         {
             NSArray *responseArray = (NSArray*)responseDict;
@@ -72,7 +72,7 @@
         }
     }];
 }
-     
+
 ////////////////////////////////////////////////////////////////////
 /*
  Name: GET AVAILABLE PAYMENT CENTERS (OPTIONAL)
@@ -109,8 +109,8 @@
     NSDictionary *params =
     @{
       /*@"id": @14,
-      @"country": @"us",
-      @"payFields": @false*/
+       @"country": @"us",
+       @"payFields": @false*/
       };
     NSDictionary *header =
     @{
@@ -173,7 +173,7 @@
  "publisher": null
  }
  ```
-*/
+ */
 -(void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/",BASE_URL];
@@ -188,12 +188,12 @@
 }
 
 /*#### GET OFFERS
-
-An API for fetch all offers for received Discovery ID.
-
-```http
-GET https://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/offers/
-```*/
+ 
+ An API for fetch all offers for received Discovery ID.
+ 
+ ```http
+ GET https://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/offers/
+ ```*/
 
 -(void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
@@ -210,28 +210,28 @@ GET https://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/of
 }
 
 /*#### CREATE HOLD
-
-From offer list on offer click we have to create an hold on offer for generate initial request.
-
-```http
-HEADER X-Coins-Api-Token:
-
-POST https://woc.reference.genitrust.com/api/v1/holds/
-```
-
-It need X-Coins-Api-Token as a header parameter which is five time mobile number without space and country code.
-
-##### Request :
-
-```json
-{
-    "publisherId": "",
-    "offer": "eyJ1c2QiOiAiNTA...",
-    "phone": "+19411101467",
-    "deviceName": "Ref Client",
-    "password": "94111014679411101467941110146794111014679411101467"
-}
-```*/
+ 
+ From offer list on offer click we have to create an hold on offer for generate initial request.
+ 
+ ```http
+ HEADER X-Coins-Api-Token:
+ 
+ POST https://woc.reference.genitrust.com/api/v1/holds/
+ ```
+ 
+ It need X-Coins-Api-Token as a header parameter which is five time mobile number without space and country code.
+ 
+ ##### Request :
+ 
+ ```json
+ {
+ "publisherId": "",
+ "offer": "eyJ1c2QiOiAiNTA...",
+ "phone": "+19411101467",
+ "deviceName": "Ref Client",
+ "password": "94111014679411101467941110146794111014679411101467"
+ }
+ ```*/
 
 -(void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
@@ -257,30 +257,30 @@ It need X-Coins-Api-Token as a header parameter which is five time mobile number
           @"Content-Type":@"application/json"
           };
     }
-   
+    
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
 
 /*#### CAPTURE HOLD
-
-We have to match user input code with `__PURCHASE_CODE`  and if verify, we have to proceed further.
-
-```http
-HEADER X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
-
-POST https://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
-```
-
-#####Request :
-
-```
-{
-    "publisherId": "",
-    "verificationCode": "CK99K"
-}
-```*/
+ 
+ We have to match user input code with `__PURCHASE_CODE`  and if verify, we have to proceed further.
+ 
+ ```http
+ HEADER X-Coins-Api-Token: ZGV2aWNlOjQ0NT...
+ 
+ POST https://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
+ ```
+ 
+ #####Request :
+ 
+ ```
+ {
+ "publisherId": "",
+ "verificationCode": "CK99K"
+ }
+ ```*/
 
 -(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
@@ -289,9 +289,9 @@ POST https://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     NSDictionary *header =
     @{
-        API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-        @"X-Coins-Api-Token": token,
-        @"Content-Type":@"application/json"
+      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      @"X-Coins-Api-Token": token,
+      @"Content-Type":@"application/json"
       };
     
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -300,12 +300,12 @@ POST https://woc.reference.genitrust.com/api/v1/holds/<Hold ID>/capture/
 }
 
 /*#### CONFIRM DEPOSIT
-
-```http
-HEADER X-Coins-Api-Token:
-
-POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
-```*/
+ 
+ ```http
+ HEADER X-Coins-Api-Token:
+ 
+ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
+ ```*/
 
 -(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
@@ -411,7 +411,7 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
       API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
       @"X-Coins-Api-Token": token
       };
-
+    
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter:nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
@@ -463,7 +463,7 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
     }];
 }
 
-#pragma mark - API calls
+// MARK: - API calls
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock {
     
     APILog(@"**>API REQUEST URL: %@\n%@",httpMethord,apiURL);
@@ -471,13 +471,13 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
     
     if ([httpMethord isEqualToString:@"GET"] == FALSE)
     {
-
-       // [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        
+        // [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPMethod:httpMethord];
         if ([parameter isKindOfClass:[NSDictionary class]])
         {
             APILog(@"**>API REQUEST Parameter: \n%@",parameter);
-
+            
             NSDictionary *para = (NSDictionary*)parameter;
             if ([[para allKeys] containsObject:JSONParameter])
             {
@@ -495,11 +495,11 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
     {
         APILog(@"**>API REQUEST Header: \n%@",header);
         [request setAllHTTPHeaderFields:header];
-//        for (NSString *key in header.allKeys)
-//        {
-//            NSString *headerValue = [header[key] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-//            [request setValue:headerValue forHTTPHeaderField:key];
-//        }
+        //        for (NSString *key in header.allKeys)
+        //        {
+        //            NSString *headerValue = [header[key] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        //            [request setValue:headerValue forHTTPHeaderField:key];
+        //        }
     }
     
     NSURLSession *session = [NSURLSession sharedSession];
@@ -590,3 +590,4 @@ POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit
 }
 
 @end
+

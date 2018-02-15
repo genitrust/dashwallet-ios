@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = @"Buy Dash With Cash";
     
     self.btnNext.layer.cornerRadius = 3.0;
@@ -31,7 +31,7 @@
     [self setShadow:self.btnNext];
     
     self.pickerView = [[UIPickerView alloc] init];
-    self.pickerView.delegate = self;   
+    self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
     self.txtPaymentCenter.inputView = self.pickerView;
     
@@ -43,7 +43,35 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
+- (void)setShadow:(UIView *)view{
+    
+    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowRadius = 1; //1
+    view.layer.shadowOpacity = 1;//1
+    view.layer.masksToBounds = false;
+}
+
+// MARK: - API
+
+- (void)getPaymentCenters{
+    
+    [[APIManager sharedInstance] getAvailablePaymentCenters:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *responseArray = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
+            
+            NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+            self.paymentCenters = [responseArray sortedArrayUsingDescriptors:@[sort]];
+            
+            [self.pickerView reloadAllComponents];
+        }
+    }];
+}
+
+// MARK: - IBAction
+
 - (IBAction)nextStepClicked:(id)sender {
     
     if ([self.bankId length] > 0) {
@@ -61,34 +89,8 @@
     }
 }
 
-#pragma mark - Function
-- (void)setShadow:(UIView *)view{
-    
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
-    view.layer.masksToBounds = false;
-}
+// MARK: UIPickerView Delegates
 
-#pragma mark - API
-- (void)getPaymentCenters{
-    
-    [[APIManager sharedInstance] getAvailablePaymentCenters:^(id responseDict, NSError *error) {
-        
-        if (error == nil) {
-            
-            NSArray *responseArray = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
-            
-            NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-            self.paymentCenters = [responseArray sortedArrayUsingDescriptors:@[sort]];
-            
-            [self.pickerView reloadAllComponents];
-        }
-    }];
-}
-
-#pragma mark - UIPickerView Delegates
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
     return 1;
 }
@@ -102,8 +104,9 @@
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-   
+    
     self.txtPaymentCenter.text = self.paymentCenters[row][@"name"];
     self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
 @end
+

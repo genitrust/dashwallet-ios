@@ -48,7 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnBuyMoreDash];
@@ -93,31 +93,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
-- (IBAction)buyMoreDashClicked:(id)sender {
-    
-    [self pushToStep1];
-}
-
-- (IBAction)signOutClicked:(id)sender {
-    
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    
-    [self signOut:phoneNo];
-}
-
-- (IBAction)wallOfCoinsClicked:(id)sender {
-    
-    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com"];
-    
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"URL opened...");
-        }];
-    }
-}
-
-#pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
@@ -225,15 +200,41 @@
     return string;
 }
 
-#pragma mark - API
+// MARK: - IBAction
+
+- (IBAction)buyMoreDashClicked:(id)sender {
+    
+    [self pushToStep1];
+}
+
+- (IBAction)signOutClicked:(id)sender {
+    
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    
+    [self signOut:phoneNo];
+}
+
+- (IBAction)wallOfCoinsClicked:(id)sender {
+    
+    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+            NSLog(@"URL opened...");
+        }];
+    }
+}
+
+// MARK: - API
+
 - (void)getOrders {
     
     NSDictionary *params = @{
                              API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                            };
+                             };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
-
+        
         if (error == nil) {
             
             NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
@@ -265,7 +266,7 @@
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
-      
+        
         if (error == nil)
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
@@ -280,7 +281,7 @@
     }];
 }
 
-#pragma mark - UITableView Delegate & DataSource
+#pragma mark - UITableView DataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
@@ -303,39 +304,7 @@
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-  
-    if (section == 3) {
-        
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
-        headerView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
-        
-        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, headerView.frame.size.width - 30, headerView.frame.size.height - 15)];
-        lblTitle.text = @"Order History";
-        lblTitle.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightMedium];
-        lblTitle.textAlignment = NSTextAlignmentCenter;
-        lblTitle.backgroundColor = [UIColor whiteColor];
-        lblTitle.layer.cornerRadius = 10.0;
-        lblTitle.layer.masksToBounds = YES;
-        
-        [self setShadow:lblTitle];
-        
-        [headerView addSubview:lblTitle];
-        
-        return headerView;
-    }
-    return  nil;
-}
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-
-    if (section == 3) {
-        if (self.otherOrders.count > 0) {
-            return 50;
-        }
-    }
-    return 0;
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -439,6 +408,42 @@
     }
 }
 
+// MARK: - UITableView Delegate
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    if (section == 3) {
+        
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
+        headerView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
+        
+        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, headerView.frame.size.width - 30, headerView.frame.size.height - 15)];
+        lblTitle.text = @"Order History";
+        lblTitle.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightMedium];
+        lblTitle.textAlignment = NSTextAlignmentCenter;
+        lblTitle.backgroundColor = [UIColor whiteColor];
+        lblTitle.layer.cornerRadius = 10.0;
+        lblTitle.layer.masksToBounds = YES;
+        
+        [self setShadow:lblTitle];
+        
+        [headerView addSubview:lblTitle];
+        
+        return headerView;
+    }
+    return  nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    if (section == 3) {
+        if (self.otherOrders.count > 0) {
+            return 50;
+        }
+    }
+    return 0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 1 || indexPath.section == 2) {
@@ -493,3 +498,4 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end
+

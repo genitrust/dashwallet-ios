@@ -161,191 +161,29 @@
            [BRPeerManager sharedInstance].downloadPeerName];
 }
 
-// MARK: - IBAction
-
-- (IBAction)done:(id)sender
+- (void)checkToken
 {
-    [BREventManager saveEvent:@"settings:dismiss"];
-    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)about:(id)sender
-{
-    SFSafariViewController * safariViewController = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@"https://www.dash.org/forum/topic/ios-dash-digital-wallet-support.112/"]];
-    [self presentViewController:safariViewController animated:YES completion:nil];
-}
-
-#if DEBUG
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-- (IBAction)copyLogs:(id)sender
-{
-    [BREventManager saveEvent:@"settings:copy_logs"];
-    aslmsg q = asl_new(ASL_TYPE_QUERY), m;
-    aslresponse r = asl_search(NULL, q);
-    NSMutableString *s = [NSMutableString string];
-    time_t t;
-    struct tm tm;
-
-    while ((m = asl_next(r))) {
-        t = strtol(asl_get(m, ASL_KEY_TIME), NULL, 10);
-        localtime_r(&t, &tm);
-        [s appendFormat:@"%d-%02d-%02d %02d:%02d:%02d %s: %s\n", tm.tm_year + 1900, tm.tm_mon, tm.tm_mday, tm.tm_hour,
-         tm.tm_min, tm.tm_sec, asl_get(m, ASL_KEY_SENDER), asl_get(m, ASL_KEY_MSG)];
-    }
-
-    asl_free(r);
-    [UIPasteboard generalPasteboard].string = (s.length < 8000000) ? s : [s substringFromIndex:s.length - 8000000];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    [self.navigationController.topViewController.view
-     addSubview:[[[BRBubbleView viewWithText:NSLocalizedString(@"copied", nil)
-     center:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)] popIn]
-     popOutAfterDelay:2.0]];
-}
-#pragma GCC diagnostic pop
-#endif
-
-- (IBAction)fixedPeer:(id)sender
-{
-    if (! [[NSUserDefaults standardUserDefaults] stringForKey:SETTINGS_FIXED_PEER_KEY]) {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:nil
-                                     message:NSLocalizedString(@"set a trusted node", nil)
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = @"node ip";
-            textField.textColor = [UIColor darkTextColor];
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-            textField.borderStyle = UITextBorderStyleRoundedRect;
-        }];
-        UIAlertAction* cancelButton = [UIAlertAction
-                                       actionWithTitle:NSLocalizedString(@"cancel", nil)
-                                       style:UIAlertActionStyleCancel
-                                       handler:^(UIAlertAction * action) {
-                                           [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-                                       }];
-        UIAlertAction* trustButton = [UIAlertAction
-                                     actionWithTitle:NSLocalizedString(@"trust", nil)
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction * action) {
-                                         NSArray * textfields = alert.textFields;
-                                         UITextField * ipField = textfields[0];
-                                         NSString *fixedPeer = ipField.text;
-                                         NSArray *pair = [fixedPeer componentsSeparatedByString:@":"];
-                                         NSString *host = pair.firstObject;
-                                         NSString *service = (pair.count > 1) ? pair[1] : @(DASH_STANDARD_PORT).stringValue;
-                                         struct addrinfo hints = { 0, AF_UNSPEC, SOCK_STREAM, 0, 0, 0, NULL, NULL }, *servinfo, *p;
-                                         UInt128 addr = { .u32 = { 0, 0, CFSwapInt32HostToBig(0xffff), 0 } };
-                                         
-                                         NSLog(@"DNS lookup %@", host);
-                                         
-                                         if (getaddrinfo(host.UTF8String, service.UTF8String, &hints, &servinfo) == 0) {
-                                             for (p = servinfo; p != NULL; p = p->ai_next) {
-                                                 if (p->ai_family == AF_INET) {
-                                                     addr.u64[0] = 0;
-                                                     addr.u32[2] = CFSwapInt32HostToBig(0xffff);
-                                                     addr.u32[3] = ((struct sockaddr_in *)p->ai_addr)->sin_addr.s_addr;
-                                                 }
-                                                 //                else if (p->ai_family == AF_INET6) {
-                                                 //                    addr = *(UInt128 *)&((struct sockaddr_in6 *)p->ai_addr)->sin6_addr;
-                                                 //                }
-                                                 else continue;
-                                                 
-                                                 uint16_t port = CFSwapInt16BigToHost(((struct sockaddr_in *)p->ai_addr)->sin_port);
-                                                 char s[INET6_ADDRSTRLEN];
-                                                 
-                                                 if (addr.u64[0] == 0 && addr.u32[2] == CFSwapInt32HostToBig(0xffff)) {
-                                                     host = @(inet_ntop(AF_INET, &addr.u32[3], s, sizeof(s)));
-                                                 }
-                                                 else host = @(inet_ntop(AF_INET6, &addr, s, sizeof(s)));
-                                                 
-                                                 [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@:%d", host, port]
-                                                                                           forKey:SETTINGS_FIXED_PEER_KEY];
-                                                 [[BRPeerManager sharedInstance] disconnect];
-                                                 [[BRPeerManager sharedInstance] connect];
-                                                 break;
-                                             }
-                                             
-                                             freeaddrinfo(servinfo);
-                                         }
-                                     }];
-        [alert addAction:trustButton];
-        [alert addAction:cancelButton];
-        [self presentViewController:alert animated:YES completion:nil];
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        [self getOrders];
     }
-    else {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:nil
-                                     message:NSLocalizedString(@"clear trusted node?", nil)
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* cancelButton = [UIAlertAction
-                                       actionWithTitle:NSLocalizedString(@"cancel", nil)
-                                       style:UIAlertActionStyleCancel
-                                       handler:^(UIAlertAction * action) {
-                                           [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-                                       }];
-        UIAlertAction* clearButton = [UIAlertAction
-                                      actionWithTitle:NSLocalizedString(@"clear", nil)
-                                      style:UIAlertActionStyleDestructive
-                                      handler:^(UIAlertAction * action) {
-                                          [[NSUserDefaults standardUserDefaults] removeObjectForKey:SETTINGS_FIXED_PEER_KEY];
-                                          [[BRPeerManager sharedInstance] disconnect];
-                                          [[BRPeerManager sharedInstance] connect];
-                                      }];
-        [alert addAction:clearButton];
-        [alert addAction:cancelButton];
-        [self presentViewController:alert animated:YES completion:nil];
+    else
+    {
+        [self pushToStep1];
     }
 }
 
-- (IBAction)touchIdLimit:(id)sender
+- (void)pushToStep1
 {
-    [BREventManager saveEvent:@"settings:touch_id_limit"];
-    BRWalletManager *manager = [BRWalletManager sharedInstance];
-
-    [manager authenticateWithPrompt:nil andTouchId:NO alertIfLockout:YES completion:^(BOOL authenticated,BOOL cancelled) {
-        if (authenticated) {
-            self.selectorType = 1;
-            self.selectorOptions =
-            @[NSLocalizedString(@"always require passcode", nil),
-              [NSString stringWithFormat:@"%@      (%@)", [manager stringForDashAmount:DUFFS/10],
-               [manager localCurrencyStringForDashAmount:DUFFS/10]],
-              [NSString stringWithFormat:@"%@   (%@)", [manager stringForDashAmount:DUFFS],
-               [manager localCurrencyStringForDashAmount:DUFFS]],
-              [NSString stringWithFormat:@"%@ (%@)", [manager stringForDashAmount:DUFFS*10],
-               [manager localCurrencyStringForDashAmount:DUFFS*10]]];
-            if (manager.spendingLimit > DUFFS*10) manager.spendingLimit = DUFFS*10;
-            self.selectedOption = self.selectorOptions[(log10(manager.spendingLimit) < 6) ? 0 :
-                                                       (NSUInteger)log10(manager.spendingLimit) - 6];
-            self.noOptionsText = nil;
-            self.selectorController.title = NSLocalizedString(@"touch id spending limit", nil);
-            [self.navigationController pushViewController:self.selectorController animated:YES];
-            [self.selectorController.tableView reloadData];
-        } else {
-            [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-        }
-    }];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    [self.navigationController pushViewController:myViewController animated:YES];
 }
 
-- (IBAction)navBarSwipe:(id)sender
-{
-    [BREventManager saveEvent:@"settings:nav_bar_swipe"];
-    BRWalletManager *manager = [BRWalletManager sharedInstance];
-    NSUInteger digits = (((manager.dashFormat.maximumFractionDigits - 2)/3 + 1) % 3)*3 + 2;
-    
-    manager.dashFormat.currencySymbol = [NSString stringWithFormat:@"%@%@" NARROW_NBSP, (digits == 5) ? @"m" : @"",
-                                     (digits == 2) ? DITS : DASH];
-    manager.dashFormat.maximumFractionDigits = digits;
-    manager.dashFormat.maximum = @(MAX_MONEY/(int64_t)pow(10.0, manager.dashFormat.maximumFractionDigits));
-    [[NSUserDefaults standardUserDefaults] setInteger:digits forKey:SETTINGS_MAX_DIGITS_KEY];
-    manager.localCurrencyCode = manager.localCurrencyCode; // force balance notification
-    self.selectorController.title = [NSString stringWithFormat:@"%@ = %@",
-                                     [manager localCurrencyStringForDashAmount:DUFFS/manager.localCurrencyDashPrice.doubleValue],
-                                     [manager stringForDashAmount:DUFFS/manager.localCurrencyDashPrice.doubleValue]];
-    [self.tableView reloadData];
-}
+// MARK: - WallofCoin API
 
-// MARK: - API
 - (void)getOrders {
     
     NSDictionary *params = @{
@@ -396,6 +234,190 @@
             [self pushToStep1];
         }
     }];
+}
+
+// MARK: - IBAction
+
+- (IBAction)done:(id)sender
+{
+    [BREventManager saveEvent:@"settings:dismiss"];
+    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)about:(id)sender
+{
+    SFSafariViewController * safariViewController = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@"https://www.dash.org/forum/topic/ios-dash-digital-wallet-support.112/"]];
+    [self presentViewController:safariViewController animated:YES completion:nil];
+}
+
+#if DEBUG
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+- (IBAction)copyLogs:(id)sender
+{
+    [BREventManager saveEvent:@"settings:copy_logs"];
+    aslmsg q = asl_new(ASL_TYPE_QUERY), m;
+    aslresponse r = asl_search(NULL, q);
+    NSMutableString *s = [NSMutableString string];
+    time_t t;
+    struct tm tm;
+    
+    while ((m = asl_next(r))) {
+        t = strtol(asl_get(m, ASL_KEY_TIME), NULL, 10);
+        localtime_r(&t, &tm);
+        [s appendFormat:@"%d-%02d-%02d %02d:%02d:%02d %s: %s\n", tm.tm_year + 1900, tm.tm_mon, tm.tm_mday, tm.tm_hour,
+         tm.tm_min, tm.tm_sec, asl_get(m, ASL_KEY_SENDER), asl_get(m, ASL_KEY_MSG)];
+    }
+    
+    asl_free(r);
+    [UIPasteboard generalPasteboard].string = (s.length < 8000000) ? s : [s substringFromIndex:s.length - 8000000];
+    
+    [self.navigationController.topViewController.view
+     addSubview:[[[BRBubbleView viewWithText:NSLocalizedString(@"copied", nil)
+                                      center:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)] popIn]
+                 popOutAfterDelay:2.0]];
+}
+#pragma GCC diagnostic pop
+#endif
+
+- (IBAction)fixedPeer:(id)sender
+{
+    if (! [[NSUserDefaults standardUserDefaults] stringForKey:SETTINGS_FIXED_PEER_KEY]) {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:nil
+                                     message:NSLocalizedString(@"set a trusted node", nil)
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"node ip";
+            textField.textColor = [UIColor darkTextColor];
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.borderStyle = UITextBorderStyleRoundedRect;
+        }];
+        UIAlertAction* cancelButton = [UIAlertAction
+                                       actionWithTitle:NSLocalizedString(@"cancel", nil)
+                                       style:UIAlertActionStyleCancel
+                                       handler:^(UIAlertAction * action) {
+                                           [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+                                       }];
+        UIAlertAction* trustButton = [UIAlertAction
+                                      actionWithTitle:NSLocalizedString(@"trust", nil)
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action) {
+                                          NSArray * textfields = alert.textFields;
+                                          UITextField * ipField = textfields[0];
+                                          NSString *fixedPeer = ipField.text;
+                                          NSArray *pair = [fixedPeer componentsSeparatedByString:@":"];
+                                          NSString *host = pair.firstObject;
+                                          NSString *service = (pair.count > 1) ? pair[1] : @(DASH_STANDARD_PORT).stringValue;
+                                          struct addrinfo hints = { 0, AF_UNSPEC, SOCK_STREAM, 0, 0, 0, NULL, NULL }, *servinfo, *p;
+                                          UInt128 addr = { .u32 = { 0, 0, CFSwapInt32HostToBig(0xffff), 0 } };
+                                          
+                                          NSLog(@"DNS lookup %@", host);
+                                          
+                                          if (getaddrinfo(host.UTF8String, service.UTF8String, &hints, &servinfo) == 0) {
+                                              for (p = servinfo; p != NULL; p = p->ai_next) {
+                                                  if (p->ai_family == AF_INET) {
+                                                      addr.u64[0] = 0;
+                                                      addr.u32[2] = CFSwapInt32HostToBig(0xffff);
+                                                      addr.u32[3] = ((struct sockaddr_in *)p->ai_addr)->sin_addr.s_addr;
+                                                  }
+                                                  //                else if (p->ai_family == AF_INET6) {
+                                                  //                    addr = *(UInt128 *)&((struct sockaddr_in6 *)p->ai_addr)->sin6_addr;
+                                                  //                }
+                                                  else continue;
+                                                  
+                                                  uint16_t port = CFSwapInt16BigToHost(((struct sockaddr_in *)p->ai_addr)->sin_port);
+                                                  char s[INET6_ADDRSTRLEN];
+                                                  
+                                                  if (addr.u64[0] == 0 && addr.u32[2] == CFSwapInt32HostToBig(0xffff)) {
+                                                      host = @(inet_ntop(AF_INET, &addr.u32[3], s, sizeof(s)));
+                                                  }
+                                                  else host = @(inet_ntop(AF_INET6, &addr, s, sizeof(s)));
+                                                  
+                                                  [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@:%d", host, port]
+                                                                                            forKey:SETTINGS_FIXED_PEER_KEY];
+                                                  [[BRPeerManager sharedInstance] disconnect];
+                                                  [[BRPeerManager sharedInstance] connect];
+                                                  break;
+                                              }
+                                              
+                                              freeaddrinfo(servinfo);
+                                          }
+                                      }];
+        [alert addAction:trustButton];
+        [alert addAction:cancelButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:nil
+                                     message:NSLocalizedString(@"clear trusted node?", nil)
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* cancelButton = [UIAlertAction
+                                       actionWithTitle:NSLocalizedString(@"cancel", nil)
+                                       style:UIAlertActionStyleCancel
+                                       handler:^(UIAlertAction * action) {
+                                           [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+                                       }];
+        UIAlertAction* clearButton = [UIAlertAction
+                                      actionWithTitle:NSLocalizedString(@"clear", nil)
+                                      style:UIAlertActionStyleDestructive
+                                      handler:^(UIAlertAction * action) {
+                                          [[NSUserDefaults standardUserDefaults] removeObjectForKey:SETTINGS_FIXED_PEER_KEY];
+                                          [[BRPeerManager sharedInstance] disconnect];
+                                          [[BRPeerManager sharedInstance] connect];
+                                      }];
+        [alert addAction:clearButton];
+        [alert addAction:cancelButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (IBAction)touchIdLimit:(id)sender
+{
+    [BREventManager saveEvent:@"settings:touch_id_limit"];
+    BRWalletManager *manager = [BRWalletManager sharedInstance];
+    
+    [manager authenticateWithPrompt:nil andTouchId:NO alertIfLockout:YES completion:^(BOOL authenticated,BOOL cancelled) {
+        if (authenticated) {
+            self.selectorType = 1;
+            self.selectorOptions =
+            @[NSLocalizedString(@"always require passcode", nil),
+              [NSString stringWithFormat:@"%@      (%@)", [manager stringForDashAmount:DUFFS/10],
+               [manager localCurrencyStringForDashAmount:DUFFS/10]],
+              [NSString stringWithFormat:@"%@   (%@)", [manager stringForDashAmount:DUFFS],
+               [manager localCurrencyStringForDashAmount:DUFFS]],
+              [NSString stringWithFormat:@"%@ (%@)", [manager stringForDashAmount:DUFFS*10],
+               [manager localCurrencyStringForDashAmount:DUFFS*10]]];
+            if (manager.spendingLimit > DUFFS*10) manager.spendingLimit = DUFFS*10;
+            self.selectedOption = self.selectorOptions[(log10(manager.spendingLimit) < 6) ? 0 :
+                                                       (NSUInteger)log10(manager.spendingLimit) - 6];
+            self.noOptionsText = nil;
+            self.selectorController.title = NSLocalizedString(@"touch id spending limit", nil);
+            [self.navigationController pushViewController:self.selectorController animated:YES];
+            [self.selectorController.tableView reloadData];
+        } else {
+            [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+        }
+    }];
+}
+
+- (IBAction)navBarSwipe:(id)sender
+{
+    [BREventManager saveEvent:@"settings:nav_bar_swipe"];
+    BRWalletManager *manager = [BRWalletManager sharedInstance];
+    NSUInteger digits = (((manager.dashFormat.maximumFractionDigits - 2)/3 + 1) % 3)*3 + 2;
+    
+    manager.dashFormat.currencySymbol = [NSString stringWithFormat:@"%@%@" NARROW_NBSP, (digits == 5) ? @"m" : @"",
+                                         (digits == 2) ? DITS : DASH];
+    manager.dashFormat.maximumFractionDigits = digits;
+    manager.dashFormat.maximum = @(MAX_MONEY/(int64_t)pow(10.0, manager.dashFormat.maximumFractionDigits));
+    [[NSUserDefaults standardUserDefaults] setInteger:digits forKey:SETTINGS_MAX_DIGITS_KEY];
+    manager.localCurrencyCode = manager.localCurrencyCode; // force balance notification
+    self.selectorController.title = [NSString stringWithFormat:@"%@ = %@",
+                                     [manager localCurrencyStringForDashAmount:DUFFS/manager.localCurrencyDashPrice.doubleValue],
+                                     [manager stringForDashAmount:DUFFS/manager.localCurrencyDashPrice.doubleValue]];
+    [self.tableView reloadData];
 }
 
 // MARK: - UITableViewDataSource
@@ -707,27 +729,6 @@ _switch_cell:
             }
         });
     }
-}
-
-- (void)checkToken
-{
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
-    {
-        [self getOrders];
-    }
-    else
-    {
-        [self pushToStep1];
-    }
-}
-
-- (void)pushToStep1
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-    [self.navigationController pushViewController:myViewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

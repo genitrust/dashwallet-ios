@@ -1513,6 +1513,19 @@ static NSString *sanitizeString(NSString *s)
     }
 }
 
+-(void)pushToStep1{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
+}
+
 #pragma mark - Shapeshift
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -1545,17 +1558,58 @@ static NSString *sanitizeString(NSString *s)
     self.shapeshiftView.hidden = FALSE;
 }
 
--(void)pushToStep1{
+// MARK: - WallofCoin API
+
+- (void)getOrders {
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
-        vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
-    });
+    NSDictionary *params = @{
+                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+            
+            if (orders.count > 0){
+                
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                
+                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                
+                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                
+                if ([status isEqualToString:@"WD"]) {
+                    
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.isFromSend = YES;
+                    myViewController.isFromOffer = NO;
+                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+                else{
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.orders = orders;
+                    myViewController.isFromSend = YES;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                }
+            }
+            else{
+                
+                [self pushToStep1];
+            }
+        }
+        else{
+            NSLog(@"Error: %@", error.localizedDescription);
+            
+            [self pushToStep1];
+        }
+    }];
 }
 
 // MARK: - IBAction
@@ -1676,61 +1730,8 @@ static NSString *sanitizeString(NSString *s)
 
 - (IBAction)startNFC:(id)sender NS_AVAILABLE_IOS(11.0) {
     [BREventManager saveEvent:@"send:nfc"];
-        NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
-        [session beginSession];
-}
-
-// MARK: - WallofCoin API
-- (void)getOrders {
-    
-    NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
-                             };
-    
-    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
-        
-        if (error == nil) {
-            
-            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            
-            if (orders.count > 0){
-                
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                
-                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                
-                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
-                
-                if ([status isEqualToString:@"WD"]) {
-                    
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.isFromSend = YES;
-                    myViewController.isFromOffer = NO;
-                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self.navigationController pushViewController:myViewController animated:YES];
-                }
-                else{
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.orders = orders;
-                    myViewController.isFromSend = YES;
-                    [self.navigationController pushViewController:myViewController animated:YES];
-                }
-            }
-            else{
-                
-                [self pushToStep1];
-            }
-        }
-        else{
-            NSLog(@"Error: %@", error.localizedDescription);
-            
-            [self pushToStep1];
-        }
-    }];
+    NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
+    [session beginSession];
 }
 
 // MARK: - NFCNDEFReaderSessionDelegate

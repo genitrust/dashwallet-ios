@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
     
     self.mainView.layer.cornerRadius = 3.0;
@@ -43,45 +43,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Action
-
-- (IBAction)linkClicked:(id)sender {
-    
-    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/"];
-    
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }
-}
-
-- (IBAction)loginClicked:(id)sender {
-    
-    NSString *password = [self.txtPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    if ([password length] > 0) {
-        
-        [self login:self.phoneNo password:password];
-    }
-    else{
-        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter password." viewController:self.navigationController.visibleViewController];
-    }
-}
-
-- (IBAction)forgotPasswordClicked:(id)sender {
-    
-    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/en/forgotPassword/"];
-    
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }
-}
-
-- (IBAction)closeClicked:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Function
 - (void)setShadow:(UIView *)view{
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
@@ -91,7 +52,8 @@
     view.layer.masksToBounds = false;
 }
 
-#pragma mark - API
+// MARK: - API
+
 - (void)login:(NSString*)phoneNo password:(NSString*)password{
     
     NSDictionary *params = @{
@@ -111,7 +73,9 @@
             
             //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
             
-            [self getDeviceId:phoneNo];
+            //[self getDeviceId:phoneNo];
+            
+            [self registerDevice:phoneNo password:password];
         }
         else
         {
@@ -136,6 +100,41 @@
     }];
 }
 
+- (void)registerDevice:(NSString*)phoneNo password:(NSString*)password {
+    
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *params =  @{
+                              API_BODY_NAME: API_BODY_DEVICE_NAME_IOS,
+                              API_BODY_CODE: deviceCode,
+                              API_BODY_JSON_PARAMETER:@"YES"
+                              };
+    
+    [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:TRUE];
+        
+        if (error == nil) {
+            
+            NSDictionary *response = (NSDictionary*)responseDict;
+            
+            if (response.count > 0) {
+                
+                NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:API_RESPONSE_ID]];
+                
+                [self authorize:phoneNo password:password deviceId:deviceId];
+            }
+        }
+        else
+        {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
 - (void)getDeviceId:(NSString*)phoneNo{
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -156,7 +155,7 @@
                 [[NSUserDefaults standardUserDefaults] setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                [self authorize:phoneNo deviceId:deviceId];
+                //[self authorize:phoneNo deviceId:deviceId];
             }
         }
         else{
@@ -165,15 +164,15 @@
     }];
 }
 
-- (void)authorize:(NSString*)phoneNo deviceId:(NSString*)deviceId{
+- (void)authorize:(NSString*)phoneNo password:(NSString*)password deviceId:(NSString*)deviceId{
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-
+    
     NSDictionary *params = @{
                              API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                             API_BODY_DEVICE_CODE: deviceCode,
+                             API_BODY_PASSWORD: password,
                              API_BODY_DEVICE_ID: deviceId,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
@@ -218,4 +217,43 @@
     }];
 }
 
+// MARK: - IBAction
+
+- (IBAction)linkClicked:(id)sender {
+    
+    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    }
+}
+
+- (IBAction)loginClicked:(id)sender {
+    
+    NSString *password = [self.txtPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ([password length] > 0) {
+        
+        [self login:self.phoneNo password:password];
+    }
+    else{
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter password." viewController:self.navigationController.visibleViewController];
+    }
+}
+
+- (IBAction)forgotPasswordClicked:(id)sender {
+    
+    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/en/forgotPassword/"];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    }
+}
+
+- (IBAction)closeClicked:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end
+
