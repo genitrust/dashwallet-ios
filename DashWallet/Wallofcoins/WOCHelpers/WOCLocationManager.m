@@ -12,14 +12,14 @@
 @implementation WOCLocationManager
 
 + (WOCLocationManager *)sharedInstance {
-
+    
     static dispatch_once_t onceToken;
     static WOCLocationManager *locationManager;
-
+    
     dispatch_once(&onceToken, ^{
         locationManager = [[WOCLocationManager alloc] init];
     });
-
+    
     return locationManager;
 }
 
@@ -36,7 +36,7 @@
 }
 
 - (BOOL)locationServiceEnabled {
-
+    
     if ([CLLocationManager locationServicesEnabled]) {
         switch ([CLLocationManager authorizationStatus]) {
             case kCLAuthorizationStatusAuthorizedWhenInUse :
@@ -72,10 +72,18 @@
     return center;
 }
 
+-(void)openStep4 {
+    
+    if (self.lastLocation != nil) {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
+    }
+}
+
 #pragma mark - CLLocationManager Delegate
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
-
+    
     if ([locations count]) {
         self.lastLocation = [locations lastObject];
         
@@ -89,22 +97,22 @@
 }
 
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-
+    
     if (status == kCLAuthorizationStatusDenied) {
         
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
         
     } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
+        [self performSelector:@selector(openStep4) withObject:nil afterDelay:2.0];
     }
 }
 
 - (void)showLocationAlertPopup {
     
     UIAlertController *alert = [UIAlertController
-                               alertControllerWithTitle:@"Allow \"Dash\" to Access Your Location While You Use the App?" message:@"Your current location will be used to show you birds nearby."preferredStyle:UIAlertControllerStyleAlert];
-
+                                alertControllerWithTitle:@"Allow \"Dash\" to Access Your Location While You Use the App?" message:@"Your current location will be used to show you birds nearby."preferredStyle:UIAlertControllerStyleAlert];
+    
     UIAlertAction *yesButton = [UIAlertAction
                                 actionWithTitle:@"Don't Allow"
                                 style:UIAlertActionStyleDefault
@@ -131,3 +139,4 @@
 }
 
 @end
+

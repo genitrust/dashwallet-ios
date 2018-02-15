@@ -45,12 +45,17 @@
 #import "MBProgressHUD.h"
 #import "DSShapeshiftManager.h"
 #import "BRBIP32Sequence.h"
+
+
+
+
+//WallOfCoins imports
+#import "BRAppDelegate.h"
 #import "WOCBuyDashStep1ViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
-#import "BRAppDelegate.h"
 
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
 "You can send a payment to anyone with an address.", nil)
@@ -1616,6 +1621,7 @@ static NSString *sanitizeString(NSString *s)
     [self payFirstFromArray:set.array];
 }
 
+// Added New Button to Buy Dash with cash
 - (IBAction)buyDash:(id)sender {
     
     [sender setEnabled:NO];
@@ -1645,7 +1651,7 @@ static NSString *sanitizeString(NSString *s)
     self.scheme = nil;
     self.associatedShapeshift = nil;
     [self cancel:sender];
-
+    
 }
 
 - (IBAction)cancel:(id)sender
@@ -1667,7 +1673,7 @@ static NSString *sanitizeString(NSString *s)
         [session beginSession];
 }
 
-// MARK: - API
+// MARK: - WallofCoin API
 - (void)getOrders {
     
     NSDictionary *params = @{
