@@ -7,25 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		132AC7B42024388600D8D55E /* WOCAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132AC7B32024388600D8D55E /* WOCAlertController.m */; };
-		132AC7B72024926800D8D55E /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 132AC7B62024926800D8D55E /* countries.json */; };
-		135FD5B62017016C00FD8770 /* buyDash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135FD5B42017016C00FD8770 /* buyDash.storyboard */; };
-		135FD5BA2017029700FD8770 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5B92017029700FD8770 /* APIManager.m */; };
-		135FD5BE201706D100FD8770 /* WOCBuyDashStep1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5BD201706D100FD8770 /* WOCBuyDashStep1ViewController.m */; };
-		135FD5CA20175EBB00FD8770 /* WOCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5C920175EBA00FD8770 /* WOCLocationManager.m */; };
-		135FD5CE201766AF00FD8770 /* WOCBuyDashStep3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5CD201766AF00FD8770 /* WOCBuyDashStep3ViewController.m */; };
-		135FD5D32017772E00FD8770 /* WOCBuyDashStep2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 135FD5D22017772E00FD8770 /* WOCBuyDashStep2ViewController.m */; };
-		138D8C9F2018663300AFD954 /* WOCBuyDashStep4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8C9E2018663300AFD954 /* WOCBuyDashStep4ViewController.m */; };
-		138D8CA8201892A500AFD954 /* WOCBuyDashStep5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CA7201892A500AFD954 /* WOCBuyDashStep5ViewController.m */; };
-		138D8CAB201892DD00AFD954 /* WOCBuyDashStep6ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CAA201892DD00AFD954 /* WOCBuyDashStep6ViewController.m */; };
-		138D8CAE2018931B00AFD954 /* WOCBuyDashStep7ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CAD2018931B00AFD954 /* WOCBuyDashStep7ViewController.m */; };
-		138D8CB12018932D00AFD954 /* WOCBuyDashStep8ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CB02018932D00AFD954 /* WOCBuyDashStep8ViewController.m */; };
-		138D8CB4201893D200AFD954 /* WOCBuyingInstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CB3201893D200AFD954 /* WOCBuyingInstructionsViewController.m */; };
-		138D8CB7201893E800AFD954 /* WOCBuyingSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CB6201893E800AFD954 /* WOCBuyingSummaryViewController.m */; };
-		138D8CBB201894D400AFD954 /* WOCOfferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CBA201894D400AFD954 /* WOCOfferCell.m */; };
-		138D8CBE2018A19700AFD954 /* WOCSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CBD2018A19700AFD954 /* WOCSummaryCell.m */; };
-		138D8CC12018A45C00AFD954 /* WOCSignOutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 138D8CC02018A45C00AFD954 /* WOCSignOutCell.m */; };
-		13A93350201C64DD00028670 /* WOCPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A9334F201C64DD00028670 /* WOCPasswordViewController.m */; };
+		043754BE20354F63001A4ED4 /* ActivityLogs.md in Resources */ = {isa = PBXBuildFile; fileRef = 0437549520354F63001A4ED4 /* ActivityLogs.md */; };
+		043754BF20354F63001A4ED4 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549820354F63001A4ED4 /* APIManager.m */; };
+		043754C020354F63001A4ED4 /* WOCOfferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549B20354F63001A4ED4 /* WOCOfferCell.m */; };
+		043754C120354F63001A4ED4 /* WOCSignOutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549D20354F63001A4ED4 /* WOCSignOutCell.m */; };
+		043754C220354F63001A4ED4 /* WOCSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549F20354F63001A4ED4 /* WOCSummaryCell.m */; };
+		043754C320354F63001A4ED4 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 043754A120354F63001A4ED4 /* countries.json */; };
+		043754C420354F63001A4ED4 /* WOCBuyDashStep1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754A320354F63001A4ED4 /* WOCBuyDashStep1ViewController.m */; };
+		043754C520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754A520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m */; };
+		043754C620354F63001A4ED4 /* WOCBuyDashStep3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754A720354F63001A4ED4 /* WOCBuyDashStep3ViewController.m */; };
+		043754C720354F63001A4ED4 /* WOCBuyDashStep4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754A920354F63001A4ED4 /* WOCBuyDashStep4ViewController.m */; };
+		043754C820354F63001A4ED4 /* WOCBuyDashStep5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754AB20354F63001A4ED4 /* WOCBuyDashStep5ViewController.m */; };
+		043754C920354F63001A4ED4 /* WOCBuyDashStep6ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754AD20354F63001A4ED4 /* WOCBuyDashStep6ViewController.m */; };
+		043754CA20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754AF20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m */; };
+		043754CB20354F63001A4ED4 /* WOCBuyDashStep8ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754B120354F63001A4ED4 /* WOCBuyDashStep8ViewController.m */; };
+		043754CC20354F63001A4ED4 /* WOCBuyingInstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754B320354F63001A4ED4 /* WOCBuyingInstructionsViewController.m */; };
+		043754CD20354F63001A4ED4 /* WOCBuyingSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754B520354F63001A4ED4 /* WOCBuyingSummaryViewController.m */; };
+		043754CE20354F63001A4ED4 /* WOCAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754B920354F63001A4ED4 /* WOCAlertController.m */; };
+		043754CF20354F63001A4ED4 /* WOCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754BB20354F63001A4ED4 /* WOCLocationManager.m */; };
+		043754D020354F63001A4ED4 /* WOCPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */; };
+		043754D3203550BC001A4ED4 /* buyDash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 043754D2203550BB001A4ED4 /* buyDash.storyboard */; };
 		220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 220128D11C753C670001CAC1 /* BRSocketHelpers.c */; };
 		2204604E1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
 		2204604F1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
@@ -227,43 +228,44 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		132AC7B22024388600D8D55E /* WOCAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCAlertController.h; sourceTree = "<group>"; };
-		132AC7B32024388600D8D55E /* WOCAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCAlertController.m; sourceTree = "<group>"; };
-		132AC7B62024926800D8D55E /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
-		135FD5B52017016C00FD8770 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = DashWallet/Base.lproj/buyDash.storyboard; sourceTree = "<group>"; };
-		135FD5B82017029700FD8770 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
-		135FD5B92017029700FD8770 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
-		135FD5BC201706D100FD8770 /* WOCBuyDashStep1ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep1ViewController.h; sourceTree = "<group>"; };
-		135FD5BD201706D100FD8770 /* WOCBuyDashStep1ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep1ViewController.m; sourceTree = "<group>"; };
-		135FD5C820175EBA00FD8770 /* WOCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCLocationManager.h; sourceTree = "<group>"; };
-		135FD5C920175EBA00FD8770 /* WOCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCLocationManager.m; sourceTree = "<group>"; };
-		135FD5CC201766AF00FD8770 /* WOCBuyDashStep3ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep3ViewController.h; sourceTree = "<group>"; };
-		135FD5CD201766AF00FD8770 /* WOCBuyDashStep3ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep3ViewController.m; sourceTree = "<group>"; };
-		135FD5D12017772E00FD8770 /* WOCBuyDashStep2ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep2ViewController.h; sourceTree = "<group>"; };
-		135FD5D22017772E00FD8770 /* WOCBuyDashStep2ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep2ViewController.m; sourceTree = "<group>"; };
-		138D8C9620184D1E00AFD954 /* WOCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCConstants.h; sourceTree = "<group>"; };
-		138D8C9D2018663300AFD954 /* WOCBuyDashStep4ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep4ViewController.h; sourceTree = "<group>"; };
-		138D8C9E2018663300AFD954 /* WOCBuyDashStep4ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep4ViewController.m; sourceTree = "<group>"; };
-		138D8CA6201892A500AFD954 /* WOCBuyDashStep5ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep5ViewController.h; sourceTree = "<group>"; };
-		138D8CA7201892A500AFD954 /* WOCBuyDashStep5ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep5ViewController.m; sourceTree = "<group>"; };
-		138D8CA9201892DD00AFD954 /* WOCBuyDashStep6ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep6ViewController.h; sourceTree = "<group>"; };
-		138D8CAA201892DD00AFD954 /* WOCBuyDashStep6ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep6ViewController.m; sourceTree = "<group>"; };
-		138D8CAC2018931B00AFD954 /* WOCBuyDashStep7ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep7ViewController.h; sourceTree = "<group>"; };
-		138D8CAD2018931B00AFD954 /* WOCBuyDashStep7ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep7ViewController.m; sourceTree = "<group>"; };
-		138D8CAF2018932D00AFD954 /* WOCBuyDashStep8ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep8ViewController.h; sourceTree = "<group>"; };
-		138D8CB02018932D00AFD954 /* WOCBuyDashStep8ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep8ViewController.m; sourceTree = "<group>"; };
-		138D8CB2201893D200AFD954 /* WOCBuyingInstructionsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyingInstructionsViewController.h; sourceTree = "<group>"; };
-		138D8CB3201893D200AFD954 /* WOCBuyingInstructionsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyingInstructionsViewController.m; sourceTree = "<group>"; };
-		138D8CB5201893E800AFD954 /* WOCBuyingSummaryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCBuyingSummaryViewController.h; sourceTree = "<group>"; };
-		138D8CB6201893E800AFD954 /* WOCBuyingSummaryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCBuyingSummaryViewController.m; sourceTree = "<group>"; };
-		138D8CB9201894D400AFD954 /* WOCOfferCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCOfferCell.h; sourceTree = "<group>"; };
-		138D8CBA201894D400AFD954 /* WOCOfferCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCOfferCell.m; sourceTree = "<group>"; };
-		138D8CBC2018A19700AFD954 /* WOCSummaryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSummaryCell.h; sourceTree = "<group>"; };
-		138D8CBD2018A19700AFD954 /* WOCSummaryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSummaryCell.m; sourceTree = "<group>"; };
-		138D8CBF2018A45C00AFD954 /* WOCSignOutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCSignOutCell.h; sourceTree = "<group>"; };
-		138D8CC02018A45C00AFD954 /* WOCSignOutCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCSignOutCell.m; sourceTree = "<group>"; };
-		13A9334E201C64DD00028670 /* WOCPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCPasswordViewController.h; sourceTree = "<group>"; };
-		13A9334F201C64DD00028670 /* WOCPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCPasswordViewController.m; sourceTree = "<group>"; };
+		0437549520354F63001A4ED4 /* ActivityLogs.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ActivityLogs.md; sourceTree = "<group>"; };
+		0437549720354F63001A4ED4 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
+		0437549820354F63001A4ED4 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
+		0437549A20354F63001A4ED4 /* WOCOfferCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCOfferCell.h; sourceTree = "<group>"; };
+		0437549B20354F63001A4ED4 /* WOCOfferCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCOfferCell.m; sourceTree = "<group>"; };
+		0437549C20354F63001A4ED4 /* WOCSignOutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCSignOutCell.h; sourceTree = "<group>"; };
+		0437549D20354F63001A4ED4 /* WOCSignOutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCSignOutCell.m; sourceTree = "<group>"; };
+		0437549E20354F63001A4ED4 /* WOCSummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCSummaryCell.h; sourceTree = "<group>"; };
+		0437549F20354F63001A4ED4 /* WOCSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCSummaryCell.m; sourceTree = "<group>"; };
+		043754A120354F63001A4ED4 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
+		043754A220354F63001A4ED4 /* WOCBuyDashStep1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep1ViewController.h; sourceTree = "<group>"; };
+		043754A320354F63001A4ED4 /* WOCBuyDashStep1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep1ViewController.m; sourceTree = "<group>"; };
+		043754A420354F63001A4ED4 /* WOCBuyDashStep2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep2ViewController.h; sourceTree = "<group>"; };
+		043754A520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep2ViewController.m; sourceTree = "<group>"; };
+		043754A620354F63001A4ED4 /* WOCBuyDashStep3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep3ViewController.h; sourceTree = "<group>"; };
+		043754A720354F63001A4ED4 /* WOCBuyDashStep3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep3ViewController.m; sourceTree = "<group>"; };
+		043754A820354F63001A4ED4 /* WOCBuyDashStep4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep4ViewController.h; sourceTree = "<group>"; };
+		043754A920354F63001A4ED4 /* WOCBuyDashStep4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep4ViewController.m; sourceTree = "<group>"; };
+		043754AA20354F63001A4ED4 /* WOCBuyDashStep5ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep5ViewController.h; sourceTree = "<group>"; };
+		043754AB20354F63001A4ED4 /* WOCBuyDashStep5ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep5ViewController.m; sourceTree = "<group>"; };
+		043754AC20354F63001A4ED4 /* WOCBuyDashStep6ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep6ViewController.h; sourceTree = "<group>"; };
+		043754AD20354F63001A4ED4 /* WOCBuyDashStep6ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep6ViewController.m; sourceTree = "<group>"; };
+		043754AE20354F63001A4ED4 /* WOCBuyDashStep7ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep7ViewController.h; sourceTree = "<group>"; };
+		043754AF20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep7ViewController.m; sourceTree = "<group>"; };
+		043754B020354F63001A4ED4 /* WOCBuyDashStep8ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyDashStep8ViewController.h; sourceTree = "<group>"; };
+		043754B120354F63001A4ED4 /* WOCBuyDashStep8ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyDashStep8ViewController.m; sourceTree = "<group>"; };
+		043754B220354F63001A4ED4 /* WOCBuyingInstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyingInstructionsViewController.h; sourceTree = "<group>"; };
+		043754B320354F63001A4ED4 /* WOCBuyingInstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyingInstructionsViewController.m; sourceTree = "<group>"; };
+		043754B420354F63001A4ED4 /* WOCBuyingSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBuyingSummaryViewController.h; sourceTree = "<group>"; };
+		043754B520354F63001A4ED4 /* WOCBuyingSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBuyingSummaryViewController.m; sourceTree = "<group>"; };
+		043754B620354F63001A4ED4 /* WOCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCConstants.h; sourceTree = "<group>"; };
+		043754B820354F63001A4ED4 /* WOCAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCAlertController.h; sourceTree = "<group>"; };
+		043754B920354F63001A4ED4 /* WOCAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCAlertController.m; sourceTree = "<group>"; };
+		043754BA20354F63001A4ED4 /* WOCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCLocationManager.h; sourceTree = "<group>"; };
+		043754BB20354F63001A4ED4 /* WOCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCLocationManager.m; sourceTree = "<group>"; };
+		043754BC20354F63001A4ED4 /* WOCPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCPasswordViewController.h; sourceTree = "<group>"; };
+		043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCPasswordViewController.m; sourceTree = "<group>"; };
+		043754D2203550BB001A4ED4 /* buyDash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = buyDash.storyboard; sourceTree = "<group>"; };
 		220128D11C753C670001CAC1 /* BRSocketHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BRSocketHelpers.c; sourceTree = "<group>"; };
 		220128D21C753C670001CAC1 /* BRSocketHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSocketHelpers.h; sourceTree = "<group>"; };
 		2204604C1B9F61E600D07B61 /* BREventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BREventManager.h; sourceTree = "<group>"; };
@@ -650,79 +652,89 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		132AC7B52024925600D8D55E /* Resources */ = {
+		0437549420354F63001A4ED4 /* Wallofcoins */ = {
 			isa = PBXGroup;
 			children = (
-				132AC7B62024926800D8D55E /* countries.json */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		135FD5B72017029700FD8770 /* APIManager */ = {
-			isa = PBXGroup;
-			children = (
-				135FD5B82017029700FD8770 /* APIManager.h */,
-				135FD5B92017029700FD8770 /* APIManager.m */,
-			);
-			path = APIManager;
-			sourceTree = "<group>";
-		};
-		135FD5BB201706B200FD8770 /* Wallofcoins */ = {
-			isa = PBXGroup;
-			children = (
-				132AC7B52024925600D8D55E /* Resources */,
-				138D8CB82018949E00AFD954 /* CustomCell */,
-				135FD5C4201759A400FD8770 /* WOCHelpers */,
-				135FD5B72017029700FD8770 /* APIManager */,
-				138D8C9620184D1E00AFD954 /* WOCConstants.h */,
-				135FD5BD201706D100FD8770 /* WOCBuyDashStep1ViewController.m */,
-				135FD5BC201706D100FD8770 /* WOCBuyDashStep1ViewController.h */,
-				135FD5D12017772E00FD8770 /* WOCBuyDashStep2ViewController.h */,
-				135FD5D22017772E00FD8770 /* WOCBuyDashStep2ViewController.m */,
-				135FD5CC201766AF00FD8770 /* WOCBuyDashStep3ViewController.h */,
-				138D8C9D2018663300AFD954 /* WOCBuyDashStep4ViewController.h */,
-				138D8C9E2018663300AFD954 /* WOCBuyDashStep4ViewController.m */,
-				138D8CA6201892A500AFD954 /* WOCBuyDashStep5ViewController.h */,
-				135FD5CD201766AF00FD8770 /* WOCBuyDashStep3ViewController.m */,
-				138D8CA7201892A500AFD954 /* WOCBuyDashStep5ViewController.m */,
-				138D8CA9201892DD00AFD954 /* WOCBuyDashStep6ViewController.h */,
-				138D8CAA201892DD00AFD954 /* WOCBuyDashStep6ViewController.m */,
-				138D8CAC2018931B00AFD954 /* WOCBuyDashStep7ViewController.h */,
-				138D8CAD2018931B00AFD954 /* WOCBuyDashStep7ViewController.m */,
-				138D8CAF2018932D00AFD954 /* WOCBuyDashStep8ViewController.h */,
-				138D8CB02018932D00AFD954 /* WOCBuyDashStep8ViewController.m */,
-				138D8CB2201893D200AFD954 /* WOCBuyingInstructionsViewController.h */,
-				138D8CB3201893D200AFD954 /* WOCBuyingInstructionsViewController.m */,
-				138D8CB5201893E800AFD954 /* WOCBuyingSummaryViewController.h */,
-				138D8CB6201893E800AFD954 /* WOCBuyingSummaryViewController.m */,
-				13A9334E201C64DD00028670 /* WOCPasswordViewController.h */,
-				13A9334F201C64DD00028670 /* WOCPasswordViewController.m */,
+				043754D1203550BB001A4ED4 /* StoryBoard */,
+				0437549520354F63001A4ED4 /* ActivityLogs.md */,
+				0437549620354F63001A4ED4 /* APIManager */,
+				0437549920354F63001A4ED4 /* CustomCell */,
+				043754A020354F63001A4ED4 /* Resources */,
+				043754A220354F63001A4ED4 /* WOCBuyDashStep1ViewController.h */,
+				043754A320354F63001A4ED4 /* WOCBuyDashStep1ViewController.m */,
+				043754A420354F63001A4ED4 /* WOCBuyDashStep2ViewController.h */,
+				043754A520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m */,
+				043754A620354F63001A4ED4 /* WOCBuyDashStep3ViewController.h */,
+				043754A720354F63001A4ED4 /* WOCBuyDashStep3ViewController.m */,
+				043754A820354F63001A4ED4 /* WOCBuyDashStep4ViewController.h */,
+				043754A920354F63001A4ED4 /* WOCBuyDashStep4ViewController.m */,
+				043754AA20354F63001A4ED4 /* WOCBuyDashStep5ViewController.h */,
+				043754AB20354F63001A4ED4 /* WOCBuyDashStep5ViewController.m */,
+				043754AC20354F63001A4ED4 /* WOCBuyDashStep6ViewController.h */,
+				043754AD20354F63001A4ED4 /* WOCBuyDashStep6ViewController.m */,
+				043754AE20354F63001A4ED4 /* WOCBuyDashStep7ViewController.h */,
+				043754AF20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m */,
+				043754B020354F63001A4ED4 /* WOCBuyDashStep8ViewController.h */,
+				043754B120354F63001A4ED4 /* WOCBuyDashStep8ViewController.m */,
+				043754B220354F63001A4ED4 /* WOCBuyingInstructionsViewController.h */,
+				043754B320354F63001A4ED4 /* WOCBuyingInstructionsViewController.m */,
+				043754B420354F63001A4ED4 /* WOCBuyingSummaryViewController.h */,
+				043754B520354F63001A4ED4 /* WOCBuyingSummaryViewController.m */,
+				043754B620354F63001A4ED4 /* WOCConstants.h */,
+				043754B720354F63001A4ED4 /* WOCHelpers */,
+				043754BC20354F63001A4ED4 /* WOCPasswordViewController.h */,
+				043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */,
 			);
 			path = Wallofcoins;
 			sourceTree = "<group>";
 		};
-		135FD5C4201759A400FD8770 /* WOCHelpers */ = {
+		0437549620354F63001A4ED4 /* APIManager */ = {
 			isa = PBXGroup;
 			children = (
-				135FD5C820175EBA00FD8770 /* WOCLocationManager.h */,
-				135FD5C920175EBA00FD8770 /* WOCLocationManager.m */,
-				132AC7B22024388600D8D55E /* WOCAlertController.h */,
-				132AC7B32024388600D8D55E /* WOCAlertController.m */,
+				0437549720354F63001A4ED4 /* APIManager.h */,
+				0437549820354F63001A4ED4 /* APIManager.m */,
+			);
+			path = APIManager;
+			sourceTree = "<group>";
+		};
+		0437549920354F63001A4ED4 /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				0437549A20354F63001A4ED4 /* WOCOfferCell.h */,
+				0437549B20354F63001A4ED4 /* WOCOfferCell.m */,
+				0437549C20354F63001A4ED4 /* WOCSignOutCell.h */,
+				0437549D20354F63001A4ED4 /* WOCSignOutCell.m */,
+				0437549E20354F63001A4ED4 /* WOCSummaryCell.h */,
+				0437549F20354F63001A4ED4 /* WOCSummaryCell.m */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		043754A020354F63001A4ED4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				043754A120354F63001A4ED4 /* countries.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		043754B720354F63001A4ED4 /* WOCHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				043754B820354F63001A4ED4 /* WOCAlertController.h */,
+				043754B920354F63001A4ED4 /* WOCAlertController.m */,
+				043754BA20354F63001A4ED4 /* WOCLocationManager.h */,
+				043754BB20354F63001A4ED4 /* WOCLocationManager.m */,
 			);
 			path = WOCHelpers;
 			sourceTree = "<group>";
 		};
-		138D8CB82018949E00AFD954 /* CustomCell */ = {
+		043754D1203550BB001A4ED4 /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
-				138D8CB9201894D400AFD954 /* WOCOfferCell.h */,
-				138D8CBA201894D400AFD954 /* WOCOfferCell.m */,
-				138D8CBC2018A19700AFD954 /* WOCSummaryCell.h */,
-				138D8CBD2018A19700AFD954 /* WOCSummaryCell.m */,
-				138D8CBF2018A45C00AFD954 /* WOCSignOutCell.h */,
-				138D8CC02018A45C00AFD954 /* WOCSignOutCell.m */,
+				043754D2203550BB001A4ED4 /* buyDash.storyboard */,
 			);
-			path = CustomCell;
+			path = StoryBoard;
 			sourceTree = "<group>";
 		};
 		31D68B511C23B6C10030FAAA /* DashWalletUITests */ = {
@@ -850,7 +862,7 @@
 		7579F7FE19231D4600CA56F4 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				135FD5BB201706B200FD8770 /* Wallofcoins */,
+				0437549420354F63001A4ED4 /* Wallofcoins */,
 				FB021E581E4DEFD300D17638 /* MBProgressHUD */,
 				FB021E501E47E17200D17638 /* FBShimmering */,
 				752E28EF19234E8100DB5A3C /* Reachability.h */,
@@ -1009,7 +1021,6 @@
 				BA4EECDF1B351AE200D443A3 /* BRAppGroupConstants.h */,
 				22F45A0F1C3329EB00B07A15 /* BRUserDefaultsConstants.h */,
 				75D5F3DF191EC270004AB296 /* Images.xcassets */,
-				135FD5B42017016C00FD8770 /* buyDash.storyboard */,
 				75D5F3DC191EC270004AB296 /* Main.storyboard */,
 				75F2E0D21BE9803900EAE861 /* Launch Screen.storyboard */,
 				752E2898192349CE00DB5A3C /* DashWallet.xcdatamodeld */,
@@ -1426,6 +1437,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043754BE20354F63001A4ED4 /* ActivityLogs.md in Resources */,
 				75D5F3E0191EC270004AB296 /* Images.xcassets in Resources */,
 				757E09991ADB8EEB006FD352 /* Localizable.strings in Resources */,
 				75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */,
@@ -1433,9 +1445,9 @@
 				75E83CF61B5F997A0038FB70 /* coinflip.aiff in Resources */,
 				755FC9ED1BF1DF1B00164ABB /* BREventConfirmView.xib in Resources */,
 				752E28F719235B3000DB5A3C /* FixedPeers.plist in Resources */,
+				043754C320354F63001A4ED4 /* countries.json in Resources */,
 				75D5F3DE191EC270004AB296 /* Main.storyboard in Resources */,
-				132AC7B72024926800D8D55E /* countries.json in Resources */,
-				135FD5B62017016C00FD8770 /* buyDash.storyboard in Resources */,
+				043754D3203550BC001A4ED4 /* buyDash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1501,7 +1513,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which bartycrouch > /dev/null; then\n# Incrementally update all Storyboards/XIBs strings files\nbartycrouch interfaces -p \"$PROJECT_DIR\"\n\n# Add new keys to Localizable.strings files from NSLocalizedString in code\nbartycrouch code -p \"$PROJECT_DIR\" -l \"$PROJECT_DIR\" -a -s -k\nelse\necho \"warning: BartyCrouch not installed, download it from https://github.com/Flinesoft/BartyCrouch\"\nfi";
+			shellScript = "if which bartycrouch > /dev/null; then\n# Incrementally update all Storyboards/XIBs strings files\nbartycrouch interfaces -p \"$PROJECT_DIR\"\n\n# Add new keys to Localizable.strings files from NSLocalizedString in code\nbartycrouch code -p \"$PROJECT_DIR\" -l \"$PROJECT_DIR\" -c -s -k\nelse\necho \"warning: BartyCrouch not installed, download it from https://github.com/Flinesoft/BartyCrouch\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1525,40 +1537,39 @@
 				752E28AA19234AE300DB5A3C /* BRAddressEntity.m in Sources */,
 				75AA5F55194143D5003F23BD /* BRBouncyBurgerButton.m in Sources */,
 				752E28AB19234AE300DB5A3C /* BRMerkleBlockEntity.m in Sources */,
-				132AC7B42024388600D8D55E /* WOCAlertController.m in Sources */,
 				BA7B53501BDA9A2800355E8D /* BRAppleWatchData.m in Sources */,
 				752E28AC19234AE300DB5A3C /* BRPeerEntity.m in Sources */,
 				FBF2680E1E419318001A1C8B /* DSShapeshiftEntity+CoreDataClass.m in Sources */,
 				FBF268041E414B93001A1C8B /* NSData+Dash.m in Sources */,
-				138D8CAB201892DD00AFD954 /* WOCBuyDashStep6ViewController.m in Sources */,
 				752E28AD19234AE300DB5A3C /* BRTransactionEntity.m in Sources */,
-				138D8CBE2018A19700AFD954 /* WOCSummaryCell.m in Sources */,
+				043754C120354F63001A4ED4 /* WOCSignOutCell.m in Sources */,
 				752E28AE19234AE300DB5A3C /* BRTxInputEntity.m in Sources */,
-				13A93350201C64DD00028670 /* WOCPasswordViewController.m in Sources */,
-				138D8CB7201893E800AFD954 /* WOCBuyingSummaryViewController.m in Sources */,
 				752E28AF19234AE300DB5A3C /* BRTxOutputEntity.m in Sources */,
 				22DE8CF11D02407F007F07F3 /* BRWalletConstants.m in Sources */,
 				FBF2680F1E419318001A1C8B /* DSShapeshiftEntity+CoreDataProperties.m in Sources */,
 				BAA4843C1B3EFFAF0075C749 /* UIImage+Utils.m in Sources */,
+				043754C520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m in Sources */,
 				BA7B535C1BDBC36700355E8D /* BRTransaction+Utils.m in Sources */,
 				758DBD0E1980634900389E2A /* BRTxDetailViewController.m in Sources */,
-				135FD5CA20175EBB00FD8770 /* WOCLocationManager.m in Sources */,
 				FB021E4F1E42EB5F00D17638 /* NSAttributedString+Attachments.m in Sources */,
 				7548CF3719556FD700EF827F /* BRCopyLabel.m in Sources */,
+				043754C420354F63001A4ED4 /* WOCBuyDashStep1ViewController.m in Sources */,
+				043754C620354F63001A4ED4 /* WOCBuyDashStep3ViewController.m in Sources */,
+				043754CE20354F63001A4ED4 /* WOCAlertController.m in Sources */,
+				043754CB20354F63001A4ED4 /* WOCBuyDashStep8ViewController.m in Sources */,
 				752E28D119234C3600DB5A3C /* BRKey.m in Sources */,
 				84F68C8A1975E9E2002FC300 /* BRScanViewController.m in Sources */,
 				2204604E1B9F61E600D07B61 /* BREventManager.m in Sources */,
 				FBF267FD1E414AA2001A1C8B /* DSShapeshiftManager.m in Sources */,
 				752E28D219234C3600DB5A3C /* BRKey+BIP38.m in Sources */,
-				138D8CB12018932D00AFD954 /* WOCBuyDashStep8ViewController.m in Sources */,
 				220460551BA0BEEE00D07B61 /* BREventConfirmView.m in Sources */,
 				752E28D919234C3600DB5A3C /* BRTransaction.m in Sources */,
-				135FD5CE201766AF00FD8770 /* WOCBuyDashStep3ViewController.m in Sources */,
 				752E28CE19234C3600DB5A3C /* BRBIP32Sequence.m in Sources */,
 				BAC7B6BE1BD9C29900165B84 /* BRPhoneWCSessionManager.m in Sources */,
 				752E28CF19234C3600DB5A3C /* BRBIP39Mnemonic.m in Sources */,
 				752E28DA19234C3600DB5A3C /* BRWallet.m in Sources */,
 				FB021E561E47E17200D17638 /* FBShimmeringLayer.m in Sources */,
+				043754C220354F63001A4ED4 /* WOCSummaryCell.m in Sources */,
 				752E28DB19234C3600DB5A3C /* BRWalletManager.m in Sources */,
 				752E28D319234C3600DB5A3C /* BRMerkleBlock.m in Sources */,
 				752E28D019234C3600DB5A3C /* BRBloomFilter.m in Sources */,
@@ -1567,38 +1578,39 @@
 				752E28D419234C3600DB5A3C /* BRPaymentProtocol.m in Sources */,
 				752E28D519234C3600DB5A3C /* BRPaymentRequest.m in Sources */,
 				7525B619192453840041C0F2 /* BRNavigationBar.m in Sources */,
-				135FD5D32017772E00FD8770 /* WOCBuyDashStep2ViewController.m in Sources */,
-				138D8CBB201894D400AFD954 /* WOCOfferCell.m in Sources */,
+				043754CD20354F63001A4ED4 /* WOCBuyingSummaryViewController.m in Sources */,
 				75F2E0D61BEAA6A400EAE861 /* BRTxMetadataEntity.m in Sources */,
 				75878BC1192AEC3F002505AB /* BRReceiveViewController.m in Sources */,
+				043754C720354F63001A4ED4 /* WOCBuyDashStep4ViewController.m in Sources */,
+				043754D020354F63001A4ED4 /* WOCPasswordViewController.m in Sources */,
 				75878BBF192ACD46002505AB /* BRAmountViewController.m in Sources */,
-				138D8CAE2018931B00AFD954 /* WOCBuyDashStep7ViewController.m in Sources */,
 				759816E719357D6F005060EA /* BRBubbleView.m in Sources */,
 				757BE7E3192C0E9D0061CB20 /* BRRestoreViewController.m in Sources */,
 				757BE7E6192C1FF70061CB20 /* BRWelcomeViewController.m in Sources */,
 				757BE7E9192D4E880061CB20 /* BRSeedViewController.m in Sources */,
+				043754C820354F63001A4ED4 /* WOCBuyDashStep5ViewController.m in Sources */,
 				752E28E719234DA200DB5A3C /* NSData+Bitcoin.m in Sources */,
 				FB9CC2711F8E27B80079309F /* DWGenerateViewController.m in Sources */,
+				043754C020354F63001A4ED4 /* WOCOfferCell.m in Sources */,
+				043754CF20354F63001A4ED4 /* WOCLocationManager.m in Sources */,
 				220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */,
-				135FD5BE201706D100FD8770 /* WOCBuyDashStep1ViewController.m in Sources */,
 				752E28E919234DA200DB5A3C /* NSManagedObject+Sugar.m in Sources */,
 				BA7B53541BDAA0A800355E8D /* BRAppleWatchTransactionData.m in Sources */,
+				043754CC20354F63001A4ED4 /* WOCBuyingInstructionsViewController.m in Sources */,
 				FB021E571E47E17200D17638 /* FBShimmeringView.m in Sources */,
 				FBF267A11E414877001A1C8B /* NSString+Dash.m in Sources */,
 				FB021E5B1E4DEFE800D17638 /* MBProgressHUD.m in Sources */,
+				043754C920354F63001A4ED4 /* WOCBuyDashStep6ViewController.m in Sources */,
 				751B2B5C1B68911700EA87FB /* BRTxHistoryViewController.m in Sources */,
 				752E28EA19234DA200DB5A3C /* NSMutableData+Bitcoin.m in Sources */,
-				138D8C9F2018663300AFD954 /* WOCBuyDashStep4ViewController.m in Sources */,
 				752E28EB19234DA200DB5A3C /* NSString+Bitcoin.m in Sources */,
 				757C89521A2FCE420076B373 /* BRSettingsViewController.m in Sources */,
 				75D5F3D2191EC270004AB296 /* BRAppDelegate.m in Sources */,
-				138D8CC12018A45C00AFD954 /* WOCSignOutCell.m in Sources */,
-				138D8CA8201892A500AFD954 /* WOCBuyDashStep5ViewController.m in Sources */,
+				043754CA20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m in Sources */,
 				759FBB36193290F600AB4465 /* BRRootViewController.m in Sources */,
 				752E289A192349CE00DB5A3C /* DashWallet.xcdatamodeld in Sources */,
-				135FD5BA2017029700FD8770 /* APIManager.m in Sources */,
+				043754BF20354F63001A4ED4 /* APIManager.m in Sources */,
 				759FBB37193290F600AB4465 /* BRSendViewController.m in Sources */,
-				138D8CB4201893D200AFD954 /* WOCBuyingInstructionsViewController.m in Sources */,
 				752E28F119234E8100DB5A3C /* Reachability.m in Sources */,
 				75D5F3CE191EC270004AB296 /* main.m in Sources */,
 			);
@@ -1681,14 +1693,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		135FD5B42017016C00FD8770 /* buyDash.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				135FD5B52017016C00FD8770 /* Base */,
-			);
-			name = buyDash.storyboard;
-			sourceTree = "<group>";
-		};
 		755FC9EF1BF1DF1B00164ABB /* BREventConfirmView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1840,19 +1844,13 @@
 		31D68B571C23B6C10030FAAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				INFOPLIST_FILE = DashWalletUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.DashWalletUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletUITests/DashWalletUITests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = dashwallet;
 				USES_XCTRUNNER = YES;
 			};
@@ -1861,18 +1859,13 @@
 		31D68B581C23B6C10030FAAA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				INFOPLIST_FILE = DashWalletUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.DashWalletUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletUITests/DashWalletUITests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = dashwallet;
 				USES_XCTRUNNER = YES;
 			};
@@ -1903,7 +1896,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1938,13 +1930,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-frandom-seed=$@";
+				OTHER_CFLAGS = (
+					"-frandom-seed=$@",
+					"-Wno-gnu",
+				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDebug";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 				ZERO_AR_DATE = 1;
 			};
 			name = Debug;
@@ -1960,7 +1958,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1975,7 +1972,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1989,13 +1986,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "-frandom-seed=$@";
+				OTHER_CFLAGS = (
+					"-frandom-seed=$@",
+					"-Wno-gnu",
+				);
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 				ZERO_AR_DATE = 1;
 			};
 			name = Release;
@@ -2006,11 +2008,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -2019,17 +2019,13 @@
 					"$(SRCROOT)/secp256k1",
 					"$(SRCROOT)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/DashWallet/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = DashWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDebug";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -2039,12 +2035,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				ENABLE_TESTABILITY = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -2053,15 +2046,13 @@
 					"$(SRCROOT)/secp256k1",
 					"$(SRCROOT)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/DashWallet/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = DashWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -2069,21 +2060,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/dashwallet.app/dashwallet";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = DashWalletTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletTests/DashWalletTests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -2092,20 +2077,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/dashwallet.app/dashwallet";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = DashWalletTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletTests/DashWalletTests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -2115,21 +2095,16 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -2138,124 +2113,91 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		BA913BFD1BD57E4E005A7C0E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		BA913BFE1BD57E4E005A7C0E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		BAE12BF31B2DEE7F00895CC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		BAE12BF51B2DEE7F00895CC5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -2270,7 +2212,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2285,13 +2226,14 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "TESTFLIGHT=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_PEDANTIC = YES;
@@ -2299,13 +2241,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "-frandom-seed=$@";
+				OTHER_CFLAGS = (
+					"-frandom-seed=$@",
+					"-Wno-gnu",
+				);
+				OTHER_SWIFT_FLAGS = "-DTestflight";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 				ZERO_AR_DATE = 1;
 			};
 			name = Testflight;
@@ -2316,56 +2264,45 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "TESTFLIGHT=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/secp256k1",
 					"$(SRCROOT)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/DashWallet/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = DashWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "-DTestflight";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testflight;
 		};
 		CEE253D41E26A9BC00A25B15 /* Testflight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testflight;
 		};
@@ -2373,20 +2310,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/dashwallet.app/dashwallet";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = DashWalletTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletTests/DashWalletTests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Testflight;
@@ -2394,18 +2326,13 @@
 		CEE253D61E26A9BC00A25B15 /* Testflight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				INFOPLIST_FILE = DashWalletUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.DashWalletUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletUITests/DashWalletUITests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = dashwallet;
 				USES_XCTRUNNER = YES;
 			};
@@ -2423,42 +2350,33 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testflight;
 		};
 		CEE253D91E26A9BC00A25B15 /* Testflight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testflight;
 		};
@@ -2473,7 +2391,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2500,6 +2417,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"DASH_TESTNET=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2508,13 +2426,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-frandom-seed=$@";
+				OTHER_CFLAGS = (
+					"-frandom-seed=$@",
+					"-Wno-gnu",
+				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDebug -DDASH_TESTNET";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 				ZERO_AR_DATE = 1;
 			};
 			name = Testnet;
@@ -2525,66 +2449,44 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-					"DASH_TESTNET=1",
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/secp256k1",
 					"$(SRCROOT)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/DashWallet/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = DashWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDebug -DDASH_TESTNET";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testnet;
 		};
 		FB9CC19C1F8511620079309F /* Testnet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = TodayExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testnet;
 		};
@@ -2592,21 +2494,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/dashwallet.app/dashwallet";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DashWallet/DashWallet-Prefix.pch";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = DashWalletTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletTests/DashWalletTests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Testnet;
@@ -2614,19 +2510,13 @@
 		FB9CC19E1F8511620079309F /* Testnet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				INFOPLIST_FILE = DashWalletUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.DashWalletUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DashWalletUITests/DashWalletUITests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = dashwallet;
 				USES_XCTRUNNER = YES;
 			};
@@ -2644,45 +2534,33 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testnet;
 		};
 		FB9CC1A11F8511620079309F /* Testnet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_COMMA = NO;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 44RJ69WHFF;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.dashfoundation.dash.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Testnet;
 		};
