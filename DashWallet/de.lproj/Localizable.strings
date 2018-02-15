@@ -36,6 +36,9 @@
 "\n%d attempts remaining\n" = "\n%d Versuche übrig\n";
 
 /* No comment provided by engineer. */
+"\n(local requested amount: %@)" = "\n(local requested amount: %@)";
+
+/* No comment provided by engineer. */
 "\n1 attempt remaining\n" = "\n1 Versuch übrig\n";
 
 /* No comment provided by engineer. */
@@ -377,7 +380,7 @@
 /* No comment provided by engineer. */
 "received %@ (%@)" = "%1$@ (%2$@) empfangen";
 
-/* No comment provided by engineer. */
+/* recovery phrase */
 "recovery phrase" = "Wiederherstellungs-Wortfolge";
 
 /* No comment provided by engineer. */

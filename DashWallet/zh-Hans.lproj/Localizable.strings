@@ -36,6 +36,9 @@
 "\n%d attempts remaining\n" = "\n还剩%d次尝试机会\n";
 
 /* No comment provided by engineer. */
+"\n(local requested amount: %@)" = "\n(local requested amount: %@)";
+
+/* No comment provided by engineer. */
 "\n1 attempt remaining\n" = "\n还剩1次尝试机会\n";
 
 /* No comment provided by engineer. */
@@ -148,9 +151,6 @@
 
 /* No comment provided by engineer. */
 "close app" = "关闭App";
-
-/* Confirm */
-"Confirm" = "确认";
 
 /* confirm */
 "confirm" = "确认";
@@ -380,7 +380,7 @@
 /* No comment provided by engineer. */
 "received %@ (%@)" = "收到 %1$@ (%2$@)";
 
-/* No comment provided by engineer. */
+/* recovery phrase */
 "recovery phrase" = "恢复密语";
 
 /* No comment provided by engineer. */

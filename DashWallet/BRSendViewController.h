@@ -28,9 +28,7 @@
 #import "BRAmountViewController.h"
 #import <CoreNFC/CoreNFC.h>
 
-@interface BRSendViewController : UIViewController <UIAlertViewDelegate, UITextViewDelegate,
-BRAmountViewControllerDelegate, AVCaptureMetadataOutputObjectsDelegate, UIViewControllerTransitioningDelegate,
-UIViewControllerAnimatedTransitioning,NFCNDEFReaderSessionDelegate>
+@interface BRSendViewController : UIViewController <UIAlertViewDelegate, BRAmountViewControllerDelegate, NFCNDEFReaderSessionDelegate>
 
 - (IBAction)tip:(id)sender;
 

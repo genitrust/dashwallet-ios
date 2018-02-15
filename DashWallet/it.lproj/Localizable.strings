@@ -1,6 +1,6 @@
 
 /* No comment provided by engineer. */
-" and " = " e ";
+" and " = "e";
 
 /* No comment provided by engineer. */
 "%@ is for 'mDASH'. %@ = 1 DASH." = "%@sta per 'mDASH'. %@ = 1 DASH.";
@@ -15,7 +15,7 @@
 "%d confirmations" = "%d conferme";
 
 /* No comment provided by engineer. */
-", " = ", ";
+", " = ",";
 
 /* No comment provided by engineer. */
 "0 confirmations" = "0 conferme";
@@ -34,6 +34,9 @@
 
 /* No comment provided by engineer. */
 "\n%d attempts remaining\n" = "\n%d tentativi rimanenti\n";
+
+/* No comment provided by engineer. */
+"\n(local requested amount: %@)" = "\n(local requested amount: %@)";
 
 /* No comment provided by engineer. */
 "\n1 attempt remaining\n" = "\n1 tentativo rimasto\n";
@@ -148,9 +151,6 @@
 
 /* No comment provided by engineer. */
 "close app" = "chiudi app";
-
-/* Confirm */
-"Confirm" = "Conferma";
 
 /* confirm */
 "confirm" = "Conferma";
@@ -380,7 +380,7 @@
 /* No comment provided by engineer. */
 "received %@ (%@)" = "ricevuto %1$@ (%2$@)";
 
-/* No comment provided by engineer. */
+/* recovery phrase */
 "recovery phrase" = "frase di recupero";
 
 /* No comment provided by engineer. */
@@ -441,7 +441,7 @@
 "seen by %d of %d peers" = "visto da %1$d di %2$d pari";
 
 /* No comment provided by engineer. */
-"send" = "invia";
+"send" = "Invia";
 
 /* No comment provided by engineer. */
 "Send %@ (%@) from this private key into your wallet? The dash network will receive a fee of %@ (%@)." = "Inviare %1$@ (%2$@) da questa chiave privata al tuo portafoglio? La rete dash riceverà una tassa di %3$@ (%4$@).";
@@ -483,7 +483,7 @@
 "shapeshift succeeded" = "shapeshift avvenuto con successo";
 
 /* No comment provided by engineer. */
-"show" = "mostra";
+"show" = "visualizza";
 
 /* No comment provided by engineer. */
 "show phrase" = "mostra frase";
