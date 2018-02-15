@@ -41,7 +41,7 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep4) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findZipCode) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
     
     self.btnLocation.layer.cornerRadius = 3.0;
