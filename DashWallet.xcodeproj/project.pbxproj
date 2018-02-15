@@ -661,43 +661,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-
-		0437549420354F63001A4ED4 /* Wallofcoins */ = {
-			isa = PBXGroup;
-			children = (
-				043754D1203550BB001A4ED4 /* StoryBoard */,
-				0437549520354F63001A4ED4 /* ActivityLogs.md */,
-				0437549620354F63001A4ED4 /* APIManager */,
-				0437549920354F63001A4ED4 /* CustomCell */,
-				043754A020354F63001A4ED4 /* Resources */,
-				043754A220354F63001A4ED4 /* WOCBuyDashStep1ViewController.h */,
-				043754A320354F63001A4ED4 /* WOCBuyDashStep1ViewController.m */,
-				043754A420354F63001A4ED4 /* WOCBuyDashStep2ViewController.h */,
-				043754A520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m */,
-				043754A620354F63001A4ED4 /* WOCBuyDashStep3ViewController.h */,
-				043754A720354F63001A4ED4 /* WOCBuyDashStep3ViewController.m */,
-				043754A820354F63001A4ED4 /* WOCBuyDashStep4ViewController.h */,
-				043754A920354F63001A4ED4 /* WOCBuyDashStep4ViewController.m */,
-				043754AA20354F63001A4ED4 /* WOCBuyDashStep5ViewController.h */,
-				043754AB20354F63001A4ED4 /* WOCBuyDashStep5ViewController.m */,
-				043754AC20354F63001A4ED4 /* WOCBuyDashStep6ViewController.h */,
-				043754AD20354F63001A4ED4 /* WOCBuyDashStep6ViewController.m */,
-				043754AE20354F63001A4ED4 /* WOCBuyDashStep7ViewController.h */,
-				043754AF20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m */,
-				043754B020354F63001A4ED4 /* WOCBuyDashStep8ViewController.h */,
-				043754B120354F63001A4ED4 /* WOCBuyDashStep8ViewController.m */,
-				043754B220354F63001A4ED4 /* WOCBuyingInstructionsViewController.h */,
-				043754B320354F63001A4ED4 /* WOCBuyingInstructionsViewController.m */,
-				043754B420354F63001A4ED4 /* WOCBuyingSummaryViewController.h */,
-				043754B520354F63001A4ED4 /* WOCBuyingSummaryViewController.m */,
-				043754B620354F63001A4ED4 /* WOCConstants.h */,
-				043754B720354F63001A4ED4 /* WOCHelpers */,
-				043754BC20354F63001A4ED4 /* WOCPasswordViewController.h */,
-				043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */,
-			);
-			path = Wallofcoins;
-			sourceTree = "<group>";
-		};
+        0437549420354F63001A4ED4 /* Wallofcoins */ = {
+            isa = PBXGroup;
+            children = (
+                043754D1203550BB001A4ED4 /* StoryBoard */,
+                0437549520354F63001A4ED4 /* ActivityLogs.md */,
+                0437549620354F63001A4ED4 /* APIManager */,
+                0437549920354F63001A4ED4 /* CustomCell */,
+                043754A020354F63001A4ED4 /* Resources */,
+                043754A220354F63001A4ED4 /* WOCBuyDashStep1ViewController.h */,
+                043754A320354F63001A4ED4 /* WOCBuyDashStep1ViewController.m */,
+                043754A420354F63001A4ED4 /* WOCBuyDashStep2ViewController.h */,
+                043754A520354F63001A4ED4 /* WOCBuyDashStep2ViewController.m */,
+                043754A620354F63001A4ED4 /* WOCBuyDashStep3ViewController.h */,
+                043754A720354F63001A4ED4 /* WOCBuyDashStep3ViewController.m */,
+                043754A820354F63001A4ED4 /* WOCBuyDashStep4ViewController.h */,
+                043754A920354F63001A4ED4 /* WOCBuyDashStep4ViewController.m */,
+                043754AA20354F63001A4ED4 /* WOCBuyDashStep5ViewController.h */,
+                043754AB20354F63001A4ED4 /* WOCBuyDashStep5ViewController.m */,
+                043754AC20354F63001A4ED4 /* WOCBuyDashStep6ViewController.h */,
+                043754AD20354F63001A4ED4 /* WOCBuyDashStep6ViewController.m */,
+                043754AE20354F63001A4ED4 /* WOCBuyDashStep7ViewController.h */,
+                043754AF20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m */,
+                043754B020354F63001A4ED4 /* WOCBuyDashStep8ViewController.h */,
+                043754B120354F63001A4ED4 /* WOCBuyDashStep8ViewController.m */,
+                043754B220354F63001A4ED4 /* WOCBuyingInstructionsViewController.h */,
+                043754B320354F63001A4ED4 /* WOCBuyingInstructionsViewController.m */,
+                043754B420354F63001A4ED4 /* WOCBuyingSummaryViewController.h */,
+                043754B520354F63001A4ED4 /* WOCBuyingSummaryViewController.m */,
+                043754B620354F63001A4ED4 /* WOCConstants.h */,
+                043754B720354F63001A4ED4 /* WOCHelpers */,
+                043754BC20354F63001A4ED4 /* WOCPasswordViewController.h */,
+                043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */,
+            );
+        path = Wallofcoins;
+        sourceTree = "<group>";
+        };
 		0437549620354F63001A4ED4 /* APIManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -745,7 +744,8 @@
 				043754D2203550BB001A4ED4 /* buyDash.storyboard */,
 			);
 			path = StoryBoard;
-
+            sourceTree = "<group>";
+        };
 		2AC92C811FEB0A32008CAEE0 /* Scan */ = {
 			isa = PBXGroup;
 			children = (
