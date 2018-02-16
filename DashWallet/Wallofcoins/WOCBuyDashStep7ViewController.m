@@ -295,12 +295,67 @@
             self.purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
             self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
             
-            [self deleteHold:self.holdId];
+            [self deleteHold:self.holdId count:1];
             [self registerDevice:phoneNo];
         }
         else
         {
-            [self getOrders];
+            [self getHold];
+        }
+    }];
+}
+
+- (void)getHold {
+    
+    [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold with Hold Id: %@.",responseDict);
+            
+            NSArray *holdArray = (NSArray*)responseDict;
+            
+            if (holdArray.count > 0) {
+                
+                NSUInteger count = holdArray.count;
+                
+                for (int i = 0; i < holdArray.count; i++) {
+                    
+                    count -= count;
+                    
+                    NSDictionary *holdDict = [holdArray objectAtIndex:i];
+                    
+                    NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
+                    [self deleteHold:holdId count:count];
+                }
+            }
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count{
+    
+    NSDictionary *params = @{
+                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold deleted.");
+            
+            NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            
+            if (count == 1) {
+                [self createHoldAfterAuthorize:phoneNo];
+            }
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -512,7 +567,7 @@
                         
                         NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:i];
                         
-                        [self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]]];
+                        [self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]] count:1];
                     }
                 }
                 else if (orders.count > 0){
@@ -544,38 +599,6 @@
         }
         else
         {
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
-}
-
-- (void)deleteHold:(NSString*)holdId{
-    
-    NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
-    
-    [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
-        
-        if (error == nil) {
-            
-            NSLog(@"Hold with Hold Id: %@ deleted.",holdId);
-        }
-        else{
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
-}
-
-- (void)getHold:(NSString*)holdId{
-    
-    [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
-        
-        if (error == nil) {
-            
-            NSLog(@"Hold with Hold Id: %@.",responseDict);
-        }
-        else{
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];

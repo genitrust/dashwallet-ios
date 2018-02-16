@@ -261,3 +261,8 @@ Holiday
 4. Code optimization
 5. Testing and bug solving
 
+#### Work on 16 FEB 2018 (FRI) Sujal Bandhara
+
+1. Implemented GET HOLD API
+2. Updated WallofCoins-README.md
+3. Testing and Bug Solving

@@ -239,6 +239,85 @@ It need  X-Coins-Publisher as a header parameter.
 This endpoint will return HTTP 404 if phone is not registered in our system then call Create Hold
 , otherwise it will return a list of available authentication methods.
 
+#### POST AUTH DETAILS (PASSWORD)
+
+**POST /api/v1/auth/<phone>/authorize**
+
+This endpoint will return **token**  and use that **token** as **auth token** to create hold. You must need to pass **deviceId** with **password** in this API.
+
+**POST /api/v1/auth/15005550001/authorize/**
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+Content-Type: application/json
+```
+It need  X-Coins-Publisher as a header parameter.
+
+
+##### Request :
+
+```
+{
+"deviceId" : "768",
+"password" : "abc123",
+"publisherId" : "52"
+}
+```
+
+##### Response :
+
+```
+{
+accessedOn = "2018-02-16T06:28:41.745351Z",
+authSource = password;
+createdOn = "2014-08-29T02:19:45.826334Z";
+email = "";
+phone = 12397776832;
+token = "YXV0aDoxOjE1MTg3NzMzMjF8OWFjMWQ5ZmNiOGU1OWZhOThhNTg3YWM2YjBlZWUxMDk1NGM3NGI3OQ==";
+tokenExpiresAt = "2018-02-16T09:28:41.742641Z";
+}
+```
+
+#### POST AUTH DETAILS (DEVICE)
+
+**POST /api/v1/auth/<phone>/authorize**
+
+This endpoint will return **token**  and use that **token** as **auth token** to create hold. You must need to pass **deviceId** with **deviceCode** in this API.
+
+**POST /api/v1/auth/15005550001/authorize/**
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+Content-Type: application/json
+```
+It need  X-Coins-Publisher as a header parameter.
+
+
+##### Request :
+
+```
+{
+"deviceId" : 769,
+"deviceCode" : "C1813921-DD87-4BE6-9F73-D78B603CF1C8",
+"publisherId" : "52"
+}
+```
+
+##### Response :
+
+```
+{
+accessedOn = "2018-02-16T06:28:41.745351Z",
+authSource = password;
+createdOn = "2014-08-29T02:19:45.826334Z";
+email = "";
+phone = 12397776832;
+token = "YXV0aDoxOjE1MTg3NzMzMjF8OWFjMWQ5ZmNiOGU1OWZhOThhNTg3YWM2YjBlZWUxMDk1NGM3NGI3OQ==";
+tokenExpiresAt = "2018-02-16T09:28:41.742641Z";
+}
+```
 
 #### CREATE HOLD
 
@@ -322,6 +401,48 @@ It need X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
 This API will send purchase code to user's device on his register phone number and it will be same
 as `__PURCHASE_CODE` value.
 
+#### GET HOLD
+
+**GET /api/v1/holds/**
+
+This endpoint will return active **holdId**. You must need to pass **auth token** as **X-Coins-Api-Token** in header of this API.
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+X-Coins-Api-Token: ZGV2aWN..
+```
+It need  X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
+
+##### Response
+
+```
+[
+{
+"id": "ec11665efc6eeb8e8ca083360c70a659",
+"expirationTime": "2018-02-16T06:38:14.408227Z",
+"discoveryInput": "8f4a39a2ca29607da6d8c891e8318b26"
+}
+]
+```
+
+Use **id** as **holdId** to delete an active hold.
+
+#### DELETE HOLD
+
+**POST /api/v1/holds/<hold-Id>**
+
+This endpoint will delete an active hold. You must need to pass **auth token** as **X-Coins-Api-Token** in header of this API.
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+X-Coins-Api-Token: ZGV2aWN..
+```
+It need  X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
+
+##### Response :
+204 NO CONTENT
 
 #### CAPTURE HOLD
 
@@ -390,7 +511,7 @@ Content-Type: application/json
 POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 ```
 
-##### Response
+##### Response :
 
 ```json
 {
@@ -428,7 +549,7 @@ Content-Type: application/json
 DELETE https://woc.reference.genitrust.com/api/v1/orders/{orderId}/?<publisherId>
 ```
 
-##### Response
+##### Response :
 204 NO CONTENT
 
 This method is used for cancel order by orderId created by user.
@@ -445,7 +566,7 @@ GET https://woc.reference.genitrust.com/api/v1/orders/?<publisherId>
 ```
 
 
-##### Response
+##### Response :
 
 ```json
 [{
@@ -558,4 +679,3 @@ GET https://woc.reference.genitrust.com/api/v1/devices/
 ]
 ```
 This method is use for get all devices for user
-

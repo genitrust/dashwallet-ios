@@ -437,9 +437,12 @@
 -(void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/",BASE_URL,holdId];
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
     NSDictionary *header =
     @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      @"X-Coins-Api-Token": token
       };
     
     [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -452,11 +455,17 @@
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"X-Coins-Api-Token": token
-      };
+    NSDictionary *header = @{
+                            API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                            };
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+    {
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   @"X-Coins-Api-Token": token
+                   };
+    }
     
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
