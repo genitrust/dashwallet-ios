@@ -189,6 +189,7 @@ Holiday
 
 Holiday
 
+## [WEEK-5] 05 FEB 2018
 #### Work on 05 FEB 2018 (MON) Sujal Bandhara
 
 
@@ -233,6 +234,7 @@ Holiday
 12. The SIGN OUT button will be grey with black text, like the WALLOFCOINS.COM button.
 13. Under the SIGN OUT panel will be big, centered text saying, "Previous Orders”.
 
+## [WEEK-6] 12 FEB 2018
 #### Work on 12 FEB 2018 (MON) Sujal Bandhara
 
 1. Logos and Icons used must NOT be the "HQ" versio
@@ -266,3 +268,25 @@ Holiday
 1. Implemented GET HOLD API
 2. Updated WallofCoins-README.md
 3. Testing and Bug Solving
+
+#### Work on 17 FEB 2018 (SAT) Sujal Bandhara
+
+Holiday
+
+#### Work on 18 FEB 2018 (SUN) Sujal Bandhara
+
+Holiday
+
+## [WEEK-7] 19 FEB 2018
+#### Work on 19 FEB 2018 (MON) Sujal Bandhara
+
+
+#### Work on 20 FEB 2018 (TUE) Sujal Bandhara
+
+1. When loading GET /api/v1/orders, show loading icons #15
+2. ”Receive Dash" UI Enhancements #16
+3. Update Message when end user confirms DEPOSIT FINISHED (#44)
+4. Buying Wizard User Experience enhancement (#45)
+5. Buy Summary: "WDV" status orders still show the account details (#38)
+6. Buying Wizard "incremented offers" (#36)
+7. Find My Location button should only be pressed once? (#43)

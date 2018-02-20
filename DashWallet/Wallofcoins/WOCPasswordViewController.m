@@ -57,7 +57,7 @@
 - (void)login:(NSString*)phoneNo password:(NSString*)password{
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_PASSWORD: password,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
@@ -115,7 +115,9 @@
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             
@@ -141,7 +143,9 @@
     
     [[APIManager sharedInstance] getDevice:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             
@@ -171,7 +175,7 @@
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_PASSWORD: password,
                              API_BODY_DEVICE_ID: deviceId,
                              API_BODY_JSON_PARAMETER: @"YES"
@@ -179,7 +183,9 @@
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             

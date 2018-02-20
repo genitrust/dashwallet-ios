@@ -43,6 +43,7 @@
 #import "WOCBuyingSummaryViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
+#import "MBProgressHUD.h"
 
 @interface BRSettingsViewController ()
 
@@ -186,11 +187,15 @@
 
 - (void)getOrders {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params = @{
                              @"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+    
+        [hud hideAnimated:YES];
         
         if (error == nil) {
             

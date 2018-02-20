@@ -14,6 +14,7 @@
 #import "WOCConstants.h"
 #import "BRAppDelegate.h"
 #import "BRRootViewController.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyDashStep1ViewController ()
 
@@ -60,6 +61,12 @@
         [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:USER_DEFAULTS_LAUNCH_STATUS];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+    [self.btnLocation setUserInteractionEnabled:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -132,6 +139,10 @@
 
 - (void)findZipCode {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    [self.btnLocation setUserInteractionEnabled:YES];
+    
     // Your location from latitude and longitude
     NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
     NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
@@ -141,6 +152,8 @@
         CLLocation *location = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
         // Call the method to find the address
         [self getAddressFromLocation:location completionHandler:^(NSMutableDictionary *d) {
+            
+            [hud hideAnimated:YES];
             
             NSLog(@"address informations : %@", d);
             NSLog(@"ZIP code : %@", [d valueForKey:@"ZIP"]);
@@ -188,11 +201,13 @@
     if ([[WOCLocationManager sharedInstance] locationServiceEnabled])
     {
         [self findZipCode];
+        [self.btnLocation setUserInteractionEnabled:NO];
     }
     else
     {
         // Enable Location services
         [[WOCLocationManager sharedInstance] startLocationService];
+        [self.btnLocation setUserInteractionEnabled:NO];
     }
 }
 

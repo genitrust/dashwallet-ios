@@ -110,7 +110,7 @@
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
@@ -135,7 +135,8 @@
                 }
                 else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
                     
-                    [self login:phoneNo];
+                    //[self login:phoneNo];
+                    [self createHoldAfterAuthorize:phoneNo];
                 }
             }
         }
@@ -149,8 +150,8 @@
                 [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                [self createHold:phoneNo];
-                
+                //[self createHold:phoneNo];
+                [self createHoldAfterAuthorize:phoneNo];
                 /*NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
                  
                  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -191,7 +192,7 @@
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_DEVICE_CODE: deviceCode
                              };
     
@@ -199,7 +200,7 @@
         if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
             
             params = @{
-                       API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                        API_BODY_DEVICE_CODE: deviceCode,
                        API_BODY_DEVICE_ID: deviceId
                        };
@@ -257,7 +258,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
         params =  @{
-                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
                     API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
                     API_BODY_DEVICE_CODE: deviceCode,
@@ -267,7 +268,7 @@
     else
     {
         params =  @{
-                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
                     API_BODY_PHONE_NUMBER: phoneNo,
                     API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
@@ -279,7 +280,9 @@
     
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             
@@ -339,7 +342,7 @@
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count{
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
@@ -350,7 +353,7 @@
             
             NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             
-            if (count == 1) {
+            if (count == 0) {
                 [self createHoldAfterAuthorize:phoneNo];
             }
         }
@@ -375,7 +378,9 @@
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             
@@ -401,7 +406,7 @@
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_DEVICE_CODE: deviceCode,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
@@ -410,7 +415,7 @@
         if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
             
             params = @{
-                       API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                        API_BODY_DEVICE_CODE: deviceCode,
                        API_BODY_DEVICE_ID: deviceId,
                        API_BODY_JSON_PARAMETER: @"YES"
@@ -467,7 +472,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
         params =  @{
-                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
                     API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
                     API_BODY_DEVICE_CODE: deviceCode,
@@ -477,7 +482,7 @@
     else
     {
         params =  @{
-                    API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
                     API_BODY_PHONE_NUMBER: phoneNo,
                     API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
@@ -489,7 +494,9 @@
     
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             
@@ -518,7 +525,9 @@
         }
         else
         {
-            [self getOrders];
+            //[self getOrders];
+            
+            [self getHold];
         }
     }];
 }
@@ -528,12 +537,14 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             

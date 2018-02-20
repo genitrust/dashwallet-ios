@@ -36,6 +36,7 @@
 #import "BRAppDelegate.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import "WOCAlertController.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
@@ -229,11 +230,15 @@
 
 - (void)getOrders {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+        
+        [hud hideAnimated:YES];
         
         if (error == nil) {
             
@@ -262,7 +267,7 @@
 - (void)signOut:(NSString*)phone {
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
@@ -271,6 +276,7 @@
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [self pushToStep1];
         }
@@ -334,25 +340,26 @@
         
         if (indexPath.section == 0) {
             orderDict = self.wdOrders[indexPath.row];
+            
+            if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
+                
+                if ([[orderDict valueForKey:@"account"] length] > 16) {
+                    
+                    cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
+                    
+                    NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+                    cell.lblPhone.hidden = YES;
+                    
+                    cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
+                    cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+                    cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
+                    cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+                }
+            }
+            
         }
         else{
             orderDict = self.otherOrders[indexPath.row];
-        }
-        
-        if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
-            
-            if ([[orderDict valueForKey:@"account"] length] > 16) {
-                
-                cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
-                
-                NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-                cell.lblPhone.hidden = YES;
-                
-                cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
-                cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
-                cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
-                cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
-            }
         }
         
         NSString *bankLogo = [orderDict valueForKey:@"bankLogo"];
@@ -390,6 +397,9 @@
         
         cell.lblName.text = bankName;
         cell.lblPhone.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];
+        if ([[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"] isEqual:[NSNull null]]) {
+            [cell.lblPhone setHidden:YES];
+        }
         cell.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
         
         NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
@@ -455,15 +465,15 @@
         
         if (indexPath.section == 0) {
             orderDict = self.wdOrders[indexPath.row];
+            
+            if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
+                if ([[orderDict valueForKey:@"account"] length] > 16) {
+                    return 250.0;
+                }
+            }
         }
         else{
             orderDict = self.otherOrders[indexPath.row];
-        }
-        
-        if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
-            if ([[orderDict valueForKey:@"account"] length] > 16) {
-                return 250.0;
-            }
         }
         return 185.0;
     }

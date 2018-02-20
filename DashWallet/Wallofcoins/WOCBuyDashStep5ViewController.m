@@ -106,12 +106,14 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:TRUE];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [hud hideAnimated:TRUE];
+        });
         
         if (error == nil) {
             

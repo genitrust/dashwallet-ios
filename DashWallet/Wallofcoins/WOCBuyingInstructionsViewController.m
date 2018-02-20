@@ -396,7 +396,7 @@
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
         params = @{
-                   API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
                    API_BODY_DEVICE_CODE: deviceCode,
@@ -406,7 +406,7 @@
     else
     {
         params = @{
-                   API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
                    API_BODY_PHONE_NUMBER: phone,
                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
@@ -434,6 +434,62 @@
             [self captureHold:purchaseCode holdId:holdId];
         }
         else{
+            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self getHold];
+        }
+    }];
+}
+
+- (void)getHold {
+    
+    [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold with Hold Id: %@.",responseDict);
+            
+            NSArray *holdArray = (NSArray*)responseDict;
+            
+            if (holdArray.count > 0) {
+                
+                NSUInteger count = holdArray.count;
+                
+                for (int i = 0; i < holdArray.count; i++) {
+                    
+                    count -= count;
+                    
+                    NSDictionary *holdDict = [holdArray objectAtIndex:i];
+                    
+                    NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
+                    [self deleteHold:holdId count:count];
+                }
+            }
+        }
+        else{
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count{
+    
+    NSDictionary *params = @{
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
+        
+        if (error == nil) {
+            
+            NSLog(@"Hold deleted.");
+            
+            NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            
+            if (count == 0) {
+                [self createHold:self.offerId phoneNo:phoneNo];
+            }
+        }
+        else{
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
@@ -443,7 +499,7 @@
     
     NSDictionary *params =
     @{
-      API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+      //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
       API_BODY_VERIFICATION_CODE: purchaseCode,
       API_BODY_JSON_PARAMETER: @"YES"
       };
@@ -482,6 +538,10 @@
                 WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                 myViewController.phoneNo = self.phoneNo;
                 [self.navigationController pushViewController:myViewController animated:YES];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
+                });
             }
             else{
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -543,7 +603,7 @@
 - (void)signOut:(NSString*)phone
 {
     NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
@@ -554,6 +614,7 @@
             [self cancelOrder];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [[NSUserDefaults standardUserDefaults] synchronize];
             //[self pushToStep1];
         }
