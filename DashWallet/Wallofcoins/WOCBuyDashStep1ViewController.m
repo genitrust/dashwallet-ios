@@ -27,15 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //[self.navigationController.navigationBar setHidden:YES];
-    
-    /*UIBarButtonItem *btnBack = [[UIBarButtonItem alloc]
-     initWithTitle:@"Buy Dash With Cash"
-     style:UIBarButtonItemStylePlain
-     target:self
-     action:@selector(backBtnClicked:)];
-     [btnBack setImage:[UIImage imageNamed:@"ic_arrow_back_white"]];*/
-    
     self.title = @"Buy Dash With Cash";
     
     if (self.isFromSend) {
@@ -63,9 +54,9 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
     
+    [super viewWillDisappear:animated];
     [self.btnLocation setUserInteractionEnabled:YES];
 }
 
@@ -115,7 +106,7 @@
     view.layer.masksToBounds = false;
 }
 
-- (void)showAlert{
+- (void)showAlert {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Dash" message:@"Are you in the USA?" preferredStyle:UIAlertControllerStyleAlert];
     
@@ -153,7 +144,9 @@
         // Call the method to find the address
         [self getAddressFromLocation:location completionHandler:^(NSMutableDictionary *d) {
             
-            [hud hideAnimated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
             
             NSLog(@"address informations : %@", d);
             NSLog(@"ZIP code : %@", [d valueForKey:@"ZIP"]);
@@ -165,13 +158,13 @@
             NSLog(@"Error : %@", error);
         }];
     }
-    else{
+    else {
         [[WOCLocationManager sharedInstance] startLocationService];
     }
 }
 
-- (void)getAddressFromLocation:(CLLocation *)location completionHandler:(void (^)(NSMutableDictionary *placemark))completionHandler failureHandler:(void (^)(NSError *error))failureHandler
-{
+- (void)getAddressFromLocation:(CLLocation *)location completionHandler:(void (^)(NSMutableDictionary *placemark))completionHandler failureHandler:(void (^)(NSError *error))failureHandler {
+    
     NSMutableDictionary *d = [NSMutableDictionary new];
     CLGeocoder *geocoder = [CLGeocoder new];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -203,8 +196,7 @@
         [self findZipCode];
         [self.btnLocation setUserInteractionEnabled:NO];
     }
-    else
-    {
+    else {
         // Enable Location services
         [[WOCLocationManager sharedInstance] startLocationService];
         [self.btnLocation setUserInteractionEnabled:NO];

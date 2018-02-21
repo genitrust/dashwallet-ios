@@ -16,6 +16,7 @@
 #import "BRAppDelegate.h"
 #import "WOCAlertController.h"
 #import "WOCLocationManager.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyingInstructionsViewController () <UITextViewDelegate>
 
@@ -389,6 +390,8 @@
 
 - (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSDictionary *params ;
@@ -417,6 +420,10 @@
     
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
         
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        
         if (error == nil) {
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
@@ -442,7 +449,13 @@
 
 - (void)getHold {
     
+    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
+        
+        /*dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });*/
         
         if (error == nil) {
             
@@ -473,11 +486,19 @@
 
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count{
     
+    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
+        
+        /*
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        */
         
         if (error == nil) {
             
@@ -497,6 +518,8 @@
 
 - (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId{
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params =
     @{
       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
@@ -505,6 +528,10 @@
       };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
         
         if (error == nil) {
             
@@ -518,7 +545,7 @@
                 }
             }
         }
-        else{
+        else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
@@ -526,11 +553,17 @@
 
 - (void)confirmDeposit {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     if (self.orderId != nil)
     {
         [[APIManager sharedInstance] confirmDeposit:self.orderId response:^(id responseDict, NSError *error) {
             
             if (error == nil) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [hud hideAnimated:YES];
+                });
                 
                 [self stopTimer];
                 
@@ -543,7 +576,7 @@
                     [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
                 });
             }
-            else{
+            else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil)
                     {
@@ -568,16 +601,22 @@
 
 - (void)cancelOrder {
     
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     if (self.orderId != nil)
     {
         [[APIManager sharedInstance] cancelOrder:self.orderId response:^(id responseDict, NSError *error) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
             
             if (error == nil) {
                 
                 [self stopTimer];
                 [self pushToHome];
             }
-            else{
+            else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil)
                     {
@@ -602,14 +641,19 @@
 
 - (void)signOut:(NSString*)phone
 {
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
         
-        if (error == nil)
-        {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        
+        if (error == nil) {
             [self stopTimer];
             [self cancelOrder];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
@@ -618,8 +662,7 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
             //[self pushToStep1];
         }
-        else
-        {
+        else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
@@ -641,7 +684,7 @@
             }];
         }
     }
-    else{
+    else {
         
         // Your location from latitude and longitude
         NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];

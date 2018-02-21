@@ -238,7 +238,9 @@
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
         
-        [hud hideAnimated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+             [hud hideAnimated:YES];
+        });
         
         if (error == nil) {
             

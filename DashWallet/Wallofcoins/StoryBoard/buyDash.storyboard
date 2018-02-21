@@ -1888,6 +1888,95 @@ Help is also available on the website.</string>
             </objects>
             <point key="canvasLocation" x="1220.8" y="3791.6041979010497"/>
         </scene>
+        <!--Hold Issue View Controller-->
+        <scene sceneID="qWK-PH-c69">
+            <objects>
+                <viewController storyboardIdentifier="WOCHoldIssueViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lly-KY-UDc" customClass="WOCHoldIssueViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8Rx-Um-0yj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-JA-96o" userLabel="topView">
+                                <rect key="frame" x="0.0" y="20" width="414" height="70"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab-bar-dash" translatesAutoresizingMaskIntoConstraints="NO" id="u1z-XF-i5O">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.08235294118" green="0.28235294119999998" blue="0.67450980390000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="u1z-XF-i5O" firstAttribute="leading" secondItem="eI0-JA-96o" secondAttribute="leading" id="9gN-KY-byf"/>
+                                    <constraint firstAttribute="bottom" secondItem="u1z-XF-i5O" secondAttribute="bottom" id="9pe-ws-Xwf"/>
+                                    <constraint firstAttribute="height" constant="70" id="LCG-5I-AhI"/>
+                                    <constraint firstItem="u1z-XF-i5O" firstAttribute="top" secondItem="eI0-JA-96o" secondAttribute="top" id="Rg0-Tt-unm"/>
+                                    <constraint firstAttribute="trailing" secondItem="u1z-XF-i5O" secondAttribute="trailing" id="au9-lb-a5W"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r5d-5y-pZ0" userLabel="bottomView">
+                                <rect key="frame" x="0.0" y="20" width="414" height="665"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VWj-AD-Ygo" userLabel="buDashView">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
+                                        <subviews>
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkb-ze-Xhk">
+                                                <rect key="frame" x="22" y="63" width="370" height="80.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <string key="text">You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nal-nr-xnY">
+                                                <rect key="frame" x="12" y="15" width="390" height="39"/>
+                                                <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                                <state key="normal" title="SIGN IN"/>
+                                                <connections>
+                                                    <action selector="signInBtnClicked:" destination="lly-KY-UDc" eventType="touchUpInside" id="M7T-2b-Fhd"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="nal-nr-xnY" firstAttribute="height" secondItem="VWj-AD-Ygo" secondAttribute="height" multiplier="38/146" id="EHs-Bc-cS7"/>
+                                            <constraint firstItem="gkb-ze-Xhk" firstAttribute="width" secondItem="VWj-AD-Ygo" secondAttribute="width" multiplier="370/414" id="KlT-Ll-66o"/>
+                                            <constraint firstItem="nal-nr-xnY" firstAttribute="top" secondItem="VWj-AD-Ygo" secondAttribute="top" constant="15" id="OTM-eD-znF"/>
+                                            <constraint firstItem="gkb-ze-Xhk" firstAttribute="centerX" secondItem="VWj-AD-Ygo" secondAttribute="centerX" id="ZkQ-TZ-s8Y"/>
+                                            <constraint firstAttribute="height" constant="150" id="dYL-Li-lqe"/>
+                                            <constraint firstItem="gkb-ze-Xhk" firstAttribute="height" secondItem="VWj-AD-Ygo" secondAttribute="height" multiplier="80/150" id="nYF-0y-uOg"/>
+                                            <constraint firstItem="nal-nr-xnY" firstAttribute="leading" secondItem="VWj-AD-Ygo" secondAttribute="leading" constant="12" id="uzh-3l-IyN"/>
+                                            <constraint firstItem="gkb-ze-Xhk" firstAttribute="top" secondItem="nal-nr-xnY" secondAttribute="bottom" constant="9" id="xqh-vE-Jmh"/>
+                                            <constraint firstAttribute="trailing" secondItem="nal-nr-xnY" secondAttribute="trailing" constant="12" id="y4R-WL-vwE"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="VWj-AD-Ygo" firstAttribute="height" secondItem="r5d-5y-pZ0" secondAttribute="height" multiplier="146/646" id="DKd-Rx-los"/>
+                                    <constraint firstItem="VWj-AD-Ygo" firstAttribute="top" secondItem="r5d-5y-pZ0" secondAttribute="top" id="FJ8-DQ-0Ei"/>
+                                    <constraint firstItem="VWj-AD-Ygo" firstAttribute="leading" secondItem="r5d-5y-pZ0" secondAttribute="leading" id="VJ1-J8-gV6"/>
+                                    <constraint firstAttribute="trailing" secondItem="VWj-AD-Ygo" secondAttribute="trailing" id="xq3-HW-Kr4"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="r5d-5y-pZ0" firstAttribute="top" secondItem="zdq-Ng-9qH" secondAttribute="top" id="4aQ-AG-jmn"/>
+                            <constraint firstItem="eI0-JA-96o" firstAttribute="top" secondItem="8Rx-Um-0yj" secondAttribute="top" constant="20" id="Eiu-u3-y6O"/>
+                            <constraint firstItem="eI0-JA-96o" firstAttribute="leading" secondItem="zdq-Ng-9qH" secondAttribute="leading" id="J2p-fg-NKu"/>
+                            <constraint firstItem="r5d-5y-pZ0" firstAttribute="leading" secondItem="zdq-Ng-9qH" secondAttribute="leading" id="Wbu-bA-Pah"/>
+                            <constraint firstItem="r5d-5y-pZ0" firstAttribute="trailing" secondItem="zdq-Ng-9qH" secondAttribute="trailing" id="e1W-pO-Ixs"/>
+                            <constraint firstItem="zdq-Ng-9qH" firstAttribute="trailing" secondItem="eI0-JA-96o" secondAttribute="trailing" id="nYh-sz-HRu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zdq-Ng-9qH"/>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <size key="freeformSize" width="414" height="736"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D2v-Vq-oxe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-859" y="4560"/>
+        </scene>
         <!--Buy Dash Step3 View Controller-->
         <scene sceneID="I0d-1F-cmn">
             <objects>

@@ -34,3 +34,10 @@
 -(void)getHold:(void (^)(id responseDict, NSError *error))completionBlock;
 
 @end
+/*
+ Status Code :
+ 201 returned when the hold is created
+ 400 returned when one of the parameters are missing! for example, if you're creating a new device... you need "phone", "deviceName", and "deviceCode".
+ 403 returned when a X-Coins-Api-Token is required or the phone number supplied needs password
+ 404 returned when the offer no-longer is available (either the time expired or the ad will now be negative.)
+ */

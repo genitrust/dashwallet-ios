@@ -17,6 +17,7 @@
 #import "WOCConstants.h"
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
+#import "WOCHoldIssueViewController.h"
 
 @interface WOCBuyDashStep7ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -125,7 +126,7 @@
             
             if (availableAuthSource.count > 0) {
                 
-                if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]){
+                if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]) {
                     
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCPasswordViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCPasswordViewController"];
@@ -133,7 +134,7 @@
                     myViewController.modalTransitionStyle = UIModalPresentationOverCurrentContext;
                     [self.navigationController presentViewController:myViewController animated:YES completion:nil];
                 }
-                else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]){
+                else if([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]) {
                     
                     //[self login:phoneNo];
                     [self createHoldAfterAuthorize:phoneNo];
@@ -150,8 +151,8 @@
                 [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                //[self createHold:phoneNo];
-                [self createHoldAfterAuthorize:phoneNo];
+                [self createHold:phoneNo];
+                
                 /*NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
                  
                  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -162,7 +163,8 @@
                  myViewController.emailId = self.emailId;
                  [self.navigationController pushViewController:myViewController animated:YES];*/
             }
-            else{
+            else {
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil)
                     {
@@ -232,8 +234,8 @@
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [self createHold:phoneNo];
-            
+            //[self createHold:phoneNo];
+            [self createHoldAfterAuthorize:phoneNo];
             /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
              WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
              myViewController.phoneNo = phoneNo;
@@ -298,14 +300,62 @@
             self.purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
             self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
             
-            [self deleteHold:self.holdId count:1];
-            [self registerDevice:phoneNo];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
+            myViewController.phoneNo = phoneNo;
+            myViewController.offerId = self.offerId;
+            myViewController.purchaseCode = self.purchaseCode;
+            myViewController.deviceCode = deviceCode;
+            myViewController.emailId = self.emailId;
+            myViewController.holdId = self.holdId;
+            [self.navigationController pushViewController:myViewController animated:YES];
+            
+//            [self deleteHold:self.holdId count:0];
+//            [self registerDevice:phoneNo];
+            
+        }
+        else if (error.code == 403 || error.code == 400) {
+            
+            [self resolveActiveHoldIssue];
+        }
+    }];
+}
+
+-(void)resolveActiveHoldIssue
+{
+    if (!self.isActiveHoldChecked)
+    {
+        NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        
+        if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
+        {
+            /*you receive Status 403 from POST /api/v1/holds/
+            IF YOU HAVE a token or the deviceId/deviceCode, login with that device -- you will use the token to get a list of holds so that you can cancel the holds. IF THERE ARE NO HOLDS, then you will bring the user to the Buy Summary, where they will see their latest WD orders.
+             */
+            [self getHold];
         }
         else
         {
-            [self getHold];
+            /*
+             IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE DASH WITH CASH" button), and when they press that button, you will bring them to this website link:
+             https://wallofcoins.com/signin/1-2397776832/
+             https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
+             */
+            
+            NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            WOCHoldIssueViewController *aViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCHoldIssueViewController"];
+            aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
+            [self.navigationController pushViewController:aViewController animated:YES];
         }
-    }];
+    }
+}
+
+-(void)resolvePandingOrderIssue {
+    
+    [self getOrders];
+    
 }
 
 - (void)getHold {
@@ -332,9 +382,13 @@
                     [self deleteHold:holdId count:count];
                 }
             }
-        }
-        else{
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            else {
+                
+                [self resolvePandingOrderIssue];
+            }
+            
+        } else {
+             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -523,11 +577,10 @@
             myViewController.holdId = self.holdId;
             [self.navigationController pushViewController:myViewController animated:YES];
         }
-        else
-        {
-            //[self getOrders];
+        else if (error.code == 403 || error.code == 400) {
             
-            [self getHold];
+            [self resolveActiveHoldIssue];
+            
         }
     }];
 }
@@ -572,7 +625,7 @@
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else if (wdArray.count > 0){
+                else if (wdArray.count > 0) {
                     
                     for (int i = 0; i < wdArray.count; i++) {
                         
@@ -590,7 +643,8 @@
                     myViewController.isFromSend = YES;
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else{
+                else {
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -626,8 +680,14 @@
     else if ([txtPhone length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter phone number." viewController:self.navigationController.visibleViewController];
     }
-    else{
+    else if ([txtPhone length] == 10)
+    {
+        self.isActiveHoldChecked = FALSE;
         [self checkPhone:txtPhone code:self.countryCode];
+    }
+    else
+    {
+        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter valid phone number." viewController:self.navigationController.visibleViewController];
     }
 }
 
