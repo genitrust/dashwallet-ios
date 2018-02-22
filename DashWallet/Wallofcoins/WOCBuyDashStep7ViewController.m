@@ -32,6 +32,7 @@
 @implementation WOCBuyDashStep7ViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     self.title = @"Buy Dash With Cash";
@@ -48,16 +49,12 @@
     [self loadJSON];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
+- (void)viewWillAppear:(BOOL)animated {
+   
+    [super viewWillAppear:animated];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)setShadow:(UIView *)view{
+- (void)setShadow:(UIView *)view {
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
@@ -66,7 +63,7 @@
     view.layer.masksToBounds = false;
 }
 
-- (void)loadJSON{
+- (void)loadJSON {
     
     // Retrieve local JSON file called example.json
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"countries" ofType:@"json"];
@@ -108,7 +105,7 @@
 
 // MARK: - API
 
-- (void)checkPhone:(NSString*)phone code:(NSString*)countryCode{
+- (void)checkPhone:(NSString*)phone code:(NSString*)countryCode {
     
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
@@ -141,8 +138,8 @@
                 }
             }
         }
-        else
-        {
+        else {
+            
             if ([error code] == 404) {
                 
                 //new number
@@ -166,19 +163,18 @@
             else {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error.userInfo != nil)
-                    {
-                        if (error.userInfo[@"detail"] != nil)
-                        {
+                    if (error.userInfo != nil) {
+                        if (error.userInfo[@"detail"] != nil) {
+                            
                             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
                         }
-                        else
-                        {
+                        else {
+                            
                             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
                         }
                     }
-                    else
-                    {
+                    else {
+                        
                         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
                     }
                 });
@@ -187,7 +183,7 @@
     }];
 }
 
-- (void)login:(NSString*)phoneNo{
+- (void)login:(NSString*)phoneNo {
     
     NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
@@ -199,6 +195,7 @@
                              };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+        
         if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
             
             params = @{
@@ -226,8 +223,8 @@
             myViewController.emailId = self.emailId;
             [self.navigationController pushViewController:myViewController animated:YES];
         }
-        else
-        {
+        else {
+            
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
@@ -257,8 +254,8 @@
     
     NSDictionary *params;
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
-    {
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+       
         params =  @{
                     //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
@@ -267,8 +264,8 @@
                     API_BODY_JSON_PARAMETER:@"YES"
                     };
     }
-    else
-    {
+    else {
+        
         params =  @{
                     //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
@@ -282,7 +279,7 @@
     
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
         
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
             [hud hideAnimated:TRUE];
         });
         
@@ -310,13 +307,16 @@
             myViewController.holdId = self.holdId;
             [self.navigationController pushViewController:myViewController animated:YES];
             
-//            [self deleteHold:self.holdId count:0];
-//            [self registerDevice:phoneNo];
+            //[self deleteHold:self.holdId count:0];
             
         }
-        else if (error.code == 403 || error.code == 400) {
+        else if (error.code == 403 ) {
             
             [self resolveActiveHoldIssue];
+        }
+        else if (error.code == 401 ) {
+            
+            [self registerDevice:phoneNo];
         }
     }];
 }
@@ -334,8 +334,7 @@
              */
             [self getHold];
         }
-        else
-        {
+        else {
             /*
              IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE DASH WITH CASH" button), and when they press that button, you will bring them to this website link:
              https://wallofcoins.com/signin/1-2397776832/
@@ -355,7 +354,6 @@
 -(void)resolvePandingOrderIssue {
     
     [self getOrders];
-    
 }
 
 - (void)getHold {
@@ -371,6 +369,7 @@
             if (holdArray.count > 0) {
                 
                 NSUInteger count = holdArray.count;
+                NSUInteger activeHodCount = 0;
                 
                 for (int i = 0; i < holdArray.count; i++) {
                     
@@ -379,21 +378,64 @@
                     NSDictionary *holdDict = [holdArray objectAtIndex:i];
                     
                     NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                    [self deleteHold:holdId count:count];
+                    NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                   
+                    if (holdStatus != nil) {
+                        
+                        if ([holdStatus isEqualToString:@"AC"]) {
+                            
+                            if (holdId) {
+                                
+                                activeHodCount = activeHodCount + 1;
+                                [self deleteHold:holdId count:count];
+                            }
+                        }
+                    }// Handle as per Old Response
+//                    else if ([holdDict valueForKey:API_RESPONSE_Holds] != nil) {
+//
+//                        if ([[holdDict valueForKey:API_RESPONSE_Holds] isKindOfClass:[NSArray class]]) {
+//                            NSArray *holdDetailArray = (NSArray *) [holdDict valueForKey:API_RESPONSE_Holds];
+//
+//                            if (holdDetailArray.count > 0) {
+//                                NSDictionary *holdSubDict = [holdDetailArray objectAtIndex:0];
+//                                NSString *holdStatus = [holdSubDict valueForKey:API_RESPONSE_Holds_Status];
+//
+//                                if ([holdStatus isEqualToString:@"AC"])  {
+//
+//                                    if (holdId) {
+//                                        [self deleteHold:holdId count:count];
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+                    else {
+                        
+                        if (holdId) {
+                            activeHodCount = activeHodCount + 1;
+                            [self deleteHold:holdId count:count];
+                        }
+                    }
+                }
+                
+                if (activeHodCount == 0 ) {
+                    
+                     [self resolvePandingOrderIssue];
                 }
             }
             else {
                 
                 [self resolvePandingOrderIssue];
             }
+        }
+        else {
             
-        } else {
-             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
 
-- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count{
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count {
     
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
@@ -407,12 +449,11 @@
             
             NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             
-            if (count == 0) {
-                [self createHoldAfterAuthorize:phoneNo];
-            }
+             [self createHoldAfterAuthorize:phoneNo];
         }
-        else{
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        else {
+            
+           //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -432,7 +473,7 @@
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
         
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
             [hud hideAnimated:TRUE];
         });
         
@@ -516,73 +557,7 @@
 
 - (void)createHoldAfterAuthorize:(NSString*)phoneNo {
     
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    NSDictionary *params;
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
-    {
-        params =  @{
-                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_JSON_PARAMETER:@"YES"
-                    };
-    }
-    else
-    {
-        params =  @{
-                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    API_BODY_PHONE_NUMBER: phoneNo,
-                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_EMAIL: self.emailId,
-                    API_BODY_JSON_PARAMETER:@"YES"
-                    };
-    }
-    
-    [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            [hud hideAnimated:TRUE];
-        });
-        
-        if (error == nil) {
-            
-            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            
-            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:API_RESPONSE_TOKEN] == FALSE)
-            {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            
-            self.purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
-            self.holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
-            
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-            WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-            myViewController.phoneNo = phoneNo;
-            myViewController.offerId = self.offerId;
-            myViewController.purchaseCode = self.purchaseCode;
-            myViewController.deviceCode = deviceCode;
-            myViewController.emailId = self.emailId;
-            myViewController.holdId = self.holdId;
-            [self.navigationController pushViewController:myViewController animated:YES];
-        }
-        else if (error.code == 403 || error.code == 400) {
-            
-            [self resolveActiveHoldIssue];
-            
-        }
-    }];
+    [self createHold:phoneNo];
 }
 
 - (void)getOrders {
@@ -595,7 +570,7 @@
     
     [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
         
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
             [hud hideAnimated:TRUE];
         });
         
@@ -603,7 +578,7 @@
             
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
-            if (orders.count > 0){
+            if (orders.count > 0) {
                 
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
@@ -634,7 +609,7 @@
                         [self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]] count:1];
                     }
                 }
-                else if (orders.count > 0){
+                else if (orders.count > 0) {
                     
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
@@ -709,6 +684,11 @@
     
     self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
     self.countryCode = [NSString stringWithFormat:@"%@",self.countries[row][@"code"]];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

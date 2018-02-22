@@ -96,7 +96,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setShadow:(UIView *)view{
+- (void)setShadow:(UIView *)view {
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
@@ -224,7 +224,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)updateData:(NSDictionary*)dictionary{
+- (void)updateData:(NSDictionary*)dictionary {
     
     NSString *bankLogo = [dictionary valueForKey:@"bankLogo"];
     NSString *bankName = [dictionary valueForKey:@"bankName"];
@@ -314,7 +314,7 @@
     }
 }
 
--(void)checkTime{
+-(void)checkTime {
     
     if (self.minutes > 0) {
         
@@ -327,7 +327,7 @@
         [dueString appendAttributedString:timeString];
         self.lblDepositDue.attributedText = dueString;
     }
-    else{
+    else {
         self.lblDepositDue.text = @"Deposit Due: time expired";
         [self stopTimer];
     }
@@ -440,7 +440,8 @@
             
             [self captureHold:purchaseCode holdId:holdId];
         }
-        else{
+        else if (error.code == 403 ) {
+       
             //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
             [self getHold];
         }
@@ -449,13 +450,7 @@
 
 - (void)getHold {
     
-    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
-        
-        /*dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-        });*/
         
         if (error == nil) {
             
@@ -466,6 +461,7 @@
             if (holdArray.count > 0) {
                 
                 NSUInteger count = holdArray.count;
+                NSUInteger activeHodCount = 0;
                 
                 for (int i = 0; i < holdArray.count; i++) {
                     
@@ -474,17 +470,47 @@
                     NSDictionary *holdDict = [holdArray objectAtIndex:i];
                     
                     NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                    [self deleteHold:holdId count:count];
+                    NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                    
+                    if (holdStatus != nil) {
+                        
+                        if ([holdStatus isEqualToString:@"AC"]) {
+                            
+                            if (holdId) {
+                                
+                                activeHodCount = activeHodCount + 1;
+                                [self deleteHold:holdId count:count];
+                            }
+                        }
+                    }
+                    else {
+                        
+                        if (holdId) {
+                            activeHodCount = activeHodCount + 1;
+                            [self deleteHold:holdId count:count];
+                        }
+                    }
+                }
+                
+                if (activeHodCount == 0 ) {
+                    
+                    //[self resolvePandingOrderIssue];
                 }
             }
+            else {
+                
+               // [self resolvePandingOrderIssue];
+            }
         }
-        else{
+        else {
+            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
+    
 }
 
-- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count{
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count {
     
     //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
@@ -506,17 +532,16 @@
             
             NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             
-            if (count == 0) {
-                [self createHold:self.offerId phoneNo:phoneNo];
-            }
+             [self createHold:self.offerId phoneNo:phoneNo];
         }
-        else{
+        else {
+            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
 
-- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId{
+- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId {
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
@@ -577,6 +602,7 @@
                 });
             }
             else {
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil)
                     {
@@ -670,15 +696,17 @@
 
 // MARK: - IBAction
 
-- (IBAction)showMapClicked:(id)sender
-{
+- (IBAction)showMapClicked:(id)sender {
+    
     if (self.locationUrl != nil) {
         
         if (![self.locationUrl hasPrefix:@"http"]) {
+            
             self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
         }
         
         if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
+            
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
                 NSLog(@"URL opened.");
             }];
@@ -702,8 +730,7 @@
     [self showDepositAlert];
 }
 
-- (IBAction)cancelOrderClicked:(id)sender
-{
+- (IBAction)cancelOrderClicked:(id)sender {
     [self showCancelOrderAlert];
 }
 
@@ -732,4 +759,3 @@
     return YES;
 }
 @end
-

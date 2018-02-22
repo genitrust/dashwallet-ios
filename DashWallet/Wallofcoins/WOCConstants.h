@@ -73,5 +73,7 @@
 #define API_RESPONSE_ID @"id"
 #define API_RESPONSE_DEVICE_ID @"deviceId"
 #define API_RESPONSE_PURCHASE_CODE @"__PURCHASE_CODE"
+#define API_RESPONSE_Holds @"holds"
+#define API_RESPONSE_Holds_Status @"status"
 
 #endif /* WOCUserDefaultsConstants_h */

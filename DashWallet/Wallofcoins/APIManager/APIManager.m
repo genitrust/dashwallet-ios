@@ -575,15 +575,16 @@
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable connectionError) {
         
         NSError *error = nil;
-        
+        APILog(@"==>API Response statusCode [%ld]",((NSHTTPURLResponse*)response).statusCode);
+
         if (data != nil) {
             
             id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-            
+             APILog(@"==>API RESPONSE : \n%@",dictionary);
+
             if (connectionError != nil)
             {
                 APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
-                APILog(@"==>API Error RESPONSE : \n%@",dictionary);
             }
             
             if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError)
@@ -623,7 +624,7 @@
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (dictionary != nil) {
-                    APILog(@"==>API RESPONSE : \n%@",dictionary);
+                   
                     completionBlock(dictionary,nil);
                 }
                 else{
@@ -660,3 +661,13 @@
 
 @end
 
+/*
+ Hold Status
+ STATUSES = (
+         ('PE', __('Pending')),
+         ('AC', __('Active, waiting for Order')),
+         ('CAP', __('Captured')),
+         ('EX', __('Expired')),
+         ('CAN', __('Canceled'))
+     )
+ */

@@ -71,10 +71,17 @@
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
             
             //[self getDeviceId:phoneNo];
-            
+           /*
+           // Old Flow
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 [self dismissViewControllerAnimated:YES completion:nil];
+                //move to step 8
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+            });
+            */
+            // New Flow
             [self registerDevice:phoneNo password:password];
         }
         else
@@ -115,7 +122,7 @@
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
         
-        dispatch_async(dispatch_get_main_queue(), ^(void){
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
             [hud hideAnimated:TRUE];
         });
         
@@ -137,7 +144,7 @@
     }];
 }
 
-- (void)getDeviceId:(NSString*)phoneNo{
+- (void)getDeviceId:(NSString*)phoneNo {
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -162,7 +169,8 @@
                 //[self authorize:phoneNo deviceId:deviceId];
             }
         }
-        else{
+        else {
+            
             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
         }
     }];
@@ -189,8 +197,6 @@
         
         if (error == nil) {
             
-            [self dismissViewControllerAnimated:YES completion:nil];
-            
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
@@ -198,24 +204,29 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             //move to step 8
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self dismissViewControllerAnimated:YES completion:nil];
+                //move to step 8
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+            });
         }
         else
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (error.userInfo != nil)
-                {
-                    if (error.userInfo[@"detail"] != nil)
-                    {
+                
+                if (error.userInfo != nil) {
+                    
+                    if (error.userInfo[@"detail"] != nil) {
+                        
                         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self];
                     }
-                    else
-                    {
+                    else {
+                        
                         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
                     }
                 }
-                else
-                {
+                else {
+                    
                     [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
                 }
             });
@@ -242,7 +253,8 @@
         
         [self login:self.phoneNo password:password];
     }
-    else{
+    else {
+        
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter password." viewController:self.navigationController.visibleViewController];
     }
 }
@@ -258,6 +270,7 @@
 }
 
 - (IBAction)closeClicked:(id)sender {
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

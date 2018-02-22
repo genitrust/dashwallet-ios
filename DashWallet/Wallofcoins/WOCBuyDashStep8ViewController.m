@@ -40,7 +40,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setShadow:(UIView *)view{
+- (void)setShadow:(UIView *)view {
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
@@ -64,10 +64,10 @@
         myViewController.phoneNo = self.phoneNo;
         [self.navigationController pushViewController:myViewController animated:YES];
     }
-    else{
+    else {
+        
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Purchase Code" viewController:self.navigationController.visibleViewController];
     }
 }
-
 @end
 

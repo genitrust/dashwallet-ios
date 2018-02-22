@@ -1919,7 +1919,7 @@ Help is also available on the website.</string>
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
                                         <subviews>
                                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkb-ze-Xhk">
-                                                <rect key="frame" x="22" y="63" width="370" height="80.5"/>
+                                                <rect key="frame" x="22" y="15" width="370" height="80.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <string key="text">You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -1927,7 +1927,7 @@ Help is also available on the website.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nal-nr-xnY">
-                                                <rect key="frame" x="12" y="15" width="390" height="39"/>
+                                                <rect key="frame" x="12" y="104.5" width="390" height="39"/>
                                                 <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                 <state key="normal" title="SIGN IN"/>
@@ -1938,14 +1938,14 @@ Help is also available on the website.</string>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="gkb-ze-Xhk" firstAttribute="top" secondItem="VWj-AD-Ygo" secondAttribute="top" constant="15" id="C0H-h0-4GF"/>
                                             <constraint firstItem="nal-nr-xnY" firstAttribute="height" secondItem="VWj-AD-Ygo" secondAttribute="height" multiplier="38/146" id="EHs-Bc-cS7"/>
                                             <constraint firstItem="gkb-ze-Xhk" firstAttribute="width" secondItem="VWj-AD-Ygo" secondAttribute="width" multiplier="370/414" id="KlT-Ll-66o"/>
-                                            <constraint firstItem="nal-nr-xnY" firstAttribute="top" secondItem="VWj-AD-Ygo" secondAttribute="top" constant="15" id="OTM-eD-znF"/>
                                             <constraint firstItem="gkb-ze-Xhk" firstAttribute="centerX" secondItem="VWj-AD-Ygo" secondAttribute="centerX" id="ZkQ-TZ-s8Y"/>
                                             <constraint firstAttribute="height" constant="150" id="dYL-Li-lqe"/>
+                                            <constraint firstItem="nal-nr-xnY" firstAttribute="top" secondItem="gkb-ze-Xhk" secondAttribute="bottom" constant="9" id="eIW-3C-39A"/>
                                             <constraint firstItem="gkb-ze-Xhk" firstAttribute="height" secondItem="VWj-AD-Ygo" secondAttribute="height" multiplier="80/150" id="nYF-0y-uOg"/>
                                             <constraint firstItem="nal-nr-xnY" firstAttribute="leading" secondItem="VWj-AD-Ygo" secondAttribute="leading" constant="12" id="uzh-3l-IyN"/>
-                                            <constraint firstItem="gkb-ze-Xhk" firstAttribute="top" secondItem="nal-nr-xnY" secondAttribute="bottom" constant="9" id="xqh-vE-Jmh"/>
                                             <constraint firstAttribute="trailing" secondItem="nal-nr-xnY" secondAttribute="trailing" constant="12" id="y4R-WL-vwE"/>
                                         </constraints>
                                     </view>
