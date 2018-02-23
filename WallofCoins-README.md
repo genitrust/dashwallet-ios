@@ -399,6 +399,7 @@ It need X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
 * 403 will have details: "Not permitted to create a hold while an open hold or order with status WD is current."
 * 404 returned when the offer no-longer is available (either the time expired or the ad will now be negative.)
 
+if you get status code 403, then you have to delete active hold first then need to create hold again. As you have **auth token** available, you need to call Get Hold API by passing **auth token** as **X-Coins-Api-Token** in header, which will return active hold in response. Get Hold API returns array of hold in response, then user need to delete active hold with status is equal to “AC” by calling Delete Hold API by passing **auth token** as **X-Coins-Api-Token** in header. Suppose user do not get any active holds then it means that there is some pending order. so you need to get all orders and find pending order with status = "WD" and give option to confirm deposite Or cancel Order functionality.
 ##### Hold Status :
 
 PE = Pending
@@ -688,3 +689,4 @@ GET https://woc.reference.genitrust.com/api/v1/devices/
 ]
 ```
 This method is use for get all devices for user
+
