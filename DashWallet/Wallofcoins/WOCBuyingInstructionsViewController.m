@@ -428,15 +428,20 @@
             
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             
-            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
-            self.holdId = holdId;
-            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
-            
-            if ([responseDictionary valueForKey:@"token"] != nil && [[responseDictionary valueForKey:@"token"] isEqualToString:@"(null)"] == FALSE)
+            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE)
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"token"]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
+            
+            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+            self.holdId = holdId;
+            
+            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+            self.purchaseCode = purchaseCode;
             
             [self captureHold:purchaseCode holdId:holdId];
         }
@@ -544,7 +549,7 @@
 - (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId {
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
+  
     NSDictionary *params =
     @{
       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
@@ -571,6 +576,7 @@
             }
         }
         else {
+            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];

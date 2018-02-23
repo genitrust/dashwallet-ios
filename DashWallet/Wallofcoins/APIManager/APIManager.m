@@ -241,7 +241,6 @@
     
     NSDictionary *header =
     @{
-      //@"X-Coins-Api-Token": @"",
       API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
       @"Content-Type":@"application/json"
       };
@@ -253,7 +252,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token,
+          API_HEADER_TOKEN: token,
           @"Content-Type":@"application/json"
           };
     }
@@ -277,7 +276,6 @@
  
  ```
  {
- "publisherId": "",
  "verificationCode": "CK99K"
  }
  ```*/
@@ -299,7 +297,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token,
+          API_HEADER_TOKEN: token,
           @"Content-Type":@"application/json"
           };
     }
@@ -332,7 +330,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token
+          API_HEADER_TOKEN: token
           };
     }
     
@@ -356,7 +354,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token
+          API_HEADER_TOKEN: token
           };
     }
     
@@ -379,7 +377,7 @@
     {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                   @"X-Coins-Api-Token": token
+                   API_HEADER_TOKEN: token
                    };
     }
     
@@ -444,7 +442,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token
+          API_HEADER_TOKEN: token
           };
     }
     
@@ -469,7 +467,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token,
+          API_HEADER_TOKEN: token,
           @"Content-Type":@"application/json"
           };
     }
@@ -494,7 +492,7 @@
         header =
         @{
           API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          @"X-Coins-Api-Token": token
+          API_HEADER_TOKEN: token
           };
     }
     
@@ -518,7 +516,7 @@
         header =
         @{
             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-            @"X-Coins-Api-Token": token
+            API_HEADER_TOKEN: token
           };
         
         [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
