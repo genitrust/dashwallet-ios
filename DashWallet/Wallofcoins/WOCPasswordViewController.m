@@ -72,7 +72,7 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             
-            //[self getDeviceId:phoneNo];
+            [self getDeviceId:phoneNo];
            /*
            // Old Flow
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -82,7 +82,7 @@
             });
             */
             // New Flow
-            [self registerDevice:phoneNo password:password];
+            //[self registerDevice:phoneNo password:password];
         }
         else
         {
@@ -107,7 +107,7 @@
     }];
 }
 
-- (void)registerDevice:(NSString*)phoneNo password:(NSString*)password {
+- (void)registerDevice:(NSString*)phoneNo {
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -133,8 +133,7 @@
             if (response.count > 0) {
                 
                 NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:API_RESPONSE_ID]];
-                
-                [self authorize:phoneNo password:password deviceId:deviceId];
+                [self authorize:phoneNo deviceId:deviceId];
             }
         }
         else
@@ -166,17 +165,21 @@
                 [[NSUserDefaults standardUserDefaults] setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                //[self authorize:phoneNo deviceId:deviceId];
+                [self authorize:phoneNo deviceId:deviceId];
+            }
+            else {
+                [self registerDevice:phoneNo];
             }
         }
         else {
             
-            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+            [self registerDevice:phoneNo];
+           // [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
         }
     }];
 }
 
-- (void)authorize:(NSString*)phoneNo password:(NSString*)password deviceId:(NSString*)deviceId{
+- (void)authorize:(NSString*)phoneNo deviceId:(NSString*)deviceId{
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -184,7 +187,7 @@
     
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                             API_BODY_PASSWORD: password,
+                             API_BODY_DEVICE_CODE: deviceCode,
                              API_BODY_DEVICE_ID: deviceId,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
@@ -210,8 +213,8 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
             });
         }
-        else
-        {
+        else {
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 if (error.userInfo != nil) {

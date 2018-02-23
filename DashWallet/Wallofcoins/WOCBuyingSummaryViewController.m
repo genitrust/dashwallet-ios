@@ -58,6 +58,7 @@
     
     if (self.orders.count == 0) {
         [self getOrders];
+        [self displayAlert];
     }
     else{
         NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
@@ -199,6 +200,11 @@
     }
     
     return string;
+}
+
+- (void)displayAlert{
+    
+    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
 }
 
 // MARK: - IBAction

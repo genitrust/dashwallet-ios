@@ -194,16 +194,14 @@
                              API_BODY_DEVICE_CODE: deviceCode
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
         
-        if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
-            
-            params = @{
-                       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                       API_BODY_DEVICE_CODE: deviceCode,
-                       API_BODY_DEVICE_ID: deviceId
-                       };
-        }
+        params = @{
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_BODY_DEVICE_CODE: deviceCode,
+                   API_BODY_DEVICE_ID: deviceId,
+                   API_BODY_JSON_PARAMETER: @"YES"
+                   };
     }
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
@@ -259,8 +257,8 @@
         params =  @{
                     //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                     API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    API_BODY_DEVICE_CODE: deviceCode,
+                    //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                    //API_BODY_DEVICE_CODE: deviceCode,
                     API_BODY_JSON_PARAMETER:@"YES"
                     };
     }
@@ -290,8 +288,7 @@
             if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE)
             {
                 [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
+                [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
@@ -330,6 +327,7 @@
 {
     if (!self.isActiveHoldChecked)
     {
+        self.isActiveHoldChecked = TRUE;
         NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
         
         if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
@@ -511,16 +509,14 @@
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
-        if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
-            
-            params = @{
-                       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                       API_BODY_DEVICE_CODE: deviceCode,
-                       API_BODY_DEVICE_ID: deviceId,
-                       API_BODY_JSON_PARAMETER: @"YES"
-                       };
-        }
+    if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
+        
+        params = @{
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_BODY_DEVICE_CODE: deviceCode,
+                   API_BODY_DEVICE_ID: deviceId,
+                   API_BODY_JSON_PARAMETER: @"YES"
+                   };
     }
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {

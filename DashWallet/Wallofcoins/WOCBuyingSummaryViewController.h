@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *btnBuyMoreDash;
 - (IBAction)buyMoreDashClicked:(id)sender;
+- (void)displayAlert;
 
 @end

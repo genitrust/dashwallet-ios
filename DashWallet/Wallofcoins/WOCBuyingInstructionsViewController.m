@@ -138,7 +138,6 @@
             [self.navigationController pushViewController:myViewController animated:YES];
         });
     }
-    
 }
 
 - (void)back:(id)sender{
@@ -401,8 +400,8 @@
         params = @{
                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                   API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                   API_BODY_DEVICE_CODE: deviceCode,
+                   //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                   //API_BODY_DEVICE_CODE: deviceCode,
                    API_BODY_JSON_PARAMETER:@"YES"
                    };
     }
@@ -431,8 +430,7 @@
             if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE)
             {
                 [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
+                [[NSUserDefaults standardUserDefaults] setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
@@ -590,21 +588,22 @@
     {
         [[APIManager sharedInstance] confirmDeposit:self.orderId response:^(id responseDict, NSError *error) {
             
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
+            
             if (error == nil) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hideAnimated:YES];
-                });
                 
                 [self stopTimer];
                 
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                myViewController.phoneNo = self.phoneNo;
-                [self.navigationController pushViewController:myViewController animated:YES];
-                
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = self.phoneNo;
+                    [self.navigationController pushViewController:myViewController animated:YES];
+                    
+                    
                 });
             }
             else {
@@ -687,12 +686,12 @@
         
         if (error == nil) {
             [self stopTimer];
-            [self cancelOrder];
+            //[self cancelOrder];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            //[self pushToStep1];
+            [self pushToStep1];
         }
         else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];

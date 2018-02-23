@@ -12,10 +12,14 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLocation;
 @property (weak, nonatomic) IBOutlet UIButton *btnNoThanks;
+@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
+@property (weak, nonatomic) IBOutlet UIButton *btnSignOut;
+@property (weak, nonatomic) IBOutlet UIView *signoutView;
 @property (assign) BOOL isFromSend;
 
 - (IBAction)backBtnClicked:(id)sender;
 - (IBAction)findLocationClicked:(id)sender;
 - (IBAction)noThanksClicked:(id)sender;
+- (IBAction)signOutClicked:(id)sender;
 
 @end

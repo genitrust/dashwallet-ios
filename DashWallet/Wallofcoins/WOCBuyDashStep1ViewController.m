@@ -15,6 +15,8 @@
 #import "BRAppDelegate.h"
 #import "BRRootViewController.h"
 #import "MBProgressHUD.h"
+#import "APIManager.h"
+#import "WOCAlertController.h"
 
 @interface WOCBuyDashStep1ViewController ()
 
@@ -51,6 +53,17 @@
         [[NSUserDefaults standardUserDefaults] setValue:uuid forKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
         [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:USER_DEFAULTS_LAUNCH_STATUS];
         [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+     
+        [self.signoutView setHidden:NO];
+        
+        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
+        self.lblDescription.text = loginPhone;
     }
 }
 
@@ -179,6 +192,39 @@
     }];
 }
 
+// MARK: - API
+
+- (void)signOut:(NSString*)phone
+{
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSDictionary *params = @{
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        
+        if (error == nil) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.signoutView setHidden:YES];
+            });
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        else {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+}
+
 // MARK: - IBAction
 
 - (IBAction)backBtnClicked:(id)sender {
@@ -206,6 +252,13 @@
 - (IBAction)noThanksClicked:(id)sender {
     
     [self showAlert];
+}
+
+- (IBAction)signOutClicked:(id)sender {
+    
+    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    
+    [self signOut:phoneNo];
 }
 
 @end

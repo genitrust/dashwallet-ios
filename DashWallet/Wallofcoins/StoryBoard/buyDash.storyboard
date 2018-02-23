@@ -87,19 +87,56 @@
                                             <action selector="noThanksClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="Ii7-V9-ukh"/>
                                         </connections>
                                     </button>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZF7-ZD-36h" userLabel="signoutView">
+                                        <rect key="frame" x="15" y="601" width="384" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number +12397777777" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imh-jL-JKc">
+                                                <rect key="frame" x="8" y="0.0" width="368" height="47.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-rz-NfQ">
+                                                <rect key="frame" x="10" y="54.5" width="364" height="36"/>
+                                                <color key="backgroundColor" red="0.83921568629999999" green="0.84313725490000002" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                <state key="normal" title="SIGN OUT">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="signOutClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="MKw-7w-xKW"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="ZqV-rz-NfQ" secondAttribute="bottom" constant="9" id="3Sf-z1-A1C"/>
+                                            <constraint firstItem="imh-jL-JKc" firstAttribute="top" secondItem="ZF7-ZD-36h" secondAttribute="top" id="53x-4C-IwF"/>
+                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="height" secondItem="ZF7-ZD-36h" secondAttribute="height" multiplier="38/105" id="EBb-jc-bUj"/>
+                                            <constraint firstItem="imh-jL-JKc" firstAttribute="leading" secondItem="ZF7-ZD-36h" secondAttribute="leading" constant="8" id="P2i-Tt-p4s"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZqV-rz-NfQ" secondAttribute="trailing" constant="10" id="Wa0-Sg-2rH"/>
+                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="top" secondItem="imh-jL-JKc" secondAttribute="bottom" constant="7" id="XUn-Cg-NFk"/>
+                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="leading" secondItem="ZF7-ZD-36h" secondAttribute="leading" constant="10" id="jTc-yc-8RW"/>
+                                            <constraint firstAttribute="trailing" secondItem="imh-jL-JKc" secondAttribute="trailing" constant="8" id="lBo-Ja-m49"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="JHo-YN-2Qe" firstAttribute="top" secondItem="dMX-Fv-pNB" secondAttribute="top" constant="8" id="4i3-66-yas"/>
                                     <constraint firstItem="d81-xa-fhq" firstAttribute="height" secondItem="JMG-98-Lub" secondAttribute="height" id="5HT-hs-Iie"/>
                                     <constraint firstItem="JMG-98-Lub" firstAttribute="top" secondItem="JHo-YN-2Qe" secondAttribute="bottom" constant="7" id="64j-J7-kAL"/>
+                                    <constraint firstItem="ZF7-ZD-36h" firstAttribute="height" secondItem="dMX-Fv-pNB" secondAttribute="height" multiplier="100/716" id="9gE-AX-iZ5"/>
                                     <constraint firstItem="JHo-YN-2Qe" firstAttribute="centerX" secondItem="dMX-Fv-pNB" secondAttribute="centerX" id="EPt-kz-450"/>
                                     <constraint firstItem="d81-xa-fhq" firstAttribute="centerX" secondItem="JMG-98-Lub" secondAttribute="centerX" id="Fdh-D8-oUX"/>
                                     <constraint firstItem="JMG-98-Lub" firstAttribute="height" secondItem="dMX-Fv-pNB" secondAttribute="height" multiplier="27/478" id="GVN-WJ-nv0"/>
                                     <constraint firstItem="d81-xa-fhq" firstAttribute="top" secondItem="JMG-98-Lub" secondAttribute="bottom" constant="10" id="Lnq-KH-Zwa"/>
                                     <constraint firstItem="JMG-98-Lub" firstAttribute="centerX" secondItem="dMX-Fv-pNB" secondAttribute="centerX" id="WP5-BR-emk"/>
                                     <constraint firstItem="JHo-YN-2Qe" firstAttribute="width" secondItem="dMX-Fv-pNB" secondAttribute="width" multiplier="250/320" id="Ygi-Bg-P24"/>
+                                    <constraint firstItem="ZF7-ZD-36h" firstAttribute="width" secondItem="dMX-Fv-pNB" secondAttribute="width" multiplier="384/414" id="dj7-IW-Whe"/>
                                     <constraint firstItem="JMG-98-Lub" firstAttribute="width" secondItem="dMX-Fv-pNB" secondAttribute="width" multiplier="304/320" id="eJS-rt-H7I"/>
+                                    <constraint firstItem="ZF7-ZD-36h" firstAttribute="centerX" secondItem="dMX-Fv-pNB" secondAttribute="centerX" id="fRX-KT-JSM"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZF7-ZD-36h" secondAttribute="bottom" constant="15" id="hrE-mc-Arx"/>
                                     <constraint firstItem="d81-xa-fhq" firstAttribute="width" secondItem="JMG-98-Lub" secondAttribute="width" id="iVe-MS-HP4"/>
                                     <constraint firstItem="JHo-YN-2Qe" firstAttribute="height" secondItem="dMX-Fv-pNB" secondAttribute="height" multiplier="43/478" id="o06-dl-bT3"/>
                                 </constraints>
@@ -122,6 +159,9 @@
                     <connections>
                         <outlet property="btnLocation" destination="JMG-98-Lub" id="gm4-bg-eam"/>
                         <outlet property="btnNoThanks" destination="d81-xa-fhq" id="OTc-kL-j0v"/>
+                        <outlet property="btnSignOut" destination="ZqV-rz-NfQ" id="7dO-Vg-HjV"/>
+                        <outlet property="lblDescription" destination="imh-jL-JKc" id="jls-kg-ZRa"/>
+                        <outlet property="signoutView" destination="ZF7-ZD-36h" id="jQz-NE-nNa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zQK-pb-jsq" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -47,6 +47,7 @@
 #pragma mark - API PARAMETERS KEYS
 
 #define API_HEADER_PUBLISHER_ID @"X-Coins-Publisher"
+#define API_HEADER_TOKEN @"X-Coins-Api-Token"
 #define API_BODY_PUBLISHER_ID @"publisherId"
 #define API_BODY_CRYPTO_AMOUNT @"cryptoAmount"
 #define API_BODY_USD_AMOUNT @"usdAmount"
