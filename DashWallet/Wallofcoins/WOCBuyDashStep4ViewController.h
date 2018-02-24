@@ -20,5 +20,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *line1Height;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *line2Height;
 @property (weak, nonatomic) IBOutlet UIButton *btnGetOffers;
+
 - (IBAction)getOffersClicked:(id)sender;
+
 @end

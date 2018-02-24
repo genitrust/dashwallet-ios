@@ -43,4 +43,5 @@
 - (IBAction)signOutClicked:(id)sender;
 - (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId ;
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count;
+
 @end

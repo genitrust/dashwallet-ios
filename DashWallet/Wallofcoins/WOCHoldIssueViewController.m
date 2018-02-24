@@ -14,21 +14,20 @@
 
 @implementation WOCHoldIssueViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
 
-- (IBAction)signInBtnClicked:(id)sender {
-    
-    if (self.phoneNo != nil)
-    {
-        [self openSite:[NSURL URLWithString:[NSString stringWithFormat:@"https://wallofcoins.com/signin/%@/",self.phoneNo]]];
-    }
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-- (void)openSite:(NSURL*)url{
-    
+- (void)openSite:(NSURL*)url
+{
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
             NSLog(@"URL opened...");
@@ -36,19 +35,13 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+// MARK: - IBAction
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)signInBtnClicked:(id)sender
+{
+    if (self.phoneNo != nil) {
+        [self openSite:[NSURL URLWithString:[NSString stringWithFormat:@"https://wallofcoins.com/signin/%@/",self.phoneNo]]];
+    }
 }
-*/
 
 @end

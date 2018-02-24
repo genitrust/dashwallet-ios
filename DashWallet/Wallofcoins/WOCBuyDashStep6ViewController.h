@@ -14,6 +14,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
+
 - (IBAction)doNotSendMeEmailClicked:(id)sender;
 - (IBAction)nextClicked:(id)sender;
+
 @end

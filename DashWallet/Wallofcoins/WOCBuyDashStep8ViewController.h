@@ -19,5 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPurchaseCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnPurchaseCode;
+
 - (IBAction)confirmPurchaseCodeClicked:(id)sender;
+
 @end

@@ -15,5 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblInstruction;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 - (IBAction)orderClicked:(id)sender;
+
 @end

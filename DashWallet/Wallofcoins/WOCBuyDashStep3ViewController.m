@@ -21,13 +21,12 @@
 
 @implementation WOCBuyDashStep3ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.title = @"Buy Dash With Cash";
     
-    self.btnNext.layer.cornerRadius = 3.0;
-    self.btnNext.layer.masksToBounds = YES;
     [self setShadow:self.btnNext];
     
     self.pickerView = [[UIPickerView alloc] init];
@@ -38,33 +37,32 @@
     [self getPaymentCenters];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setShadow:(UIView *)view{
-    
+- (void)setShadow:(UIView *)view
+{
+    view.layer.cornerRadius = 3.0;
+    view.layer.masksToBounds = YES;
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 0);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 
 // MARK: - API
 
-- (void)getPaymentCenters{
-    
+- (void)getPaymentCenters
+{
     [[APIManager sharedInstance] getAvailablePaymentCenters:^(id responseDict, NSError *error) {
-        
         if (error == nil) {
-            
             NSArray *responseArray = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
-            
             NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
             self.paymentCenters = [responseArray sortedArrayUsingDescriptors:@[sort]];
-            
             [self.pickerView reloadAllComponents];
         }
     }];
@@ -72,10 +70,9 @@
 
 // MARK: - IBAction
 
-- (IBAction)nextStepClicked:(id)sender {
-    
+- (IBAction)nextStepClicked:(id)sender
+{
     if ([self.bankId length] > 0) {
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
         myViewController.bankId = self.bankId;
@@ -83,30 +80,33 @@
         
         return;
     }
-    else
-    {
+    else {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Select payment center." viewController:self.navigationController.visibleViewController];
     }
 }
 
 // MARK: UIPickerView Delegates
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView
+{
     return 1;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
+- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component
+{
     return self.paymentCenters.count;
 }
 
-- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
     return self.paymentCenters[row][@"name"];
 }
 
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
     self.txtPaymentCenter.text = self.paymentCenters[row][@"name"];
     self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
+
 @end
 

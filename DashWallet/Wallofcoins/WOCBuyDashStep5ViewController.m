@@ -17,6 +17,7 @@
 #import "BRWalletManager.h"
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
+#import "WOCBuyDashStep1ViewController.h"
 
 @interface WOCBuyDashStep5ViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -27,24 +28,25 @@
 
 @implementation WOCBuyDashStep5ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.title = @"Buy Dash With Cash";
     
     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+    
     [self getOffers];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-
-
-- (void)pushToStep6:(NSInteger)sender{
-    
+- (void)pushToStep6:(NSInteger)sender
+{
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
     NSDictionary *offerDict = self.offers[indexPath.row];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
@@ -55,14 +57,11 @@
 
 // MARK: - API
 
-- (void)getOffers {
-    
+- (void)getOffers
+{
     if (self.discoveryId != nil && [self.discoveryId length] > 0) {
-        
         [[APIManager sharedInstance] discoveryInputs:self.discoveryId response:^(id responseDict, NSError *error) {
-            
             if (error == nil) {
-                
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
                 NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
                 self.offers = [[NSArray alloc] initWithArray:offersArray];
@@ -101,37 +100,31 @@
     }
 }
 
-- (void)getOrders:(NSInteger)sender {
-    
+- (void)getOrders:(NSInteger)sender
+{
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
+    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [hud hideAnimated:TRUE];
         });
         
         if (error == nil) {
-            
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
-            if (orders.count > 0){
-                
+            if (orders.count > 0) {
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                
                 NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
                 NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
@@ -140,7 +133,7 @@
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else if (wdArray.count > 0){
+                else if (wdArray.count > 0) {
                     //delete a hold
                     for (int i = 0; i < wdArray.count; i++) {
                         
@@ -149,7 +142,7 @@
                         //[self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]]];
                     }
                 }
-                else if (orders.count > 0){
+                else if (orders.count > 0) {
                     
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
@@ -161,7 +154,7 @@
                     myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else if (orders.count > 0){
+                else if (orders.count > 0) {
                     
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
@@ -170,9 +163,8 @@
                     myViewController.isFromSend = YES;
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else{
+                else {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                         BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
                         
@@ -187,10 +179,8 @@
                     });
                 }
             }
-            else{
-                
+            else {
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                
                 UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                 WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                 myViewController.phoneNo = phoneNo;
@@ -202,35 +192,52 @@
                 [self.navigationController pushViewController:myViewController animated:YES];
             }
         }
-        else{
-            [self pushToStep6:sender];
-            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        else {
+           // [self pushToStep6:sender];
+            [self pushToStep1];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Token expired." viewController:self];
+            });
         }
     }];
 }
 
+- (void)pushToStep1
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+        vc.isFromSend = YES;
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navigationController;
+    });
+}
+
 // MARK: - IBAction
 
-- (IBAction)orderClicked:(id)sender{
-    
+- (IBAction)orderClicked:(id)sender
+{
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
-    {
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
         [self getOrders:[sender tag]];
     }
-    else
-    {
+    else {
         [self pushToStep6:[sender tag]];
     }
 }
 
-- (IBAction)checkLocationClicked:(id)sender{
+- (IBAction)checkLocationClicked:(id)sender {
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[sender tag] inSection:0];
     NSDictionary *offerDict = self.offers[indexPath.row];
     if (![[offerDict valueForKey:@"bankLocationUrl"] isEqual:[NSNull null]]) {
-        
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
         if ([[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
@@ -242,13 +249,13 @@
 
 // MARK: - UITableView DataSource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.offers.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     WOCOfferCell *cell = [tableView dequeueReusableCellWithIdentifier:@"offerCell"];
     
     NSDictionary *offerDict = self.offers[indexPath.row];
@@ -295,7 +302,7 @@
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
             cell.imgView.image = [UIImage imageWithData: imageData];
         }
-        else{
+        else {
             cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
     }
@@ -321,9 +328,10 @@
 
 // MARK: - UITableView Delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 125.0;
 }
+
 @end
 

@@ -20,8 +20,8 @@
 
 @implementation APIManager
 
--(id)init {
-    
+- (id)init
+{
     self = [super init];
     if (self) {
         [self initAPIManager];
@@ -41,13 +41,14 @@
     return singleton;
 }
 
--(void)initAPIManager
+- (void)initAPIManager
 {
     APILog(@"Init APIManager");
 }
 
 #pragma mark - Wallofcoins API calls
--(void)testAPI
+
+- (void)testAPI
 {
     APILog(@"Test API Called");
     [self getAvailablePaymentCenters:^(id responseDict, NSError *error) {
@@ -99,25 +100,18 @@
  */
 ////////////////////////////////////////////////////////////////////
 
--(void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *version = @"v1";
     NSString *constant = @"/banks/";
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/%@%@",BASE_URL,version,constant];
     
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_HEADER_CONTENT_TYPE: @"application/json"
+                             };
     
-    NSDictionary *params =
-    @{
-      /*@"id": @14,
-       @"country": @"us",
-       @"payFields": @false*/
-      };
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type" : @"application/json"
-      };
-    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params  header: header andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil  header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
@@ -174,14 +168,15 @@
  }
  ```
  */
--(void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/",BASE_URL];
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type" : @"application/json"
-      };
+    
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_HEADER_CONTENT_TYPE: @"application/json"
+                             };
+    
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
@@ -195,14 +190,14 @@
  GET https://woc.reference.genitrust.com/api/v1/discoveryInputs/<Discovery ID>/offers/
  ```*/
 
--(void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/%@/offers/",BASE_URL,dicoverId];
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type" : @"application/json"
-      };
+    
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_HEADER_CONTENT_TYPE: @"application/json"
+                             };
     
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
@@ -233,28 +228,24 @@
  }
  ```*/
 
--(void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
-    
-    NSString *phNo = [NSString stringWithFormat:@"%@",[params valueForKey:@"deviceCode"]];
-    
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type":@"application/json"
-      };
-    
+    NSString *phNo = [NSString stringWithFormat:@"%@",[params valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE]];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_HEADER_CONTENT_TYPE:@"application/json"
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token,
-          @"Content-Type":@"application/json"
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token,
+                   API_HEADER_CONTENT_TYPE: @"application/json"
+                   };
     }
     
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -280,26 +271,23 @@
  }
  ```*/
 
--(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/capture/",BASE_URL,holdId];
-    
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type":@"application/json"
-      };
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_HEADER_CONTENT_TYPE:@"application/json"
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token,
-          @"Content-Type":@"application/json"
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token,
+                   API_HEADER_CONTENT_TYPE: @"application/json"
+                   };
     }
     
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -315,47 +303,43 @@
  POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
  ```*/
 
--(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/confirmDeposit/",BASE_URL,orderId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token
+                   };
     }
     
-    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+    [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error){
         completionBlock(responseDict,error);
     }];
 }
 
--(void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/",BASE_URL,orderId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token
+                   };
     }
     
     [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -363,15 +347,14 @@
     }];
 }
 
--(void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/",BASE_URL];
-    
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+
     NSDictionary *header = @{
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
-    
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
@@ -386,64 +369,61 @@
     }];
 }
 
--(void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
 
--(void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/authorize/",BASE_URL,phoneNo];
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type":@"application/json"
-      };
+    
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_HEADER_CONTENT_TYPE: @"application/json"
+                             };
     
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
 
--(void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+    
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
 }
 
--(void)getDevice:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)getDevice:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/devices/",BASE_URL];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token
+                   };
     }
     
     [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter:nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -451,25 +431,23 @@
     }];
 }
 
--(void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+- (void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock
+{
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/devices/",BASE_URL];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      @"Content-Type":@"application/json"
-      };
+    NSDictionary *header = @{
+                            API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                            API_HEADER_CONTENT_TYPE: @"application/json"
+                            };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token,
-          @"Content-Type":@"application/json"
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token,
+                   API_HEADER_CONTENT_TYPE: @"application/json"
+                   };
     }
     
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -482,18 +460,16 @@
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/",BASE_URL,holdId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-      API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-          API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-          API_HEADER_TOKEN: token
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token
+                   };
     }
     
     [self makeAPIRequestWithURL:apiURL methord:@"DELETE" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
@@ -506,18 +482,16 @@
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    NSDictionary *header =
-    @{
-        API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-      };
+    NSDictionary *header = @{
+                             API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
     {
-        header =
-        @{
-            API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-            API_HEADER_TOKEN: token
-          };
+        header = @{
+                   API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_HEADER_TOKEN: token
+                   };
         
         [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
             completionBlock(responseDict,error);
@@ -531,42 +505,37 @@
 }
 
 // MARK: - API calls
--(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock {
-    
+-(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock
+{
     APILog(@"**>API REQUEST URL: %@\n%@",httpMethord,apiURL);
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:apiURL] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT_INTERVAL];
     
-    if ([httpMethord isEqualToString:@"GET"] == FALSE)
-    {
+    if ([httpMethord isEqualToString:@"GET"] == FALSE) {
         
-        // [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPMethod:httpMethord];
-        if ([parameter isKindOfClass:[NSDictionary class]])
-        {
-            APILog(@"**>API REQUEST Parameter: \n%@",parameter);
+        
+        if ([parameter isKindOfClass:[NSDictionary class]]) {
             
+            APILog(@"**>API REQUEST Parameter: \n%@",parameter);
             NSDictionary *para = (NSDictionary*)parameter;
-            if ([[para allKeys] containsObject:JSONParameter])
-            {
+            
+            if ([[para allKeys] containsObject:JSONParameter]) {
+                
                 NSData *postData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:nil];
                 [request setHTTPBody:postData];
             }
-            else
-            {
+            else {
+                
                 [request setHTTPBody:[self httpBodyForParamsDictionary:parameter]];
             }
         }
     }
     
-    if (header!= nil)
-    {
+    if (header!= nil) {
+        
         APILog(@"**>API REQUEST Header: \n%@",header);
         [request setAllHTTPHeaderFields:header];
-        //   for (NSString *key in header.allKeys)
-        //   {
-        //       NSString *headerValue = [header[key] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        //       [request setValue:headerValue forHTTPHeaderField:key];
-        //   }
     }
     
     NSURLSession *session = [NSURLSession sharedSession];
@@ -580,22 +549,22 @@
             id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
              APILog(@"==>API RESPONSE : \n%@",dictionary);
 
-            if (connectionError != nil)
-            {
+            if (connectionError != nil) {
+                
                 APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
             }
             
-            if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError)
-            {
+            if (((((NSHTTPURLResponse*)response).statusCode /100) != 2) || connectionError) {
+                
                 NSError * returnError = connectionError;
                 if (!returnError) {
                     
-                    if (dictionary[@"detail"] != nil)
-                    {
+                    if (dictionary[@"detail"] != nil) {
+                        
                         returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:dictionary];
                     }
-                    else
-                    {
+                    else {
+                        
                         returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
                     }
                 }
@@ -605,13 +574,12 @@
                 });
                 return;
             }
-            else if (((NSHTTPURLResponse*)response).statusCode == 204)
-            {
+            else if (((NSHTTPURLResponse*)response).statusCode == 204) {
+                
                 NSDictionary *responseDict = @{@"content":@"NO"} ;
                 completionBlock(responseDict,nil);
                 return;
             }
-            
             
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -625,13 +593,15 @@
                    
                     completionBlock(dictionary,nil);
                 }
-                else{
+                else {
+                    
                     APILog(@"==>API RESPONSE : \n%@",@{@"response":@"error"});
                     completionBlock(@{@"response":@"error"},nil);
                 }
             });
         }
-        else{
+        else {
+            
             APILog(@"==>API RESPONSE : \n%@",@{@"response":@"error"});
             completionBlock(@{@"response":@"error"},nil);
         }
@@ -643,10 +613,14 @@
     NSMutableArray *parameterArray = [NSMutableArray array];
     
     [paramDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+        
         if ([obj isKindOfClass:[NSString class]]) {
+            
             NSString *param = [NSString stringWithFormat:@"%@=%@", key, [obj stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
             [parameterArray addObject:param];
-        } else {
+        }
+        else {
+            
             NSString *param = [NSString stringWithFormat:@"%@=%@", key, obj];
             [parameterArray addObject:param];
         }
@@ -659,13 +633,3 @@
 
 @end
 
-/*
- Hold Status
- STATUSES = (
-         ('PE', __('Pending')),
-         ('AC', __('Active, waiting for Order')),
-         ('CAP', __('Captured')),
-         ('EX', __('Expired')),
-         ('CAN', __('Canceled'))
-     )
- */

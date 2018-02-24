@@ -10,7 +10,8 @@
 
 @implementation WOCOfferCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib 
+{
     [super awakeFromNib];
     // Initialization code
     
@@ -19,9 +20,6 @@
     
     self.btnLocation.layer.cornerRadius = 3.0;
     self.btnLocation.layer.masksToBounds = YES;
-    
-    self.mainView.layer.cornerRadius = 3.0;
-    self.mainView.layer.masksToBounds = YES;
     
     [self setShadow:self.mainView];
 }
@@ -33,7 +31,11 @@
 }
 
 #pragma mark - Function
-- (void)setShadow:(UIView *)view{
+
+- (void)setShadow:(UIView *)view
+{
+    view.layer.cornerRadius = 3.0;
+    view.layer.masksToBounds = YES;
     
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 0);

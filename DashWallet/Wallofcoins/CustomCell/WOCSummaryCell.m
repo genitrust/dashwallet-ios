@@ -10,7 +10,8 @@
 
 @implementation WOCSummaryCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     // Initialization code
     
@@ -20,18 +21,19 @@
     [self setShadow:self.mainView];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
 }
 
-- (void)setShadow:(UIView *)view{
-    
+- (void)setShadow:(UIView *)view
+{
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 

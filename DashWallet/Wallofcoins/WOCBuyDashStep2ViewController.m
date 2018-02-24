@@ -17,30 +17,30 @@
 
 @implementation WOCBuyDashStep2ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.title = @"Buy Dash With Cash";
-    
     [self.navigationItem.backBarButtonItem setTitle:@""];
     
-    self.btnNext.layer.cornerRadius = 3.0;
-    self.btnNext.layer.masksToBounds = YES;
     [self setShadow:self.btnNext];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-
-- (void)setShadow:(UIView *)view{
-    
+- (void)setShadow:(UIView *)view
+{
+    view.layer.cornerRadius = 3.0;
+    view.layer.masksToBounds = YES;
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1; //1
-    view.layer.shadowOpacity = 1;//1
+    view.layer.shadowOffset = CGSizeMake(0, 0);
+    view.layer.shadowRadius = 1;
+    view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
 }
 
@@ -51,19 +51,16 @@
     NSString *zipCode = [self.txtZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([zipCode length] == 0) {
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep3ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep3ViewController"];
         [self.navigationController pushViewController:myViewController animated:YES];
     }
-    else{
-        
+    else {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
         myViewController.zipCode = zipCode;
         [self.navigationController pushViewController:myViewController animated:YES];
     }
-    
 }
 
 @end

@@ -16,7 +16,8 @@
 
 @implementation WOCBuyDashStep6ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.title = @"Buy Dash With Cash";
@@ -24,7 +25,8 @@
     [self setShadow:self.btnNext];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -39,10 +41,10 @@
     return [emailTest evaluateWithObject:checkString];
 }
 
-- (void)setShadow:(UIView *)view{
-    
+- (void)setShadow:(UIView *)view
+{
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
+    view.layer.shadowOffset = CGSizeMake(0, 0);
     view.layer.shadowRadius = 1;
     view.layer.shadowOpacity = 1;
     view.layer.masksToBounds = false;
@@ -50,8 +52,8 @@
 
 // MARK: - IBAction
 
-- (IBAction)doNotSendMeEmailClicked:(id)sender {
-    
+- (IBAction)doNotSendMeEmailClicked:(id)sender
+{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
     WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
     myViewController.offerId = self.offerId;
@@ -59,17 +61,17 @@
     [self.navigationController pushViewController:myViewController animated:YES];
 }
 
-- (IBAction)nextClicked:(id)sender {
-    
+- (IBAction)nextClicked:(id)sender
+{
     NSString *emailStr = [self.txtEmail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([emailStr length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter email." viewController:self.navigationController.visibleViewController];
     }
-    else if (![self validateEmailWithString:emailStr]){
+    else if (![self validateEmailWithString:emailStr]) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter valid email." viewController:self.navigationController.visibleViewController];
     }
-    else{
+    else {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
         myViewController.offerId = self.offerId;

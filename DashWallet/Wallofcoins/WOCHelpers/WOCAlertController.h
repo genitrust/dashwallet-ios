@@ -14,4 +14,5 @@
 
 - (void)alertshowWithTitle:(NSString*)title message:(NSString*)message viewController:(UIViewController*)viewController;
 - (void)alertshowWithError:(NSError*)error viewController:(UIViewController*)viewController;
+
 @end

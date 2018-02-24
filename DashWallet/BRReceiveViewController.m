@@ -264,8 +264,8 @@
     if (self.tipView.alpha > 0.5) [self.tipView popOut];
 }
 
--(void)pushToStep1{
-    
+-(void)pushToStep1
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
@@ -277,36 +277,29 @@
     });
 }
 
-// MARK: - WallofCoin API
+// MARK: - WallofCoins API
 
-- (void)getOrders {
-    
+- (void)getOrders
+{
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             @"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             //@"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    [[APIManager sharedInstance] getOrders:params response:^(id responseDict, NSError *error) {
-        
+    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hideAnimated:YES];
         });
         
         if (error == nil) {
-            
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            
             if (orders.count > 0){
-                
                 NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
@@ -315,7 +308,7 @@
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
-                else{
+                else {
                     UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = phoneNo;
@@ -324,14 +317,12 @@
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
             }
-            else{
-                
-                [self pushToStep1];
+            else {
+                 [self pushToStep1];
             }
         }
-        else{
+        else {
             NSLog(@"Error: %@", error.localizedDescription);
-            
             [self pushToStep1];
         }
     }];
@@ -477,18 +468,15 @@
 }
 
 // Added New Button to Buy Dash with cash
-- (IBAction)buyDash:(id)sender {
-    
+- (IBAction)buyDash:(id)sender
+{
     [sender setEnabled:NO];
     
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE)
-    {
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
         [self getOrders];
     }
-    else
-    {
+    else {
         [self pushToStep1];
     }
 }

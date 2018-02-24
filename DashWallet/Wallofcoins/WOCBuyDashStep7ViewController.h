@@ -17,5 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (weak, nonatomic) IBOutlet UITextField *txtCountryCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;
+
 - (IBAction)nextClicked:(id)sender;
+
 @end

@@ -22,26 +22,27 @@
 
 @implementation WOCBuyDashStep8ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnPurchaseCode];
-    //[self createHold];
     
     if (self.purchaseCode != nil) {
         self.txtPurchaseCode.text = self.purchaseCode;
     }
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setShadow:(UIView *)view {
-    
+- (void)setShadow:(UIView *)view
+{
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
     view.layer.shadowRadius = 1;
@@ -51,12 +52,10 @@
 
 // MARK: - IBAction
 
-- (IBAction)confirmPurchaseCodeClicked:(id)sender {
-    
+- (IBAction)confirmPurchaseCodeClicked:(id)sender
+{
     NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
     if ([txtCode length] > 0) {
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
         WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
         myViewController.purchaseCode = txtCode;
@@ -65,7 +64,6 @@
         [self.navigationController pushViewController:myViewController animated:YES];
     }
     else {
-        
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Purchase Code" viewController:self.navigationController.visibleViewController];
     }
 }

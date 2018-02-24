@@ -11,33 +11,26 @@
 
 @interface APIManager : NSObject
 
-@property (nonatomic,strong) NSDate * lastMarketInfoCheck;
+@property (nonatomic, strong) NSDate *lastMarketInfoCheck;
 
 + (instancetype)sharedInstance;
 
--(void)testAPI;
--(void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock ;
--(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)getDevice:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
--(void)getHold:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)testAPI;
+- (void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock ;
+- (void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)getDevice:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)getHold:(void (^)(id responseDict, NSError *error))completionBlock;
 
 @end
-/*
- Status Code :
- 201 returned when the hold is created
- 400 returned when one of the parameters are missing! for example, if you're creating a new device... you need "phone", "deviceName", and "deviceCode".
- 403 returned when a X-Coins-Api-Token is required or the phone number supplied needs password
- 404 returned when the offer no-longer is available (either the time expired or the ad will now be negative.)
- */

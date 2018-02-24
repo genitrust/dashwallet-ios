@@ -15,4 +15,5 @@
 @property (assign) BOOL isZipCodeBlank;
 
 - (IBAction)nextClicked:(id)sender;
+
 @end

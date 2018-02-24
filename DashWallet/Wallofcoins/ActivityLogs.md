@@ -290,3 +290,22 @@ Holiday
 5. Buy Summary: "WDV" status orders still show the account details (#38)
 6. Buying Wizard "incremented offers" (#36)
 7. Find My Location button should only be pressed once? (#43)
+
+#### Work on 21 FEB 2018 (WED) Sujal Bandhara
+
+1. Added New Screen to redirect user on Web when there is some issue with Hold
+2. Testing and Bug Solving
+
+#### Work on 22 FEB 2018 (THU) Sujal Bandhara
+
+1. Handle response 403 and 402 in create hold
+2. Testing and Bug Solving
+
+#### Work on 23 FEB 2018 (FRI) Sujal Bandhara
+
+1. Existing Auth (with WOC password) will not have API device verified #17
+2. Unable to log out of a user with no orders. #54
+3. Updated ReadME file
+4. Testing and Bug Solving
+
+#### Work on 24 FEB 2018 (SAT) Sujal Bandhara
