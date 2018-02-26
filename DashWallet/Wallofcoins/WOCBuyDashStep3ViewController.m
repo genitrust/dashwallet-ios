@@ -73,7 +73,7 @@
 - (IBAction)nextStepClicked:(id)sender
 {
     if ([self.bankId length] > 0) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
         myViewController.bankId = self.bankId;
         [self.navigationController pushViewController:myViewController animated:YES];

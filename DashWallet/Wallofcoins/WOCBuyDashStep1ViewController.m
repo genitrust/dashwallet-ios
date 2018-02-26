@@ -60,10 +60,19 @@
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
         
-        [self.signoutView setHidden:NO];
         NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
         NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
         self.lblDescription.text = loginPhone;
+        [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
+        [self.signoutView setHidden:NO];
+    }
+    else
+    {
+      
+        NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
+        self.lblDescription.text = loginPhone;
+        [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
+        [self.signoutView setHidden:TRUE];
     }
 }
 
@@ -82,7 +91,7 @@
 
 - (void)openBuyDashStep4
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
     WOCBuyDashStep4ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep4ViewController"];
     myViewController.zipCode = self.zipCode;
     [self.navigationController pushViewController:myViewController animated:YES];
@@ -90,7 +99,7 @@
 
 - (void)openBuyDashStep2
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
     WOCBuyDashStep2ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep2ViewController"];
     [self.navigationController pushViewController:myViewController animated:YES];
 }
@@ -132,7 +141,7 @@
     }];
     
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep3ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep3ViewController"];
         [self.navigationController pushViewController:myViewController animated:YES];
     }];
@@ -143,8 +152,8 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)findZipCode
-{
+- (void)findZipCode {
+    
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     [self.btnLocation setUserInteractionEnabled:YES];
@@ -195,8 +204,7 @@
 
 // MARK: - API
 
-- (void)signOut:(NSString*)phone
-{
+- (void)signOut:(NSString*)phone {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
@@ -214,17 +222,41 @@
                 [self.signoutView setHidden:YES];
             });
             
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self storeDeviceInfoLocally];
         }
         else {
+            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
 
+-(void)storeDeviceInfoLocally {
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER] != nil) {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID] != nil) {
+            NSString * phoneNumber = [[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            NSString * deviceID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            
+            NSMutableDictionary *localDeiveDict =  [NSMutableDictionary dictionaryWithCapacity:0];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] != nil) {
+                
+                localDeiveDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO]];
+            }
+            localDeiveDict[phoneNumber] = [NSString stringWithFormat:@"%@",deviceID];
+            if (localDeiveDict != nil)
+            {
+                [[NSUserDefaults standardUserDefaults] setObject:localDeiveDict forKey:USER_DEFAULTS_LOCAL_DEVICE_INFO];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 // MARK: - IBAction
 
 - (IBAction)backBtnClicked:(id)sender
@@ -255,8 +287,22 @@
 
 - (IBAction)signOutClicked:(id)sender
 {
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    [self signOut:phoneNo];
+    UIButton * btn = (UIButton*) sender;
+    if (btn != nil)
+    {
+        if ([btn.titleLabel.text isEqualToString:@"SIGN IN HERE"]) {
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+            WOCBuyDashStep3ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep3ViewController"];
+            [self.navigationController pushViewController:myViewController animated:YES];
+            
+        }
+        else {
+            
+            NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self signOut:phoneNo];
+        }
+    }
 }
 
 @end

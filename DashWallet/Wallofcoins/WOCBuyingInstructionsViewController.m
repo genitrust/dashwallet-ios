@@ -108,7 +108,7 @@
 - (void)pushToHome
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -130,7 +130,7 @@
     
     if (viewFound == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
             WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
             [self.navigationController pushViewController:myViewController animated:YES];
         });
@@ -157,7 +157,7 @@
 - (void)pushToStep1
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -549,7 +549,7 @@
                 [self stopTimer];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = self.phoneNo;
                     [self.navigationController pushViewController:myViewController animated:YES];

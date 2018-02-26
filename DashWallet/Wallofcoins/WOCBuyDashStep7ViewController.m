@@ -96,7 +96,7 @@
     
     [self createHoldAfterAuthorize:phoneNo];
     
-    /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
      WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
      myViewController.phoneNo = phoneNo;
      myViewController.offerId = self.offerId;
@@ -122,7 +122,7 @@
             NSArray *availableAuthSource = (NSArray*)[responseDictionary valueForKey:@"availableAuthSources"];
             if (availableAuthSource.count > 0) {
                 if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]) {
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCPasswordViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCPasswordViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.modalTransitionStyle = UIModalPresentationOverCurrentContext;
@@ -146,7 +146,7 @@
                 
                 /*NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
                  
-                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                  WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
                  myViewController.phoneNo = phoneNo;
                  myViewController.offerId = self.offerId;
@@ -202,7 +202,7 @@
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
             WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
             myViewController.phoneNo = phoneNo;
             myViewController.offerId = self.offerId;
@@ -221,7 +221,7 @@
 
             //[self createHold:phoneNo];
             
-            /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
              WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
              myViewController.phoneNo = phoneNo;
              myViewController.offerId = self.offerId;
@@ -283,7 +283,7 @@
             NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
             self.purchaseCode = purchaseCode;
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
             WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
             myViewController.phoneNo = phoneNo;
             myViewController.offerId = self.offerId;
@@ -323,7 +323,7 @@
              */
             NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
             WOCHoldIssueViewController *aViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCHoldIssueViewController"];
             aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
             [self.navigationController pushViewController:aViewController animated:YES];
@@ -478,6 +478,7 @@
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         if (error == nil) {
+            
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
@@ -490,6 +491,7 @@
             [self createHoldAfterAuthorize:phoneNo];
         }
         else {
+            
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
@@ -499,7 +501,7 @@
 
             //[self createHold:phoneNo];
             
-            /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            /*UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
              WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
              myViewController.phoneNo = phoneNo;
              myViewController.offerId = self.offerId;
@@ -538,7 +540,7 @@
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.holdId = self.holdId;
@@ -554,7 +556,7 @@
                     }
                 }
                 else if (orders.count > 0) {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.orders = orders;
@@ -636,7 +638,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
 
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];

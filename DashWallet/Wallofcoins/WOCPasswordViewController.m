@@ -192,17 +192,19 @@
         }
         else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (error.userInfo != nil) {
-                    if (error.userInfo[@"detail"] != nil) {
-                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self];
-                    }
-                    else {
-                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
-                    }
-                }
-                else {
-                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
-                }
+                
+                 [self registerDevice:phoneNo];
+//                if (error.userInfo != nil) {
+//                    if (error.userInfo[@"detail"] != nil) {
+//                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self];
+//                    }
+//                    else {
+//                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
+//                    }
+//                }
+//                else {
+//                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self];
+//                }
             });
         }
     }];

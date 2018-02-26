@@ -62,12 +62,15 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 
 ```json
 {
-"publisherId": "",
 "cryptoAddress": "",
 "usdAmount": "500",
 "crypto": "DASH",
 "bank": "",
-"zipCode": "34236"
+"zipCode": "34236",
+"browserLocation":  {
+"latitude": 27.3331293,
+"longitude": -82.5456374
+}
 }
 ```
 
@@ -77,6 +80,7 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 *   crypto: crypto type either DASH or BTC for bitcoin.
 *   bank: Selected bank ID from bank list. pass empty if selected none.
 *   zipCode: zip code of user, need to take input from user.
+*   browserLocation: Need to pass user device latitude and Longitude.
 
 ##### Response :
 
@@ -92,11 +96,10 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 "state": null,
 "cryptoAddress": "",
 "createdIp": "182.76.224.130",
-"location": {
+"browserLocation": {
 "latitude": 27.3331293,
 "longitude": -82.5456374
 },
-"browserLocation": null,
 "publisher": null
 }
 ```

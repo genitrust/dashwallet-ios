@@ -6,7 +6,7 @@
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
-#import "WOCBuyDashStep5ViewController.h"
+#import "WOCSignInViewController.h"
 #import "WOCBuyDashStep6ViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
@@ -19,14 +19,14 @@
 #import "MBProgressHUD.h"
 #import "WOCBuyDashStep1ViewController.h"
 
-@interface WOCBuyDashStep5ViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface WOCSignInViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray *offers;
 @property (assign) BOOL incremented;
 
 @end
 
-@implementation WOCBuyDashStep5ViewController
+@implementation WOCSignInViewController
 
 - (void)viewDidLoad
 {
@@ -222,7 +222,7 @@
 
 // MARK: - IBAction
 
-- (IBAction)orderClicked:(id)sender
+- (IBAction)signInPhoneClicked:(id)sender
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
@@ -230,6 +230,17 @@
     }
     else {
         [self pushToStep6:[sender tag]];
+    }
+}
+
+- (IBAction)existingAccoutClick:(id)sender {
+    
+}
+
+- (IBAction)signUpClick:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/signup/"];
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
     }
 }
 
@@ -320,7 +331,7 @@
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     }
     
-    [cell.btnOrder addTarget:self action:@selector(orderClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.btnOrder addTarget:self action:@selector(signInPhoneClicked:) forControlEvents:UIControlEventTouchUpInside];
     cell.btnOrder.tag = indexPath.row;
     
     return cell;

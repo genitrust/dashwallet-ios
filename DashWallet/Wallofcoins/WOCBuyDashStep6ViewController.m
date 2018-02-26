@@ -9,6 +9,7 @@
 #import "WOCBuyDashStep6ViewController.h"
 #import "WOCBuyDashStep7ViewController.h"
 #import "WOCAlertController.h"
+#import "WOCConstants.h"
 
 @interface WOCBuyDashStep6ViewController ()
 
@@ -54,7 +55,7 @@
 
 - (IBAction)doNotSendMeEmailClicked:(id)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
     WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
     myViewController.offerId = self.offerId;
     myViewController.emailId = @"";
@@ -72,7 +73,7 @@
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter valid email." viewController:self.navigationController.visibleViewController];
     }
     else {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
         myViewController.offerId = self.offerId;
         myViewController.emailId = emailStr;

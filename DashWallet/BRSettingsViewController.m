@@ -176,7 +176,7 @@
 
 - (void)pushToStep1
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
     WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
     [self.navigationController pushViewController:myViewController animated:YES];
 }
@@ -204,7 +204,7 @@
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = YES;
@@ -213,7 +213,7 @@
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
                 else {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.orders = orders;

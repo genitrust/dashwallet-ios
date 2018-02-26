@@ -140,7 +140,7 @@
 - (void)pushToStep1
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -162,7 +162,7 @@
     
     if (viewFound == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
             WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
             myViewController.isFromSend = YES;
             [self.navigationController pushViewController:myViewController animated:YES];

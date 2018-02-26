@@ -104,6 +104,7 @@
 		75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F2E0D21BE9803900EAE861 /* Launch Screen.storyboard */; };
 		75F2E0D61BEAA6A400EAE861 /* BRTxMetadataEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 75F2E0D51BEAA6A400EAE861 /* BRTxMetadataEntity.m */; };
 		84F68C8A1975E9E2002FC300 /* BRScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F68C891975E9E2002FC300 /* BRScanViewController.m */; };
+		B21DAC742043E0E8001F81C1 /* WOCSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B21DAC732043E0E8001F81C1 /* WOCSignInViewController.m */; };
 		B2EC93BB203DA18700B899E8 /* WOCHoldIssueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC93BA203DA18700B899E8 /* WOCHoldIssueViewController.m */; };
 		BA4A72671BE11AFA00E39C01 /* BRAWWeakTimerTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4A72661BE11AFA00E39C01 /* BRAWWeakTimerTarget.swift */; };
 		BA54D3CE1B2EA74000C9CB28 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA54D3CD1B2EA74000C9CB28 /* Media.xcassets */; };
@@ -501,6 +502,8 @@
 		75FD2FB51BFAB97A00D56BBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BREventConfirmView.strings; sourceTree = "<group>"; };
 		84F68C881975E9E2002FC300 /* BRScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRScanViewController.h; sourceTree = "<group>"; };
 		84F68C891975E9E2002FC300 /* BRScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRScanViewController.m; sourceTree = "<group>"; };
+		B21DAC722043E0E7001F81C1 /* WOCSignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCSignInViewController.h; sourceTree = "<group>"; };
+		B21DAC732043E0E8001F81C1 /* WOCSignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCSignInViewController.m; sourceTree = "<group>"; };
 		B2EC93B9203DA18700B899E8 /* WOCHoldIssueViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCHoldIssueViewController.h; sourceTree = "<group>"; };
 		B2EC93BA203DA18700B899E8 /* WOCHoldIssueViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCHoldIssueViewController.m; sourceTree = "<group>"; };
 		BA4A72661BE11AFA00E39C01 /* BRAWWeakTimerTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAWWeakTimerTarget.swift; sourceTree = "<group>"; };
@@ -698,6 +701,8 @@
 				043754B720354F63001A4ED4 /* WOCHelpers */,
 				043754BC20354F63001A4ED4 /* WOCPasswordViewController.h */,
 				043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */,
+				B21DAC722043E0E7001F81C1 /* WOCSignInViewController.h */,
+				B21DAC732043E0E8001F81C1 /* WOCSignInViewController.m */,
 			);
 			path = Wallofcoins;
 			sourceTree = "<group>";
@@ -1600,6 +1605,7 @@
 				752E28DA19234C3600DB5A3C /* BRWallet.m in Sources */,
 				FB021E561E47E17200D17638 /* FBShimmeringLayer.m in Sources */,
 				043754C220354F63001A4ED4 /* WOCSummaryCell.m in Sources */,
+				B21DAC742043E0E8001F81C1 /* WOCSignInViewController.m in Sources */,
 				752E28DB19234C3600DB5A3C /* BRWalletManager.m in Sources */,
 				752E28D319234C3600DB5A3C /* BRMerkleBlock.m in Sources */,
 				752E28D019234C3600DB5A3C /* BRBloomFilter.m in Sources */,

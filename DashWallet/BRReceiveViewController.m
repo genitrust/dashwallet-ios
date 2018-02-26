@@ -267,7 +267,7 @@
 -(void)pushToStep1
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -300,7 +300,7 @@
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = YES;
@@ -309,7 +309,7 @@
                     [self.navigationController pushViewController:myViewController animated:YES];
                 }
                 else {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
                     WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.orders = orders;
