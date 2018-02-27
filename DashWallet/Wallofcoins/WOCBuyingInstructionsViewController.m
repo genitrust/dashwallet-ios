@@ -530,6 +530,7 @@
         }
         else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self.navigationController popViewControllerAnimated:TRUE];
         }
     }];
 }

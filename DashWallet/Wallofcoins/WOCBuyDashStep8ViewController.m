@@ -16,7 +16,7 @@
 #import "BRAppDelegate.h"
 #import "MBProgressHUD.h"
 
-@interface WOCBuyDashStep8ViewController ()
+@interface WOCBuyDashStep8ViewController () <UITextFieldDelegate>
 
 @end
 
@@ -33,6 +33,7 @@
     if (self.purchaseCode != nil) {
         self.txtPurchaseCode.text = self.purchaseCode;
     }
+    self.txtPurchaseCode.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,21 +51,36 @@
     view.layer.masksToBounds = false;
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if(textField.text.length == 4 && string.length == 1)
+    {
+        [self performSelector:@selector(confirmPurchaseCodeClicked:) withObject:self afterDelay:1.0];
+    }
+    return TRUE;
+}
+
 // MARK: - IBAction
 
 - (IBAction)confirmPurchaseCodeClicked:(id)sender
 {
     NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ([txtCode length] > 0) {
+    if ([txtCode length] == 5) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
         myViewController.purchaseCode = txtCode;
         myViewController.holdId = self.holdId;
         myViewController.phoneNo = self.phoneNo;
         [self.navigationController pushViewController:myViewController animated:YES];
+        
     }
-    else {
+    else if ([txtCode length] == 0 ) {
+        
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Purchase Code" viewController:self.navigationController.visibleViewController];
+    }
+    else if ([txtCode length] != 5 ) {
+        
+         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Valid Purchase Code" viewController:self.navigationController.visibleViewController];
     }
 }
 @end

@@ -448,9 +448,7 @@
         }
         else {
             
-           
             [self pushToStep1];
-            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];

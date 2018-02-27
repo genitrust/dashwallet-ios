@@ -128,7 +128,7 @@
             myViewController.amount = self.txtDollar.text;
             [self.navigationController pushViewController:myViewController animated:YES];
         }
-        else{
+        else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
