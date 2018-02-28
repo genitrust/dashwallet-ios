@@ -26,29 +26,12 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Buy Dash With Cash";
-    
     [self setShadow:self.btnPurchaseCode];
     
     if (self.purchaseCode != nil) {
         self.txtPurchaseCode.text = self.purchaseCode;
     }
     self.txtPurchaseCode.delegate = self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)setShadow:(UIView *)view
-{
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -66,12 +49,12 @@
 {
     NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([txtCode length] == 5) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-        WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+
+        WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
         myViewController.purchaseCode = txtCode;
         myViewController.holdId = self.holdId;
         myViewController.phoneNo = self.phoneNo;
-        [self.navigationController pushViewController:myViewController animated:YES];
+        [self pushViewController:myViewController animated:YES];
         
     }
     else if ([txtCode length] == 0 ) {

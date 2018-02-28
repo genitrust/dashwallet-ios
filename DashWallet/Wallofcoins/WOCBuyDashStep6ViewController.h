@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WOCBaseViewController.h"
 
-@interface WOCBuyDashStep6ViewController : UIViewController
+// Enter Email Address Screen
+@interface WOCBuyDashStep6ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *offerId;
 

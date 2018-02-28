@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyDashStep3ViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCBuyDashStep3ViewController : WOCBaseViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPaymentCenter;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;

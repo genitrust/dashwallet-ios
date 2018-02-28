@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCHoldIssueViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCHoldIssueViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *phoneNo;
 

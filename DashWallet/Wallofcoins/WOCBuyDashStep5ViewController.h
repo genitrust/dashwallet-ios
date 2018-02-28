@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WOCBaseViewController.h"
 
-@interface WOCBuyDashStep5ViewController : UIViewController
+// Offer List ViewController
+@interface WOCBuyDashStep5ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *discoveryId;
 @property (strong, nonatomic) NSString *amount;

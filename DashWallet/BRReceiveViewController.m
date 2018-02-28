@@ -268,12 +268,13 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+        UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+        
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
         vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        [navController.navigationBar setTintColor:[UIColor whiteColor]];
         BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
+        appDelegate.window.rootViewController = navController;
     });
 }
 
@@ -292,6 +293,9 @@
             [hud hideAnimated:YES];
         });
         
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+        UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+
         if (error == nil) {
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             if (orders.count > 0){
@@ -300,24 +304,28 @@
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = YES;
                     myViewController.isFromOffer = NO;
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self.navigationController pushViewController:myViewController animated:YES];
+                    
+                    [navController pushViewController:myViewController animated:YES];
                 }
                 else {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    
+                    WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.orders = orders;
                     myViewController.isFromSend = YES;
-                    [self.navigationController pushViewController:myViewController animated:YES];
+                    
+                    [navController pushViewController:myViewController animated:YES];
                 }
+                BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                appDelegate.window.rootViewController = navController;
             }
             else {
+                
                  [self pushToStep1];
             }
         }

@@ -65,9 +65,9 @@
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self.defaults synchronize];
             
             [self getDeviceId:phoneNo];
            /*
@@ -103,8 +103,8 @@
 {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     NSDictionary *params =  @{
                               API_BODY_NAME: API_BODY_DEVICE_NAME_IOS,
@@ -144,8 +144,8 @@
             if (response.count > 0) {
                 NSDictionary *dictionary = [response lastObject];
                 NSString *deviceId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
-                [[NSUserDefaults standardUserDefaults] setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self.defaults setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
                 [self authorize:phoneNo deviceId:deviceId];
             }
             else {
@@ -163,7 +163,7 @@
 {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
@@ -179,10 +179,10 @@
         
         if (error == nil) {
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [[NSUserDefaults standardUserDefaults] setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",API_RESPONSE_DEVICE_ID] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self.defaults setValue:[NSString stringWithFormat:@"%@",API_RESPONSE_DEVICE_ID] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults synchronize];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self dismissViewControllerAnimated:YES completion:nil];

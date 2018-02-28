@@ -35,14 +35,12 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Buy Dash With Cash";
-    
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];
     [self setShadow:self.btnWallOfCoins];
     [self setShadow:self.btnSignOut];
     
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
     self.lblLoginPhone.text = loginPhone;
     
@@ -61,7 +59,7 @@
         }
     }
     else if (self.isFromOffer) {
-        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
         if (self.offerId != nil && [self.offerId length] > 0) {
             [self createHold:self.offerId phoneNo:phoneNo];
         }
@@ -90,20 +88,6 @@
     self.txtInstruction.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)setShadow:(UIView *)view
-{
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
-}
 
 - (void)pushToHome
 {
@@ -130,41 +114,20 @@
     
     if (viewFound == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-            WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-            [self.navigationController pushViewController:myViewController animated:YES];
+            WOCBuyDashStep1ViewController *myViewController = [self getViewController:@"WOCBuyDashStep1ViewController"];
+            [self pushViewController:myViewController animated:YES];
         });
     }
 }
 
 - (void)back:(id)sender
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        [nav.navigationBar setTintColor:[UIColor whiteColor]];
-        
-        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
-        
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = nav;
-    });
+    [self backToMainView];
 }
 
 - (void)pushToStep1
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-        vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
-    });
+    [self backToMainView];
 }
 
 - (void)openSite:(NSURL*)url
@@ -376,8 +339,8 @@
 {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSDictionary *params ;
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
@@ -409,10 +372,10 @@
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE)
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [[NSUserDefaults standardUserDefaults] setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
             }
             
             NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
@@ -496,7 +459,7 @@
         if (error == nil) {
             NSLog(@"Hold deleted.");
             
-            NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [self createHold:self.offerId phoneNo:phoneNo];
         }
         else {
@@ -550,13 +513,13 @@
                 [self stopTimer];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
                     myViewController.phoneNo = self.phoneNo;
-                    [self.navigationController pushViewController:myViewController animated:YES];
+                    [self pushViewController:myViewController animated:YES];
                 });
             }
             else {
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil) {
                         if (error.userInfo[@"detail"] != nil) {
@@ -588,7 +551,7 @@
             
             if (error == nil) {
                 [self stopTimer];
-                [self pushToHome];
+                [self backToMainView];
             }
             else {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -609,33 +572,6 @@
     }
 }
 
-- (void)signOut:(NSString*)phone
-{
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
-    NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
-    
-    [[APIManager sharedInstance] signOut:nil phone:phone response:^(id responseDict, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-        });
-        
-        if (error == nil) {
-            [self stopTimer];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [self pushToStep1];
-        }
-        else {
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
-}
-
 // MARK: - IBAction
 
 - (IBAction)showMapClicked:(id)sender
@@ -653,8 +589,8 @@
     }
     else {
         // Your location from latitude and longitude
-        double latitude = [[[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE] doubleValue];
-        double longitude = [[[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE] doubleValue];
+        double latitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE] doubleValue];
+        double longitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE] doubleValue];
         
         NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", latitude, longitude, latitude, longitude];
         if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
@@ -680,8 +616,7 @@
 
 - (IBAction)signOutClicked:(id)sender
 {
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    [self signOut:phoneNo];
+    [self signOutWOC];
 }
 
 // MARK: - UITextView Delegate

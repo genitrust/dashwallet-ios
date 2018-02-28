@@ -25,11 +25,8 @@
 
 @implementation WOCBuyDashStep4ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnGetOffers];
     
@@ -42,27 +39,10 @@
     [self.txtDollar becomeFirstResponder];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)setShadow:(UIView *)view
-{
-    view.layer.cornerRadius = 3.0;
-    view.layer.masksToBounds = YES;
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 0);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
-}
-
 // MARK: - IBAction
 
-- (IBAction)getOffersClicked:(id)sender
-{
+- (IBAction)getOffersClicked:(id)sender {
+    
     NSString *dollarString = [self.txtDollar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([dollarString length] > 0 && [dollarString intValue] != 0) {
@@ -71,33 +51,31 @@
                 if ([self.zipCode length] > 0) {
                     [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
                 }
-                else if ([self.bankId length] > 0){
+                else if ([self.bankId length] > 0) {
                     [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
                 }
             }
-            else{
+            else {
                 [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
             }
         }
-        else{
+        else {
             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Amount must be more than $5." viewController:self.navigationController.visibleViewController];
         }
     }
-    else{
+    else {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Enter amount." viewController:self.navigationController.visibleViewController];
     }
 }
 
 // MARK: - API
 
-- (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId
-{
+- (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     //Receive Dash Address...
-    NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    NSString *latitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+    NSString *longitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
-    if (latitude == nil && longitude == nil)
-    {
+    if (latitude == nil && longitude == nil) {
         latitude = @"";
         longitude = @"";
     }
@@ -122,11 +100,11 @@
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSDictionary *dictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-            WOCBuyDashStep5ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep5ViewController"];
+            
+            WOCBuyDashStep5ViewController *myViewController = (WOCBuyDashStep5ViewController*)[self getViewController:@"WOCBuyDashStep5ViewController"];;
             myViewController.discoveryId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
             myViewController.amount = self.txtDollar.text;
-            [self.navigationController pushViewController:myViewController animated:YES];
+            [self pushViewController:myViewController animated:YES];
         }
         else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
@@ -136,8 +114,8 @@
 
 // MARK: - UITextField Delegates
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
     if (textField.tag == dashTextField) {
         self.line1Height.constant = 2;
         self.line2Height.constant = 1;

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCPasswordViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCPasswordViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *phoneNo;

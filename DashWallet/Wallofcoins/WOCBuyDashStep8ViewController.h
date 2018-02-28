@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyDashStep8ViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCBuyDashStep8ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *purchaseCode;
 @property (strong, nonatomic) NSString *offerId;

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyingInstructionsViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCBuyingInstructionsViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *purchaseCode;
 @property (strong, nonatomic) NSString *holdId;

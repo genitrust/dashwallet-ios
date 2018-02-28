@@ -47,11 +47,9 @@
 
 @implementation WOCBuyingSummaryViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewDidLoad {
     
-    self.title = @"Buy Dash With Cash";
+    [super viewDidLoad];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     
@@ -59,10 +57,12 @@
     [self setAttributedString];
     
     if (self.orders.count == 0) {
+        
         [self getOrders];
         [self displayAlert];
     }
     else {
+        
         NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
         NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
         self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
@@ -77,23 +77,8 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)setShadow:(UIView *)view
-{
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
-}
-
-- (void)setAttributedString
-{
+- (void)setAttributedString {
+    
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins." attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
     
     [attributedString addAttribute:NSLinkAttributeName
@@ -110,68 +95,13 @@
     self.txtInstruction.delegate = self;
 }
 
-- (void)pushToRootController
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        [nav.navigationBar setTintColor:[UIColor whiteColor]];
-        
-        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
-        
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = nav;
-    });
-}
-
-- (void)pushToHome
-{
-    [self pushToRootController];
-}
-
-- (void)back:(id)sender
-{
-    [self pushToRootController];
-}
-
-- (void)pushToStep1
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-        vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
-    });
-    return;
+- (void)back:(id)sender {
     
-    BOOL viewFound = NO;
-    
-    for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]]) {
-            [self.navigationController popToViewController:controller animated:NO];
-            viewFound = YES;
-            break;
-        }
-    }
-    
-    if (viewFound == NO) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-            WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-            myViewController.isFromSend = YES;
-            [self.navigationController pushViewController:myViewController animated:YES];
-        });
-    }
+    [self backToMainView];
 }
 
-- (NSString*)checkStatus:(NSString*)status
-{
+- (NSString*)checkStatus:(NSString*)status {
+    
     NSString *string = @"";
     
     if ([status isEqualToString:WD]) {
@@ -202,26 +132,23 @@
     return string;
 }
 
-- (void)displayAlert
-{
+- (void)displayAlert {
+    
     [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
 }
 
 // MARK: - IBAction
 
-- (IBAction)buyMoreDashClicked:(id)sender
-{
-    [self pushToStep1];
+- (IBAction)buyMoreDashClicked:(id)sender {
+    [self backToMainView];
 }
 
-- (IBAction)signOutClicked:(id)sender
-{
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    [self signOut:phoneNo];
+- (IBAction)signOutClicked:(id)sender {
+    [self signOutWOC];
 }
 
-- (IBAction)wallOfCoinsClicked:(id)sender
-{
+- (IBAction)wallOfCoinsClicked:(id)sender {
+    
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
@@ -232,8 +159,8 @@
 
 // MARK: - API
 
-- (void)getOrders
-{
+- (void)getOrders {
+    
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
@@ -267,35 +194,14 @@
     }];
 }
 
-- (void)signOut:(NSString*)phone
-{
-    NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
-    
-    [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
-        if (error == nil) {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [self pushToStep1];
-        }
-        else {
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
-}
-
 #pragma mark - UITableView DataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 4;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     if (section == 0) {
         return self.wdOrders.count;
     }
@@ -310,8 +216,8 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (indexPath.section == 1) {
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"linkCell"];
         [cell.btnSignOut addTarget:self action:@selector(wallOfCoinsClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -401,8 +307,8 @@
 
 // MARK: - UITableView Delegate
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
     if (section == 3) {
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
         headerView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
@@ -421,8 +327,8 @@
     return  nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
     if (section == 3) {
         if (self.otherOrders.count > 0) {
             return 50;
@@ -431,8 +337,8 @@
     return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (indexPath.section == 1 || indexPath.section == 2) {
         return 110.0;
     }
@@ -454,8 +360,8 @@
 }
 
 #pragma mark - UITextView Delegate
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+  
     if ([[URL absoluteString] hasPrefix:@"support"]) {
         if([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
@@ -473,8 +379,8 @@
 }
 
 #pragma mark - MFMailComposer Delegate
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
-{
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -104,7 +104,9 @@
 		75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F2E0D21BE9803900EAE861 /* Launch Screen.storyboard */; };
 		75F2E0D61BEAA6A400EAE861 /* BRTxMetadataEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 75F2E0D51BEAA6A400EAE861 /* BRTxMetadataEntity.m */; };
 		84F68C8A1975E9E2002FC300 /* BRScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F68C891975E9E2002FC300 /* BRScanViewController.m */; };
+		B20053CA204549D400398386 /* WOCBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B20053C9204549D400398386 /* WOCBaseViewController.m */; };
 		B21DAC742043E0E8001F81C1 /* WOCSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B21DAC732043E0E8001F81C1 /* WOCSignInViewController.m */; };
+		B29A48222046E552009CCDE1 /* WOCDefaultBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B29A48212046E552009CCDE1 /* WOCDefaultBaseViewController.m */; };
 		B2EC93BB203DA18700B899E8 /* WOCHoldIssueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC93BA203DA18700B899E8 /* WOCHoldIssueViewController.m */; };
 		BA4A72671BE11AFA00E39C01 /* BRAWWeakTimerTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4A72661BE11AFA00E39C01 /* BRAWWeakTimerTarget.swift */; };
 		BA54D3CE1B2EA74000C9CB28 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA54D3CD1B2EA74000C9CB28 /* Media.xcassets */; };
@@ -502,8 +504,12 @@
 		75FD2FB51BFAB97A00D56BBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BREventConfirmView.strings; sourceTree = "<group>"; };
 		84F68C881975E9E2002FC300 /* BRScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRScanViewController.h; sourceTree = "<group>"; };
 		84F68C891975E9E2002FC300 /* BRScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRScanViewController.m; sourceTree = "<group>"; };
+		B20053C8204549D400398386 /* WOCBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCBaseViewController.h; sourceTree = "<group>"; };
+		B20053C9204549D400398386 /* WOCBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCBaseViewController.m; sourceTree = "<group>"; };
 		B21DAC722043E0E7001F81C1 /* WOCSignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCSignInViewController.h; sourceTree = "<group>"; };
 		B21DAC732043E0E8001F81C1 /* WOCSignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCSignInViewController.m; sourceTree = "<group>"; };
+		B29A48202046E551009CCDE1 /* WOCDefaultBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCDefaultBaseViewController.h; sourceTree = "<group>"; };
+		B29A48212046E552009CCDE1 /* WOCDefaultBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCDefaultBaseViewController.m; sourceTree = "<group>"; };
 		B2EC93B9203DA18700B899E8 /* WOCHoldIssueViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WOCHoldIssueViewController.h; sourceTree = "<group>"; };
 		B2EC93BA203DA18700B899E8 /* WOCHoldIssueViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WOCHoldIssueViewController.m; sourceTree = "<group>"; };
 		BA4A72661BE11AFA00E39C01 /* BRAWWeakTimerTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRAWWeakTimerTarget.swift; sourceTree = "<group>"; };
@@ -675,6 +681,11 @@
 				0437549620354F63001A4ED4 /* APIManager */,
 				0437549920354F63001A4ED4 /* CustomCell */,
 				043754A020354F63001A4ED4 /* Resources */,
+				B20053C8204549D400398386 /* WOCBaseViewController.h */,
+				B20053C9204549D400398386 /* WOCBaseViewController.m */,
+				B29A48202046E551009CCDE1 /* WOCDefaultBaseViewController.h */,
+				B29A48212046E552009CCDE1 /* WOCDefaultBaseViewController.m */,
+				043754B620354F63001A4ED4 /* WOCConstants.h */,
 				043754A220354F63001A4ED4 /* WOCBuyDashStep1ViewController.h */,
 				043754A320354F63001A4ED4 /* WOCBuyDashStep1ViewController.m */,
 				043754A420354F63001A4ED4 /* WOCBuyDashStep2ViewController.h */,
@@ -695,7 +706,6 @@
 				043754B320354F63001A4ED4 /* WOCBuyingInstructionsViewController.m */,
 				043754B420354F63001A4ED4 /* WOCBuyingSummaryViewController.h */,
 				043754B520354F63001A4ED4 /* WOCBuyingSummaryViewController.m */,
-				043754B620354F63001A4ED4 /* WOCConstants.h */,
 				B2EC93B9203DA18700B899E8 /* WOCHoldIssueViewController.h */,
 				B2EC93BA203DA18700B899E8 /* WOCHoldIssueViewController.m */,
 				043754B720354F63001A4ED4 /* WOCHelpers */,
@@ -1619,6 +1629,7 @@
 				75878BC1192AEC3F002505AB /* BRReceiveViewController.m in Sources */,
 				043754C720354F63001A4ED4 /* WOCBuyDashStep4ViewController.m in Sources */,
 				043754D020354F63001A4ED4 /* WOCPasswordViewController.m in Sources */,
+				B20053CA204549D400398386 /* WOCBaseViewController.m in Sources */,
 				75878BBF192ACD46002505AB /* BRAmountViewController.m in Sources */,
 				759816E719357D6F005060EA /* BRBubbleView.m in Sources */,
 				757BE7E3192C0E9D0061CB20 /* BRRestoreViewController.m in Sources */,
@@ -1643,6 +1654,7 @@
 				752E28EA19234DA200DB5A3C /* NSMutableData+Bitcoin.m in Sources */,
 				752E28EB19234DA200DB5A3C /* NSString+Bitcoin.m in Sources */,
 				757C89521A2FCE420076B373 /* BRSettingsViewController.m in Sources */,
+				B29A48222046E552009CCDE1 /* WOCDefaultBaseViewController.m in Sources */,
 				75D5F3D2191EC270004AB296 /* BRAppDelegate.m in Sources */,
 				043754CA20354F63001A4ED4 /* WOCBuyDashStep7ViewController.m in Sources */,
 				759FBB36193290F600AB4465 /* BRRootViewController.m in Sources */,

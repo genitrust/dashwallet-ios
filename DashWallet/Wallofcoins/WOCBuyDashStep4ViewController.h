@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WOCBaseViewController.h"
 
-@interface WOCBuyDashStep4ViewController : UIViewController
+// Get Offer with Amount 
+@interface WOCBuyDashStep4ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *bankId;
 @property (strong, nonatomic) NSString *zipCode;

@@ -17,23 +17,14 @@
 
 @implementation WOCBuyDashStep6ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnNext];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (BOOL)validateEmailWithString:(NSString*)checkString
-{
+- (BOOL)validateEmailWithString:(NSString*)checkString {
+    
     BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
     NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
     NSString *laxString = @".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*";
@@ -42,28 +33,18 @@
     return [emailTest evaluateWithObject:checkString];
 }
 
-- (void)setShadow:(UIView *)view
-{
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 0);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
-}
-
 // MARK: - IBAction
 
-- (IBAction)doNotSendMeEmailClicked:(id)sender
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-    WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
+- (IBAction)doNotSendMeEmailClicked:(id)sender {
+    
+    WOCBuyDashStep7ViewController *myViewController = [self getViewController:@"WOCBuyDashStep7ViewController"];
     myViewController.offerId = self.offerId;
     myViewController.emailId = @"";
-    [self.navigationController pushViewController:myViewController animated:YES];
+    [self pushViewController:myViewController animated:YES];
 }
 
-- (IBAction)nextClicked:(id)sender
-{
+- (IBAction)nextClicked:(id)sender {
+    
     NSString *emailStr = [self.txtEmail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([emailStr length] == 0) {
@@ -73,11 +54,11 @@
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter valid email." viewController:self.navigationController.visibleViewController];
     }
     else {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-        WOCBuyDashStep7ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep7ViewController"];
+
+        WOCBuyDashStep7ViewController *myViewController = [self getViewController:@"WOCBuyDashStep7ViewController"];
         myViewController.offerId = self.offerId;
         myViewController.emailId = emailStr;
-        [self.navigationController pushViewController:myViewController animated:YES];
+        [self pushViewController:myViewController animated:YES];
     }
 }
 

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCSignInViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCSignInViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *discoveryId;
 @property (strong, nonatomic) NSString *amount;

@@ -28,37 +28,27 @@
 
 @implementation WOCBuyDashStep5ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"Buy Dash With Cash";
     
     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
     
     [self getOffers];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)pushToStep6:(NSInteger)sender
-{
+- (void)pushToStep6:(NSInteger)sender {
+    
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
     NSDictionary *offerDict = self.offers[indexPath.row];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-    WOCBuyDashStep6ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep6ViewController"];
+    WOCBuyDashStep6ViewController *myViewController = (WOCBuyDashStep6ViewController*)[self getViewController:@"WOCBuyDashStep6ViewController"];
     myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"id"]];
-    [self.navigationController pushViewController:myViewController animated:YES];
+    [self pushViewController:myViewController animated:YES];
 }
 
 // MARK: - API
 
-- (void)getOffers
-{
+- (void)getOffers {
+    
     if (self.discoveryId != nil && [self.discoveryId length] > 0) {
         [[APIManager sharedInstance] discoveryInputs:self.discoveryId response:^(id responseDict, NSError *error) {
             if (error == nil) {
@@ -70,28 +60,24 @@
                     self.incremented = true;
                     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                 }
-                else{
+                else {
                     self.incremented = false;
                     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                 }
                 
                 [self.tableView reloadData];
             }
-            else{
+            else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error.userInfo != nil)
-                    {
-                        if (error.userInfo[@"detail"] != nil)
-                        {
+                    if (error.userInfo != nil) {
+                        if (error.userInfo[@"detail"] != nil) {
                             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
                         }
-                        else
-                        {
+                        else {
                             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
                         }
                     }
-                    else
-                    {
+                    else {
                         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
                     }
                 });
@@ -100,8 +86,8 @@
     }
 }
 
-- (void)getOrders:(NSInteger)sender
-{
+- (void)getOrders:(NSInteger)sender {
+    
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
@@ -117,114 +103,53 @@
         if (error == nil) {
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
+             NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            
             if (orders.count > 0) {
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+               
                 NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
                 NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
                 NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
                 NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
                 if ([status isEqualToString:@"WD"]) {
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = YES;
                     myViewController.isFromOffer = NO;
                     myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self.navigationController pushViewController:myViewController animated:YES];
-                }
-                else if (wdArray.count > 0) {
-                    //delete a hold
-                    for (int i = 0; i < wdArray.count; i++) {
-                        
-                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:i];
-                        
-                        //[self deleteHold:[NSString stringWithFormat:@"%@",[orderDict valueForKey:@"id"]]];
-                    }
-                }
-                else if (orders.count > 0) {
-                    
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.isFromSend = NO;
-                    myViewController.isFromOffer = YES;
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
-                    NSDictionary *offerDict = self.offers[indexPath.row];
-                    myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
-                    [self.navigationController pushViewController:myViewController animated:YES];
-                }
-                else if (orders.count > 0) {
-                    
-                    UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCBuyingSummaryViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.orders = orders;
-                    myViewController.isFromSend = YES;
-                    [self.navigationController pushViewController:myViewController animated:YES];
-                }
-                else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                        BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
-                        
-                        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                        [nav.navigationBar setTintColor:[UIColor whiteColor]];
-                        
-                        UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-                        UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
-                        
-                        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-                        appDelegate.window.rootViewController = nav;
-                    });
+                    [self pushViewController:myViewController animated:YES];
+                    return ;
                 }
             }
-            else {
-                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                UIStoryboard *stroyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                WOCBuyingInstructionsViewController *myViewController = [stroyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
-                myViewController.phoneNo = phoneNo;
-                myViewController.isFromSend = NO;
-                myViewController.isFromOffer = YES;
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
-                NSDictionary *offerDict = self.offers[indexPath.row];
-                myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
-                [self.navigationController pushViewController:myViewController animated:YES];
-            }
+            
+            WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+            myViewController.phoneNo = phoneNo;
+            myViewController.isFromSend = NO;
+            myViewController.isFromOffer = YES;
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
+            NSDictionary *offerDict = self.offers[indexPath.row];
+            myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+            [self pushViewController:myViewController animated:YES];
+            
         }
         else {
-           // [self pushToStep6:sender];
-            [self pushToStep1];
+           
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Token expired." viewController:self];
+                [self backToMainView];
+
             });
         }
     }];
 }
 
-- (void)pushToStep1
-{
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-        vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
-    });
-}
 
 // MARK: - IBAction
 
 - (IBAction)orderClicked:(id)sender
 {
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
         [self getOrders:[sender tag]];
     }

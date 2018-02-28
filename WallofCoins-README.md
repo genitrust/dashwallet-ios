@@ -81,7 +81,9 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 *   bank: Selected bank ID from bank list. pass empty if selected none.
 *   zipCode: zip code of user, need to take input from user.
 *   browserLocation: Need to pass user device latitude and Longitude.
-
+Note: when you specify the browserLocation parameter, it must have real values (latitude,longitude) and browserLocation will be used. When browserLocation is not set, you must have zipCode set to a valid zipCode. when zipCode is not set, you must specify the bank.
+bank > browser location > zip code > country (get this value by phone # country code, by 'country' parameter
+should be used by the most specific location to the broadest location. so for example, bank is the most direct, then browser location, then zip code, then country.
 ##### Response :
 
 ```json

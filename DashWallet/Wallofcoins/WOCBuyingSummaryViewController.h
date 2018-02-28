@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyingSummaryViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCBuyingSummaryViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *phoneNo;
 @property (strong, nonatomic) NSArray *orders;
