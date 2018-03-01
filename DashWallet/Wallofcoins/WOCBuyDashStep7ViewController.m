@@ -172,17 +172,14 @@
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         
         if (error == nil) {
+            
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [self.defaults synchronize];
-            
-            WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
-            myViewController.phoneNo = phoneNo;
-            myViewController.offerId = self.offerId;
-            myViewController.deviceCode = deviceCode;
-            myViewController.emailId = self.emailId;
-            [self pushViewController:myViewController animated:YES];
+            [self storeDeviceInfoLocally];
+            [self createHoldAfterAuthorize:phoneNo];
         }
         else {
             [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
@@ -270,51 +267,39 @@
     
     if (!self.isActiveHoldChecked) {
         
-        self.isActiveHoldChecked = TRUE;
+        
         NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
         
         if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
             /*you receive Status 403 from POST /api/v1/holds/
             IF YOU HAVE a token or the deviceId/deviceCode, login with that device -- you will use the token to get a list of holds so that you can cancel the holds. IF THERE ARE NO HOLDS, then you will bring the user to the Buy Summary, where they will see their latest WD orders.
              */
+            self.isActiveHoldChecked = TRUE;
             [self getHold];
         }
         else {
             
-            /*
-            if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] != nil) {
-                
-                if ([[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] isKindOfClass:[NSDictionary class]]) {
-                    NSMutableDictionary *deviceInfoDict = [NSMutableDictionary dictionaryWithDictionary:[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO]];
-                    if (deviceInfoDict[phoneNo] != nil) {
-                        
-                        NSString *deviceId = deviceInfoDict[phoneNo];
-                        if (deviceId != nil) {
-                            
-                            if (deviceId.length > 0) {
-                                [self.defaults setObject:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                                [deviceInfoDict removeObjectForKey:phoneNo];
-                                [self.defaults setObject:deviceInfoDict forKey:USER_DEFAULTS_LOCAL_DEVICE_INFO];
-                                [self.defaults synchronize];
-                                [self login:phoneNo];
-                                return;
-                            }
-                        }
-                    }
-                }
+      
+            NSString *deviceID = [self getDeviceIDFromPhoneNumber:phoneNo];
+            if (deviceID != nil)
+            {
+                [self.defaults setObject:deviceID forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
+                [self login:phoneNo];
             }
-            */
-            
-            /*
-             IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE DASH WITH CASH" button), and when they press that button, you will bring them to this website link:
-             https://wallofcoins.com/signin/1-2397776832/
-             https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
-             */
-            NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
-            WOCHoldIssueViewController *aViewController = [self getViewController:@"WOCHoldIssueViewController"];
-            aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
-            [self pushViewController:aViewController animated:YES];
+            else
+            {
+                /*
+                 IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE DASH WITH CASH" button), and when they press that button, you will bring them to this website link:
+                 https://wallofcoins.com/signin/1-2397776832/
+                 https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
+                 */
+                NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+                WOCHoldIssueViewController *aViewController = [self getViewController:@"WOCHoldIssueViewController"];
+                aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
+                [self pushViewController:aViewController animated:YES];
+            }
         }
     }
 }
@@ -471,9 +456,7 @@
             [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [self.defaults synchronize];
             
-            [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            
+            [self storeDeviceInfoLocally];
             [self createHoldAfterAuthorize:phoneNo];
         }
         else {
@@ -492,7 +475,26 @@
 
 - (void)createHoldAfterAuthorize:(NSString*)phoneNo
 {
-    [self createHold:phoneNo];
+    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+   
+        [self createHold:phoneNo];
+    }
+    else {
+        
+        NSString *deviceID = [self getDeviceIDFromPhoneNumber:phoneNo];
+        if (deviceID != nil)
+        {
+            [self.defaults setObject:deviceID forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults synchronize];
+            [self login:phoneNo];
+        }
+        else
+        {
+             [self createHold:phoneNo];
+        }
+    }
 }
 
 - (void)getOrders

@@ -68,7 +68,8 @@
             [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [self.defaults synchronize];
-            
+            [self storeDeviceInfoLocally];
+
             [self getDeviceId:phoneNo];
            /*
            // Old Flow
@@ -181,9 +182,10 @@
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
             [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults setValue:[NSString stringWithFormat:@"%@",API_RESPONSE_DEVICE_ID] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
             [self.defaults synchronize];
-            
+            [self storeDeviceInfoLocally];
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self dismissViewControllerAnimated:YES completion:nil];
                 //move to step 8

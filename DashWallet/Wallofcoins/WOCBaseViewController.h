@@ -13,6 +13,8 @@
 
 - (IBAction)signOutClicked:(id)sender;
 
+- (void)loginWOC;
 - (void)signOutWOC;
-
+- (void)refereshToken;
+- (NSString*)getDeviceIDFromPhoneNumber:(NSString*)phoneNo;
 @end

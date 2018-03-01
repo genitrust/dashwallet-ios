@@ -135,11 +135,12 @@
         }
         else {
            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Token expired." viewController:self];
-                [self backToMainView];
-
-            });
+            [self refereshToken];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Token expired." viewController:self];
+//                [self backToMainView];
+//
+//            });
         }
     }];
 }

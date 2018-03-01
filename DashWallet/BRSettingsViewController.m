@@ -181,6 +181,9 @@
     
     WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
     [navController pushViewController:myViewController animated:YES];
+    [navController.navigationBar setTintColor:[UIColor whiteColor]];
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = navController;
 }
 
 // MARK: - WallofCoins API
