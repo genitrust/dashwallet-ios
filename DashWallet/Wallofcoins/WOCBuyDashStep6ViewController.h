@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WOCBaseViewController.h"
 
-@interface WOCBuyDashStep6ViewController : UIViewController
+// Enter Email Address Screen
+@interface WOCBuyDashStep6ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *offerId;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
+
 - (IBAction)doNotSendMeEmailClicked:(id)sender;
 - (IBAction)nextClicked:(id)sender;
+
 @end

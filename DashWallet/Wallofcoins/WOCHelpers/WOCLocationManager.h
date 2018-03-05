@@ -15,7 +15,9 @@
 @property (strong, nonatomic) CLLocation *lastLocation;
 
 + (WOCLocationManager *)sharedInstance;
+
 - (void)startLocationService;
 - (BOOL)locationServiceEnabled;
 - (CLLocationCoordinate2D) getLocationFromAddressString:(NSString*) addressStr;
+
 @end

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCPasswordViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCPasswordViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *phoneNo;
@@ -19,8 +19,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnForgotPassword;
+
 - (IBAction)linkClicked:(id)sender;
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)forgotPasswordClicked:(id)sender;
 - (IBAction)closeClicked:(id)sender;
+
 @end

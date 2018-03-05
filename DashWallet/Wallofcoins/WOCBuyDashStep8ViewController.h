@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyDashStep8ViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCBuyDashStep8ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *purchaseCode;
 @property (strong, nonatomic) NSString *offerId;
@@ -19,5 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPurchaseCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnPurchaseCode;
+
 - (IBAction)confirmPurchaseCodeClicked:(id)sender;
+
 @end

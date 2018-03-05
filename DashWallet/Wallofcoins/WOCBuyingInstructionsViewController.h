@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyingInstructionsViewController : UIViewController
+#import "WOCBaseViewController.h"
+@interface WOCBuyingInstructionsViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *purchaseCode;
 @property (strong, nonatomic) NSString *holdId;
@@ -41,4 +41,7 @@
 - (IBAction)cancelOrderClicked:(id)sender;
 - (IBAction)wallOfCoinsClicked:(id)sender;
 - (IBAction)signOutClicked:(id)sender;
+- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId ;
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count;
+
 @end

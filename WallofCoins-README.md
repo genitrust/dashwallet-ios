@@ -62,12 +62,15 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 
 ```json
 {
-"publisherId": "",
 "cryptoAddress": "",
 "usdAmount": "500",
 "crypto": "DASH",
 "bank": "",
-"zipCode": "34236"
+"zipCode": "34236",
+"browserLocation":  {
+"latitude": 27.3331293,
+"longitude": -82.5456374
+}
 }
 ```
 
@@ -77,7 +80,10 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 *   crypto: crypto type either DASH or BTC for bitcoin.
 *   bank: Selected bank ID from bank list. pass empty if selected none.
 *   zipCode: zip code of user, need to take input from user.
-
+*   browserLocation: Need to pass user device latitude and Longitude.
+Note: when you specify the browserLocation parameter, it must have real values (latitude,longitude) and browserLocation will be used. When browserLocation is not set, you must have zipCode set to a valid zipCode. when zipCode is not set, you must specify the bank.
+bank > browser location > zip code > country (get this value by phone # country code, by 'country' parameter
+should be used by the most specific location to the broadest location. so for example, bank is the most direct, then browser location, then zip code, then country.
 ##### Response :
 
 ```json
@@ -92,11 +98,10 @@ POST https://woc.reference.genitrust.com/api/v1/discoveryInputs/
 "state": null,
 "cryptoAddress": "",
 "createdIp": "182.76.224.130",
-"location": {
+"browserLocation": {
 "latitude": 27.3331293,
 "longitude": -82.5456374
 },
-"browserLocation": null,
 "publisher": null
 }
 ```
@@ -239,6 +244,85 @@ It need  X-Coins-Publisher as a header parameter.
 This endpoint will return HTTP 404 if phone is not registered in our system then call Create Hold
 , otherwise it will return a list of available authentication methods.
 
+#### POST AUTH DETAILS (PASSWORD)
+
+**POST /api/v1/auth/<phone>/authorize**
+
+This endpoint will return **token**  and use that **token** as **auth token** to create hold. You must need to pass **deviceId** with **password** in this API.
+
+**POST /api/v1/auth/15005550001/authorize/**
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+Content-Type: application/json
+```
+It need  X-Coins-Publisher as a header parameter.
+
+
+##### Request :
+
+```
+{
+"deviceId" : "768",
+"password" : "abc123",
+"publisherId" : "52"
+}
+```
+
+##### Response :
+
+```
+{
+accessedOn = "2018-02-16T06:28:41.745351Z",
+authSource = password;
+createdOn = "2014-08-29T02:19:45.826334Z";
+email = "";
+phone = 12397776832;
+token = "YXV0aDoxOjE1MTg3NzMzMjF8OWFjMWQ5ZmNiOGU1OWZhOThhNTg3YWM2YjBlZWUxMDk1NGM3NGI3OQ==";
+tokenExpiresAt = "2018-02-16T09:28:41.742641Z";
+}
+```
+
+#### POST AUTH DETAILS (DEVICE)
+
+**POST /api/v1/auth/<phone>/authorize**
+
+This endpoint will return **token**  and use that **token** as **auth token** to create hold. You must need to pass **deviceId** with **deviceCode** in this API.
+
+**POST /api/v1/auth/15005550001/authorize/**
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+Content-Type: application/json
+```
+It need  X-Coins-Publisher as a header parameter.
+
+
+##### Request :
+
+```
+{
+"deviceId" : 769,
+"deviceCode" : "C1813921-DD87-4BE6-9F73-D78B603CF1C8",
+"publisherId" : "52"
+}
+```
+
+##### Response :
+
+```
+{
+accessedOn = "2018-02-16T06:28:41.745351Z",
+authSource = password;
+createdOn = "2014-08-29T02:19:45.826334Z";
+email = "";
+phone = 12397776832;
+token = "YXV0aDoxOjE1MTg3NzMzMjF8OWFjMWQ5ZmNiOGU1OWZhOThhNTg3YWM2YjBlZWUxMDk1NGM3NGI3OQ==";
+tokenExpiresAt = "2018-02-16T09:28:41.742641Z";
+}
+```
 
 #### CREATE HOLD
 
@@ -316,12 +400,64 @@ It need X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
 
 * 201 returned when the hold is created
 * 400 returned when one of the parameters are missing! for example, if you're creating a new device... you need "phone", "deviceName", and "deviceCode".
-* 403 returned when a X-Coins-Api-Token is required or the phone number supplied needs password
+* 401 will be "returned when a X-Coins-Api-Token is required or the phone number supplied needs password".
+* 403 will have details: "Not permitted to create a hold while an open hold or order with status WD is current."
 * 404 returned when the offer no-longer is available (either the time expired or the ad will now be negative.)
+
+if you get status code 403, then you have to delete active hold first then need to create hold again. As you have **auth token** available, you need to call Get Hold API by passing **auth token** as **X-Coins-Api-Token** in header, which will return active hold in response. Get Hold API returns array of hold in response, then user need to delete active hold with status is equal to “AC” by calling Delete Hold API by passing **auth token** as **X-Coins-Api-Token** in header. Suppose user do not get any active holds then it means that there is some pending order. so you need to get all orders and find pending order with status = "WD" and give option to confirm deposite Or cancel Order functionality.
+##### Hold Status :
+
+PE = Pending
+AC = Active, waiting for Order
+CAP = Captured
+EX = Expired
+CAN = Canceled
 
 This API will send purchase code to user's device on his register phone number and it will be same
 as `__PURCHASE_CODE` value.
 
+#### GET HOLD
+
+**GET /api/v1/holds/**
+
+This endpoint will return active **holdId**. You must need to pass **auth token** as **X-Coins-Api-Token** in header of this API.
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+X-Coins-Api-Token: ZGV2aWN..
+```
+It need  X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
+
+##### Response
+
+```
+[
+{
+"id": "ec11665efc6eeb8e8ca083360c70a659",
+"expirationTime": "2018-02-16T06:38:14.408227Z",
+"discoveryInput": "8f4a39a2ca29607da6d8c891e8318b26"
+}
+]
+```
+
+Use **id** as **holdId** to delete an active hold.
+
+#### DELETE HOLD
+
+**POST /api/v1/holds/<hold-Id>**
+
+This endpoint will delete an active hold. You must need to pass **auth token** as **X-Coins-Api-Token** in header of this API.
+
+```http
+HEADER:
+X-Coins-Publisher: ##
+X-Coins-Api-Token: ZGV2aWN..
+```
+It need  X-Coins-Publisher and X-Coins-Api-Token as a header parameter.
+
+##### Response :
+204 NO CONTENT
 
 #### CAPTURE HOLD
 
@@ -390,7 +526,7 @@ Content-Type: application/json
 POST https://woc.reference.genitrust.com/api/v1/orders/<Order ID>/confirmDeposit/
 ```
 
-##### Response
+##### Response :
 
 ```json
 {
@@ -428,7 +564,7 @@ Content-Type: application/json
 DELETE https://woc.reference.genitrust.com/api/v1/orders/{orderId}/?<publisherId>
 ```
 
-##### Response
+##### Response :
 204 NO CONTENT
 
 This method is used for cancel order by orderId created by user.
@@ -445,7 +581,7 @@ GET https://woc.reference.genitrust.com/api/v1/orders/?<publisherId>
 ```
 
 
-##### Response
+##### Response :
 
 ```json
 [{

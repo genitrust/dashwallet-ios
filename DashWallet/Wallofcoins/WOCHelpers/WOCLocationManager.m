@@ -11,8 +11,8 @@
 
 @implementation WOCLocationManager
 
-+ (WOCLocationManager *)sharedInstance {
-    
++ (WOCLocationManager *)sharedInstance
+{
     static dispatch_once_t onceToken;
     static WOCLocationManager *locationManager;
     
@@ -23,7 +23,8 @@
     return locationManager;
 }
 
-- (void)startLocationService {
+- (void)startLocationService
+{
     self.manager = [[CLLocationManager alloc] init];
     self.manager.desiredAccuracy = kCLLocationAccuracyBest;
     self.manager.delegate = self;
@@ -35,8 +36,8 @@
     [self.manager startUpdatingLocation];
 }
 
-- (BOOL)locationServiceEnabled {
-    
+- (BOOL)locationServiceEnabled
+{
     if ([CLLocationManager locationServicesEnabled]) {
         switch ([CLLocationManager authorizationStatus]) {
             case kCLAuthorizationStatusAuthorizedWhenInUse :
@@ -46,13 +47,14 @@
                 return NO;
                 break;
         }
-    } else {
+    }
+    else {
         return NO;
     }
 }
 
-- (CLLocationCoordinate2D) getLocationFromAddressString:(NSString*) addressStr {
-    
+- (CLLocationCoordinate2D) getLocationFromAddressString:(NSString*) addressStr
+{
     double latitude = 0, longitude = 0;
     NSString *esc_addr =  [addressStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];//[addressStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *req = [NSString stringWithFormat:@"http://maps.google.com/maps/api/geocode/json?sensor=false&address=%@", esc_addr];
@@ -72,39 +74,10 @@
     return center;
 }
 
--(void)openStep4 {
-    
+- (void)openStep4
+{
     if (self.lastLocation != nil) {
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
-    }
-}
-
-#pragma mark - CLLocationManager Delegate
-
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
-    
-    if ([locations count]) {
-        self.lastLocation = [locations lastObject];
-        
-        if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil)
-        {
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    }
-}
-
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    
-    if (status == kCLAuthorizationStatusDenied) {
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
-        
-    } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        
-        [self performSelector:@selector(openStep4) withObject:nil afterDelay:2.0];
     }
 }
 
@@ -136,6 +109,35 @@
     [alert addAction:noButton];
     
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alert animated:YES completion:nil];
+}
+
+// MARK: - CLLocationManager Delegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    
+    if ([locations count]) {
+        self.lastLocation = [locations lastObject];
+        
+        if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil)
+        {
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+}
+
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    
+    if (status == kCLAuthorizationStatusDenied) {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
+        
+    } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        
+        [self performSelector:@selector(openStep4) withObject:nil afterDelay:2.0];
+    }
 }
 
 @end

@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WOCBaseViewController.h"
-
-// Offer List ViewController
-@interface WOCBuyDashStep5ViewController : WOCBaseViewController
+@interface WOCSignInViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *discoveryId;
 @property (strong, nonatomic) NSString *amount;
@@ -19,5 +17,10 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)orderClicked:(id)sender;
+
+- (IBAction)existingAccoutClick:(id)sender;
+- (IBAction)signUpClick:(id)sender;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableHeighConstrain;
 
 @end

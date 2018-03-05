@@ -189,6 +189,7 @@ Holiday
 
 Holiday
 
+## [WEEK-5] 05 FEB 2018
 #### Work on 05 FEB 2018 (MON) Sujal Bandhara
 
 
@@ -233,6 +234,7 @@ Holiday
 12. The SIGN OUT button will be grey with black text, like the WALLOFCOINS.COM button.
 13. Under the SIGN OUT panel will be big, centered text saying, "Previous Orders”.
 
+## [WEEK-6] 12 FEB 2018
 #### Work on 12 FEB 2018 (MON) Sujal Bandhara
 
 1. Logos and Icons used must NOT be the "HQ" versio
@@ -253,3 +255,57 @@ Holiday
 3. Added check locations in buying instruction
 4. Testing and bug solving
 
+#### Work on 15 FEB 2018 (THU) Sujal Bandhara
+
+1. Unable to create order: zipCode or bankId is empty
+2. Added password as parameter in authorise API instead of deviceCode when login using password
+3. Resolved conflicts
+4. Code optimization
+5. Testing and bug solving
+
+#### Work on 16 FEB 2018 (FRI) Sujal Bandhara
+
+1. Implemented GET HOLD API
+2. Updated WallofCoins-README.md
+3. Testing and Bug Solving
+
+#### Work on 17 FEB 2018 (SAT) Sujal Bandhara
+
+Holiday
+
+#### Work on 18 FEB 2018 (SUN) Sujal Bandhara
+
+Holiday
+
+## [WEEK-7] 19 FEB 2018
+#### Work on 19 FEB 2018 (MON) Sujal Bandhara
+
+
+#### Work on 20 FEB 2018 (TUE) Sujal Bandhara
+
+1. When loading GET /api/v1/orders, show loading icons #15
+2. ”Receive Dash" UI Enhancements #16
+3. Update Message when end user confirms DEPOSIT FINISHED (#44)
+4. Buying Wizard User Experience enhancement (#45)
+5. Buy Summary: "WDV" status orders still show the account details (#38)
+6. Buying Wizard "incremented offers" (#36)
+7. Find My Location button should only be pressed once? (#43)
+
+#### Work on 21 FEB 2018 (WED) Sujal Bandhara
+
+1. Added New Screen to redirect user on Web when there is some issue with Hold
+2. Testing and Bug Solving
+
+#### Work on 22 FEB 2018 (THU) Sujal Bandhara
+
+1. Handle response 403 and 402 in create hold
+2. Testing and Bug Solving
+
+#### Work on 23 FEB 2018 (FRI) Sujal Bandhara
+
+1. Existing Auth (with WOC password) will not have API device verified #17
+2. Unable to log out of a user with no orders. #54
+3. Updated ReadME file
+4. Testing and Bug Solving
+
+#### Work on 24 FEB 2018 (SAT) Sujal Bandhara

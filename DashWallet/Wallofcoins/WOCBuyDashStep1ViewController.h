@@ -7,15 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WOCBaseViewController.h"
 
-@interface WOCBuyDashStep1ViewController : UIViewController
+// Find My Location Screen
+@interface WOCBuyDashStep1ViewController : WOCBaseViewController
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLocation;
 @property (weak, nonatomic) IBOutlet UIButton *btnNoThanks;
+@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
+@property (weak, nonatomic) IBOutlet UIButton *btnSignOut;
+@property (weak, nonatomic) IBOutlet UIView *signoutView;
 @property (assign) BOOL isFromSend;
 
+- (void)setLogoutButton;
 - (IBAction)backBtnClicked:(id)sender;
 - (IBAction)findLocationClicked:(id)sender;
 - (IBAction)noThanksClicked:(id)sender;
+- (IBAction)signOutClicked:(id)sender;
 
 @end

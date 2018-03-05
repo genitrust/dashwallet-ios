@@ -16,6 +16,7 @@
 #import "BRAppDelegate.h"
 #import "WOCAlertController.h"
 #import "WOCLocationManager.h"
+#import "MBProgressHUD.h"
 
 @interface WOCBuyingInstructionsViewController () <UITextViewDelegate>
 
@@ -30,17 +31,16 @@
 
 @implementation WOCBuyingInstructionsViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-
-    self.title = @"Buy Dash With Cash";
     
     [self setShadow:self.btnDepositFinished];
     [self setShadow:self.btnCancelOrder];
     [self setShadow:self.btnWallOfCoins];
     [self setShadow:self.btnSignOut];
     
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
     self.lblLoginPhone.text = loginPhone;
     
@@ -50,24 +50,20 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     
-    if (!self.isFromSend && !self.isFromOffer){
-        
+    if (!self.isFromSend && !self.isFromOffer) {
         if ([self.purchaseCode length] > 0 && [self.holdId length] > 0) {
-            
             [self captureHold:self.purchaseCode holdId:self.holdId];
         }
-        else{
+        else {
             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please enter purchase code." viewController:self.navigationController.visibleViewController];
         }
     }
     else if (self.isFromOffer) {
-        
-        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-        
+        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
         if (self.offerId != nil && [self.offerId length] > 0) {
             [self createHold:self.offerId phoneNo:phoneNo];
         }
-        else{
+        else {
             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Please select offer." viewController:self.navigationController.visibleViewController];
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -80,9 +76,11 @@
                              range:[[attributedString string] rangeOfString:@"wallofcoins.com"]];
     
     
-    NSDictionary *linkAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+    NSDictionary *linkAttributes = @{
+                                     NSForegroundColorAttributeName: [UIColor blackColor],
                                      NSUnderlineColorAttributeName: [UIColor blackColor],
-                                     NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
+                                     NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)
+                                     };
     
     // assume that textView is a UITextView previously created (either by code or Interface Builder)
     self.txtInstruction.linkTextAttributes = linkAttributes; // customizes the appearance of links
@@ -90,75 +88,11 @@
     self.txtInstruction.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
-#pragma mark - Action
-- (IBAction)showMapClicked:(id)sender
+- (void)pushToHome
 {
-    if (self.locationUrl != nil) {
-        
-        if (![self.locationUrl hasPrefix:@"http"]) {
-            self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
-        }
-        
-        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
-                NSLog(@"URL opened.");
-            }];
-        }
-    }
-    else{
-    
-        // Your location from latitude and longitude
-        NSString *latitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-        NSString *longitude = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
-        
-        NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", 27.6648, 81.5158, 27.6648, 81.5158];
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
-        }
-    }
-}
-
-- (IBAction)depositFinishedClicked:(id)sender {
-    
-    [self showDepositAlert];
-}
-
-- (IBAction)cancelOrderClicked:(id)sender
-{
-    [self showCancelOrderAlert];
-}
-
-- (IBAction)wallOfCoinsClicked:(id)sender {
-    
-    [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
-}
-
-- (IBAction)signOutClicked:(id)sender {
-    
-    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    
-    [self signOut:phoneNo];
-}
-
-#pragma mark - Function
-- (void)setShadow:(UIView *)view{
-    
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
-}
-
-- (void)pushToHome{
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
         WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -170,10 +104,8 @@
     
     BOOL viewFound = NO;
     
-    for (UIViewController *controller in self.navigationController.viewControllers)
-    {
-        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]])
-        {
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]]) {
             [self.navigationController popToViewController:controller animated:NO];
             viewFound = YES;
             break;
@@ -181,46 +113,25 @@
     }
     
     if (viewFound == NO) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-            WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-            [self.navigationController pushViewController:myViewController animated:YES];
+            WOCBuyDashStep1ViewController *myViewController = [self getViewController:@"WOCBuyDashStep1ViewController"];
+            [self pushViewController:myViewController animated:YES];
         });
     }
-    
 }
 
-- (void)back:(id)sender{
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    BRRootViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"RootViewController"];
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    [nav.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    UIPageControl.appearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-    UIPageControl.appearance.currentPageIndicatorTintColor = [UIColor blueColor];
-    
-    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-    appDelegate.window.rootViewController = nav;
+- (void)back:(id)sender
+{
+    [self backToMainView];
 }
 
-- (void)pushToStep1{
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
-        vc.isFromSend = YES;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navigationController;
-    });
+- (void)pushToStep1
+{
+    [self backToMainView];
 }
 
-- (void)openSite:(NSURL*)url{
-
+- (void)openSite:(NSURL*)url
+{
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
             NSLog(@"URL opened...");
@@ -228,7 +139,8 @@
     }
 }
 
-- (void)stopTimer{
+- (void)stopTimer
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.timer invalidate];
     });
@@ -236,46 +148,39 @@
 
 - (void)showDepositAlert
 {
-    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Confirmation!" message:@"Are you sure you finished making the payment?" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
         [self confirmDeposit];
     }];
     
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
     }];
     
     [alert addAction:yesAction];
     [alert addAction:noAction];
-    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)showCancelOrderAlert{
+- (void)showCancelOrderAlert
+{
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Confirmation!" message:@"Are you sure you want to cancel order?" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
         [self cancelOrder];
     }];
     
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-        
     }];
     
     [alert addAction:yesAction];
     [alert addAction:noAction];
-    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)updateData:(NSDictionary*)dictionary{
-    
+- (void)updateData:(NSDictionary*)dictionary
+{
     NSString *bankLogo = [dictionary valueForKey:@"bankLogo"];
     NSString *bankName = [dictionary valueForKey:@"bankName"];
     NSString *phoneNo = [NSString stringWithFormat:@"%@",[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
@@ -288,25 +193,22 @@
     
     //bankLogo
     if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
-        
         if ([bankLogo hasPrefix:@"https://"]) {
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
             self.imgView.image = [UIImage imageWithData: imageData];
         }
-        else{
+        else {
             self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
     }
-    else{
+    else {
         self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     }
     
     //bankLocationUrl
     if ([dictionary valueForKey:@"bankUrl"] != [NSNull null]) {
-        
         [self.btnCheckLocation setTitle:@"Check locations" forState:UIControlStateNormal];
         self.locationUrl = [dictionary valueForKey:@"bankUrl"];
-        
         if ([[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"address"] length] > 0) {
             [self.btnCheckLocation setHidden:YES];
         }
@@ -319,16 +221,13 @@
     self.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
     
     NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
-    
     NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
     [numFormatter setUsesGroupingSeparator:YES];
     [numFormatter setGroupingSeparator:@","];
     [numFormatter setGroupingSize:3];
-    
     NSString *stringNum = [numFormatter stringFromNumber:num];
-    
     self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ Dash (%@ dots)",totalDash, stringNum];
-
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;
     formatter.timeZone = [NSTimeZone localTimeZone];
@@ -355,17 +254,15 @@
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTime) userInfo:nil repeats:YES];
     
     if ([[dictionary valueForKey:@"account"] length] > 16) {
-        
         NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[dictionary valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-        
         self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",[[accountArray objectAtIndex:0] valueForKey:@"value"], [[accountArray objectAtIndex:1] valueForKey:@"value"]];
         self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
         self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
     }
 }
 
--(void)checkTime{
-    
+- (void)checkTime
+{
     if (self.minutes > 0) {
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -377,14 +274,14 @@
         [dueString appendAttributedString:timeString];
         self.lblDepositDue.attributedText = dueString;
     }
-    else{
+    else {
         self.lblDepositDue.text = @"Deposit Due: time expired";
         [self stopTimer];
     }
 }
 
--(NSMutableAttributedString*)dateDiffrenceBetweenTwoDates:(NSString*)startDate endDate:(NSString*)endDate{
-    
+- (NSMutableAttributedString*)dateDiffrenceBetweenTwoDates:(NSString*)startDate endDate:(NSString*)endDate
+{
     NSMutableAttributedString *timeLeft = [[NSMutableAttributedString alloc] init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -436,28 +333,28 @@
     return timeLeft;
 }
 
-#pragma mark - API
+// MARK: - API
 
-- (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone {
+- (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone
+{
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    NSString *deviceCode = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
     NSDictionary *params ;
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) 
-    {
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
         params = @{
-                   API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                   API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                   API_BODY_DEVICE_CODE: deviceCode,
+                   //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                   //API_BODY_DEVICE_CODE: deviceCode,
                    API_BODY_JSON_PARAMETER:@"YES"
                    };
     }
-    else
-    {
+    else {
         params = @{
-                   API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
                    API_BODY_PHONE_NUMBER: phone,
                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
@@ -465,165 +362,272 @@
                    API_BODY_JSON_PARAMETER:@"YES"
                    };
     }
-   
+    
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
         
         if (error == nil) {
-            
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            
-            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"id"]];
-            self.holdId = holdId;
-            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"__PURCHASE_CODE"]];
-            
-            if ([responseDictionary valueForKey:@"token"] != nil && [[responseDictionary valueForKey:@"token"] isEqualToString:@"(null)"] == FALSE)
+            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE)
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"token"]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
             }
+            
+            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+            self.holdId = holdId;
+
+            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+            self.purchaseCode = purchaseCode;
             
             [self captureHold:purchaseCode holdId:holdId];
         }
-        else{
+        else if (error.code == 403 ) {
+            //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self getHold];
+        }
+    }];
+}
+
+- (void)getHold
+{
+    [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
+        if (error == nil) {
+            NSLog(@"Hold with Hold Id: %@.",responseDict);
+            
+            NSArray *holdArray = (NSArray*)responseDict;
+            if (holdArray.count > 0) {
+                NSUInteger count = holdArray.count;
+                NSUInteger activeHodCount = 0;
+
+                for (int i = 0; i < holdArray.count; i++) {
+                    count -= count;
+                    
+                    NSDictionary *holdDict = [holdArray objectAtIndex:i];
+                    NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
+                    NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                    if (holdStatus != nil) {
+                        if ([holdStatus isEqualToString:@"AC"]) {
+                            if (holdId) {
+                                activeHodCount = activeHodCount + 1;
+                                [self deleteHold:holdId count:count];
+                            }
+                        }
+                    }
+                    else {
+                        if (holdId) {
+                            activeHodCount = activeHodCount + 1;
+                            [self deleteHold:holdId count:count];
+                        }
+                    }
+                }
+                
+                if (activeHodCount == 0 ) {
+                    //[self resolvePandingOrderIssue];
+                }
+            }
+            else {
+               // [self resolvePandingOrderIssue];
+            }
+        }
+        else {
+            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+        }
+    }];
+    
+}
+
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count
+{
+    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSDictionary *params = @{
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
+        /*
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        */
+        
+        if (error == nil) {
+            NSLog(@"Hold deleted.");
+            
+            NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self createHold:self.offerId phoneNo:phoneNo];
+        }
+        else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
 
-- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId{
-    
-    NSDictionary *params =
-    @{
-      API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-      API_BODY_VERIFICATION_CODE: purchaseCode,
-      API_BODY_JSON_PARAMETER: @"YES"
-      };
+- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId
+{
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+  
+    NSDictionary *params = @{
+                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                             API_BODY_VERIFICATION_CODE: purchaseCode,
+                             API_BODY_JSON_PARAMETER: @"YES"
+                             };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
-    
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        
         if (error == nil) {
-            
             NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            
             if (response.count > 0) {
-             
                 if ([[response objectAtIndex:0] isKindOfClass:[NSDictionary class]]) {
-                    
                     [self updateData:[response objectAtIndex:0]];
                 }
             }
         }
-        else{
+        else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
+            [self.navigationController popViewControllerAnimated:TRUE];
         }
     }];
 }
 
-- (void)confirmDeposit {
-    
-    if (self.orderId != nil)
-    {
-        [[APIManager sharedInstance] confirmDeposit:self.orderId response:^(id responseDict, NSError *error) {
-            
-            if (error == nil) {
-                
-                [self stopTimer];
-                
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"buyDash" bundle:nil];
-                WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
-                myViewController.phoneNo = self.phoneNo;
-                [self.navigationController pushViewController:myViewController animated:YES];
-            }
-            else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error.userInfo != nil)
-                    {
-                        if (error.userInfo[@"detail"] != nil)
-                        {
-                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
-                        }
-                        else
-                        {
-                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
-                        }
-                    }
-                    else
-                    {
-                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
-                    }
-                });
-            }
-        }];
-    }
-}
-
-- (void)cancelOrder {
-    
-    if (self.orderId != nil)
-    {
-        [[APIManager sharedInstance] cancelOrder:self.orderId response:^(id responseDict, NSError *error) {
-            
-            if (error == nil) {
-                
-                [self stopTimer];
-                [self pushToHome];
-            }
-            else{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error.userInfo != nil)
-                    {
-                        if (error.userInfo[@"detail"] != nil)
-                        {
-                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
-                        }
-                        else
-                        {
-                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
-                        }
-                    }
-                    else
-                    {
-                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
-                    }
-                });
-            }
-        }];
-    }
-}
-
-- (void)signOut:(NSString*)phone
+- (void)confirmDeposit
 {
-    NSDictionary *params = @{
-                             API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
-    [[APIManager sharedInstance] signOut:params phone:phone response:^(id responseDict, NSError *error) {
+    if (self.orderId != nil) {
         
-        if (error == nil)
-        {
-            [self stopTimer];
-            [self cancelOrder];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            //[self pushToStep1];
-        }
-        else
-        {
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
+        [[APIManager sharedInstance] confirmDeposit:self.orderId response:^(id responseDict, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
+            
+            if (error == nil) {
+                [self stopTimer];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+                    myViewController.phoneNo = self.phoneNo;
+                    [self pushViewController:myViewController animated:YES];
+                });
+            }
+            else {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.userInfo != nil) {
+                        if (error.userInfo[@"detail"] != nil) {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
+                        }
+                        else {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                        }
+                    }
+                    else {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                    }
+                });
+            }
+        }];
+    }
 }
 
-#pragma mark - UITextView Delegate
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+- (void)cancelOrder
+{
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
-    if ([[URL scheme] isEqualToString:@"https"]) {
+    if (self.orderId != nil) {
         
+        [[APIManager sharedInstance] cancelOrder:self.orderId response:^(id responseDict, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
+            
+            if (error == nil) {
+                [self stopTimer];
+                [self backToMainView];
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.userInfo != nil) {
+                        if (error.userInfo[@"detail"] != nil) {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
+                        }
+                        else {
+                            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                        }
+                    }
+                    else {
+                        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
+                    }
+                });
+            }
+        }];
+    }
+}
+
+// MARK: - IBAction
+
+- (IBAction)showMapClicked:(id)sender
+{
+    if (self.locationUrl != nil) {
+        if (![self.locationUrl hasPrefix:@"http"]) {
+            self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
+        }
+        
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
+                NSLog(@"URL opened.");
+            }];
+        }
+    }
+    else {
+        // Your location from latitude and longitude
+        double latitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE] doubleValue];
+        double longitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE] doubleValue];
+        
+        NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", latitude, longitude, latitude, longitude];
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: directionsURL] options:@{} completionHandler:^(BOOL success) {}];
+        }
+    }
+}
+
+- (IBAction)depositFinishedClicked:(id)sender
+{
+    [self showDepositAlert];
+}
+
+- (IBAction)cancelOrderClicked:(id)sender
+{
+    [self showCancelOrderAlert];
+}
+
+- (IBAction)wallOfCoinsClicked:(id)sender
+{
+    [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
+}
+
+- (IBAction)signOutClicked:(id)sender
+{
+    [self signOutWOC];
+}
+
+// MARK: - UITextView Delegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    if ([[URL scheme] isEqualToString:@"https"]) {
         [self openSite:URL];
-    
         return NO;
     }
     return YES;
 }
+
 @end

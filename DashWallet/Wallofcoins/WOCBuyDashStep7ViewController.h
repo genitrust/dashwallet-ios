@@ -7,14 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WOCBaseViewController.h"
 
-@interface WOCBuyDashStep7ViewController : UIViewController
+// Enter Phone Number Screen
+@interface WOCBuyDashStep7ViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *emailId;
+@property (assign, readwrite) BOOL isActiveHoldChecked;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (weak, nonatomic) IBOutlet UITextField *txtCountryCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;
+
 - (IBAction)nextClicked:(id)sender;
+
 @end

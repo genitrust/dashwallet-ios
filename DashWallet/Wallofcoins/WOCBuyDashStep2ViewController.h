@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WOCBuyDashStep2ViewController : UIViewController
+#import "WOCBaseViewController.h"
+// Enter ZipCode
+@interface WOCBuyDashStep2ViewController : WOCBaseViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *txtZipCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (assign) BOOL isZipCodeBlank;
 
 - (IBAction)nextClicked:(id)sender;
+
 @end
