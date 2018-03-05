@@ -543,6 +543,7 @@ _switch_cell:
                 case 0:
                     cell = [tableView dequeueReusableCellWithIdentifier:disclosureIdent];
                     cell.textLabel.text = NSLocalizedString(@"buy dash with cash", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"woc-icon.png"];
                     break;
                     
             }

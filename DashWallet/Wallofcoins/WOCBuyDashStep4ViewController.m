@@ -71,18 +71,11 @@
 // MARK: - API
 
 - (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
-    //Receive Dash Address...
-    NSString *latitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    NSString *longitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
-    if (latitude == nil && longitude == nil) {
-        latitude = @"";
-        longitude = @"";
-    }
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     NSString *cryptoAddress = manager.wallet.receiveAddress;
     NSLog(@"cryptoAddress = %@",cryptoAddress);
-   
+    
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_CRYPTO_AMOUNT: @"0",
@@ -91,11 +84,34 @@
                              API_BODY_CRYPTO_ADDRESS:cryptoAddress,
                              API_BODY_BANK: bankId,
                              API_BODY_ZIP_CODE: zipCode,
-                             API_BODY_BROWSERLOCATION : @{
-                             API_BODY_LATITUDE:latitude ,
-                             API_BODY_LONGITUDE:longitude },
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
+    
+    //Receive Dash Address...
+    NSString *latitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
+    NSString *longitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    
+    if (latitude == nil && longitude == nil) {
+        latitude = @"";
+        longitude = @"";
+    }
+   
+    if (latitude.length > 0 && longitude.length > 0)
+    {
+        params = @{
+                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                   API_BODY_CRYPTO_AMOUNT: @"0",
+                   API_BODY_USD_AMOUNT: amount,
+                   API_BODY_CRYPTO: @"DASH",
+                   API_BODY_CRYPTO_ADDRESS:cryptoAddress,
+                   API_BODY_BANK: bankId,
+                   API_BODY_ZIP_CODE: zipCode,
+                   API_BODY_BROWSERLOCATION : @{
+                           API_BODY_LATITUDE:latitude ,
+                           API_BODY_LONGITUDE:longitude },
+                   API_BODY_JSON_PARAMETER: @"YES"
+                   };
+    }
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
         if (error == nil) {

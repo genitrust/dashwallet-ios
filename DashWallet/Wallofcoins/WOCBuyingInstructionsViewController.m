@@ -122,7 +122,11 @@
 
 - (void)back:(id)sender
 {
-    [self backToMainView];
+    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+    myViewController.phoneNo = self.phoneNo;
+    myViewController.hideSuccessAlert = TRUE;
+    [self pushViewController:myViewController animated:YES];
+    //[self backToMainView];
 }
 
 - (void)pushToStep1

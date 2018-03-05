@@ -59,7 +59,11 @@
     if (self.orders.count == 0) {
         
         [self getOrders];
-        [self displayAlert];
+        
+        if (self.hideSuccessAlert == FALSE)
+        {
+            [self displayAlert];
+        }
     }
     else {
         

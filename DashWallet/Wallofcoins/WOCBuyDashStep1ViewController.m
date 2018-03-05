@@ -107,11 +107,12 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Dash" message:@"Are you in the USA?" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self refereshToken];
         [self openBuyDashStep2];
     }];
     
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [self refereshToken];
         [self openBuyDashStep3];
        
     }];
@@ -194,6 +195,7 @@
 
 - (IBAction)findLocationClicked:(id)sender {
     
+     [self refereshToken];
     if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
       
         [self findZipCode];

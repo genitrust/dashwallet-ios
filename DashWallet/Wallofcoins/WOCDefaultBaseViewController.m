@@ -164,7 +164,9 @@
     if (pushViewController != nil) {
         if ([pushViewController isKindOfClass:NSClassFromString(viewControllerStr)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationController pushViewController:pushViewController animated:YES];
+                 if ([self.navigationController.visibleViewController isKindOfClass:NSClassFromString(viewControllerStr)] == FALSE) {
+                     [self.navigationController pushViewController:pushViewController animated:YES];
+                 }
             });
         }
     }
@@ -242,7 +244,9 @@
             
             if (!mainViewFound) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.navigationController pushViewController:viewController animated:animated];
+                    if ([self.navigationController.visibleViewController isKindOfClass:[viewController class]] == FALSE) {
+                        [self.navigationController pushViewController:viewController animated:animated];
+                    }
                 });
             }
         }
