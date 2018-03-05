@@ -53,18 +53,23 @@
         [[APIManager sharedInstance] discoveryInputs:self.discoveryId response:^(id responseDict, NSError *error) {
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
-                self.offers = [[NSArray alloc] initWithArray:offersArray];
-                
-                if ([[responseDictionary valueForKey:@"incremented"] boolValue] == true) {
-                    self.incremented = true;
-                    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                if ([responseDictionary valueForKey:@"singleDeposit"] != nil) {
+                    
+                    if ([[responseDictionary valueForKey:@"singleDeposit"] isKindOfClass:[NSArray class]] ) {
+                        
+                        NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
+                        self.offers = [[NSArray alloc] initWithArray:offersArray];
+                        
+                        if ([[responseDictionary valueForKey:@"incremented"] boolValue] == true) {
+                            self.incremented = true;
+                            self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        }
+                        else {
+                            self.incremented = false;
+                            self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        }
+                    }
                 }
-                else {
-                    self.incremented = false;
-                    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
-                }
-                
                 [self.tableView reloadData];
             }
             else {
@@ -226,7 +231,12 @@
         
         if ([bankLogo hasPrefix:@"https://"]) {
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
-            cell.imgView.image = [UIImage imageWithData: imageData];
+            if (imageData != nil) {
+                cell.imgView.image = [UIImage imageWithData: imageData];
+            }
+            else {
+                 cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+            }
         }
         else {
             cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
@@ -236,9 +246,14 @@
         
         if ([bankLogo hasPrefix:@"https://"]) {
             NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]]];
-            cell.imgView.image = [UIImage imageWithData: imageData];
+            if (imageData != nil) {
+                cell.imgView.image = [UIImage imageWithData: imageData];
+            }
+            else {
+                cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+            }
         }
-        else{
+        else {
             cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
     }

@@ -82,8 +82,6 @@
                              API_BODY_USD_AMOUNT: amount,
                              API_BODY_CRYPTO: @"DASH",
                              API_BODY_CRYPTO_ADDRESS:cryptoAddress,
-                             API_BODY_BANK: bankId,
-                             API_BODY_ZIP_CODE: zipCode,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
     
@@ -96,22 +94,39 @@
         longitude = @"";
     }
    
-    if (latitude.length > 0 && longitude.length > 0)
-    {
-        params = @{
-                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                   API_BODY_CRYPTO_AMOUNT: @"0",
-                   API_BODY_USD_AMOUNT: amount,
-                   API_BODY_CRYPTO: @"DASH",
-                   API_BODY_CRYPTO_ADDRESS:cryptoAddress,
-                   API_BODY_BANK: bankId,
-                   API_BODY_ZIP_CODE: zipCode,
-                   API_BODY_BROWSERLOCATION : @{
-                           API_BODY_LATITUDE:latitude ,
-                           API_BODY_LONGITUDE:longitude },
-                   API_BODY_JSON_PARAMETER: @"YES"
-                   };
+    if (latitude.length > 0 && longitude.length > 0) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+        [dict setObject:@{API_BODY_LATITUDE:latitude ,
+                          API_BODY_LONGITUDE:longitude } forKey:API_BODY_BROWSERLOCATION];
+        params = (NSDictionary*)dict;
     }
+    
+    if (zipCode != nil && zipCode.length > 0) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+        [dict setObject:zipCode forKey:API_BODY_ZIP_CODE];
+        params = (NSDictionary*)dict;
+    }
+    
+    if (bankId != nil && bankId.length > 0) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+        [dict setObject:bankId forKey:API_BODY_BANK];
+        params = (NSDictionary*)dict;
+    }
+   
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+    NSString *countryCodeFromLatLong = [self.defaults objectForKey:API_BODY_COUNTRY_CODE];
+    
+    if (countryCodeFromLatLong == nil) {
+        NSString *countryCode = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
+        [dict setObject:countryCode.lowercaseString forKey:API_BODY_COUNTRY];
+    }
+    else {
+        [dict setObject:countryCodeFromLatLong.lowercaseString forKey:API_BODY_COUNTRY];
+    }
+    
+    //[dict setObject:@"us" forKey:API_BODY_COUNTRY];
+
+    params = (NSDictionary*)dict;
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
         if (error == nil) {
@@ -123,6 +138,7 @@
             [self pushViewController:myViewController animated:YES];
         }
         else {
+            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];

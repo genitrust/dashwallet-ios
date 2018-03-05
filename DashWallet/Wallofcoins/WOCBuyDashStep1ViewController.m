@@ -145,15 +145,19 @@
             NSLog(@"address informations : %@", placeDetail);
             NSLog(@"ZIP code : %@", [placeDetail valueForKey:@"ZIP"]);
             
+            [self.defaults setObject:[placeDetail valueForKey:API_BODY_COUNTRY_CODE] forKey:API_BODY_COUNTRY_CODE];
+            [self.defaults synchronize];
             self.zipCode = [placeDetail valueForKey:@"ZIP"];
             [self openBuyDashStep4];
         }
         failureHandler:^(NSError *error) {
+            [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
             NSLog(@"Error : %@", error);
         }];
     }
     else {
         
+        [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hideAnimated:YES];
         });
@@ -195,9 +199,11 @@
 
 - (IBAction)findLocationClicked:(id)sender {
     
-     [self refereshToken];
+    [self refereshToken];
+    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults synchronize];
     if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
-      
+        
         [self findZipCode];
         [self.btnLocation setUserInteractionEnabled:NO];
     }
@@ -209,6 +215,9 @@
 }
 
 - (IBAction)noThanksClicked:(id)sender {
+    
+    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults synchronize];
     [self showAlert];
 }
 
@@ -217,7 +226,6 @@
     if (btn != nil) {
         if ([btn.titleLabel.text isEqualToString:@"SIGN IN HERE"]) {
             [self push:@"WOCBuyDashStep3ViewController"];
-            
         }
         else {
            [self signOutWOC];

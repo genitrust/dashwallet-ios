@@ -182,6 +182,7 @@
             [self createHoldAfterAuthorize:phoneNo];
         }
         else {
+            
             [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
             [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
@@ -220,9 +221,15 @@
                     API_BODY_PHONE_NUMBER: phoneNo,
                     API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
                     API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_EMAIL: self.emailId,
                     API_BODY_JSON_PARAMETER:@"YES"
                     };
+        
+        if (self.emailId != nil && self.emailId.length > 0)
+        {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+            [dict setObject:self.emailId forKey:API_BODY_EMAIL];
+            params = (NSDictionary*)dict;
+        }
     }
     
     [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
