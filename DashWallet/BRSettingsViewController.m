@@ -36,6 +36,15 @@
 #import <netdb.h>
 #import <arpa/inet.h>
 
+
+//WallOfCoins imports
+#import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingInstructionsViewController.h"
+#import "WOCBuyingSummaryViewController.h"
+#import "APIManager.h"
+#import "WOCConstants.h"
+#import "MBProgressHUD.h"
+
 @interface BRSettingsViewController ()
 
 @property (nonatomic, assign) BOOL touchId;
@@ -153,6 +162,91 @@
            [BRPeerManager sharedInstance].downloadPeerName];
 }
 
+- (void)checkToken
+{
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+        [self getOrders];
+    }
+    else {
+        [self pushToStep1];
+    }
+}
+
+- (void)pushToStep1
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+    UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+    
+    WOCBuyDashStep1ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+    [navController pushViewController:myViewController animated:YES];
+    [navController.navigationBar setTintColor:[UIColor whiteColor]];
+    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.window.rootViewController = navController;
+}
+
+// MARK: - WallofCoins API
+
+- (void)getOrders
+{
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSDictionary *params = @{
+                             //@"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error == nil) {
+                
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+                UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+                
+                NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                if (orders.count > 0){
+                    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                    
+                    if ([status isEqualToString:@"WD"]) {
+                        WOCBuyingInstructionsViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingInstructionsViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.isFromSend = YES;
+                        myViewController.isFromOffer = NO;
+                        myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                        [navController pushViewController:myViewController animated:YES];
+                    }
+                    else {
+                        
+                        WOCBuyingSummaryViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingSummaryViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.orders = orders;
+                        myViewController.isFromSend = YES;
+                        [navController pushViewController:myViewController animated:YES];
+                    }
+                    
+                    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+                    appDelegate.window.rootViewController = navController;
+                }
+                else {
+                    
+                    [self pushToStep1];
+                }
+            }
+            else {
+                
+                NSLog(@"Error: %@", error.localizedDescription);
+                [self pushToStep1];
+            }
+        });
+    }];
+}
+
 // MARK: - IBAction
 
 - (IBAction)done:(id)sender
@@ -178,21 +272,21 @@
     NSMutableString *s = [NSMutableString string];
     time_t t;
     struct tm tm;
-
+    
     while ((m = asl_next(r))) {
         t = strtol(asl_get(m, ASL_KEY_TIME), NULL, 10);
         localtime_r(&t, &tm);
         [s appendFormat:@"%d-%02d-%02d %02d:%02d:%02d %s: %s\n", tm.tm_year + 1900, tm.tm_mon, tm.tm_mday, tm.tm_hour,
          tm.tm_min, tm.tm_sec, asl_get(m, ASL_KEY_SENDER), asl_get(m, ASL_KEY_MSG)];
     }
-
+    
     asl_free(r);
     [UIPasteboard generalPasteboard].string = (s.length < 8000000) ? s : [s substringFromIndex:s.length - 8000000];
     
     [self.navigationController.topViewController.view
      addSubview:[[[BRBubbleView viewWithText:NSLocalizedString(@"copied", nil)
-     center:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)] popIn]
-     popOutAfterDelay:2.0]];
+                                      center:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height/2.0)] popIn]
+                 popOutAfterDelay:2.0]];
 }
 #pragma GCC diagnostic pop
 #endif
@@ -217,50 +311,50 @@
                                            [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
                                        }];
         UIAlertAction* trustButton = [UIAlertAction
-                                     actionWithTitle:NSLocalizedString(@"trust", nil)
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction * action) {
-                                         NSArray * textfields = alert.textFields;
-                                         UITextField * ipField = textfields[0];
-                                         NSString *fixedPeer = ipField.text;
-                                         NSArray *pair = [fixedPeer componentsSeparatedByString:@":"];
-                                         NSString *host = pair.firstObject;
-                                         NSString *service = (pair.count > 1) ? pair[1] : @(DASH_STANDARD_PORT).stringValue;
-                                         struct addrinfo hints = { 0, AF_UNSPEC, SOCK_STREAM, 0, 0, 0, NULL, NULL }, *servinfo, *p;
-                                         UInt128 addr = { .u32 = { 0, 0, CFSwapInt32HostToBig(0xffff), 0 } };
-                                         
-                                         NSLog(@"DNS lookup %@", host);
-                                         
-                                         if (getaddrinfo(host.UTF8String, service.UTF8String, &hints, &servinfo) == 0) {
-                                             for (p = servinfo; p != NULL; p = p->ai_next) {
-                                                 if (p->ai_family == AF_INET) {
-                                                     addr.u64[0] = 0;
-                                                     addr.u32[2] = CFSwapInt32HostToBig(0xffff);
-                                                     addr.u32[3] = ((struct sockaddr_in *)p->ai_addr)->sin_addr.s_addr;
-                                                 }
-                                                 //                else if (p->ai_family == AF_INET6) {
-                                                 //                    addr = *(UInt128 *)&((struct sockaddr_in6 *)p->ai_addr)->sin6_addr;
-                                                 //                }
-                                                 else continue;
-                                                 
-                                                 uint16_t port = CFSwapInt16BigToHost(((struct sockaddr_in *)p->ai_addr)->sin_port);
-                                                 char s[INET6_ADDRSTRLEN];
-                                                 
-                                                 if (addr.u64[0] == 0 && addr.u32[2] == CFSwapInt32HostToBig(0xffff)) {
-                                                     host = @(inet_ntop(AF_INET, &addr.u32[3], s, sizeof(s)));
-                                                 }
-                                                 else host = @(inet_ntop(AF_INET6, &addr, s, sizeof(s)));
-                                                 
-                                                 [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@:%d", host, port]
-                                                                                           forKey:SETTINGS_FIXED_PEER_KEY];
-                                                 [[BRPeerManager sharedInstance] disconnect];
-                                                 [[BRPeerManager sharedInstance] connect];
-                                                 break;
-                                             }
-                                             
-                                             freeaddrinfo(servinfo);
-                                         }
-                                     }];
+                                      actionWithTitle:NSLocalizedString(@"trust", nil)
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action) {
+                                          NSArray * textfields = alert.textFields;
+                                          UITextField * ipField = textfields[0];
+                                          NSString *fixedPeer = ipField.text;
+                                          NSArray *pair = [fixedPeer componentsSeparatedByString:@":"];
+                                          NSString *host = pair.firstObject;
+                                          NSString *service = (pair.count > 1) ? pair[1] : @(DASH_STANDARD_PORT).stringValue;
+                                          struct addrinfo hints = { 0, AF_UNSPEC, SOCK_STREAM, 0, 0, 0, NULL, NULL }, *servinfo, *p;
+                                          UInt128 addr = { .u32 = { 0, 0, CFSwapInt32HostToBig(0xffff), 0 } };
+                                          
+                                          NSLog(@"DNS lookup %@", host);
+                                          
+                                          if (getaddrinfo(host.UTF8String, service.UTF8String, &hints, &servinfo) == 0) {
+                                              for (p = servinfo; p != NULL; p = p->ai_next) {
+                                                  if (p->ai_family == AF_INET) {
+                                                      addr.u64[0] = 0;
+                                                      addr.u32[2] = CFSwapInt32HostToBig(0xffff);
+                                                      addr.u32[3] = ((struct sockaddr_in *)p->ai_addr)->sin_addr.s_addr;
+                                                  }
+                                                  //                else if (p->ai_family == AF_INET6) {
+                                                  //                    addr = *(UInt128 *)&((struct sockaddr_in6 *)p->ai_addr)->sin6_addr;
+                                                  //                }
+                                                  else continue;
+                                                  
+                                                  uint16_t port = CFSwapInt16BigToHost(((struct sockaddr_in *)p->ai_addr)->sin_port);
+                                                  char s[INET6_ADDRSTRLEN];
+                                                  
+                                                  if (addr.u64[0] == 0 && addr.u32[2] == CFSwapInt32HostToBig(0xffff)) {
+                                                      host = @(inet_ntop(AF_INET, &addr.u32[3], s, sizeof(s)));
+                                                  }
+                                                  else host = @(inet_ntop(AF_INET6, &addr, s, sizeof(s)));
+                                                  
+                                                  [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@:%d", host, port]
+                                                                                            forKey:SETTINGS_FIXED_PEER_KEY];
+                                                  [[BRPeerManager sharedInstance] disconnect];
+                                                  [[BRPeerManager sharedInstance] connect];
+                                                  break;
+                                              }
+                                              
+                                              freeaddrinfo(servinfo);
+                                          }
+                                      }];
         [alert addAction:trustButton];
         [alert addAction:cancelButton];
         [self presentViewController:alert animated:YES completion:nil];
@@ -294,7 +388,7 @@
 {
     [BREventManager saveEvent:@"settings:touch_id_limit"];
     BRWalletManager *manager = [BRWalletManager sharedInstance];
-
+    
     [manager authenticateWithPrompt:nil andTouchId:NO alertIfLockout:YES completion:^(BOOL authenticated,BOOL cancelled) {
         if (authenticated) {
             self.selectorType = 1;
@@ -326,7 +420,7 @@
     NSUInteger digits = (((manager.dashFormat.maximumFractionDigits - 2)/3 + 1) % 3)*3 + 2;
     
     manager.dashFormat.currencySymbol = [NSString stringWithFormat:@"%@%@" NARROW_NBSP, (digits == 5) ? @"m" : @"",
-                                     (digits == 2) ? DITS : DASH];
+                                         (digits == 2) ? DITS : DASH];
     manager.dashFormat.maximumFractionDigits = digits;
     manager.dashFormat.maximum = @(MAX_MONEY/(int64_t)pow(10.0, manager.dashFormat.maximumFractionDigits));
     [[NSUserDefaults standardUserDefaults] setInteger:digits forKey:SETTINGS_MAX_DIGITS_KEY];
@@ -342,7 +436,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.selectorController.tableView) return 1;
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -353,6 +447,7 @@
         case 0: return 2;
         case 1: return (self.touchId) ? 3 : 2;
         case 2: return 3;
+        case 3: return 1;
     }
     
     return 0;
@@ -440,6 +535,16 @@ _switch_cell:
                     cell.textLabel.text = NSLocalizedString(@"rescan blockchain", nil);
                     break;
 
+            }
+            break;
+            
+        case 3:
+            switch (indexPath.row) {
+                case 0:
+                    cell = [tableView dequeueReusableCellWithIdentifier:disclosureIdent];
+                    cell.textLabel.text = NSLocalizedString(@"buy dash with cash", nil);
+                    break;
+                    
             }
             break;
             
@@ -720,6 +825,15 @@ _deselect_switch:
                     [[BRPeerManager sharedInstance] rescan];
                     [BREventManager saveEvent:@"settings:rescan"];
                     [self done:nil];
+                    break;
+            }
+            
+            break;
+            
+        case 3:
+            switch (indexPath.row) {
+                case 0: // buy dash with cash
+                    [self checkToken];
                     break;
             }
             
