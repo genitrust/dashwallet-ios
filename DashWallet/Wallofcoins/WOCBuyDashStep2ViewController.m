@@ -37,6 +37,9 @@
     if ([zipCode length] == 0) {
         [self push:@"WOCBuyDashStep3ViewController"];
     }
+    else if ([zipCode length] > 6 ) {
+         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Enter valid zipcode" viewController:self.navigationController.visibleViewController];
+    }
     else {
         
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
@@ -49,7 +52,7 @@
                 for(CLPlacemark *placemark in placemarks){
                     NSString *city1 = [placemark locality];
                     NSLog(@"city is %@",city1);
-                    NSLog(@"country code is %@",[placemark ISOcountryCode]);
+                    NSLog(@"======> country code is %@",[placemark ISOcountryCode]);
                     NSLog(@"country is %@",[placemark country]);
                     // you'll see a whole lotta stuff is available
                     // in the placemark object here...

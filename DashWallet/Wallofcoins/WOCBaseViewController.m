@@ -8,6 +8,8 @@
 
 #import "WOCBaseViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
+#import "WOCBuyingSummaryViewController.h"
+#import "WOCBuyDashStep1ViewController.h"
 
 @interface WOCBaseViewController ()
 
@@ -171,6 +173,79 @@
         [self backToMainView];
         [self clearLocalStorage];
     }
+}
+
+- (void)pushToWOCRoot {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+        UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+        
+        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+        vc.isFromSend = YES;
+        [navController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navController;
+        
+       
+    });
+    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+//    UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+//    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+//    appDelegate.window.rootViewController = navController;
+//    [self backToMainView];
+
+}
+
+// MARK: - WallofCoins API
+
+- (void)getOrderList {
+    
+    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    
+    NSDictionary *params = @{
+                             //@"publisherId": @WALLOFCOINS_PUBLISHER_ID
+                             };
+    
+    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error == nil) {
+                
+                NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                if (orders.count > 0) {
+                    
+                    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                    NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
+                   
+                    if (wdArray.count > 0) {
+                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:0];
+                        NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                        if ([status isEqualToString:@"WD"]) {
+                            WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                            myViewController.phoneNo = phoneNo;
+                            myViewController.isFromSend = YES;
+                            myViewController.isFromOffer = NO;
+                            myViewController.orderDict = orderDict;
+                            [self pushViewController:myViewController animated:YES];
+                        }
+                    }
+                    else {
+                        WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.orders = orders;
+                        myViewController.isFromSend = YES;
+                        [self pushViewController:myViewController animated:YES];
+                    }
+                }
+            }
+        });
+    }];
 }
 
 

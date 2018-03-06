@@ -261,23 +261,47 @@
     //bankLogo
     if (![[offerDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
         
-        if ([bankLogo hasPrefix:@"https://"]) {
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
-            cell.imgView.image = [UIImage imageWithData: imageData];
-        }
-        else {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-        }
+        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                       ^{
+                           NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
+                           NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                           
+                           //This is your completion handler
+                           dispatch_sync(dispatch_get_main_queue(), ^{
+                               //If self.image is atomic (not declared with nonatomic)
+                               // you could have set it directly above
+                               if (imageData != nil) {
+                                   cell.imgView.image = [UIImage imageWithData:imageData];
+                               }
+                               else {
+                                   cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+                               }
+                               
+                           });
+                       });
     }
     else if (![[offerDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
         
-        if ([bankLogo hasPrefix:@"https://"]) {
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]]];
-            cell.imgView.image = [UIImage imageWithData: imageData];
-        }
-        else{
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-        }
+        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                       ^{
+                           NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
+                           NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                           
+                           //This is your completion handler
+                           dispatch_sync(dispatch_get_main_queue(), ^{
+                               //If self.image is atomic (not declared with nonatomic)
+                               // you could have set it directly above
+                               if (imageData != nil) {
+                                   cell.imgView.image = [UIImage imageWithData:imageData];
+                               }
+                               else {
+                                   cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+                               }
+                               
+                           });
+                       });
     }
     else {
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];

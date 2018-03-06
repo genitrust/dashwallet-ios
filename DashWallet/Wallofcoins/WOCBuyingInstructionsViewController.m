@@ -11,7 +11,6 @@
 #import "WOCBuyDashStep1ViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
-#import "WOCBuyingSummaryViewController.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
 #import "WOCAlertController.h"
@@ -120,22 +119,25 @@
     }
 }
 
-- (void)back:(id)sender
-{
-    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
-    myViewController.phoneNo = self.phoneNo;
-    myViewController.hideSuccessAlert = TRUE;
-    [self pushViewController:myViewController animated:YES];
+- (void)back:(id)sender {
+    [self pushToBuyingSummary];
     //[self backToMainView];
 }
 
-- (void)pushToStep1
-{
+- (void)pushToBuyingSummary {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+        myViewController.phoneNo = self.phoneNo;
+        myViewController.hideSuccessAlert = TRUE;
+        [self pushViewController:myViewController animated:YES];
+    });
+}
+
+- (void)pushToStep1 {
     [self backToMainView];
 }
 
-- (void)openSite:(NSURL*)url
-{
+- (void)openSite:(NSURL*)url {
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
             NSLog(@"URL opened...");
@@ -143,15 +145,13 @@
     }
 }
 
-- (void)stopTimer
-{
+- (void)stopTimer {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.timer invalidate];
     });
 }
 
-- (void)showDepositAlert
-{
+- (void)showDepositAlert {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Confirmation!" message:@"Are you sure you finished making the payment?" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -166,8 +166,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)showCancelOrderAlert
-{
+- (void)showCancelOrderAlert {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Confirmation!" message:@"Are you sure you want to cancel order?" preferredStyle:UIAlertControllerStyleAlert];
     
@@ -183,8 +182,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)updateData:(NSDictionary*)dictionary
-{
+- (void)updateData:(NSDictionary*)dictionary {
     NSString *bankLogo = [dictionary valueForKey:@"bankLogo"];
     NSString *bankName = [dictionary valueForKey:@"bankName"];
     NSString *phoneNo = [NSString stringWithFormat:@"%@",[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
@@ -197,13 +195,25 @@
     
     //bankLogo
     if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
-        if ([bankLogo hasPrefix:@"https://"]) {
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
-            self.imgView.image = [UIImage imageWithData: imageData];
-        }
-        else {
-            self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-        }
+        self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                       ^{
+                           NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
+                           NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                           
+                           //This is your completion handler
+                           dispatch_sync(dispatch_get_main_queue(), ^{
+                               //If self.image is atomic (not declared with nonatomic)
+                               // you could have set it directly above
+                               if (imageData != nil) {
+                                   self.imgView.image = [UIImage imageWithData:imageData];
+                               }
+                               else {
+                                   self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+                               }
+                               
+                           });
+                       });
     }
     else {
         self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
@@ -265,8 +275,7 @@
     }
 }
 
-- (void)checkTime
-{
+- (void)checkTime {
     if (self.minutes > 0) {
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -284,8 +293,7 @@
     }
 }
 
-- (NSMutableAttributedString*)dateDiffrenceBetweenTwoDates:(NSString*)startDate endDate:(NSString*)endDate
-{
+- (NSMutableAttributedString*)dateDiffrenceBetweenTwoDates:(NSString*)startDate endDate:(NSString*)endDate {
     NSMutableAttributedString *timeLeft = [[NSMutableAttributedString alloc] init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -339,8 +347,7 @@
 
 // MARK: - API
 
-- (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone
-{
+- (void)createHold:(NSString*)offerId phoneNo:(NSString*)phone {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
@@ -394,11 +401,13 @@
             //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
             [self getHold];
         }
+        else if (error.code == 500 ) {
+            [self pushToBuyingSummary];
+        }
     }];
 }
 
-- (void)getHold
-{
+- (void)getHold {
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSLog(@"Hold with Hold Id: %@.",responseDict);
@@ -431,11 +440,11 @@
                 }
                 
                 if (activeHodCount == 0 ) {
-                    //[self resolvePandingOrderIssue];
+                    [self getOrderList];
                 }
             }
             else {
-               // [self resolvePandingOrderIssue];
+               [self getOrderList];
             }
         }
         else {
@@ -445,8 +454,7 @@
     
 }
 
-- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count
-{
+- (void)deleteHold:(NSString*)holdId count:(NSUInteger)count {
     //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
@@ -472,8 +480,7 @@
     }];
 }
 
-- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId
-{
+- (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
   
     NSDictionary *params = @{
@@ -502,8 +509,7 @@
     }];
 }
 
-- (void)confirmDeposit
-{
+- (void)confirmDeposit {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     if (self.orderId != nil) {
@@ -515,12 +521,7 @@
             
             if (error == nil) {
                 [self stopTimer];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = self.phoneNo;
-                    [self pushViewController:myViewController animated:YES];
-                });
+                [self pushToBuyingSummary];
             }
             else {
                 
@@ -542,8 +543,7 @@
     }
 }
 
-- (void)cancelOrder
-{
+- (void)cancelOrder {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     if (self.orderId != nil) {
@@ -578,8 +578,7 @@
 
 // MARK: - IBAction
 
-- (IBAction)showMapClicked:(id)sender
-{
+- (IBAction)showMapClicked:(id)sender {
     if (self.locationUrl != nil) {
         if (![self.locationUrl hasPrefix:@"http"]) {
             self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
@@ -603,30 +602,25 @@
     }
 }
 
-- (IBAction)depositFinishedClicked:(id)sender
-{
+- (IBAction)depositFinishedClicked:(id)sender {
     [self showDepositAlert];
 }
 
-- (IBAction)cancelOrderClicked:(id)sender
-{
+- (IBAction)cancelOrderClicked:(id)sender {
     [self showCancelOrderAlert];
 }
 
-- (IBAction)wallOfCoinsClicked:(id)sender
-{
+- (IBAction)wallOfCoinsClicked:(id)sender {
     [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
 }
 
-- (IBAction)signOutClicked:(id)sender
-{
+- (IBAction)signOutClicked:(id)sender {
     [self signOutWOC];
 }
 
 // MARK: - UITextView Delegate
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
     if ([[URL scheme] isEqualToString:@"https"]) {
         [self openSite:URL];
         return NO;

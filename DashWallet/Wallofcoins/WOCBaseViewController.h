@@ -16,5 +16,7 @@
 - (void)loginWOC;
 - (void)signOutWOC;
 - (void)refereshToken;
+- (void)pushToWOCRoot;
+- (void)getOrderList;
 - (NSString*)getDeviceIDFromPhoneNumber:(NSString*)phoneNo;
 @end

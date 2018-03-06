@@ -313,7 +313,7 @@
 
 -(void)resolvePandingOrderIssue {
     
-    [self getOrders];
+    [self getOrderList];
 }
 
 - (void)getHold {
@@ -502,59 +502,6 @@
              [self createHold:phoneNo];
         }
     }
-}
-
-- (void)getOrders
-{
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
-    NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
-    
-    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [hud hideAnimated:TRUE];
-        });
-        
-        if (error == nil) {
-            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            if (orders.count > 0) {
-                NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-                NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
-                
-                if ([status isEqualToString:@"WD"]) {
-
-                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.holdId = self.holdId;
-                    myViewController.isFromSend = YES;
-                    myViewController.isFromOffer = NO;
-                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self pushViewController:myViewController animated:YES];
-                }
-                else if (orders.count > 0) {
-                    
-                    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.orders = orders;
-                    myViewController.isFromSend = YES;
-                    [self pushViewController:myViewController animated:YES];
-                }
-                else {
-                    
-                    [self backToMainView];
-                }
-            }
-        }
-        else {
-            
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
 }
 
 // MARK: - IBAction

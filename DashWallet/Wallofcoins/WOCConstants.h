@@ -72,6 +72,8 @@
 #define API_BODY_LATITUDE @"latitude"
 #define API_BODY_LONGITUDE @"longitude"
 #define API_BODY_BROWSERLOCATION @"browserLocation"
+#define API_BODY_COUNTRY @"country"
+#define API_BODY_COUNTRY_CODE @"CountryCode"
 
 #pragma mark - API PARAMETERS KEYS
 

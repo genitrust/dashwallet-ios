@@ -73,7 +73,7 @@
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
         [self.signoutView setHidden:NO];
-        [self refereshToken];
+        //[self refereshToken];
     }
     else
     {

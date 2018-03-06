@@ -105,26 +105,28 @@
             [hud hideAnimated:TRUE];
         });
         
+        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+
         if (error == nil) {
+            
             NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            
-             NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            
             if (orders.count > 0) {
-               
+                
                 NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
                 NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                 
-                if ([status isEqualToString:@"WD"]) {
-                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.isFromSend = YES;
-                    myViewController.isFromOffer = NO;
-                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self pushViewController:myViewController animated:YES];
-                    return ;
+                if (wdArray.count > 0) {
+                    NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:0];
+                    NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                    if ([status isEqualToString:@"WD"]) {
+                        WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.isFromSend = YES;
+                        myViewController.isFromOffer = NO;
+                        myViewController.orderDict = orderDict;
+                        [self pushViewController:myViewController animated:YES];
+                        return ;
+                    }
                 }
             }
             
@@ -136,16 +138,10 @@
             NSDictionary *offerDict = self.offers[indexPath.row];
             myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
             [self pushViewController:myViewController animated:YES];
-            
         }
         else {
            
             [self refereshToken];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Token expired." viewController:self];
-//                [self backToMainView];
-//
-//            });
         }
     }];
 }
@@ -229,33 +225,47 @@
     //bankLogo
     if (![[offerDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
         
-        if ([bankLogo hasPrefix:@"https://"]) {
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
-            if (imageData != nil) {
-                cell.imgView.image = [UIImage imageWithData: imageData];
-            }
-            else {
-                 cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-            }
-        }
-        else {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-        }
+        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                       ^{
+                           NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
+                           NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                           
+                           //This is your completion handler
+                           dispatch_sync(dispatch_get_main_queue(), ^{
+                               //If self.image is atomic (not declared with nonatomic)
+                               // you could have set it directly above
+                               if (imageData != nil) {
+                                   cell.imgView.image = [UIImage imageWithData:imageData];
+                               }
+                               else {
+                                   cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+                               }
+                               
+                           });
+                       });
     }
     else if (![[offerDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
         
-        if ([bankLogo hasPrefix:@"https://"]) {
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]]];
-            if (imageData != nil) {
-                cell.imgView.image = [UIImage imageWithData: imageData];
-            }
-            else {
-                cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-            }
-        }
-        else {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-        }
+        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                       ^{
+                           NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
+                           NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                           
+                           //This is your completion handler
+                           dispatch_sync(dispatch_get_main_queue(), ^{
+                               //If self.image is atomic (not declared with nonatomic)
+                               // you could have set it directly above
+                               if (imageData != nil) {
+                                   cell.imgView.image = [UIImage imageWithData:imageData];
+                               }
+                               else {
+                                   cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+                               }
+                               
+                           });
+                       });
     }
     else {
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
