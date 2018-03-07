@@ -2404,7 +2404,7 @@ Help is also available on the website.</string>
                                 <rect key="frame" x="0.0" y="20" width="414" height="716"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DhW-Vv-WBP">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="573"/>
+                                        <rect key="frame" x="0.0" y="20" width="414" height="537"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="offerCell" rowHeight="50" id="BO3-2H-F2K" customClass="WOCOfferCell">
@@ -2415,29 +2415,30 @@ Help is also available on the website.</string>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qla-EO-Xv7" userLabel="subView">
-                                                            <rect key="frame" x="20.5" y="2.5" width="373" height="45"/>
+                                                            <rect key="frame" x="41.5" y="4" width="331" height="43"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q87-Eo-A14">
-                                                                    <rect key="frame" x="18.5" y="2.5" width="336" height="40.5"/>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q87-Eo-A14">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="331" height="43"/>
                                                                     <color key="backgroundColor" red="0.9882352941176471" green="0.76470588235294112" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                                    <state key="normal" title="SIGN IN: +12397776832"/>
+                                                                    <state key="normal" title="SIGN IN: +12397776832">
+                                                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    </state>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstItem="Q87-Eo-A14" firstAttribute="centerY" secondItem="qla-EO-Xv7" secondAttribute="centerY" id="6qd-BP-0zc"/>
-                                                                <constraint firstItem="Q87-Eo-A14" firstAttribute="height" secondItem="qla-EO-Xv7" secondAttribute="height" multiplier="0.9" id="WP8-Xm-7B3"/>
+                                                                <constraint firstItem="Q87-Eo-A14" firstAttribute="height" secondItem="qla-EO-Xv7" secondAttribute="height" id="WP8-Xm-7B3"/>
                                                                 <constraint firstItem="Q87-Eo-A14" firstAttribute="centerX" secondItem="qla-EO-Xv7" secondAttribute="centerX" id="aU9-iH-yqc"/>
-                                                                <constraint firstItem="Q87-Eo-A14" firstAttribute="width" secondItem="qla-EO-Xv7" secondAttribute="width" multiplier="0.9" id="kGo-aR-6DC"/>
+                                                                <constraint firstItem="Q87-Eo-A14" firstAttribute="width" secondItem="qla-EO-Xv7" secondAttribute="width" id="kGo-aR-6DC"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="qla-EO-Xv7" firstAttribute="width" secondItem="mnM-Fl-ndG" secondAttribute="width" multiplier="0.9" id="HuN-5E-BZO"/>
+                                                        <constraint firstItem="qla-EO-Xv7" firstAttribute="width" secondItem="mnM-Fl-ndG" secondAttribute="width" multiplier="0.8" id="HuN-5E-BZO"/>
                                                         <constraint firstItem="qla-EO-Xv7" firstAttribute="centerY" secondItem="mnM-Fl-ndG" secondAttribute="centerY" id="JyT-Va-BXd"/>
-                                                        <constraint firstItem="qla-EO-Xv7" firstAttribute="height" secondItem="mnM-Fl-ndG" secondAttribute="height" multiplier="0.9" id="s2N-B4-TgE"/>
+                                                        <constraint firstItem="qla-EO-Xv7" firstAttribute="height" secondItem="mnM-Fl-ndG" secondAttribute="height" multiplier="0.865" id="s2N-B4-TgE"/>
                                                         <constraint firstItem="qla-EO-Xv7" firstAttribute="centerX" secondItem="mnM-Fl-ndG" secondAttribute="centerX" id="soN-zq-Enz"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
@@ -2454,42 +2455,38 @@ Help is also available on the website.</string>
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XwV-Fh-IIs" userLabel="signInView">
-                                        <rect key="frame" x="0.0" y="573" width="414" height="71.5"/>
+                                        <rect key="frame" x="0.0" y="557" width="414" height="71.5"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KH-bz-c6f">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9KH-bz-c6f">
                                                 <rect key="frame" x="41.5" y="14.5" width="331" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                 <state key="normal" title="WALLOFCOINS SIGN UP">
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="signInBtnClicked:" destination="lly-KY-UDc" eventType="touchUpInside" id="AEw-MD-JIe"/>
                                                     <action selector="signUpClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="G5C-VC-tw3"/>
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrY-SI-YAv">
-                                        <rect key="frame" x="0.0" y="644.5" width="414" height="71.5"/>
+                                        <rect key="frame" x="0.0" y="628.5" width="414" height="71.5"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2H-UI-wgU">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2H-UI-wgU">
                                                 <rect key="frame" x="41.5" y="15" width="331" height="42.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                 <state key="normal" title="Existing WallofCoins Account Sign In:">
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="existingAccoutClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="ovc-SH-fk5"/>
-                                                    <action selector="signInBtnClicked:" destination="lly-KY-UDc" eventType="touchUpInside" id="WAK-LD-ZOy"/>
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -2500,9 +2497,9 @@ Help is also available on the website.</string>
                                     <constraint firstAttribute="trailing" secondItem="DhW-Vv-WBP" secondAttribute="trailing" id="NsU-Mu-8GL"/>
                                     <constraint firstItem="jrY-SI-YAv" firstAttribute="leading" secondItem="EoQ-mp-J4X" secondAttribute="leading" id="QO5-GF-36x"/>
                                     <constraint firstItem="DhW-Vv-WBP" firstAttribute="leading" secondItem="EoQ-mp-J4X" secondAttribute="leading" id="TB5-Ab-i8L"/>
-                                    <constraint firstItem="DhW-Vv-WBP" firstAttribute="top" secondItem="EoQ-mp-J4X" secondAttribute="top" id="TV7-oX-goL"/>
+                                    <constraint firstItem="DhW-Vv-WBP" firstAttribute="top" secondItem="EoQ-mp-J4X" secondAttribute="top" constant="20" id="TV7-oX-goL"/>
                                     <constraint firstItem="XwV-Fh-IIs" firstAttribute="centerX" secondItem="DhW-Vv-WBP" secondAttribute="centerX" id="Wmq-xe-dff"/>
-                                    <constraint firstItem="DhW-Vv-WBP" firstAttribute="height" secondItem="EoQ-mp-J4X" secondAttribute="height" multiplier="0.8" id="WpL-en-vgM"/>
+                                    <constraint firstItem="DhW-Vv-WBP" firstAttribute="height" secondItem="EoQ-mp-J4X" secondAttribute="height" multiplier="0.75" id="WpL-en-vgM"/>
                                     <constraint firstItem="XwV-Fh-IIs" firstAttribute="height" secondItem="EoQ-mp-J4X" secondAttribute="height" multiplier="0.1" id="XXV-Xo-8vi"/>
                                     <constraint firstItem="jrY-SI-YAv" firstAttribute="height" secondItem="XwV-Fh-IIs" secondAttribute="height" id="lpX-6N-o8c"/>
                                     <constraint firstItem="jrY-SI-YAv" firstAttribute="top" secondItem="XwV-Fh-IIs" secondAttribute="bottom" id="vxS-4D-8c9"/>

@@ -145,9 +145,12 @@
             if (response.count > 0) {
                 NSDictionary *dictionary = [response lastObject];
                 NSString *deviceId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
-                [self.defaults setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [self.defaults synchronize];
-                [self authorize:phoneNo deviceId:deviceId];
+                
+                if (deviceId.length > 0 && [deviceId isEqualToString:@"(null)"] == FALSE) {
+                    [self.defaults setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults synchronize];
+                    [self authorize:phoneNo deviceId:deviceId];
+                }
             }
             else {
                 [self registerDevice:phoneNo];

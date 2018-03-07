@@ -80,7 +80,7 @@
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
-        [self.signoutView setHidden:TRUE];
+        [self.signoutView setHidden:NO];
     }
 }
 
@@ -222,15 +222,17 @@
 }
 
 - (IBAction)signOutClicked:(id)sender {
+   
     UIButton * btn = (UIButton*) sender;
     if (btn != nil) {
         if ([btn.titleLabel.text isEqualToString:@"SIGN IN HERE"]) {
-            [self push:@"WOCBuyDashStep3ViewController"];
+            [self push:@"WOCSignInViewController"];
         }
         else {
            [self signOutWOC];
         }
     }
+    [self performSelector:@selector(setLogoutButton) withObject:nil afterDelay:1.0];
 }
 
 @end

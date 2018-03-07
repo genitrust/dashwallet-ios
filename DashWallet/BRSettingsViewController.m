@@ -233,11 +233,11 @@
                         
                         [navController pushViewController:myViewController animated:YES];
                     }
-                    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-                    appDelegate.window.rootViewController = navController;
                 }
             }
         }
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navController;
     }];
 }
 

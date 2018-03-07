@@ -24,8 +24,6 @@
 @property (assign, nonatomic) int minutes;
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) NSString *locationUrl;
-
-
 @end
 
 @implementation WOCBuyingInstructionsViewController
@@ -211,7 +209,6 @@
                                else {
                                    self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
                                }
-                               
                            });
                        });
     }
@@ -276,8 +273,8 @@
 }
 
 - (void)checkTime {
+    
     if (self.minutes > 0) {
-        
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = LOCAL_DATE_FORMAT;
         formatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
@@ -451,7 +448,6 @@
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
-    
 }
 
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count {
@@ -482,7 +478,7 @@
 
 - (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-  
+    
     NSDictionary *params = @{
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_VERIFICATION_CODE: purchaseCode,

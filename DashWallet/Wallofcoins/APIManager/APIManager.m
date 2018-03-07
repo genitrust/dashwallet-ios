@@ -362,11 +362,15 @@
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
                    };
+        [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
+            completionBlock(responseDict,error);
+        }];
     }
-    
-    [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: params header: header andCompletionBlock:^(id responseDict, NSError *error) {
-        completionBlock(responseDict,error);
-    }];
+    else {
+            NSError * returnError = [NSError errorWithDomain:API_ERROR_TITLE code:403 userInfo:nil];
+            completionBlock(nil,returnError);
+    }
+   
 }
 
 - (void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock

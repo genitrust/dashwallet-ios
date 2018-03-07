@@ -159,7 +159,7 @@
                              API_BODY_DEVICE_CODE: deviceCode
                              };
     
-    if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
+    if (deviceId != nil) {
         
         params = @{
                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
@@ -167,107 +167,129 @@
                    API_BODY_DEVICE_ID: deviceId,
                    API_BODY_JSON_PARAMETER: @"YES"
                    };
-    }
-    
-    [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         
-        if (error == nil) {
+        [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
             
-            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults synchronize];
-            [self storeDeviceInfoLocally];
-            [self createHoldAfterAuthorize:phoneNo];
-        }
-        else {
-            
-            [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults synchronize];
-            
-            [self createHoldAfterAuthorize:phoneNo];
-
-            //[self createHold:phoneNo];
-        }
-    }];
+            if (error == nil) {
+                
+                NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+                [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
+                [self storeDeviceInfoLocally];
+                [self createHoldAfterAuthorize:phoneNo];
+            }
+            else {
+                
+                [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults synchronize];
+                
+                [self createHoldAfterAuthorize:phoneNo];
+                
+                //[self createHold:phoneNo];
+            }
+        }];
+    }
 }
 
 - (void)createHold:(NSString*)phoneNo {
     
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    if (!self.isForLoginOny) {
+        MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+        
+        NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        
+        NSDictionary *params;
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    NSDictionary *params;
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
-        params =  @{
-                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    //API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_JSON_PARAMETER:@"YES"
-                    };
+        if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+            params =  @{
+                        //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                        //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                        //API_BODY_DEVICE_CODE: deviceCode,
+                        API_BODY_JSON_PARAMETER:@"YES"
+                        };
+        }
+        else {
+            params =  @{
+                        //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
+                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                        API_BODY_PHONE_NUMBER: phoneNo,
+                        API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                        API_BODY_DEVICE_CODE: deviceCode,
+                        API_BODY_JSON_PARAMETER:@"YES"
+                        };
+            
+            if (self.emailId != nil && self.emailId.length > 0)
+            {
+                NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+                [dict setObject:self.emailId forKey:API_BODY_EMAIL];
+                params = (NSDictionary*)dict;
+            }
+        }
+        
+        [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [hud hideAnimated:TRUE];
+            });
+            
+            if (error == nil) {
+                NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE) {
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults synchronize];
+                    [self storeDeviceInfoLocally];
+                }
+                
+                NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+                self.holdId = holdId;
+                
+                NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+                self.purchaseCode = purchaseCode;
+                
+                WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
+                myViewController.phoneNo = phoneNo;
+                myViewController.offerId = self.offerId;
+                myViewController.purchaseCode = self.purchaseCode;
+                myViewController.deviceCode = deviceCode;
+                myViewController.emailId = self.emailId;
+                myViewController.holdId = self.holdId;
+                [self pushViewController:myViewController animated:YES];
+            }
+            else if (error.code == 403 ) {
+                [self resolveActiveHoldIssue:phoneNo];
+            }
+            else if (error.code == 401 ) {
+                [self registerDevice:phoneNo];
+            }
+        }];
     }
     else {
-        params =  @{
-                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    API_BODY_PHONE_NUMBER: phoneNo,
-                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_JSON_PARAMETER:@"YES"
-                    };
         
-        if (self.emailId != nil && self.emailId.length > 0)
-        {
-            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-            [dict setObject:self.emailId forKey:API_BODY_EMAIL];
-            params = (NSDictionary*)dict;
+        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+            [self getOrderList];
+        }
+        else {
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Please select an offer and then try to register/login with app." preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                 [self backToMainView];
+            }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+
         }
     }
-    
-    [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [hud hideAnimated:TRUE];
-        });
-        
-        if (error == nil) {
-            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE) {
-                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [self.defaults synchronize];
-            }
-        
-            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
-            self.holdId = holdId;
-            
-            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
-            self.purchaseCode = purchaseCode;
-            
-            WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
-            myViewController.phoneNo = phoneNo;
-            myViewController.offerId = self.offerId;
-            myViewController.purchaseCode = self.purchaseCode;
-            myViewController.deviceCode = deviceCode;
-            myViewController.emailId = self.emailId;
-            myViewController.holdId = self.holdId;
-            [self pushViewController:myViewController animated:YES];
-        }
-        else if (error.code == 403 ) {
-            [self resolveActiveHoldIssue:phoneNo];
-        }
-        else if (error.code == 401 ) {
-            [self registerDevice:phoneNo];
-        }
-    }];
 }
 
 -(void)resolveActiveHoldIssue:(NSString*)phoneNo {
@@ -288,8 +310,8 @@
             
       
             NSString *deviceID = [self getDeviceIDFromPhoneNumber:phoneNo];
-            if (deviceID != nil)
-            {
+             if (deviceID.length > 0 && [deviceID isEqualToString:@"(null)"] == FALSE) {
+           
                 [self.defaults setObject:deviceID forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [self.defaults synchronize];
                 [self login:phoneNo];

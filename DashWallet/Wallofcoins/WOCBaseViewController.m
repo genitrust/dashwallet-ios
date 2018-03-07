@@ -55,7 +55,10 @@
                 if (deviceId != nil) {
                     
                     if (deviceId.length > 0) {
+                        
+                       if ([deviceId isEqualToString:@"(null)"] == FALSE) {
                         return  deviceId;
+                       }
                     }
                 }
             }
@@ -79,8 +82,9 @@
                     NSString *deviceId = deviceInfoDict[phoneNo];
                     if (deviceId != nil) {
                         
-                        if (deviceId.length > 0) {
+                        if (deviceId.length > 0 && [deviceId isEqualToString:@"(null)"] == FALSE) {
                             [self.defaults setObject:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                            [self.defaults synchronize];
                             [self.defaults setObject:deviceInfoDict forKey:USER_DEFAULTS_LOCAL_DEVICE_INFO];
                             [self.defaults synchronize];
                             [self loginWOC];
@@ -116,30 +120,31 @@
                    API_BODY_DEVICE_ID: deviceId,
                    API_BODY_JSON_PARAMETER: @"YES"
                    };
+        
+        [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
+            
+            if (error == nil) {
+                
+                NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+                [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
+                [self storeDeviceInfoLocally];
+            }
+            else {
+                [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults synchronize];
+                
+                [self backToMainView];
+                
+            }
+        }];
     }
     
-    [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
-        
-        if (error == nil) {
-            
-            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults synchronize];
-            [self storeDeviceInfoLocally];
-        }
-        else {
-            [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults synchronize];
-            
-            [self backToMainView];
-            
-        }
-    }];
 }
 
 - (void)signOutWOC {
@@ -202,16 +207,16 @@
 
 - (void)getOrderList {
     
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
                              //@"publisherId": @WALLOFCOINS_PUBLISHER_ID
                              };
     
     [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [hud hideAnimated:YES];
+//        });
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error == nil) {
@@ -242,6 +247,9 @@
                         myViewController.isFromSend = YES;
                         [self pushViewController:myViewController animated:YES];
                     }
+                }
+                else {
+                    [self backToMainView];
                 }
             }
         });

@@ -15,7 +15,7 @@
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *emailId;
 @property (assign, readwrite) BOOL isActiveHoldChecked;
-
+@property (assign, readwrite) BOOL isForLoginOny;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (weak, nonatomic) IBOutlet UITextField *txtCountryCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;
