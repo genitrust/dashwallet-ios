@@ -189,8 +189,6 @@
                 [self.defaults synchronize];
                 
                 [self createHoldAfterAuthorize:phoneNo];
-                
-                //[self createHold:phoneNo];
             }
         }];
     }
@@ -252,7 +250,12 @@
                 self.holdId = holdId;
                 
                 NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
-                self.purchaseCode = purchaseCode;
+                if ([purchaseCode isKindOfClass:[NSNull class]] == FALSE)
+                {
+                    self.purchaseCode = purchaseCode;
+                } else {
+                    self.purchaseCode = @"";
+                }
                 
                 WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
                 myViewController.phoneNo = phoneNo;

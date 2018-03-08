@@ -88,4 +88,6 @@
 #define STORYBOARD_DASH @"buyDash"
 #define ALERT_TITLE @"Dash"
 
+#define setVal(value) (![value isEqual:[NSNull null]])?value:@""
+
 #endif /* WOCUserDefaultsConstants_h */

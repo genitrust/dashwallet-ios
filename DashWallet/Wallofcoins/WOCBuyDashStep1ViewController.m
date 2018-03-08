@@ -64,6 +64,7 @@
 }
 
 -(void)setLogoutButton {
+    
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
@@ -80,7 +81,7 @@
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
-        [self.signoutView setHidden:NO];
+        [self.signoutView setHidden:YES];
     }
 }
 
@@ -125,8 +126,6 @@
 
 - (void)findZipCode {
     
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
     [self.btnLocation setUserInteractionEnabled:YES];
     
     // Your location from latitude and longitude
@@ -135,7 +134,8 @@
     
     if (latitude != nil && longitude != nil) {
         CLLocation *location = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
-        
+        MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+
         // Call the method to find the address
         [self getAddressFromLocation:location completionHandler:^(NSMutableDictionary *placeDetail) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -151,6 +151,9 @@
             [self openBuyDashStep4];
         }
         failureHandler:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
             [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
             NSLog(@"Error : %@", error);
         }];
@@ -158,9 +161,7 @@
     else {
         
         [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-        });
+        
         [[WOCLocationManager sharedInstance] startLocationService];
     }
 }
@@ -175,7 +176,8 @@
         } else {
             CLPlacemark *placemark = [placemarks objectAtIndex:0];
             if(completionHandler) {
-                completionHandler(placemark.addressDictionary);
+                
+                completionHandler([NSMutableDictionary dictionaryWithDictionary:placemark.addressDictionary]);
             }
         }
     }];

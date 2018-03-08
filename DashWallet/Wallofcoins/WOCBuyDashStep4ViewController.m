@@ -47,16 +47,22 @@
     
     if ([dollarString length] > 0 && [dollarString intValue] != 0) {
         if ([dollarString intValue] >= 5) {
-            if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
-                if ([self.zipCode length] > 0) {
-                    [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
+            
+            if ([dollarString intValue] <100000) {
+                if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
+                    if ([self.zipCode length] > 0) {
+                        [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
+                    }
+                    else if ([self.bankId length] > 0) {
+                        [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
+                    }
                 }
-                else if ([self.bankId length] > 0) {
-                    [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
+                else {
+                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
                 }
             }
             else {
-                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
+                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Amount must be less than $100000." viewController:self.navigationController.visibleViewController];
             }
         }
         else {

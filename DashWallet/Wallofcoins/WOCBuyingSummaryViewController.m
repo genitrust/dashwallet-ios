@@ -254,17 +254,17 @@
                 }
             }
         }
-        else{
+        else {
             orderDict = self.otherOrders[indexPath.row];
         }
         
-        NSString *bankLogo = [orderDict valueForKey:@"bankLogo"];
-        NSString *bankIcon = [orderDict valueForKey:@"bankIcon"];
-        NSString *bankName = [orderDict valueForKey:@"bankName"];
-        NSString *phoneNo = [NSString stringWithFormat:@"%@",[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
+        NSString *bankLogo = setVal([orderDict valueForKey:@"bankLogo"]);
+        NSString *bankIcon = setVal([orderDict valueForKey:@"bankIcon"]);
+        NSString *bankName = setVal([orderDict valueForKey:@"bankName"]);
+        NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
         float depositAmount = [[orderDict valueForKey:@"payment"] floatValue];
-        NSString *totalDash = [orderDict valueForKey:@"total"];
-        NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+        NSString *totalDash = setVal([orderDict valueForKey:@"total"]);
+        NSString *status = [NSString stringWithFormat:@"%@",setVal([orderDict valueForKey:@"status"])];
         
         //bankLogo
         if (![[orderDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {

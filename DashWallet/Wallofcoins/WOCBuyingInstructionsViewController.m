@@ -181,15 +181,15 @@
 }
 
 - (void)updateData:(NSDictionary*)dictionary {
-    NSString *bankLogo = [dictionary valueForKey:@"bankLogo"];
-    NSString *bankName = [dictionary valueForKey:@"bankName"];
-    NSString *phoneNo = [NSString stringWithFormat:@"%@",[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
-    NSString *accountName = [dictionary valueForKey:@"nameOnAccount"];
-    NSString *accountNo = [dictionary valueForKey:@"account"];
+    NSString *bankLogo = setVal([dictionary valueForKey:@"bankLogo"]);
+    NSString *bankName = setVal([dictionary valueForKey:@"bankName"]);
+    NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
+    NSString *accountName = setVal([dictionary valueForKey:@"nameOnAccount"]);
+    NSString *accountNo = setVal([dictionary valueForKey:@"account"]);
     float depositAmount = [[dictionary valueForKey:@"payment"] floatValue];
-    NSString *depositDue = [dictionary valueForKey:@"paymentDue"];
-    NSString *totalDash = [dictionary valueForKey:@"total"];
-    self.orderId = [dictionary valueForKey:@"id"];
+    NSString *depositDue = setVal([dictionary valueForKey:@"paymentDue"]);
+    NSString *totalDash = setVal([dictionary valueForKey:@"total"]);
+    self.orderId = setVal([dictionary valueForKey:@"id"]);
     
     //bankLogo
     if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
@@ -220,8 +220,11 @@
     if ([dictionary valueForKey:@"bankUrl"] != [NSNull null]) {
         [self.btnCheckLocation setTitle:@"Check locations" forState:UIControlStateNormal];
         self.locationUrl = [dictionary valueForKey:@"bankUrl"];
-        if ([[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"address"] length] > 0) {
-            [self.btnCheckLocation setHidden:YES];
+        if ([[dictionary valueForKey:@"nearestBranch"] class] != [NSNull class]) {
+            if([dictionary valueForKey:@"nearestBranch"][@"address"] != nil) {
+                if ([[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"address"] length] > 0) {
+                    [self.btnCheckLocation setHidden:YES];
+                }}
         }
     }
     

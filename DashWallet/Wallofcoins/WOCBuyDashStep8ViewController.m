@@ -30,6 +30,8 @@
     
     if (self.purchaseCode != nil) {
         self.txtPurchaseCode.text = self.purchaseCode;
+    } else {
+        self.txtPurchaseCode.text = @"";
     }
     self.txtPurchaseCode.delegate = self;
 }

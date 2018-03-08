@@ -18,7 +18,6 @@
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
 #import "WOCBuyDashStep1ViewController.h"
-
 @interface WOCBuyDashStep5ViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray *offers;
@@ -194,14 +193,14 @@
         [cell.lblDollar setHidden:true];
     }
     
-    NSString *dashAmount = [NSString stringWithFormat:@"Đ %@",[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"]];
-    NSString *bits = [NSString stringWithFormat:@"(đ %@)",[[offerDict valueForKey:@"amount"] valueForKey:@"dots"]];
-    NSString *dollarAmount = [NSString stringWithFormat:@"Pay $%@",[[offerDict valueForKey:@"deposit"] valueForKey:@"amount"]];
-    NSString *bankName = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankName"]];
-    NSString *bankAddress = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"address"]];
-    NSString *bankLocationUrl = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]];
-    NSString *bankLogo = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLogo"]];
-    NSString *bankIcon = [NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankIcon"]];
+    NSString *dashAmount = [NSString stringWithFormat:@"Đ %@",setVal([[offerDict valueForKey:@"amount"] valueForKey:@"DASH"])];
+    NSString *bits = [NSString stringWithFormat:@"(đ %@)",setVal([[offerDict valueForKey:@"amount"] valueForKey:@"dots"])];
+    NSString *dollarAmount = [NSString stringWithFormat:@"Pay $%@",setVal([[offerDict valueForKey:@"deposit"] valueForKey:@"amount"])];
+    NSString *bankName = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"bankName"])];
+    NSString *bankAddress = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"address"])];
+    NSString *bankLocationUrl = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"bankLocationUrl"])];
+    NSString *bankLogo = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"bankLogo"])];
+    NSString *bankIcon = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"bankIcon"])];
     
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     uint64_t amount;
@@ -214,16 +213,17 @@
     cell.lblDashSubTitle.text = bits;
     cell.lblDollar.text = dollarAmount;
     cell.lblBankName.text = bankName;
+    
     cell.lblLocation.text = bankAddress;
     
-    if ([offerDict valueForKey:@"bankLocationUrl"] != [NSNull null]) {
+    if (bankLocationUrl.length > 0) {
         [cell.btnLocation setHidden:NO];
         cell.btnLocation.tag = indexPath.row;
         [cell.btnLocation addTarget:self action:@selector(checkLocationClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     //bankLogo
-    if (![[offerDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
+    if ([bankLogo length] > 0) {
         
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
@@ -245,7 +245,7 @@
                            });
                        });
     }
-    else if (![[offerDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
+    else if ([bankIcon length] > 0) {
         
         cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
