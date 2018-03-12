@@ -34,8 +34,9 @@
     self.title = @"Buy Dash With Cash";
     
     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
-    
-    [self getLocalDevices];
+     [self setShadow:self.signupBtn];
+     [self setShadow:self.sighInBtn];
+     [self getLocalDevices];
 }
 
 - (void)getLocalDevices {
@@ -65,7 +66,7 @@
     [self.defaults setObject:phoneNumber forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     [self.defaults synchronize];
     [self refereshToken];
-    [self performSelector:@selector(getOrderList) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(backToMainView) withObject:nil afterDelay:1.0];
 }
 
 // MARK: - API

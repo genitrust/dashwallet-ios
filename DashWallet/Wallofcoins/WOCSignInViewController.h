@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) NSString *discoveryId;
 @property (strong, nonatomic) NSString *amount;
+@property (weak, nonatomic) IBOutlet UIButton *signupBtn;
+@property (weak, nonatomic) IBOutlet UIButton *sighInBtn;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblInstruction;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

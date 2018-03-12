@@ -48,7 +48,6 @@
     
     [self setShadow:self.btnLocation];
     [self setShadow:self.btnNoThanks];
-    [self setShadow:self.btnSignOut];
     
 }
 
@@ -74,6 +73,8 @@
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
         [self.signoutView setHidden:NO];
+        [self.orderListBtn setHidden:NO];
+
         //[self refereshToken];
     }
     else
@@ -81,8 +82,12 @@
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
-        [self.signoutView setHidden:YES];
+        [self.orderListBtn setHidden:YES];
+        [self.signoutView setHidden:NO];
     }
+    
+    [self setShadow:self.btnSignOut];
+    [self setShadow:self.orderListBtn];
 }
 
 -(void)openBuyDashStep2 {
@@ -189,6 +194,10 @@
     
     [self signOutWOC];
 }
+- (IBAction)onOrderListClick:(id)sender {
+    
+    [self getOrderList];
+}
 
 // MARK: - IBAction
 
@@ -236,6 +245,4 @@
     }
     [self performSelector:@selector(setLogoutButton) withObject:nil afterDelay:1.0];
 }
-
 @end
-

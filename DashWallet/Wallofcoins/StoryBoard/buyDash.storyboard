@@ -104,16 +104,16 @@
                                         </connections>
                                     </button>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZF7-ZD-36h" userLabel="signoutView">
-                                        <rect key="frame" x="15" y="601" width="384" height="100"/>
+                                        <rect key="frame" x="15" y="551" width="384" height="150"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imh-jL-JKc">
-                                                <rect key="frame" x="8" y="0.0" width="368" height="47.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imh-jL-JKc">
+                                                <rect key="frame" x="8" y="0.0" width="368" height="59"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-rz-NfQ">
-                                                <rect key="frame" x="10" y="54.5" width="364" height="36"/>
+                                                <rect key="frame" x="10" y="59" width="364" height="38"/>
                                                 <color key="backgroundColor" red="0.83921568629999999" green="0.84313725490000002" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                 <state key="normal" title="SIGN OUT">
@@ -123,17 +123,32 @@
                                                     <action selector="signOutClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="MKw-7w-xKW"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QvD-N7-3xq">
+                                                <rect key="frame" x="10" y="104.5" width="364" height="38"/>
+                                                <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                <state key="normal" title="ORDER LISTING">
+                                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onOrderListClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="egG-KK-abk"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="ZqV-rz-NfQ" secondAttribute="bottom" constant="9" id="3Sf-z1-A1C"/>
                                             <constraint firstItem="imh-jL-JKc" firstAttribute="top" secondItem="ZF7-ZD-36h" secondAttribute="top" id="53x-4C-IwF"/>
-                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="height" secondItem="ZF7-ZD-36h" secondAttribute="height" multiplier="38/105" id="EBb-jc-bUj"/>
+                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="height" secondItem="ZF7-ZD-36h" secondAttribute="height" multiplier="38/150" id="EBb-jc-bUj"/>
+                                            <constraint firstItem="QvD-N7-3xq" firstAttribute="width" secondItem="ZqV-rz-NfQ" secondAttribute="width" id="HsN-8E-6GP"/>
                                             <constraint firstItem="imh-jL-JKc" firstAttribute="leading" secondItem="ZF7-ZD-36h" secondAttribute="leading" constant="8" id="P2i-Tt-p4s"/>
                                             <constraint firstAttribute="trailing" secondItem="ZqV-rz-NfQ" secondAttribute="trailing" constant="10" id="Wa0-Sg-2rH"/>
-                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="top" secondItem="imh-jL-JKc" secondAttribute="bottom" constant="7" id="XUn-Cg-NFk"/>
+                                            <constraint firstItem="ZqV-rz-NfQ" firstAttribute="top" secondItem="imh-jL-JKc" secondAttribute="bottom" id="XUn-Cg-NFk"/>
+                                            <constraint firstAttribute="bottom" secondItem="QvD-N7-3xq" secondAttribute="bottom" constant="7.5" id="fI1-eS-QPl"/>
                                             <constraint firstItem="ZqV-rz-NfQ" firstAttribute="leading" secondItem="ZF7-ZD-36h" secondAttribute="leading" constant="10" id="jTc-yc-8RW"/>
                                             <constraint firstAttribute="trailing" secondItem="imh-jL-JKc" secondAttribute="trailing" constant="8" id="lBo-Ja-m49"/>
+                                            <constraint firstItem="QvD-N7-3xq" firstAttribute="top" secondItem="ZqV-rz-NfQ" secondAttribute="bottom" constant="7.5" id="q8y-Ml-dH1"/>
+                                            <constraint firstItem="QvD-N7-3xq" firstAttribute="centerX" secondItem="ZqV-rz-NfQ" secondAttribute="centerX" id="xD7-bW-87r"/>
+                                            <constraint firstItem="QvD-N7-3xq" firstAttribute="height" secondItem="ZqV-rz-NfQ" secondAttribute="height" id="yj0-Kv-iey"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -142,7 +157,7 @@
                                     <constraint firstItem="JHo-YN-2Qe" firstAttribute="top" secondItem="dMX-Fv-pNB" secondAttribute="top" constant="8" id="4i3-66-yas"/>
                                     <constraint firstItem="d81-xa-fhq" firstAttribute="height" secondItem="JMG-98-Lub" secondAttribute="height" id="5HT-hs-Iie"/>
                                     <constraint firstItem="JMG-98-Lub" firstAttribute="top" secondItem="JHo-YN-2Qe" secondAttribute="bottom" constant="7" id="64j-J7-kAL"/>
-                                    <constraint firstItem="ZF7-ZD-36h" firstAttribute="height" secondItem="dMX-Fv-pNB" secondAttribute="height" multiplier="100/716" id="9gE-AX-iZ5"/>
+                                    <constraint firstItem="ZF7-ZD-36h" firstAttribute="height" secondItem="dMX-Fv-pNB" secondAttribute="height" multiplier="150/716" id="9gE-AX-iZ5"/>
                                     <constraint firstItem="JHo-YN-2Qe" firstAttribute="centerX" secondItem="dMX-Fv-pNB" secondAttribute="centerX" id="EPt-kz-450"/>
                                     <constraint firstItem="d81-xa-fhq" firstAttribute="centerX" secondItem="JMG-98-Lub" secondAttribute="centerX" id="Fdh-D8-oUX"/>
                                     <constraint firstItem="JMG-98-Lub" firstAttribute="height" secondItem="dMX-Fv-pNB" secondAttribute="height" multiplier="27/478" id="GVN-WJ-nv0"/>
@@ -178,6 +193,7 @@
                         <outlet property="btnNoThanks" destination="d81-xa-fhq" id="OTc-kL-j0v"/>
                         <outlet property="btnSignOut" destination="ZqV-rz-NfQ" id="7dO-Vg-HjV"/>
                         <outlet property="lblDescription" destination="imh-jL-JKc" id="jls-kg-ZRa"/>
+                        <outlet property="orderListBtn" destination="QvD-N7-3xq" id="dKC-KF-tL9"/>
                         <outlet property="signoutView" destination="ZF7-ZD-36h" id="jQz-NE-nNa"/>
                     </connections>
                 </viewController>
@@ -2521,6 +2537,8 @@ Help is also available on the website.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
+                        <outlet property="sighInBtn" destination="T2H-UI-wgU" id="Mwb-0i-B0t"/>
+                        <outlet property="signupBtn" destination="9KH-bz-c6f" id="JGg-6E-Gtf"/>
                         <outlet property="tableHeighConstrain" destination="WpL-en-vgM" id="dbh-GG-QJi"/>
                         <outlet property="tableView" destination="DhW-Vv-WBP" id="rUP-S4-4QV"/>
                     </connections>

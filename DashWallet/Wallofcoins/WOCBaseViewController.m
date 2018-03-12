@@ -136,15 +136,23 @@
                 [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
                 [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                //[self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [self.defaults synchronize];
                 
-                [self backToMainView];
-                
+                NSString *title = @"Error";
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:@"SIGN IN for the device is hidden" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                         [self backToMainView];
+                    }];
+                    
+                    [alert addAction:okAction];
+                    
+                   [self presentViewController:alert animated:YES completion:nil];
+                });
             }
         }];
     }
-    
 }
 
 - (void)signOutWOC {
@@ -251,6 +259,9 @@
                 else {
                     [self backToMainView];
                 }
+            }
+            else {
+                [self refereshToken];
             }
         });
     }];
