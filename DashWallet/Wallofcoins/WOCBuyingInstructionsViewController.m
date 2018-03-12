@@ -268,10 +268,25 @@
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTime) userInfo:nil repeats:YES];
     
     if ([[dictionary valueForKey:@"account"] length] > 16) {
-        NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[dictionary valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-        self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",[[accountArray objectAtIndex:0] valueForKey:@"value"], [[accountArray objectAtIndex:1] valueForKey:@"value"]];
-        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
-        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+        NSArray *accountArr = [NSJSONSerialization JSONObjectWithData:[[dictionary valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"displaySort" ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
+            float aObj1 = [(NSString *)obj1 floatValue];
+            float aObj2 = [(NSString *)obj2 floatValue];
+            return aObj1 > aObj2;
+        }];
+        
+        NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
+        if (accountArray.count > 2) {
+            self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",[[accountArray objectAtIndex:0] valueForKey:@"value"], [[accountArray objectAtIndex:2] valueForKey:@"value"]];
+        }
+        
+        if (accountArray.count > 3) {
+        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+        }
+        
+        if (accountArray.count > 1) {
+        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+        }
     }
 }
 

@@ -58,7 +58,6 @@
     CLGeocoder* geoCoder = [[CLGeocoder alloc] init];
     CNMutablePostalAddress *postalAddress = [[CNMutablePostalAddress alloc] init];
     postalAddress.postalCode = zipCode;
-    postalAddress.subLocality = @"";
     postalAddress.country = @"us";
     postalAddress.state = @"";
     if (@available(iOS 11.0, *)) {

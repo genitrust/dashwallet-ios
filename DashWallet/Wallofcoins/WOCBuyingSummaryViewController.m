@@ -244,13 +244,26 @@
                 if ([[orderDict valueForKey:@"account"] length] > 16) {
                     cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
                     
-                    NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-                    
+                    NSArray *accountArr = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+                    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"displaySort" ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
+                        float aObj1 = [(NSString *)obj1 floatValue];
+                        float aObj2 = [(NSString *)obj2 floatValue];
+                        return aObj1 > aObj2;
+                    }];
+                    NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
                     cell.lblPhone.hidden = YES;
-                    cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
-                    cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
-                    cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
-                    cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+                    if (accountArray.count > 0) {
+                        cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
+                    }
+                    if (accountArray.count > 2) {
+                        cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
+                    }
+                    if (accountArray.count > 3) {
+                        cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+                    }
+                    if (accountArray.count > 1) {
+                        cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+                    }
                 }
             }
         }
