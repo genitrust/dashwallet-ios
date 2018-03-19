@@ -138,7 +138,7 @@
 
 - (void)displayAlert {
     
-    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
+    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:[NSString stringWithFormat:@"Thank you for making the payment!\nOnce we verify your payment, we will send the %@ to your wallet!",WOC_CURRENTCY] viewController:self];
 }
 
 // MARK: - IBAction
@@ -339,7 +339,7 @@
         [numFormatter setGroupingSeparator:@","];
         [numFormatter setGroupingSize:3];
         NSString *stringNum = [numFormatter stringFromNumber:num];
-        cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@ (%@ dots)",totalDash,stringNum];
+        cell.lblTotalDash.text = [NSString stringWithFormat:@"Total %@: %@ (%@ %@)",WOC_CURRENTCY_SPECIAL,totalDash,stringNum,WOC_CURRENTCY_SYMBOL_MINOR];
         cell.lblStatus.text = [self checkStatus:status];
         
         return cell;

@@ -21,10 +21,10 @@
 //#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
 #define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
 
-#define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
+#define BASE_URL_DEVELOPMENT @"https://woc.reference.genitrust.com"
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
 
-#define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+#define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ" //@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 #define LOCAL_DATE_FORMAT @"yyyy-MM-dd HH:mm:ss"
 
 #pragma mark - USER DEFAULT KEYS
@@ -64,7 +64,7 @@
 #define API_BODY_CODE @"code"
 #define API_BODY_NAME @"name"
 #define API_BODY_PHONE_NUMBER @"phone"
-#define API_BODY_DEVICE_NAME_IOS @"Dash Wallet (iOS)"
+#define API_BODY_DEVICE_NAME_IOS [NSString stringWithFormat:@"%@ Wallet (iOS)",WOC_CURRENTCY]
 #define API_BODY_EMAIL @"email"
 #define API_BODY_JSON_PARAMETER @"JSONPara"
 #define API_BODY_VERIFICATION_CODE @"verificationCode"
@@ -86,8 +86,17 @@
 
 #pragma mark - OTHER
 #define STORYBOARD_DASH @"buyDash"
-#define ALERT_TITLE @"Dash"
+#define WOC_CURRENTCY @"DASH"
+#define WOC_CURRENTCY_SPECIAL @"ĐASH"
+#define WOC_CURRENTCY_MINOR_SPECIAL @"đots"
+#define WOC_CURRENTCY_SYMBOL @"Đ"
+#define WOC_CURRENTCY_SYMBOL_MINOR @"đ"
+#define CRYPTO_CURRENTCY_SMALL @"dots"
 
-#define setVal(value) (![value isEqual:[NSNull null]])?value:@""
+#define CRYPTO_CURRENTCY WOC_CURRENTCY
+
+#define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOC_CURRENTCY]
+
+#define setVal(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
 #endif /* WOCUserDefaultsConstants_h */

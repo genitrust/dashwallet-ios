@@ -32,11 +32,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.title = [NSString stringWithFormat:@"buy %@ with cash",WOC_CURRENTCY];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+    self.title = @"";
 }
 
 - (IBAction)signOutClicked:(id)sender {
@@ -266,7 +267,6 @@
         });
     }];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -35,8 +35,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Buy Dash With Cash";
-    
     [self setShadow:self.btnNext];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:nil];
@@ -265,10 +263,10 @@
                     [self storeDeviceInfoLocally];
                 }
                 
-                NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+                NSString *holdId = [NSString stringWithFormat:@"%@",setVal([responseDictionary valueForKey:API_RESPONSE_ID])];
                 self.holdId = holdId;
                 
-                NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+                NSString *purchaseCode = [NSString stringWithFormat:@"%@",setVal([responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE])];
                 if ([purchaseCode isKindOfClass:[NSNull class]] == FALSE)
                 {
                     self.purchaseCode = purchaseCode;
@@ -348,7 +346,7 @@
 
 -(void)openHoldIssueVC {
     /*
-     IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE DASH WITH CASH" button), and when they press that button, you will bring them to this website link:
+     IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE {Crypto Currency} WITH CASH" button), and when they press that button, you will bring them to this website link:
      https://wallofcoins.com/signin/1-2397776832/
      https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
      */

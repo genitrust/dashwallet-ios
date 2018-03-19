@@ -29,8 +29,7 @@
     [super viewDidLoad];
     
     [self setShadow:self.btnGetOffers];
-    
-    self.txtDash.text = @"to acquire Dash (Đ) (1,000,000 đots = 1 ĐASH)";
+    self.txtDash.text = [NSString stringWithFormat:@"to acquire %@ (%@) (1,000,000 %@ = 1 %@)",WOC_CURRENTCY,WOC_CURRENTCY_SYMBOL,WOC_CURRENTCY_MINOR_SPECIAL,WOC_CURRENTCY_SPECIAL];
     self.txtDash.delegate = self;
     self.txtDollar.delegate = self;
     [self.txtDash setUserInteractionEnabled:NO];
@@ -58,24 +57,23 @@
                     }
                 }
                 else {
-                    [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
+                    [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
                 }
             }
             else {
-                [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Amount must be less than $100000." viewController:self.navigationController.visibleViewController];
+                [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Amount must be less than $100000." viewController:self.navigationController.visibleViewController];
             }
         }
         else {
-            [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Amount must be more than $5." viewController:self.navigationController.visibleViewController];
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Amount must be more than $5." viewController:self.navigationController.visibleViewController];
         }
     }
     else {
-        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Enter amount." viewController:self.navigationController.visibleViewController];
+        [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Enter amount." viewController:self.navigationController.visibleViewController];
     }
 }
 
 // MARK: - API
-
 - (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     
     BRWalletManager *manager = [BRWalletManager sharedInstance];
@@ -86,12 +84,12 @@
                              //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_CRYPTO_AMOUNT: @"0",
                              API_BODY_USD_AMOUNT: amount,
-                             API_BODY_CRYPTO: @"DASH",
+                             API_BODY_CRYPTO: CRYPTO_CURRENTCY,
                              API_BODY_CRYPTO_ADDRESS:cryptoAddress,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
     
-    //Receive Dash Address...
+    //Receive Crypto Currency Address...
     NSString *latitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
     NSString *longitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
@@ -131,7 +129,6 @@
     }
     
     //[dict setObject:@"us" forKey:API_BODY_COUNTRY];
-
     params = (NSDictionary*)dict;
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {

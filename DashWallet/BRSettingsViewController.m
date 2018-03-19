@@ -378,7 +378,7 @@
     }
 }
 
-- (IBAction)touchIdLimit:(id)sender
+- (IBAction)d:(id)sender
 {
     [BREventManager saveEvent:@"settings:touch_id_limit"];
     BRWalletManager *manager = [BRWalletManager sharedInstance];

@@ -29,7 +29,7 @@
     [self setShadow:self.btnPurchaseCode];
     
     if (self.purchaseCode != nil) {
-        self.txtPurchaseCode.text = self.purchaseCode;
+        self.txtPurchaseCode.text = setVal(self.purchaseCode);
     } else {
         self.txtPurchaseCode.text = @"";
     }

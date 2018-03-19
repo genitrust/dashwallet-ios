@@ -69,7 +69,10 @@
                         }
                     }
                 }
-                [self.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                  [self.tableView reloadData];
+                });
+                
             }
             else {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -193,8 +196,8 @@
         [cell.lblDollar setHidden:true];
     }
     
-    NSString *dashAmount = [NSString stringWithFormat:@"Đ %@",setVal([[offerDict valueForKey:@"amount"] valueForKey:@"DASH"])];
-    NSString *bits = [NSString stringWithFormat:@"(đ %@)",setVal([[offerDict valueForKey:@"amount"] valueForKey:@"dots"])];
+    NSString *dashAmount = [NSString stringWithFormat:@"%@ %@",WOC_CURRENTCY_SYMBOL,setVal([[offerDict valueForKey:@"amount"] valueForKey:CRYPTO_CURRENTCY])];
+    NSString *bits = [NSString stringWithFormat:@"(%@ %@)",WOC_CURRENTCY_SYMBOL_MINOR,setVal([[offerDict valueForKey:@"amount"] valueForKey:CRYPTO_CURRENTCY_SMALL])];
     NSString *dollarAmount = [NSString stringWithFormat:@"Pay $%@",setVal([[offerDict valueForKey:@"deposit"] valueForKey:@"amount"])];
     NSString *bankName = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"bankName"])];
     NSString *bankAddress = [NSString stringWithFormat:@"%@",setVal([offerDict valueForKey:@"address"])];
@@ -206,7 +209,7 @@
     uint64_t amount;
     amount = [manager amountForDashString:dashAmount];
     
-    uint64_t dshAmt = [[[offerDict valueForKey:@"amount"] valueForKey:@"DASH"] longLongValue];
+    uint64_t dshAmt = [[[offerDict valueForKey:@"amount"] valueForKey:CRYPTO_CURRENTCY] longLongValue];
     uint64_t bitsAmt = [[[offerDict valueForKey:@"amount"] valueForKey:@"bits"] longLongValue];
     
     cell.lblDashTitle.text = dashAmount;

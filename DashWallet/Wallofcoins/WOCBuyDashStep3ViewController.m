@@ -25,7 +25,6 @@
     [super viewDidLoad];
     
     [self setShadow:self.btnNext];
-    
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
@@ -61,7 +60,7 @@
         return;
     }
     else {
-        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Select payment center." viewController:self.navigationController.visibleViewController];
+        [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Select payment center." viewController:self.navigationController.visibleViewController];
     }
 }
 
@@ -83,6 +82,4 @@
     self.txtPaymentCenter.text = self.paymentCenters[row][@"name"];
     self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
-
 @end
-

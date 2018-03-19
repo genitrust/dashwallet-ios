@@ -84,7 +84,7 @@
 - (void)showLocationAlertPopup {
     
     UIAlertController *alert = [UIAlertController
-                                alertControllerWithTitle:@"Allow \"Dash\" to Access Your Location While You Use the App?" message:@"Your current location will be used to show you birds nearby."preferredStyle:UIAlertControllerStyleAlert];
+                                alertControllerWithTitle:[NSString stringWithFormat:@"Allow \"%@\" to Access Your Location While You Use the App?",WOC_CURRENTCY] message:@"Your current location will be used to show you birds nearby."preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesButton = [UIAlertAction
                                 actionWithTitle:@"Don't Allow"

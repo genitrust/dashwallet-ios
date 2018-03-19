@@ -27,6 +27,7 @@
 		043754CF20354F63001A4ED4 /* WOCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754BB20354F63001A4ED4 /* WOCLocationManager.m */; };
 		043754D020354F63001A4ED4 /* WOCPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */; };
 		043754D3203550BC001A4ED4 /* buyDash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 043754D2203550BB001A4ED4 /* buyDash.storyboard */; };
+		047C8277205F7F580034684D /* WOCMedia.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047C8276205F7F570034684D /* WOCMedia.xcassets */; };
 		220128D31C753C670001CAC1 /* BRSocketHelpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 220128D11C753C670001CAC1 /* BRSocketHelpers.c */; };
 		2204604E1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
 		2204604F1B9F61E600D07B61 /* BREventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204604D1B9F61E600D07B61 /* BREventManager.m */; };
@@ -273,6 +274,7 @@
 		043754BC20354F63001A4ED4 /* WOCPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCPasswordViewController.h; sourceTree = "<group>"; };
 		043754BD20354F63001A4ED4 /* WOCPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOCPasswordViewController.m; sourceTree = "<group>"; };
 		043754D2203550BB001A4ED4 /* buyDash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = buyDash.storyboard; sourceTree = "<group>"; };
+		047C8276205F7F570034684D /* WOCMedia.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = WOCMedia.xcassets; sourceTree = "<group>"; };
 		220128D11C753C670001CAC1 /* BRSocketHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BRSocketHelpers.c; sourceTree = "<group>"; };
 		220128D21C753C670001CAC1 /* BRSocketHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSocketHelpers.h; sourceTree = "<group>"; };
 		2204604C1B9F61E600D07B61 /* BREventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BREventManager.h; sourceTree = "<group>"; };
@@ -678,6 +680,7 @@
 			children = (
 				043754D1203550BB001A4ED4 /* StoryBoard */,
 				0437549520354F63001A4ED4 /* ActivityLogs.md */,
+				047C8276205F7F570034684D /* WOCMedia.xcassets */,
 				0437549620354F63001A4ED4 /* APIManager */,
 				0437549920354F63001A4ED4 /* CustomCell */,
 				043754A020354F63001A4ED4 /* Resources */,
@@ -1490,6 +1493,7 @@
 				752E28F719235B3000DB5A3C /* FixedPeers.plist in Resources */,
 				043754C320354F63001A4ED4 /* countries.json in Resources */,
 				75D5F3DE191EC270004AB296 /* Main.storyboard in Resources */,
+				047C8277205F7F580034684D /* WOCMedia.xcassets in Resources */,
 				043754D3203550BC001A4ED4 /* buyDash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

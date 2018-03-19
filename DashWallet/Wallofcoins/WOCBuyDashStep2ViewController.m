@@ -41,7 +41,7 @@
         [self push:@"WOCBuyDashStep3ViewController"];
     }
     else if ([zipCode length] > 6 ) {
-         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Enter valid zipcode" viewController:self.navigationController.visibleViewController];
+         [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Enter valid zipcode" viewController:self.navigationController.visibleViewController];
     }
     else {
         

@@ -28,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Buy Dash With Cash";
     self.defaults = [NSUserDefaults standardUserDefaults];
     [self setWOCNavigationController];
    

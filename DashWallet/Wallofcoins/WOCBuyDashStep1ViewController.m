@@ -110,7 +110,7 @@
 
 - (void)showAlert {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Dash" message:@"Are you in the USA?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:ALERT_TITLE message:@"Are you in the USA?" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self refereshToken];
