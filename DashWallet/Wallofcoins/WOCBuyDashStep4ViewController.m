@@ -47,13 +47,13 @@
     if ([dollarString length] > 0 && [dollarString intValue] != 0) {
         if ([dollarString intValue] >= 5) {
             
-            if ([dollarString intValue] <100000) {
+            if ([dollarString intValue] <10000000) {
                 if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
-                    if ([self.zipCode length] > 0) {
-                        [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
-                    }
-                    else if ([self.bankId length] > 0) {
+                    if ([self.bankId length] > 0) {
                         [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
+                    }
+                    else if ([self.zipCode length] > 0) {
+                        [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
                     }
                 }
                 else {
@@ -76,12 +76,19 @@
 // MARK: - API
 - (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     
+    if (self.txtDash != nil) {
+        [self.txtDash resignFirstResponder];
+    }
+    
+    if (self.txtDollar != nil) {
+        [self.txtDollar resignFirstResponder];
+    }
+    
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     NSString *cryptoAddress = manager.wallet.receiveAddress;
     NSLog(@"cryptoAddress = %@",cryptoAddress);
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_CRYPTO_AMOUNT: @"0",
                              API_BODY_USD_AMOUNT: amount,
                              API_BODY_CRYPTO: CRYPTO_CURRENTCY,
@@ -116,29 +123,40 @@
         [dict setObject:bankId forKey:API_BODY_BANK];
         params = (NSDictionary*)dict;
     }
-   
+    
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-    NSString *countryCodeFromLatLong = [self.defaults objectForKey:API_BODY_COUNTRY_CODE];
     
-    if (countryCodeFromLatLong == nil) {
-        NSString *countryCode = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
-        [dict setObject:countryCode.lowercaseString forKey:API_BODY_COUNTRY];
+    if (bankId == nil || bankId.length == 0) {
+        NSString *countryCodeFromLatLong = [self.defaults objectForKey:API_BODY_COUNTRY_CODE];
+        
+        if (countryCodeFromLatLong == nil) {
+            NSString *countryCode = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
+            [dict setObject:countryCode.lowercaseString forKey:API_BODY_COUNTRY];
+        }
+        else {
+            [dict setObject:countryCodeFromLatLong.lowercaseString forKey:API_BODY_COUNTRY];
+        }
     }
-    else {
-        [dict setObject:countryCodeFromLatLong.lowercaseString forKey:API_BODY_COUNTRY];
-    }
-    
     //[dict setObject:@"us" forKey:API_BODY_COUNTRY];
+
     params = (NSDictionary*)dict;
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSDictionary *dictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             
-            WOCBuyDashStep5ViewController *myViewController = (WOCBuyDashStep5ViewController*)[self getViewController:@"WOCBuyDashStep5ViewController"];;
-            myViewController.discoveryId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
-            myViewController.amount = self.txtDollar.text;
-            [self pushViewController:myViewController animated:YES];
+            if ([dictionary valueForKey:@"id"] != nil)
+            {
+                WOCBuyDashStep5ViewController *myViewController = (WOCBuyDashStep5ViewController*)[self getViewController:@"WOCBuyDashStep5ViewController"];;
+                myViewController.discoveryId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
+                myViewController.amount = self.txtDollar.text;
+                [self pushViewController:myViewController animated:YES];
+            }
+            else
+            {
+                
+                [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Error in getting offers. Please try after some time." viewController:self.navigationController.visibleViewController];
+            }
         }
         else {
             

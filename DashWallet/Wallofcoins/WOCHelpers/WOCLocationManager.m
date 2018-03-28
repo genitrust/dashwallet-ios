@@ -11,8 +11,7 @@
 
 @implementation WOCLocationManager
 
-+ (WOCLocationManager *)sharedInstance
-{
++ (WOCLocationManager *)sharedInstance {
     static dispatch_once_t onceToken;
     static WOCLocationManager *locationManager;
     
@@ -23,8 +22,7 @@
     return locationManager;
 }
 
-- (void)startLocationService
-{
+- (void)startLocationService {
     self.manager = [[CLLocationManager alloc] init];
     self.manager.desiredAccuracy = kCLLocationAccuracyBest;
     self.manager.delegate = self;
@@ -32,12 +30,10 @@
     if ([self.manager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         [self.manager requestWhenInUseAuthorization];
     }
-    //[self.manager requestWhenInUseAuthorization];
     [self.manager startUpdatingLocation];
 }
 
-- (BOOL)locationServiceEnabled
-{
+- (BOOL)locationServiceEnabled {
     if ([CLLocationManager locationServicesEnabled]) {
         switch ([CLLocationManager authorizationStatus]) {
             case kCLAuthorizationStatusAuthorizedWhenInUse :
@@ -53,10 +49,9 @@
     }
 }
 
-- (CLLocationCoordinate2D) getLocationFromAddressString:(NSString*) addressStr
-{
+- (CLLocationCoordinate2D) getLocationFromAddressString:(NSString*) addressStr {
     double latitude = 0, longitude = 0;
-    NSString *esc_addr =  [addressStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];//[addressStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *esc_addr =  [addressStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     NSString *req = [NSString stringWithFormat:@"http://maps.google.com/maps/api/geocode/json?sensor=false&address=%@", esc_addr];
     NSString *result = [NSString stringWithContentsOfURL:[NSURL URLWithString:req] encoding:NSUTF8StringEncoding error:NULL];
     if (result) {
@@ -74,8 +69,7 @@
     return center;
 }
 
-- (void)openStep4
-{
+- (void)openStep4 {
     if (self.lastLocation != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
     }
@@ -112,15 +106,12 @@
 }
 
 // MARK: - CLLocationManager Delegate
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
-{
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     
     if ([locations count]) {
         self.lastLocation = [locations lastObject];
         
-        if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil)
-        {
+        if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil) {
             [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
             [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
             [[NSUserDefaults standardUserDefaults] synchronize];

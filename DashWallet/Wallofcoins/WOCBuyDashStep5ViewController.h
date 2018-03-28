@@ -19,5 +19,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)orderClicked:(id)sender;
-
+- (NSIndexPath*)getIndexPathfromTag:(NSInteger)tag;
 @end

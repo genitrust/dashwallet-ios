@@ -34,7 +34,11 @@
     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
      [self setShadow:self.signupBtn];
      [self setShadow:self.sighInBtn];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
      [self getLocalDevices];
+    self.title = @"SignIN";
 }
 
 - (void)getLocalDevices {
@@ -64,7 +68,7 @@
     [self.defaults setObject:phoneNumber forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     [self.defaults synchronize];
     [self refereshToken];
-    [self performSelector:@selector(backToMainView) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(backToMainView) withObject:nil afterDelay:2.0];
 }
 
 // MARK: - API
@@ -73,36 +77,35 @@
         [[APIManager sharedInstance] discoveryInputs:self.discoveryId response:^(id responseDict, NSError *error) {
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
-                self.offers = [[NSArray alloc] initWithArray:offersArray];
                 
-                if ([[responseDictionary valueForKey:@"incremented"] boolValue] == true) {
-                    self.incremented = true;
-                    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                if ([[responseDictionary valueForKey:@"singleDeposit"] isKindOfClass:[NSArray class]])
+                {
+                    NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
+                    self.offers = [[NSArray alloc] initWithArray:offersArray];
+                    
+                    if ([[responseDictionary valueForKey:@"incremented"] boolValue] == true) {
+                        self.incremented = true;
+                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                    }
+                    else {
+                        self.incremented = false;
+                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                    }
                 }
-                else {
-                    self.incremented = false;
-                    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
-                }
-                
                 [self.tableView reloadData];
             }
             else {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error.userInfo != nil)
-                    {
-                        if (error.userInfo[@"detail"] != nil)
-                        {
+                    if (error.userInfo != nil) {
+                        if (error.userInfo[@"detail"] != nil) {
                             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.userInfo[@"detail"]  viewController:self.navigationController.visibleViewController];
                         }
-                        else
-                        {
+                        else {
                             [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
                         }
                     }
-                    else
-                    {
+                    else {
                         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:error.localizedDescription viewController:self.navigationController.visibleViewController];
                     }
                 });
@@ -115,8 +118,7 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
         
@@ -125,35 +127,49 @@
         });
         
         if (error == nil) {
-            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
             
-            if (orders.count > 0) {
-                NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-                NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+            if ([responseDict isKindOfClass:[NSArray class]]) {
                 
-                if ([status isEqualToString:@"WD"]) {
-                  
-                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.isFromSend = YES;
-                    myViewController.isFromOffer = NO;
-                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self pushViewController:myViewController animated:YES];
-                }
-                else if (orders.count > 0) {
+                NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                
+                if (orders.count > 0) {
+                    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                    NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
+                    NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                    NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                     
-                    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.orders = orders;
-                    myViewController.isFromSend = YES;
-                    [self pushViewController:myViewController animated:YES];
+                    if ([status isEqualToString:@"WD"]) {
+                        
+                        WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.isFromSend = YES;
+                        myViewController.isFromOffer = NO;
+                        myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                        [self pushViewController:myViewController animated:YES];
+                    }
+                    else if (orders.count > 0) {
+                        
+                        WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.orders = orders;
+                        myViewController.isFromSend = YES;
+                        [self pushViewController:myViewController animated:YES];
+                    }
+                    else {
+                        [self backToMainView];
+                    }
                 }
                 else {
-                    
-                    [self backToMainView];
+                    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                    myViewController.phoneNo = phoneNo;
+                    myViewController.isFromSend = NO;
+                    myViewController.isFromOffer = YES;
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
+                    NSDictionary *offerDict = self.offers[indexPath.row];
+                    myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+                    [self pushViewController:myViewController animated:YES];
                 }
             }
             else {
@@ -169,7 +185,6 @@
             }
         }
         else {
-           // [self pushToStep6:sender];
             [self pushToStep1];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Token expired." viewController:self];
@@ -183,7 +198,6 @@
 }
 
 // MARK: - IBAction
-
 - (IBAction)signInPhoneClicked:(id)sender {
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
@@ -240,7 +254,6 @@
 }
 
 // MARK: - UITableView Delegate
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 50.0;
 }

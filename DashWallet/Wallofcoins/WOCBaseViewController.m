@@ -28,6 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setWocDeviceCode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -44,8 +45,60 @@
     [self signOutWOC];
 }
 
--(NSString*)getDeviceIDFromPhoneNumber:(NSString*)phoneNo
+-(void)setWocDeviceCode {
+    //store deviceCode in userDefault
+    int launched = [self.defaults integerForKey:USER_DEFAULTS_LAUNCH_STATUS];
+    if (launched == 0) {
+        NSString *uuid = [[NSUUID UUID] UUIDString];
+        [self.defaults setValue:uuid forKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+        [self.defaults setInteger:1 forKey:USER_DEFAULTS_LAUNCH_STATUS];
+        [self.defaults synchronize];
+    }
+}
+
+-(NSString *)wocDeviceCode {
+    NSString *deviceCode = @"";
+    
+    if ([self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE] != nil) {
+        deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    }
+    return deviceCode;
+}
+
+-(void)storeDeviceInfoLocally {
+    
+    if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER] != nil) {
+        if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID] != nil) {
+            NSString * phoneNumber = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            NSString * deviceID = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            
+            NSMutableDictionary *localDeiveDict =  [NSMutableDictionary dictionaryWithCapacity:0];
+            if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] != nil) {
+                
+                localDeiveDict = [NSMutableDictionary dictionaryWithDictionary:[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO]];
+            }
+            
+            localDeiveDict[phoneNumber] = [NSString stringWithFormat:@"%@",deviceID];
+            if (localDeiveDict != nil) {
+                [self.defaults setObject:localDeiveDict forKey:USER_DEFAULTS_LOCAL_DEVICE_INFO];
+                [self.defaults synchronize];
+            }
+        }
+    }
+    
+    NSLog(@"Device info %@",[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO]);
+}
+
+-(void)clearLocalStorage
 {
+    [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+    [self.defaults synchronize];
+}
+
+-(NSString*)getDeviceIDFromPhoneNumber:(NSString*)phoneNo {
+    
     if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] != nil) {
         
         if ([[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] isKindOfClass:[NSDictionary class]]) {
@@ -68,16 +121,15 @@
     return nil;
 }
 
--(void)refereshToken
-{
+-(void)refereshToken {
+    
     if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] != nil) {
         
         if ([[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] isKindOfClass:[NSDictionary class]]) {
             NSMutableDictionary *deviceInfoDict = [NSMutableDictionary dictionaryWithDictionary:[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO]];
             
             NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            if (phoneNo != nil)
-            {
+            if (phoneNo != nil) {
                 if (deviceInfoDict[phoneNo] != nil) {
                     
                     NSString *deviceId = deviceInfoDict[phoneNo];
@@ -91,6 +143,25 @@
                             [self loginWOC];
                             return;
                         }
+                        else {
+                            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                            
+                            [deviceInfoDict removeObjectForKey:phoneNo];
+                            [self.defaults setObject:deviceInfoDict forKey:USER_DEFAULTS_LOCAL_DEVICE_INFO];
+                            [self.defaults synchronize];
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                UIAlertController *alert = [UIAlertController alertControllerWithTitle:ALERT_TITLE message:@"Error while login with phone number. please try to login again." preferredStyle:UIAlertControllerStyleAlert];
+                                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                    [self loginWOC];
+                                }];
+                                
+                                [alert addAction:okAction];
+                                
+                                [self presentViewController:alert animated:YES completion:nil];
+                            });
+                        }
                     }
                 }
             }
@@ -98,6 +169,10 @@
     }
 }
 
+- (void)backToMainView {
+    [super backToMainView];
+    [self storeDeviceInfoLocally];
+}
 // MARK: - API
 // Will call SignOut API then Store phone number with Device ID in Local storage and Backto Main View
 
@@ -109,14 +184,12 @@
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_DEVICE_CODE: deviceCode
                              };
     
     if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
         
         params = @{
-                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_DEVICE_CODE: deviceCode,
                    API_BODY_DEVICE_ID: deviceId,
                    API_BODY_JSON_PARAMETER: @"YES"
@@ -140,7 +213,7 @@
                 //[self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [self.defaults synchronize];
                 
-                NSString *title = @"Error";
+                NSString *title = ALERT_TITLE;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:@"SIGN IN for the device is hidden" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -164,8 +237,7 @@
         MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
         
         NSDictionary *params = @{
-                                 //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                                 };
+                                };
         
         [[APIManager sharedInstance] signOut:nil phone:phoneNumber response:^(id responseDict, NSError *error) {
             
@@ -200,52 +272,49 @@
         [navController.navigationBar setTintColor:[UIColor whiteColor]];
         BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
         appDelegate.window.rootViewController = navController;
-        
        
     });
-    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-//    UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
-//    BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-//    appDelegate.window.rootViewController = navController;
-//    [self backToMainView];
-
 }
 
 // MARK: - WallofCoins API
 
 - (void)getOrderList {
     
-    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
     NSDictionary *params = @{
-                             //@"publisherId": @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [hud hideAnimated:YES];
-//        });
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error == nil) {
                 
-                NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-                if (orders.count > 0) {
-                    
+                if ([responseDict isKindOfClass:[NSArray class]])
+                {
                     NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-                    NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                   
-                    if (wdArray.count > 0) {
-                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:0];
-                        NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
-                        if ([status isEqualToString:@"WD"]) {
-                            WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                    
+                    NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                    if (orders.count > 0) {
+                        
+                        NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                        NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
+                        
+                        if (wdArray.count > 0) {
+                            NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:0];
+                            NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                            if ([status isEqualToString:@"WD"]) {
+                                WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                                myViewController.phoneNo = phoneNo;
+                                myViewController.isFromSend = YES;
+                                myViewController.isFromOffer = NO;
+                                myViewController.orderDict = orderDict;
+                                [self pushViewController:myViewController animated:YES];
+                            }
+                        }
+                        else {
+                            WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
                             myViewController.phoneNo = phoneNo;
+                            myViewController.orders = orders;
                             myViewController.isFromSend = YES;
-                            myViewController.isFromOffer = NO;
-                            myViewController.orderDict = orderDict;
                             [self pushViewController:myViewController animated:YES];
                         }
                     }
@@ -254,6 +323,7 @@
                         myViewController.phoneNo = phoneNo;
                         myViewController.orders = orders;
                         myViewController.isFromSend = YES;
+                        myViewController.hideSuccessAlert = YES;
                         [self pushViewController:myViewController animated:YES];
                     }
                 }

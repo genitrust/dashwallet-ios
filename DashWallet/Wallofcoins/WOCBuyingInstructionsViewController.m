@@ -28,8 +28,7 @@
 
 @implementation WOCBuyingInstructionsViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setShadow:self.btnDepositFinished];
@@ -85,6 +84,7 @@
     self.txtInstruction.delegate = self;
 }
 
+
 - (void)pushToHome
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -118,7 +118,6 @@
 
 - (void)back:(id)sender {
     [self pushToBuyingSummary];
-    //[self backToMainView];
 }
 
 - (void)pushToBuyingSummary {
@@ -180,7 +179,6 @@
 }
 
 - (void)updateData:(NSDictionary*)dictionary {
-    
     NSString *bankLogo = setVal([dictionary valueForKey:@"bankLogo"]);
     NSString *bankName = setVal([dictionary valueForKey:@"bankName"]);
     NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
@@ -224,8 +222,7 @@
             if([dictionary valueForKey:@"nearestBranch"][@"address"] != nil) {
                 if ([[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"address"] length] > 0) {
                     [self.btnCheckLocation setHidden:YES];
-                }
-            }
+                }}
         }
     }
     
@@ -236,26 +233,18 @@
     self.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
     
     NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
-    NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
-    [numFormatter setUsesGroupingSeparator:YES];
-    [numFormatter setGroupingSeparator:@","];
-    [numFormatter setGroupingSize:3];
-    NSString *stringNum = [numFormatter stringFromNumber:num];
-    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ %@ (%@ %@)",totalDash,WOC_CURRENTCY_SPECIAL, stringNum,WOC_CURRENTCY_SYMBOL_MINOR];
+    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ %@ (%@ %@)",totalDash,WOC_CURRENTCY_SPECIAL, [self getCryptoPrice:num],WOC_CURRENTCY_SYMBOL_MINOR];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;
-    //formatter.timeZone = [NSTimeZone localTimeZone];
     NSDate *local = [formatter dateFromString:depositDue];
     NSLog(@"local: %@",local);
     
     formatter.dateFormat = LOCAL_DATE_FORMAT;
-    //formatter.timeZone = [NSTimeZone localTimeZone];
     NSString *localTime = [formatter stringFromDate:local];
     NSLog(@"localTime: %@",localTime);
     self.dueTime = localTime;
     
-    //formatter.timeZone = [NSTimeZone localTimeZone];//[NSTimeZone timeZoneWithName:@"UTC"];
     NSString *currentTime = [formatter stringFromDate:[NSDate date]];
     NSLog(@"currentTime UTC : %@",currentTime);
     
@@ -282,11 +271,11 @@
         }
         
         if (accountArray.count > 3) {
-            self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
         }
         
         if (accountArray.count > 1) {
-            self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
         }
     }
 }
@@ -296,7 +285,6 @@
     if (self.minutes > 0) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = LOCAL_DATE_FORMAT;
-        //formatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         NSString *currentTime = [formatter stringFromDate:[NSDate date]];
         NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:self.dueTime];
         NSMutableAttributedString *dueString = [[NSMutableAttributedString alloc] initWithString:@"Deposit Due: "];
@@ -374,16 +362,12 @@
         
         if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
             params = @{
-                       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                       //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                       //API_BODY_DEVICE_CODE: deviceCode,
                        API_BODY_JSON_PARAMETER:@"YES"
                        };
         }
         else {
             params = @{
-                       //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
                        API_BODY_PHONE_NUMBER: phone,
                        API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
@@ -416,7 +400,6 @@
                 [self captureHold:purchaseCode holdId:holdId];
             }
             else if (error.code == 403 ) {
-                //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
                 [self getHold];
             }
             else if (error.code == 500 ) {
@@ -427,44 +410,48 @@
 }
 
 - (void)getHold {
-    
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSLog(@"Hold with Hold Id: %@.",responseDict);
             
-            NSArray *holdArray = (NSArray*)responseDict;
-            if (holdArray.count > 0) {
-                NSUInteger count = holdArray.count;
-                NSUInteger activeHodCount = 0;
-
-                for (int i = 0; i < holdArray.count; i++) {
-                    count -= count;
+            if ([responseDict isKindOfClass:[NSArray class]]) {
+                NSArray *holdArray = (NSArray*)responseDict;
+                if (holdArray.count > 0) {
+                    NSUInteger count = holdArray.count;
+                    NSUInteger activeHodCount = 0;
                     
-                    NSDictionary *holdDict = [holdArray objectAtIndex:i];
-                    NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                    NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
-                    if (holdStatus != nil) {
-                        if ([holdStatus isEqualToString:@"AC"]) {
+                    for (int i = 0; i < holdArray.count; i++) {
+                        count -= count;
+                        
+                        NSDictionary *holdDict = [holdArray objectAtIndex:i];
+                        NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
+                        NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                        if (holdStatus != nil) {
+                            if ([holdStatus isEqualToString:@"AC"]) {
+                                if (holdId) {
+                                    activeHodCount = activeHodCount + 1;
+                                    [self deleteHold:holdId count:count];
+                                }
+                            }
+                        }
+                        else {
                             if (holdId) {
                                 activeHodCount = activeHodCount + 1;
                                 [self deleteHold:holdId count:count];
                             }
                         }
                     }
-                    else {
-                        if (holdId) {
-                            activeHodCount = activeHodCount + 1;
-                            [self deleteHold:holdId count:count];
-                        }
+                    
+                    if (activeHodCount == 0 ) {
+                        [self getOrderList];
                     }
                 }
-                
-                if (activeHodCount == 0 ) {
+                else {
                     [self getOrderList];
                 }
             }
             else {
-               [self getOrderList];
+                [self getOrderList];
             }
         }
         else {
@@ -474,18 +461,11 @@
 }
 
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count {
-    //MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
-        /*
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-        });
-        */
         
         if (error == nil) {
             NSLog(@"Hold deleted.");
@@ -503,7 +483,6 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_VERIFICATION_CODE: purchaseCode,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
@@ -514,10 +493,13 @@
         });
         
         if (error == nil) {
-            NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            if (response.count > 0) {
-                if ([[response objectAtIndex:0] isKindOfClass:[NSDictionary class]]) {
-                    [self updateData:[response objectAtIndex:0]];
+            if ([responseDict isKindOfClass:[NSArray class]])
+            {
+                NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                if (response.count > 0) {
+                    if ([[response objectAtIndex:0] isKindOfClass:[NSDictionary class]]) {
+                        [self updateData:[response objectAtIndex:0]];
+                    }
                 }
             }
         }
@@ -563,6 +545,7 @@
 }
 
 - (void)cancelOrder {
+    
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     if (self.orderId != nil) {
@@ -577,7 +560,6 @@
                 [self backToMainView];
             }
             else {
-                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil) {
                         if (error.userInfo[@"detail"] != nil) {
@@ -647,4 +629,5 @@
     }
     return YES;
 }
+
 @end

@@ -10,8 +10,8 @@
 
 @implementation WOCOfferCell
 
-- (void)awakeFromNib 
-{
+- (void)awakeFromNib {
+    
     [super awakeFromNib];
     // Initialization code
     
@@ -32,8 +32,7 @@
 
 #pragma mark - Function
 
-- (void)setShadow:(UIView *)view
-{
+- (void)setShadow:(UIView *)view {
     view.layer.cornerRadius = 3.0;
     view.layer.masksToBounds = YES;
     

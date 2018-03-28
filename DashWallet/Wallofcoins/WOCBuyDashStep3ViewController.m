@@ -25,6 +25,7 @@
     [super viewDidLoad];
     
     [self setShadow:self.btnNext];
+    
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
@@ -82,4 +83,6 @@
     self.txtPaymentCenter.text = self.paymentCenters[row][@"name"];
     self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
+
 @end
+

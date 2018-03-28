@@ -12,16 +12,14 @@
 
 static WOCAlertController *alert = NULL;
 
-+ (WOCAlertController *)sharedInstance
-{
++ (WOCAlertController *)sharedInstance {
     if (!alert) {
         alert = [[WOCAlertController alloc] init];
     }
     return alert;
 }
 
-- (void)alertshowWithTitle:(NSString*)title message:(NSString*)message viewController:(UIViewController*)viewController
-{
+- (void)alertshowWithTitle:(NSString*)title message:(NSString*)message viewController:(UIViewController*)viewController {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -34,8 +32,7 @@ static WOCAlertController *alert = NULL;
     }
 }
 
-- (void)alertshowWithError:(NSError*)error viewController:(UIViewController*)viewController
-{
+- (void)alertshowWithError:(NSError*)error viewController:(UIViewController*)viewController {
     NSString *title = @"Error";
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertController *alert;

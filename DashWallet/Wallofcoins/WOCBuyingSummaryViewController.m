@@ -58,10 +58,11 @@
     
     if (self.orders.count == 0) {
         
+        [self reloadOrderTable];
+
         [self getOrders];
         
-        if (self.hideSuccessAlert == FALSE)
-        {
+        if (self.hideSuccessAlert == FALSE) {
             [self displayAlert];
         }
     }
@@ -77,7 +78,7 @@
         
         NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
         
-        [self.tableView reloadData];
+         [self reloadOrderTable];
     }
 }
 
@@ -162,14 +163,12 @@
 }
 
 // MARK: - API
-
 - (void)getOrders {
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -177,27 +176,41 @@
         });
         
         if (error == nil) {
-            NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            self.orders = response;
-            
-            NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-            NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
-            self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
-            
-            NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV' || status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
-            NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
-            self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
-            
-            NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
-            
-            [self.tableView reloadData];
+            if ([responseDict isKindOfClass:[NSArray class]]) {
+                NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                self.orders = response;
+                
+                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
+                self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
+                
+                NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV' || status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
+                NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
+                self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
+                
+                NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
+            }
         }
         else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
+        
+        [self reloadOrderTable];
+
     }];
 }
 
+-(void)reloadOrderTable{
+    if (self.orders.count > 0) {
+        self.txtInstruction.text = @"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins.";
+    }
+    else {
+        self.txtInstruction.text = [NSString stringWithFormat:@"You have no order history with %@ for iOS. To see your full order history across all devices, visit %@",CRYPTO_CURRENTCY,BASE_URL_PRODUCTION];
+    }
+    self.lblInstruction.hidden  = TRUE;
+    self.txtInstruction.hidden  = FALSE;
+    [self.tableView reloadData];
+}
 #pragma mark - UITableView DataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -335,6 +348,11 @@
         
         NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
         NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+        [numFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+        [numFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        //[numFormatter setAllowsFloats:YES];
+        [numFormatter setAlwaysShowsDecimalSeparator:YES];
+        //[numFormatter setDecimalSeparator:@"."];
         [numFormatter setUsesGroupingSeparator:YES];
         [numFormatter setGroupingSeparator:@","];
         [numFormatter setGroupingSize:3];

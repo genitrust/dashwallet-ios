@@ -22,8 +22,8 @@
 
 @implementation WOCBuyDashStep8ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     [self setShadow:self.btnPurchaseCode];
@@ -36,8 +36,8 @@
     self.txtPurchaseCode.delegate = self;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
     if(textField.text.length == 4 && string.length == 1)
     {
         [self performSelector:@selector(confirmPurchaseCodeClicked:) withObject:self afterDelay:1.0];
@@ -47,8 +47,8 @@
 
 // MARK: - IBAction
 
-- (IBAction)confirmPurchaseCodeClicked:(id)sender
-{
+- (IBAction)confirmPurchaseCodeClicked:(id)sender {
+    
     NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([txtCode length] == 5) {
 

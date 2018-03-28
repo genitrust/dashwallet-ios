@@ -32,10 +32,6 @@
     
     [super viewDidLoad];
     
-//    if (self.isFromSend) {
-//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
-//    }
-    
     [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
     [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
@@ -48,7 +44,6 @@
     
     [self setShadow:self.btnLocation];
     [self setShadow:self.btnNoThanks];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,7 +53,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
     [self.btnLocation setUserInteractionEnabled:YES];
 }
 
@@ -74,11 +68,8 @@
         [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
         [self.signoutView setHidden:NO];
         [self.orderListBtn setHidden:NO];
-
-        //[self refereshToken];
     }
-    else
-    {
+    else {
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
@@ -166,7 +157,6 @@
     else {
         
         [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
-        
         [[WOCLocationManager sharedInstance] startLocationService];
     }
 }
@@ -189,7 +179,6 @@
 }
 
 // MARK: - API
-
 - (void)signOut:(NSString*)phone {
     
     [self signOutWOC];

@@ -18,5 +18,11 @@
 - (void)refereshToken;
 - (void)pushToWOCRoot;
 - (void)getOrderList;
+- (void)backToMainView;
+- (void)setWocDeviceCode;
+- (void)clearLocalStorage;
+- (void)storeDeviceInfoLocally;
+
+- (NSString *)wocDeviceCode;
 - (NSString*)getDeviceIDFromPhoneNumber:(NSString*)phoneNo;
 @end
