@@ -40,7 +40,7 @@
     if ([zipCode length] == 0) {
         [self push:@"WOCBuyDashStep3ViewController"];
     }
-    else if ([zipCode length] > 6 ) {
+    else if ([zipCode length] < 5 || [zipCode length] > 6 ) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Enter valid zipcode" viewController:self.navigationController.visibleViewController];
     }
     else {

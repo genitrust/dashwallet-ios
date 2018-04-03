@@ -267,15 +267,15 @@
         
         NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
         if (accountArray.count > 2) {
-            self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",[[accountArray objectAtIndex:0] valueForKey:@"value"], [[accountArray objectAtIndex:2] valueForKey:@"value"]];
+            self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",setVal([[accountArray objectAtIndex:0] valueForKey:@"value"]), setVal([[accountArray objectAtIndex:2] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 3) {
-        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 1) {
-        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
         }
     }
 }

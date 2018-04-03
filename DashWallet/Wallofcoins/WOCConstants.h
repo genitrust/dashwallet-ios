@@ -94,7 +94,7 @@
 #define WOC_CURRENTCY_SYMBOL_MINOR @"µⱣiv"
 #define CRYPTO_CURRENTCY_SMALL @"uPiv"
 #define CRYPTO_CURRENTCY @"PIVX"
-*/
+//*/
 ///*
 #define WALLOFCOINS_PUBLISHER_ID "52"
 #define WOC_CURRENTCY @"Dash"

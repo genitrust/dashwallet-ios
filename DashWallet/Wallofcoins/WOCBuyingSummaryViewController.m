@@ -37,6 +37,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
+#import "WOCAsyncImageView.h"
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
@@ -247,7 +248,12 @@
         return cell;
     }
     else {
+        
+        static const NSInteger IMAGE_VIEW_TAG = 98;
+        NSString *cellIdentifier = @"offerCell";
+        
         WOCSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell"];
+        
         NSDictionary *orderDict = [[NSDictionary alloc] init];
         
         if (indexPath.section == 0) {
@@ -266,16 +272,16 @@
                     NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
                     cell.lblPhone.hidden = YES;
                     if (accountArray.count > 0) {
-                        cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
+                        cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",setVal([[accountArray objectAtIndex:0] valueForKey:@"value"])];
                     }
                     if (accountArray.count > 2) {
-                        cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
+                        cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",setVal([[accountArray objectAtIndex:2] valueForKey:@"value"])];
                     }
                     if (accountArray.count > 3) {
-                        cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+                        cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
                     }
                     if (accountArray.count > 1) {
-                        cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
+                        cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
                     }
                 }
             }
@@ -292,51 +298,34 @@
         NSString *totalDash = setVal([orderDict valueForKey:@"total"]);
         NSString *status = [NSString stringWithFormat:@"%@",setVal([orderDict valueForKey:@"status"])];
         
+        UIView *cellView = cell.imgView.superview;
+        
+        WOCAsyncImageView *imageView = (WOCAsyncImageView *)[cellView viewWithTag:IMAGE_VIEW_TAG];
+        
+        if (imageView == nil) {
+            imageView = [[WOCAsyncImageView alloc] initWithFrame:cell.imgView.frame];
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.clipsToBounds = YES;
+            imageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+            imageView.tag = IMAGE_VIEW_TAG;
+            [cellView addSubview:imageView];
+        }
+        
+        cell.imgView.hidden = TRUE;
+        imageView.hidden = FALSE;
+        
+        //get image view
+        //cancel loading previous image for cell
+        [[AsyncImageLoader sharedLoader] cancelLoadingImagesForTarget:imageView];
         //bankLogo
-        if (![[orderDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                           ^{
-                               NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
-                               NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                               
-                               //This is your completion handler
-                               dispatch_sync(dispatch_get_main_queue(), ^{
-                                   //If self.image is atomic (not declared with nonatomic)
-                                   // you could have set it directly above
-                                   if (imageData != nil) {
-                                       cell.imgView.image = [UIImage imageWithData:imageData];
-                                   }
-                                   else {
-                                       cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-                                   }
-                                   
-                               });
-                           });
+        if ([bankLogo length] > 0) {
+            
+            imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
         }
-        else if (![[orderDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                           ^{
-                               NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
-                               NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                               
-                               //This is your completion handler
-                               dispatch_sync(dispatch_get_main_queue(), ^{
-                                   //If self.image is atomic (not declared with nonatomic)
-                                   // you could have set it directly above
-                                   if (imageData != nil) {
-                                       cell.imgView.image = [UIImage imageWithData:imageData];
-                                   }
-                                   else {
-                                       cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-                                   }
-                                   
-                               });
-                           });
-        }
-        else {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        else if ([bankIcon length] > 0) {
+            
+            imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
+            //cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
         
         cell.lblName.text = bankName;

@@ -533,13 +533,13 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-jE-hm5" userLabel="subView">
                                                             <rect key="frame" x="15" y="0.0" width="384" height="113.5"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="RJh-hJ-szA">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="RJh-hJ-szA">
                                                                     <rect key="frame" x="5" y="10" width="51" height="51"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="RJh-hJ-szA" secondAttribute="height" multiplier="1:1" id="6Qa-DM-Inv"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="HVK-Bm-0bi">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="HVK-Bm-0bi">
                                                                     <rect key="frame" x="5" y="61" width="51" height="51"/>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="D 5.296" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vha-Rc-84C">
@@ -1586,8 +1586,11 @@ Help is also available on the website.</string>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ug-w8-sIE">
                                                             <rect key="frame" x="15" y="0.0" width="384" height="235"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="whn-Le-bqK">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="whn-Le-bqK">
                                                                     <rect key="frame" x="5" y="0.0" width="77" height="77"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="whn-Le-bqK" secondAttribute="height" multiplier="1:1" id="dCJ-yh-Z9B"/>
+                                                                    </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wells Fargo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pM-qZ-H0I">
                                                                     <rect key="frame" x="87" y="20" width="297" height="26.5"/>
@@ -1682,7 +1685,6 @@ Help is also available on the website.</string>
                                                                 <constraint firstItem="Txu-el-gov" firstAttribute="leading" secondItem="4ug-w8-sIE" secondAttribute="leading" constant="5" id="hU3-Qs-tFx"/>
                                                                 <constraint firstAttribute="trailing" secondItem="dQT-ee-hgs" secondAttribute="trailing" id="hcU-c9-5S4"/>
                                                                 <constraint firstItem="mTS-8Q-zff" firstAttribute="height" secondItem="4ug-w8-sIE" secondAttribute="height" multiplier="25/235" id="jbB-QT-HMt"/>
-                                                                <constraint firstItem="whn-Le-bqK" firstAttribute="width" secondItem="4ug-w8-sIE" secondAttribute="width" multiplier="77/384" id="jdG-wa-xcc"/>
                                                                 <constraint firstItem="8pM-qZ-H0I" firstAttribute="top" secondItem="4ug-w8-sIE" secondAttribute="top" constant="20" id="kbL-6F-bCH"/>
                                                                 <constraint firstItem="ETa-8C-ZDv" firstAttribute="top" secondItem="whn-Le-bqK" secondAttribute="bottom" constant="2" id="l0d-01-V5z"/>
                                                                 <constraint firstItem="whn-Le-bqK" firstAttribute="top" secondItem="4ug-w8-sIE" secondAttribute="top" id="ogs-Pg-LhC"/>
@@ -1729,17 +1731,20 @@ Help is also available on the website.</string>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G77-Th-ndU">
                                                             <rect key="frame" x="15" y="0.0" width="384" height="170"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="z2t-zq-e3V">
-                                                                    <rect key="frame" x="5" y="0.0" width="77" height="82"/>
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_account_balance_black" translatesAutoresizingMaskIntoConstraints="NO" id="z2t-zq-e3V">
+                                                                    <rect key="frame" x="5" y="0.0" width="82" height="82"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="z2t-zq-e3V" secondAttribute="height" multiplier="1:1" id="3dp-dQ-FaX"/>
+                                                                    </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wells Fargo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNe-gp-vmD">
-                                                                    <rect key="frame" x="87" y="20" width="297" height="28"/>
+                                                                    <rect key="frame" x="92" y="20" width="292" height="28"/>
                                                                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location's phone #: 3342702340" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3J-Db-1OW">
-                                                                    <rect key="frame" x="87" y="48" width="297" height="18"/>
+                                                                    <rect key="frame" x="92" y="48" width="292" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -1796,7 +1801,6 @@ Help is also available on the website.</string>
                                                                 <constraint firstItem="uNe-gp-vmD" firstAttribute="top" secondItem="G77-Th-ndU" secondAttribute="top" constant="20" id="WDR-aX-vlQ"/>
                                                                 <constraint firstAttribute="bottom" secondItem="fxg-77-GKN" secondAttribute="bottom" constant="8" id="bpB-OA-Bch"/>
                                                                 <constraint firstAttribute="trailing" secondItem="dMV-2Z-bkl" secondAttribute="trailing" id="dgN-No-vlg"/>
-                                                                <constraint firstItem="z2t-zq-e3V" firstAttribute="width" secondItem="G77-Th-ndU" secondAttribute="width" multiplier="77/384" id="fgF-8x-vcE"/>
                                                                 <constraint firstItem="dMV-2Z-bkl" firstAttribute="top" secondItem="z2t-zq-e3V" secondAttribute="bottom" id="gpz-Yp-N74"/>
                                                                 <constraint firstItem="z2t-zq-e3V" firstAttribute="top" secondItem="G77-Th-ndU" secondAttribute="top" id="hqA-MR-c7e"/>
                                                                 <constraint firstItem="uNe-gp-vmD" firstAttribute="leading" secondItem="z2t-zq-e3V" secondAttribute="trailing" constant="5" id="ukK-yN-X4a"/>
