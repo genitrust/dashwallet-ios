@@ -33,4 +33,7 @@
 - (void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock;
 - (void)getHold:(void (^)(id responseDict, NSError *error))completionBlock;
 
+- (void)getIncomingOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)registerUser:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)resetPassword:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock;
 @end

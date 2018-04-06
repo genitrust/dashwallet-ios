@@ -1,15 +1,15 @@
 //
-//  WOCBuyDashStep5ViewController.m
+//  WOCSellingStep5ViewController.m
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 24/01/18.
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
-#import "WOCSignInViewController.h"
-#import "WOCBuyDashStep7ViewController.h"
-#import "WOCBuyingInstructionsViewController.h"
-#import "WOCBuyingSummaryViewController.h"
+#import "WOCSellingSignInViewController.h"
+#import "WOCSellingStep7ViewController.h"
+#import "WOCSellingInstructionsViewController.h"
+#import "WOCSellingSummaryViewController.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
 #import "WOCOfferCell.h"
@@ -17,16 +17,17 @@
 #import "BRWalletManager.h"
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
-#import "WOCBuyDashStep1ViewController.h"
+#import "WOCSellingStep1ViewController.h"
+#import "WOCSellingSingUpViewController.h"
 
-@interface WOCSignInViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface WOCSellingSignInViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray *offers;
 @property (assign) BOOL incremented;
 
 @end
 
-@implementation WOCSignInViewController
+@implementation WOCSellingSignInViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,7 +39,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
      [self getLocalDevices];
-     self.title = @"SignIN";
+    self.title = @"SignIN";
 }
 
 - (void)getLocalDevices {
@@ -141,7 +142,7 @@
                     
                     if ([status isEqualToString:@"WD"]) {
                         
-                        WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                        WOCSellingInstructionsViewController *myViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
                         myViewController.phoneNo = phoneNo;
                         myViewController.isFromSend = YES;
                         myViewController.isFromOffer = NO;
@@ -150,7 +151,7 @@
                     }
                     else if (orders.count > 0) {
                         
-                        WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+                        WOCSellingSummaryViewController *myViewController = [self getViewController:@"WOCSellingSummaryViewController"];
                         myViewController.phoneNo = phoneNo;
                         myViewController.orders = orders;
                         myViewController.isFromSend = YES;
@@ -162,7 +163,7 @@
                 }
                 else {
                     NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                    WOCSellingInstructionsViewController *myViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
                     myViewController.phoneNo = phoneNo;
                     myViewController.isFromSend = NO;
                     myViewController.isFromOffer = YES;
@@ -174,7 +175,7 @@
             }
             else {
                 NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                WOCSellingInstructionsViewController *myViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
                 myViewController.phoneNo = phoneNo;
                 myViewController.isFromSend = NO;
                 myViewController.isFromOffer = YES;
@@ -209,16 +210,20 @@
 }
 
 - (IBAction)existingAccoutClick:(id)sender {
-    WOCBuyDashStep7ViewController *myViewController = [self getViewController:@"WOCBuyDashStep7ViewController"];
+    WOCSellingStep7ViewController *myViewController = [self getViewController:@"WOCSellingStep7ViewController"];
     myViewController.isForLoginOny = TRUE;
     [self pushViewController:myViewController animated:YES];
 }
 
 - (IBAction)signUpClick:(id)sender {
-    NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/signup/"];
-    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }
+    
+    WOCSellingSingUpViewController *myViewController = [self getViewController:@"WOCSellingSingUpViewController"];
+    [self pushViewController:myViewController animated:YES];
+    
+    //NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/signup/"];
+    //if ([[UIApplication sharedApplication] canOpenURL:url]) {
+    //  [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    //}
 }
 
 - (IBAction)checkLocationClicked:(id)sender {

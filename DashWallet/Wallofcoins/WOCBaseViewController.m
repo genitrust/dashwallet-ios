@@ -11,6 +11,10 @@
 #import "WOCBuyingSummaryViewController.h"
 #import "WOCBuyDashStep1ViewController.h"
 
+#import "WOCSellingStep1ViewController.h"
+#import "WOCSellingInstructionsViewController.h"
+#import "WOCSellingSummaryViewController.h"
+
 @interface WOCBaseViewController ()
 
 @end
@@ -33,7 +37,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.title = [NSString stringWithFormat:@"buy %@ with cash",WOC_CURRENTCY];
+    
+    NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+    
+    if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
+        self.title = [NSString stringWithFormat:@"buy %@ with cash",WOC_CURRENTCY];
+    }
+    else {
+        self.title = [NSString stringWithFormat:@"Sell Your %@",WOC_CURRENTCY];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -264,14 +276,29 @@
 - (void)pushToWOCRoot {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+        
+        NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+        
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
         UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
         
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
-        vc.isFromSend = YES;
-        [navController.navigationBar setTintColor:[UIColor whiteColor]];
-        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
-        appDelegate.window.rootViewController = navController;
+        if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
+            WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];// Or any VC with Id
+            vc.isFromSend = YES;
+            [navController.navigationBar setTintColor:[UIColor whiteColor]];
+            BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+            appDelegate.window.rootViewController = navController;
+        }
+        else {
+            
+            WOCSellingStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCSellingStep1ViewController"];// Or any VC with Id
+            vc.isFromSend = YES;
+            [navController.navigationBar setTintColor:[UIColor whiteColor]];
+            BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+            appDelegate.window.rootViewController = navController;
+        }
+       
        
     });
 }
@@ -280,28 +307,53 @@
 
 - (void)getOrderList {
     
-    NSDictionary *params = @{
-                            };
     
-    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
+    NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+    
+    if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error == nil) {
+        [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
+            
+            [self loadOrdersWithResponse:responseDict withError:error];
+        }];
+    }
+    else {
+        [self getIncomingList];
+    }
+}
+
+- (void)getIncomingList {
+    
+    [[APIManager sharedInstance] getIncomingOrders:nil response:^(id responseDict, NSError *error) {
+        
+        [self loadOrdersWithResponse:responseDict withError:error];
+    }];
+}
+
+-(void)loadOrdersWithResponse:(id)responseDict withError: (NSError *)error
+{
+    NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (error == nil) {
+            
+            if ([responseDict isKindOfClass:[NSArray class]])
+            {
+                NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 
-                if ([responseDict isKindOfClass:[NSArray class]])
-                {
-                    NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                if (orders.count > 0) {
                     
-                    NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-                    if (orders.count > 0) {
-                        
-                        NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-                        NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                        
-                        if (wdArray.count > 0) {
-                            NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:0];
-                            NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
-                            if ([status isEqualToString:@"WD"]) {
+                    NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                    NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
+                    
+                    if (wdArray.count > 0) {
+                        NSDictionary *orderDict = (NSDictionary*)[wdArray objectAtIndex:0];
+                        NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+                        if ([status isEqualToString:@"WD"]) {
+                            
+                            
+                            if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
                                 WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
                                 myViewController.phoneNo = phoneNo;
                                 myViewController.isFromSend = YES;
@@ -309,16 +361,38 @@
                                 myViewController.orderDict = orderDict;
                                 [self pushViewController:myViewController animated:YES];
                             }
+                            else {
+                                WOCSellingInstructionsViewController *myViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
+                                myViewController.phoneNo = phoneNo;
+                                myViewController.isFromSend = YES;
+                                myViewController.isFromOffer = NO;
+                                myViewController.orderDict = orderDict;
+                                [self pushViewController:myViewController animated:YES];
+                            }
                         }
-                        else {
+                    }
+                    else {
+                        
+                        if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
                             WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
                             myViewController.phoneNo = phoneNo;
                             myViewController.orders = orders;
                             myViewController.isFromSend = YES;
                             [self pushViewController:myViewController animated:YES];
                         }
+                        else {
+                            WOCSellingSummaryViewController *myViewController = [self getViewController:@"WOCSellingSummaryViewController"];
+                            myViewController.phoneNo = phoneNo;
+                            myViewController.orders = orders;
+                            myViewController.isFromSend = YES;
+                            [self pushViewController:myViewController animated:YES];
+
+                        }
                     }
-                    else {
+                }
+                else {
+                    
+                    if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
                         WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
                         myViewController.phoneNo = phoneNo;
                         myViewController.orders = orders;
@@ -326,18 +400,25 @@
                         myViewController.hideSuccessAlert = YES;
                         [self pushViewController:myViewController animated:YES];
                     }
-                }
-                else {
-                    [self backToMainView];
+                    else {
+                        WOCSellingSummaryViewController *myViewController = [self getViewController:@"WOCSellingSummaryViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.orders = orders;
+                        myViewController.isFromSend = YES;
+                        myViewController.hideSuccessAlert = YES;
+                        [self pushViewController:myViewController animated:YES];
+                    }
                 }
             }
             else {
-                [self refereshToken];
+                [self backToMainView];
             }
-        });
-    }];
+        }
+        else {
+            [self refereshToken];
+        }
+    });
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

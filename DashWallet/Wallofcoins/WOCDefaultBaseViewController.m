@@ -9,6 +9,7 @@
 #import "WOCDefaultBaseViewController.h"
 
 #define MAIN_VIEWCONTROLLER @"WOCBuyDashStep1ViewController"
+#define MAIN_VIEWCONTROLLER_SELL @"WOCSellingStep1ViewController"
 
 @interface WOCDefaultBaseViewController ()
 
@@ -70,6 +71,16 @@
     view.layer.masksToBounds = false;
 }
 
+-(BOOL) isValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
+    NSString *laxString = @"^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
 - (void)showAlertWithText:(NSString*)alertText {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:ALERT_TITLE message:alertText preferredStyle:UIAlertControllerStyleAlert];
@@ -98,7 +109,9 @@
 }
 
 - (void)pushViewControllerStr:(NSString*)viewControllerStr {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+    
+    NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     id pushViewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerStr];
     if (pushViewController != nil) {
         if ([pushViewController isKindOfClass:NSClassFromString(viewControllerStr)]) {
@@ -129,11 +142,20 @@
 }
 
 - (void)backToMainView {
-    [self push:MAIN_VIEWCONTROLLER];
+    
+    NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+    if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
+        [self push:MAIN_VIEWCONTROLLER];
+    }
+    else {
+        [self push:MAIN_VIEWCONTROLLER_SELL];
+    }
 }
 
 -(id)getViewController:(NSString*)viewControllerStr  {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+    
+    NSString * storyboardName = [self.storyboard valueForKey:@"name"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     return  [storyboard instantiateViewControllerWithIdentifier:viewControllerStr];
 }
 

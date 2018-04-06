@@ -1,15 +1,15 @@
 //
-//  WOCBuyDashStep7ViewController.m
+//  WOCSellingStep7ViewController.m
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 24/01/18.
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
-#import "WOCBuyDashStep7ViewController.h"
-#import "WOCBuyDashStep8ViewController.h"
-#import "WOCBuyingInstructionsViewController.h"
-#import "WOCBuyingSummaryViewController.h"
+#import "WOCSellingStep7ViewController.h"
+#import "WOCSellingStep8ViewController.h"
+#import "WOCSellingInstructionsViewController.h"
+#import "WOCSellingSummaryViewController.h"
 #import "WOCPasswordViewController.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
@@ -18,9 +18,9 @@
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
 #import "WOCHoldIssueViewController.h"
-#import "WOCBuyDashStep1ViewController.h"
+#import "WOCSellingStep1ViewController.h"
 
-@interface WOCBuyDashStep7ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface WOCSellingStep7ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (strong, nonatomic) NSArray *countries;
 @property (strong, nonatomic) UIPickerView *pickerView;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation WOCBuyDashStep7ViewController
+@implementation WOCSellingStep7ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -259,7 +259,7 @@
                     self.purchaseCode = @"";
                 }
                 
-                WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
+                WOCSellingStep8ViewController *myViewController = [self getViewController:@"WOCSellingStep8ViewController"];
                 myViewController.phoneNo = phoneNo;
                 myViewController.offerId = self.offerId;
                 myViewController.purchaseCode = self.purchaseCode;

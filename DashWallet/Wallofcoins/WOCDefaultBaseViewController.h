@@ -38,4 +38,5 @@
 - (IBAction)backBtnClicked:(id)sender;
 - (IBAction)signOutClicked:(id)sender;
 - (IBAction)backToMainViewBtnClicked:(id)sender;
+- (BOOL)isValidEmail:(NSString *)checkString;
 @end

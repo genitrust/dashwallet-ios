@@ -1,14 +1,14 @@
 //
-//  WOCBuyingInstructionsViewController.m
+//  WOCSellingInstructionsViewController.m
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 24/01/18.
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
-#import "WOCBuyingInstructionsViewController.h"
-#import "WOCBuyingSummaryViewController.h"
-#import "WOCBuyDashStep1ViewController.h"
+#import "WOCSellingInstructionsViewController.h"
+#import "WOCSellingSummaryViewController.h"
+#import "WOCSellingStep1ViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "BRRootViewController.h"
@@ -17,7 +17,7 @@
 #import "WOCLocationManager.h"
 #import "MBProgressHUD.h"
 
-@interface WOCBuyingInstructionsViewController () <UITextViewDelegate>
+@interface WOCSellingInstructionsViewController () <UITextViewDelegate>
 
 @property (strong, nonatomic) NSString *orderId;
 @property (strong, nonatomic) NSString *dueTime;
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) NSString *locationUrl;
 @end
 
-@implementation WOCBuyingInstructionsViewController
+@implementation WOCSellingInstructionsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -89,7 +89,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_BUY bundle:nil];
-        WOCBuyDashStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep1ViewController"];
+        WOCSellingStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCSellingStep1ViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
         [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
@@ -101,7 +101,7 @@
     BOOL viewFound = NO;
     
     for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[WOCBuyDashStep1ViewController class]]) {
+        if ([controller isKindOfClass:[WOCSellingStep1ViewController class]]) {
             [self.navigationController popToViewController:controller animated:NO];
             viewFound = YES;
             break;
@@ -110,7 +110,7 @@
     
     if (viewFound == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            WOCBuyDashStep1ViewController *myViewController = [self getViewController:@"WOCBuyDashStep1ViewController"];
+            WOCSellingStep1ViewController *myViewController = [self getViewController:@"WOCSellingStep1ViewController"];
             [self pushViewController:myViewController animated:YES];
         });
     }
@@ -122,7 +122,7 @@
 
 - (void)pushToBuyingSummary {
     dispatch_async(dispatch_get_main_queue(), ^{
-        WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+        WOCSellingSummaryViewController *myViewController = [self getViewController:@"WOCSellingSummaryViewController"];
         myViewController.phoneNo = self.phoneNo;
         myViewController.hideSuccessAlert = TRUE;
         [self pushViewController:myViewController animated:YES];
