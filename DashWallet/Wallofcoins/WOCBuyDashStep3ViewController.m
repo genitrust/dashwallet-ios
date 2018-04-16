@@ -57,6 +57,16 @@
     if ([self.bankId length] > 0) {
         WOCBuyDashStep4ViewController *myViewController = (WOCBuyDashStep4ViewController*)[self getViewController:@"WOCBuyDashStep4ViewController"];;
         myViewController.bankId = self.bankId;
+        NSString *bankInfo = [NSString stringWithFormat:@"%@ (-%@)",self.txtPaymentCenter.text,self.bankId];
+        [self.defaults setObject:bankInfo forKey:USER_DEFAULTS_LOCAL_BANK_INFO];
+        [self.defaults synchronize];
+        
+        [self.defaults setObject:self.txtPaymentCenter.text forKey:USER_DEFAULTS_LOCAL_BANK_NAME];
+        [self.defaults synchronize];
+        
+        [self.defaults setObject:self.bankId forKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT];
+        [self.defaults synchronize];
+        
         [self pushViewController:myViewController animated:YES];
         return;
     }

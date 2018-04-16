@@ -17,6 +17,8 @@
 #import "MBProgressHUD.h"
 #import "APIManager.h"
 #import "WOCAlertController.h"
+#import "WOCSellingStep6ViewController.h"
+#import "WOCSellingStep7ViewController.h"
 
 @interface WOCSellingStep1ViewController ()
 
@@ -42,7 +44,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findZipCode) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
     
-    [self setShadow:self.btnLocation];
+    [self.btnSellYourCrypto setTitle:[NSString stringWithFormat:@"SELL YOUR %@",WOC_CURRENTCY_SPECIAL] forState:UIControlStateNormal];
+    [self setShadow:self.btnSellYourCrypto];
     [self setShadow:self.btnNoThanks];
 }
 
@@ -191,8 +194,10 @@
 // MARK: - IBAction
 
 - (IBAction)backBtnClicked:(id)sender {
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController popViewControllerAnimated:YES];
+        [self backToRoot];
+       // [self.navigationController popViewControllerAnimated:YES];
         [self.navigationController.navigationBar setHidden:NO];
     });
 }
@@ -233,5 +238,22 @@
         }
     }
     [self performSelector:@selector(setLogoutButton) withObject:nil afterDelay:1.0];
+}
+
+- (IBAction)sellYourCryptoClicked:(id)sender {
+    
+    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    
+    if (phoneNo == nil || phoneNo.length == 0)
+    {
+        WOCSellingStep7ViewController *myViewController = [self getViewController:@"WOCSellingStep7ViewController"];
+        myViewController.offerId = @"";
+        myViewController.emailId = @"";
+        [self pushViewController:myViewController animated:YES];
+    }
+    else {
+        WOCSellingStep6ViewController *myViewController = [self getViewController:@"WOCSellingStep6ViewController"];
+        [self pushViewController:myViewController animated:YES];
+    }
 }
 @end

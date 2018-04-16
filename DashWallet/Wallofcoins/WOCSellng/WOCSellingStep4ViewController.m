@@ -15,6 +15,7 @@
 #import "BRWalletManager.h"
 #import "WOCAlertController.h"
 #import "BRAppDelegate.h"
+#import "WOCSellingVerifyDetailViewController.h"
 
 #define dashTextField 101
 #define dollarTextField 102
@@ -49,22 +50,13 @@
     if ([dollarString length] > 0 && [dollarString intValue] != 0) {
         
         if ([dollarString intValue] <10000000) {
-                if ((self.zipCode != nil && [self.zipCode length] > 0) || (self.bankId != nil && [self.bankId length] > 0)) {
-                    if ([self.bankId length] > 0) {
-                        [self sendUserData:dollarString zipCode:@"" bankId:self.bankId];
-                    }
-                    else if ([self.zipCode length] > 0) {
-                        [self sendUserData:dollarString zipCode:self.zipCode bankId:@""];
-                    }
-                }
-                else {
-                    [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"zipCode or bankId is empty." viewController:self.navigationController.visibleViewController];
-                }
-            }
-            else {
-                [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Amount must be less than $100000." viewController:self.navigationController.visibleViewController];
-            }
-        
+            
+            [self loadVarificationScreen];
+            
+        }
+        else {
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Amount must be less than $100000." viewController:self.navigationController.visibleViewController];
+        }
     }
     else {
         [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Enter amount." viewController:self.navigationController.visibleViewController];
@@ -141,6 +133,7 @@
     
     [[APIManager sharedInstance] discoverInfo:params response:^(id responseDict, NSError *error) {
         if (error == nil) {
+            
             NSDictionary *dictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             
             if ([dictionary valueForKey:@"id"] != nil)
@@ -152,15 +145,23 @@
             }
             else
             {
-                
                 [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Error in getting offers. Please try after some time." viewController:self.navigationController.visibleViewController];
             }
         }
         else {
-            
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
+}
+
+-(void)loadVarificationScreen {
+    WOCSellingVerifyDetailViewController *myViewController = (WOCSellingVerifyDetailViewController*)[self getViewController:@"WOCSellingVerifyDetailViewController"];;
+    myViewController.currentPriceStr = self.txtDollar.text;
+    [self.defaults setObject:self.txtDollar.text forKey:USER_DEFAULTS_LOCAL_PRICE];
+    [self.defaults synchronize];
+    myViewController.accountInfoStr = [NSString stringWithFormat:@"Bank (%@)",self.bankId];
+    
+    [self pushViewController:myViewController animated:YES];
 }
 
 // MARK: - UITextField Delegates

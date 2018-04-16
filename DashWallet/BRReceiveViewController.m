@@ -410,20 +410,12 @@
     [sender setEnabled:NO];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_SELL bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_BUY bundle:nil];
         UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
         [navController.navigationBar setTintColor:[UIColor whiteColor]];
         BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
         appDelegate.window.rootViewController = navController;
     });
-    
-//    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-//    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
-//        [self getOrders];
-//    }
-//    else {
-//        [self pushToStep1];
-//    }
 }
 
 // MARK: - MFMessageComposeViewControllerDelegate

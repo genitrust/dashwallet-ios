@@ -6,12 +6,13 @@
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
-#import "WOCSellingStep3ViewController.h"
+#import "WOCSellingAddNewBankViewController.h"
 #import "WOCSellingStep4ViewController.h"
 #import "APIManager.h"
 #import "WOCAlertController.h"
-#import "WOCSellingAddNewBankViewController.h"
-@interface WOCSellingStep3ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
+#import "WOCSellingStep3ViewController.h"
+
+@interface WOCSellingAddNewBankViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (strong, nonatomic) NSArray *paymentCenters;
 @property (strong, nonatomic) UIPickerView *pickerView;
@@ -19,7 +20,7 @@
 
 @end
 
-@implementation WOCSellingStep3ViewController
+@implementation WOCSellingAddNewBankViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -54,14 +55,20 @@
 
 - (IBAction)nextStepClicked:(id)sender {
     
-    if ([self.bankId length] > 0) {
+    if ([self.bankId length] > 0 && self.txtAccoutName.text.length > 0
+        && self.txtAccoutNumber.text.length > 0
+        && self.txtConfirmAccoutNumber.text.length > 0 && [self.txtAccoutNumber.text isEqualToString:self.txtConfirmAccoutNumber.text]) {
         WOCSellingStep4ViewController *myViewController = (WOCSellingStep4ViewController*)[self getViewController:@"WOCSellingStep4ViewController"];;
         myViewController.bankId = self.bankId;
+        
         NSString *bankInfo = [NSString stringWithFormat:@"%@ (-%@)",self.txtPaymentCenter.text,self.bankId];
         [self.defaults setObject:bankInfo forKey:USER_DEFAULTS_LOCAL_BANK_INFO];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.txtPaymentCenter.text forKey:USER_DEFAULTS_LOCAL_BANK_NAME];
+        [self.defaults setObject:self.txtAccoutName.text forKey:USER_DEFAULTS_LOCAL_BANK_NAME];
+        [self.defaults synchronize];
+        
+        [self.defaults setObject:self.txtConfirmAccoutNumber.text forKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT_NUMBER];
         [self.defaults synchronize];
         
         [self.defaults setObject:self.bankId forKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT];
@@ -71,14 +78,27 @@
         return;
     }
     else {
-        [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Select payment center." viewController:self.navigationController.visibleViewController];
+        
+        if ([self.bankId length] == 0 ) {
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Select payment center." viewController:self.navigationController.visibleViewController];
+        }
+        else if (self.txtAccoutName.text.length == 0) {
+            
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Please enter account name." viewController:self.navigationController.visibleViewController];
+        }
+        else if (self.txtAccoutNumber.text.length == 0) {
+            
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Please enter account number." viewController:self.navigationController.visibleViewController];
+        }
+        else if (self.txtConfirmAccoutNumber.text.length == 0) {
+            
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Please enter confirm account number." viewController:self.navigationController.visibleViewController];
+        }
+        else if ([self.txtAccoutNumber.text isEqualToString:self.txtConfirmAccoutNumber.text] == FALSE) {
+            
+            [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Account number and confirm account number not matched." viewController:self.navigationController.visibleViewController];
+        }
     }
-}
-
-- (IBAction)useNewAccountClick:(id)sender {
-    
-    WOCSellingAddNewBankViewController *myViewController = (WOCSellingAddNewBankViewController*)[self getViewController:@"WOCSellingAddNewBankViewController"];
-    [self pushViewController:myViewController animated:YES];
 }
 
 // MARK: UIPickerView Delegates
@@ -100,5 +120,9 @@
     self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
 
+- (IBAction)useMostRecentBankAccoutClick:(id)sender {
+    WOCSellingStep3ViewController *myViewController = (WOCSellingStep3ViewController*)[self getViewController:@"WOCSellingStep3ViewController"];
+    [self pushViewController:myViewController animated:YES];
+}
 @end
 

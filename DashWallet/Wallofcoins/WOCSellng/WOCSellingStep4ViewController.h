@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSString *bankId;
 @property (strong, nonatomic) NSString *zipCode;
+@property (strong, nonatomic) NSDictionary *bankDict;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtDash;
 @property (weak, nonatomic) IBOutlet UITextField *txtDollar;

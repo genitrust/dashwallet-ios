@@ -1,5 +1,5 @@
 //
-//  WOCSellingStep6ViewController.m
+//  WOCBuyDashStep6ViewController.m
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 24/01/18.
@@ -10,6 +10,7 @@
 #import "WOCSellingStep7ViewController.h"
 #import "WOCAlertController.h"
 #import "WOCConstants.h"
+#import "WOCSellingStep3ViewController.h"
 
 @interface WOCSellingStep6ViewController ()
 
@@ -21,6 +22,11 @@
     [super viewDidLoad];
     
     [self setShadow:self.btnNext];
+    
+    if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL] != nil) {
+        NSString *emailStr = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL];
+        self.txtEmail.text = emailStr;
+    }
 }
 
 - (BOOL)validateEmailWithString:(NSString*)checkString {
@@ -37,9 +43,9 @@
 
 - (IBAction)doNotSendMeEmailClicked:(id)sender {
     
-    WOCSellingStep7ViewController *myViewController = [self getViewController:@"WOCSellingStep7ViewController"];
-    myViewController.offerId = self.offerId;
-    myViewController.emailId = @"";
+    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_EMAIL];
+    
+    WOCSellingStep3ViewController *myViewController = [self getViewController:@"WOCSellingStep3ViewController"];
     [self pushViewController:myViewController animated:YES];
 }
 
@@ -55,12 +61,10 @@
     }
     else {
 
-        WOCSellingStep7ViewController *myViewController = [self getViewController:@"WOCSellingStep7ViewController"];
-        myViewController.offerId = self.offerId;
-        myViewController.emailId = emailStr;
+        [self.defaults setObject:emailStr forKey:USER_DEFAULTS_LOCAL_EMAIL];
+        WOCSellingStep3ViewController *myViewController = [self getViewController:@"WOCSellingStep3ViewController"];
         [self pushViewController:myViewController animated:YES];
     }
 }
-
 @end
 
