@@ -580,7 +580,6 @@
     [self makeAPIRequestWithURL:apiURL methord:@"POST" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
         completionBlock(responseDict,error);
     }];
-    
 }
 
 /*
@@ -646,8 +645,17 @@
 }
 
 - (void)getDetailFromADId:(NSString*)AdId response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+//    [self getAllAds:nil response:^(id responseDict, NSError *error) {
+//        NSLog(@"responseDict %@",responseDict);
+//    }];
+    
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/ad/%@/",BASE_URL,AdId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    
+    NSDictionary *parameter = @{
+                             
+                            };
     
     NSDictionary *header = @{
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
@@ -658,7 +666,7 @@
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
                    };
-        [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: parameter header: header andCompletionBlock:^(id responseDict, NSError *error) {
             completionBlock(responseDict,error);
         }];
     }
@@ -690,7 +698,6 @@
         completionBlock(nil,returnError);
     }
 }
-
 
 // MARK: - API calls
 -(void)makeAPIRequestWithURL:(NSString*)apiURL methord:(NSString*)httpMethord parameter:(id)parameter header:(NSDictionary*)header andCompletionBlock:(void (^)(id responseDict, NSError *error))completionBlock

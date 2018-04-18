@@ -22,12 +22,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtCurrentPrice;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (strong, nonatomic) NSString *AdId;
-- (IBAction)nextClicked:(id)sender;
-
-@property (strong, nonatomic) NSString *offerId;
-@property (strong, nonatomic) NSString *emailId;
-@property (assign, readwrite) BOOL isActiveHoldChecked;
-@property (assign, readwrite) BOOL isForLoginOny;
-@property (weak, nonatomic) IBOutlet UITextField *txtConfirmEmail;
+- (IBAction)backToHomeScreenAction:(id)sender;
 
 @end

@@ -710,7 +710,6 @@
             }
         }
     }];
-    
 }
 
 - (void)login:(NSString*)phoneNo password:(NSString*)password {

@@ -15,6 +15,9 @@
 #define APILog(x, ...)
 #endif
 #define Str(str) (str != [NSNull null])?str:@""
+#define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOC_CURRENTCY]
+
+#define setVal(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
 //#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
 #define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
@@ -111,8 +114,5 @@
 #define CRYPTO_CURRENTCY_SMALL @"dots"
 #define CRYPTO_CURRENTCY @"DASH"
 //*/
-#define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOC_CURRENTCY]
-
-#define setVal(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
 #endif

@@ -44,7 +44,7 @@
         self.title = [NSString stringWithFormat:@"buy %@ with cash",WOC_CURRENTCY];
     }
     else {
-        self.title = [NSString stringWithFormat:@"Sell Your %@",WOC_CURRENTCY];
+        self.title = [NSString stringWithFormat:@"sell %@ for cash",WOC_CURRENTCY];
     }
 }
 
@@ -122,9 +122,9 @@
                     
                     if (deviceId.length > 0) {
                         
-                       if ([deviceId isEqualToString:@"(null)"] == FALSE) {
-                        return  deviceId;
-                       }
+                        if ([deviceId isEqualToString:@"(null)"] == FALSE) {
+                            return  deviceId;
+                        }
                     }
                 }
             }
@@ -229,12 +229,12 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:@"SIGN IN for the device is hidden" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                         [self backToMainView];
+                        [self backToMainView];
                     }];
                     
                     [alert addAction:okAction];
                     
-                   [self presentViewController:alert animated:YES completion:nil];
+                    [self presentViewController:alert animated:YES completion:nil];
                 });
             }
         }];
@@ -249,7 +249,7 @@
         MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
         
         NSDictionary *params = @{
-                                };
+                                 };
         
         [[APIManager sharedInstance] signOut:nil phone:phoneNumber response:^(id responseDict, NSError *error) {
             
@@ -278,8 +278,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSString * storyboardName = [self.storyboard valueForKey:@"name"];
-        
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
         UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
         
@@ -298,15 +296,12 @@
             BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
             appDelegate.window.rootViewController = navController;
         }
-       
-       
     });
 }
 
 // MARK: - WallofCoins API
 
 - (void)getOrderList {
-    
     
     NSString * storyboardName = [self.storyboard valueForKey:@"name"];
     
@@ -333,7 +328,7 @@
 -(void)loadOrdersWithResponse:(id)responseDict withError: (NSError *)error
 {
     NSString * storyboardName = [self.storyboard valueForKey:@"name"];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error == nil) {
             
@@ -386,7 +381,7 @@
                             myViewController.orders = orders;
                             myViewController.isFromSend = YES;
                             [self pushViewController:myViewController animated:YES];
-
+                            
                         }
                     }
                 }
@@ -419,10 +414,10 @@
         }
     });
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 @end
-

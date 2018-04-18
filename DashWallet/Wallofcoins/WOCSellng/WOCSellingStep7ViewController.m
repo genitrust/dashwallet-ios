@@ -19,6 +19,8 @@
 #import "MBProgressHUD.h"
 #import "WOCHoldIssueViewController.h"
 #import "WOCSellingStep1ViewController.h"
+#import "WOCSellingCreatePasswordViewController.h"
+#import "WOCSellingSingUpViewController.h"
 
 @interface WOCSellingStep7ViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -74,7 +76,7 @@
     [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     [self.defaults synchronize];
     
-    [self createHoldAfterAuthorize:phoneNo];
+    [self push:@"WOCSellingStep6ViewController"];
 }
 
 // MARK: - API
@@ -209,78 +211,9 @@
 - (void)createHold:(NSString*)phoneNo {
     
     if (!self.isForLoginOny) {
-        MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
         
-        NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-        
-        NSDictionary *params;
-    
-        if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
-            params =  @{
-                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                        API_BODY_JSON_PARAMETER:@"YES"
-                        };
-        }
-        else {
-            params =  @{
-                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                        API_BODY_PHONE_NUMBER: phoneNo,
-                        API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                        API_BODY_DEVICE_CODE: deviceCode,
-                        API_BODY_JSON_PARAMETER:@"YES"
-                        };
-            
-            if (self.emailId != nil && self.emailId.length > 0)
-            {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-                [dict setObject:self.emailId forKey:API_BODY_EMAIL];
-                params = (NSDictionary*)dict;
-            }
-        }
-        
-        [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [hud hideAnimated:TRUE];
-            });
-            
-            if (error == nil) {
-                NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE) {
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                    [self.defaults synchronize];
-                    [self storeDeviceInfoLocally];
-                }
-                
-                NSString *holdId = [NSString stringWithFormat:@"%@",setVal([responseDictionary valueForKey:API_RESPONSE_ID])];
-                self.holdId = holdId;
-                
-                NSString *purchaseCode = [NSString stringWithFormat:@"%@",setVal([responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE])];
-                if ([purchaseCode isKindOfClass:[NSNull class]] == FALSE)
-                {
-                    self.purchaseCode = purchaseCode;
-                } else {
-                    self.purchaseCode = @"";
-                }
-                
-                WOCSellingStep8ViewController *myViewController = [self getViewController:@"WOCSellingStep8ViewController"];
-                myViewController.phoneNo = phoneNo;
-                myViewController.offerId = self.offerId;
-                myViewController.purchaseCode = self.purchaseCode;
-                myViewController.deviceCode = deviceCode;
-                myViewController.emailId = self.emailId;
-                myViewController.holdId = self.holdId;
-                [self pushViewController:myViewController animated:YES];
-            }
-            else if (error.code == 403 ) {
-                [self resolveActiveHoldIssue:phoneNo];
-            }
-            else if (error.code == 401 ) {
-                [self registerDevice:phoneNo];
-            }
-        }];
+        WOCSellingSingUpViewController *myViewController = [self getViewController:@"WOCSellingSingUpViewController"];
+        [self pushViewController:myViewController animated:YES];
     }
     else {
         
@@ -500,7 +433,7 @@
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
    
-        [self createHold:phoneNo];
+        [self push:@"WOCSellingStep6ViewController"];
     }
     else {
         

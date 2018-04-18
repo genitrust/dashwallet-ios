@@ -84,7 +84,6 @@
     self.txtInstruction.delegate = self;
 }
 
-
 - (void)pushToHome
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -179,6 +178,7 @@
 }
 
 - (void)updateData:(NSDictionary*)dictionary {
+    
     NSString *bankLogo = setVal([dictionary valueForKey:@"bankLogo"]);
     NSString *bankName = setVal([dictionary valueForKey:@"bankName"]);
     NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
@@ -271,11 +271,11 @@
         }
         
         if (accountArray.count > 3) {
-        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
+            self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 1) {
-        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
+            self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
         }
     }
 }
@@ -410,6 +410,7 @@
 }
 
 - (void)getHold {
+    
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSLog(@"Hold with Hold Id: %@.",responseDict);
@@ -480,6 +481,7 @@
 }
 
 - (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId {
+    
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
