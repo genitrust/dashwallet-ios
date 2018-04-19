@@ -57,12 +57,25 @@
     if (emailAddress != nil && emailAddress.length > 0){
         self.txtEmail.text = emailAddress;
     }
+    else {
+        self.txtEmail.text = @"";
+    }
     
     NSString *bankInfo = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_INFO];
     if (bankInfo != nil && bankInfo.length > 0){
         self.txtAccountCode.text = bankInfo;
     }
+    else {
+        self.txtAccountCode.text = @"";
+    }
     
+    NSString *txtCurrentPrice = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_PRICE];
+    if (txtCurrentPrice != nil && txtCurrentPrice.length > 0){
+        self.txtCurrentPrice.text = txtCurrentPrice;
+    }
+    else {
+        self.txtCurrentPrice.text = @"0";
+    }
     self.txtAccountCode.userInteractionEnabled = FALSE;
     self.txtPhoneNumber.userInteractionEnabled = FALSE;
     self.txtCurrentPrice.userInteractionEnabled = FALSE;

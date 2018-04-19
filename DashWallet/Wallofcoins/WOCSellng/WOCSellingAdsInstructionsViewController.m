@@ -113,8 +113,14 @@
 
 - (IBAction)AdvancedOptionsClicked:(id)sender
 {
+    [self.defaults setBool:NO forKey:@"beforeCreateAd"];
+    [self.defaults synchronize];
+    
     WOCSellingAdvancedOptionsInstructionsViewController *myViewController = [self getViewController:@"WOCSellingAdvancedOptionsInstructionsViewController"];
     [self pushViewController:myViewController animated:YES];
+   
+    [myViewController setupUI];
+
 }
 
 - (IBAction)backToHomeScreenAction:(id)sender {
