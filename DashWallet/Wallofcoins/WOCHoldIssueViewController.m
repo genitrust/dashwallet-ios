@@ -1,6 +1,6 @@
 //
 //  WOCHoldIssueViewController.m
-//  dashwallet
+//  Wallofcoins
 //
 //  Created by Parth on 21/02/18.
 //  Copyright © 2018 Aaron Voisine. All rights reserved.
@@ -14,20 +14,17 @@
 
 @implementation WOCHoldIssueViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)openSite:(NSURL*)url
-{
+- (void)openSite:(NSURL*)url {
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
             NSLog(@"URL opened...");
@@ -36,9 +33,7 @@
 }
 
 // MARK: - IBAction
-
-- (IBAction)signInBtnClicked:(id)sender
-{
+- (IBAction)signInBtnClicked:(id)sender {
     if (self.phoneNo != nil) {
         [self openSite:[NSURL URLWithString:[NSString stringWithFormat:@"https://wallofcoins.com/signin/%@/",self.phoneNo]]];
     }

@@ -17,7 +17,6 @@
 @interface WOCDefaultBaseViewController : UIViewController
 
 @property (strong, nonatomic) NSUserDefaults *defaults;
-//@property (strong, nonatomic) UINavigationController *navigationController;
 @property (assign) BOOL requiredBackButton;
 
 + (instancetype) sharedInstance;
@@ -27,14 +26,14 @@
 - (void)backToMainView;
 - (void)push:(NSString*)viewControllerStr ;
 - (void)clearLocalStorage;
-- (void)storeDeviceInfoLocally;
+
 - (void)setShadow:(UIView *)view;
 
 - (id)getViewController:(NSString*)viewControllerStr;
 - (void)pushViewControllerStr:(NSString*)viewControllerStr;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
-- (NSString *)wocDeviceCode;
+-(NSString*)getCryptoPrice:(NSNumber*)number;
 
 - (IBAction)backBtnClicked:(id)sender;
 - (IBAction)signOutClicked:(id)sender;

@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet UIImageView *otherBankImgView;
 @property (weak, nonatomic) IBOutlet UILabel *lblDashTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblDashSubTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblBankName;

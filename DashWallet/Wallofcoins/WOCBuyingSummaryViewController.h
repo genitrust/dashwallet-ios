@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSString *phoneNo;
 @property (strong, nonatomic) NSArray *orders;
 @property (assign) BOOL isFromSend;
-
+@property (assign) BOOL hideSuccessAlert;
 @property (weak, nonatomic) IBOutlet UITextView *txtInstruction;
 @property (weak, nonatomic) IBOutlet UILabel *lblInstruction;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

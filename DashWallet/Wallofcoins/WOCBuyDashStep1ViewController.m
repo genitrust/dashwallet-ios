@@ -32,10 +32,6 @@
     
     [super viewDidLoad];
     
-//    if (self.isFromSend) {
-//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
-//    }
-    
     [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
     [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
     
@@ -48,8 +44,6 @@
     
     [self setShadow:self.btnLocation];
     [self setShadow:self.btnNoThanks];
-    [self setShadow:self.btnSignOut];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -59,11 +53,11 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
     [self.btnLocation setUserInteractionEnabled:YES];
 }
 
 -(void)setLogoutButton {
+    
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
@@ -73,15 +67,18 @@
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
         [self.signoutView setHidden:NO];
-        [self refereshToken];
+        [self.orderListBtn setHidden:NO];
     }
-    else
-    {
+    else {
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
         self.lblDescription.text = loginPhone;
         [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
-        [self.signoutView setHidden:TRUE];
+        [self.orderListBtn setHidden:YES];
+        [self.signoutView setHidden:NO];
     }
+    
+    [self setShadow:self.btnSignOut];
+    [self setShadow:self.orderListBtn];
 }
 
 -(void)openBuyDashStep2 {
@@ -104,14 +101,15 @@
 
 - (void)showAlert {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Dash" message:@"Are you in the USA?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:ALERT_TITLE message:@"Are you in the USA?" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self refereshToken];
         [self openBuyDashStep2];
     }];
     
     UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [self refereshToken];
         [self openBuyDashStep3];
        
     }];
@@ -124,8 +122,6 @@
 
 - (void)findZipCode {
     
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
     [self.btnLocation setUserInteractionEnabled:YES];
     
     // Your location from latitude and longitude
@@ -134,7 +130,8 @@
     
     if (latitude != nil && longitude != nil) {
         CLLocation *location = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
-        
+        MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+
         // Call the method to find the address
         [self getAddressFromLocation:location completionHandler:^(NSMutableDictionary *placeDetail) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -144,18 +141,22 @@
             NSLog(@"address informations : %@", placeDetail);
             NSLog(@"ZIP code : %@", [placeDetail valueForKey:@"ZIP"]);
             
+            [self.defaults setObject:[placeDetail valueForKey:API_BODY_COUNTRY_CODE] forKey:API_BODY_COUNTRY_CODE];
+            [self.defaults synchronize];
             self.zipCode = [placeDetail valueForKey:@"ZIP"];
             [self openBuyDashStep4];
         }
         failureHandler:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+            });
+            [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
             NSLog(@"Error : %@", error);
         }];
     }
     else {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-        });
+        [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
         [[WOCLocationManager sharedInstance] startLocationService];
     }
 }
@@ -170,17 +171,21 @@
         } else {
             CLPlacemark *placemark = [placemarks objectAtIndex:0];
             if(completionHandler) {
-                completionHandler(placemark.addressDictionary);
+                
+                completionHandler([NSMutableDictionary dictionaryWithDictionary:placemark.addressDictionary]);
             }
         }
     }];
 }
 
 // MARK: - API
-
 - (void)signOut:(NSString*)phone {
     
     [self signOutWOC];
+}
+- (IBAction)onOrderListClick:(id)sender {
+    
+    [self getOrderList];
 }
 
 // MARK: - IBAction
@@ -194,8 +199,11 @@
 
 - (IBAction)findLocationClicked:(id)sender {
     
+    [self refereshToken];
+    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults synchronize];
     if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
-      
+        
         [self findZipCode];
         [self.btnLocation setUserInteractionEnabled:NO];
     }
@@ -207,21 +215,23 @@
 }
 
 - (IBAction)noThanksClicked:(id)sender {
+    
+    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults synchronize];
     [self showAlert];
 }
 
 - (IBAction)signOutClicked:(id)sender {
+   
     UIButton * btn = (UIButton*) sender;
     if (btn != nil) {
         if ([btn.titleLabel.text isEqualToString:@"SIGN IN HERE"]) {
-            [self push:@"WOCBuyDashStep3ViewController"];
-            
+            [self push:@"WOCSignInViewController"];
         }
         else {
            [self signOutWOC];
         }
     }
+    [self performSelector:@selector(setLogoutButton) withObject:nil afterDelay:1.0];
 }
-
 @end
-

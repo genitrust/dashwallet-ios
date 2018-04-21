@@ -35,8 +35,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Buy Dash With Cash";
-    
     [self setShadow:self.btnNext];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:nil];
@@ -84,8 +82,7 @@
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode {
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
     
@@ -93,18 +90,20 @@
         
         if (error == nil) {
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            NSArray *availableAuthSource = (NSArray*)[responseDictionary valueForKey:@"availableAuthSources"];
-            if (availableAuthSource.count > 0) {
-                if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]) {
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                    WOCPasswordViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCPasswordViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.modalTransitionStyle = UIModalPresentationOverCurrentContext;
-                    [self.navigationController presentViewController:myViewController animated:YES completion:nil];
-                }
-                else if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]) {
-                    //[self login:phoneNo];
-                    [self createHoldAfterAuthorize:phoneNo];
+            
+            if ([[responseDictionary valueForKey:@"availableAuthSources"] isKindOfClass:[NSArray class]]) {
+                NSArray *availableAuthSource = (NSArray*)[responseDictionary valueForKey:@"availableAuthSources"];
+                if (availableAuthSource.count > 0) {
+                    if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]) {
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
+                        WOCPasswordViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCPasswordViewController"];
+                        myViewController.phoneNo = phoneNo;
+                        myViewController.modalTransitionStyle = UIModalPresentationOverCurrentContext;
+                        [self.navigationController presentViewController:myViewController animated:YES completion:nil];
+                    }
+                    else if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]) {
+                        [self createHoldAfterAuthorize:phoneNo];
+                    }
                 }
             }
         }
@@ -118,16 +117,6 @@
                 [self.defaults synchronize];
 
                 [self createHold:phoneNo];
-                
-                /*NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-                 
-                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_DASH bundle:nil];
-                 WOCBuyDashStep8ViewController *myViewController = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyDashStep8ViewController"];
-                 myViewController.phoneNo = phoneNo;
-                 myViewController.offerId = self.offerId;
-                 myViewController.deviceCode = deviceCode;
-                 myViewController.emailId = self.emailId;
-                 [self pushViewController:myViewController animated:YES];*/
             }
             else {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -155,112 +144,157 @@
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_DEVICE_CODE: deviceCode
-                             };
+                            };
     
-    if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
+    if (deviceId != nil) {
         
         params = @{
-                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_DEVICE_CODE: deviceCode,
                    API_BODY_DEVICE_ID: deviceId,
                    API_BODY_JSON_PARAMETER: @"YES"
                    };
-    }
-    
-    [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         
-        if (error == nil) {
+        [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
             
-            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults synchronize];
-            [self storeDeviceInfoLocally];
-            [self createHoldAfterAuthorize:phoneNo];
-        }
-        else {
-            [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults synchronize];
-            
-            [self createHoldAfterAuthorize:phoneNo];
+               NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            if (error == nil) {
+                
+                if (responseDictionary != nil) {
+                    [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults synchronize];
+                    [self storeDeviceInfoLocally];
+                    [self createHoldAfterAuthorize:phoneNo];
+                }
+            }
+            else {
+                
+                [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
+                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults synchronize];
 
-            //[self createHold:phoneNo];
-        }
-    }];
+                BOOL isNewPhone = TRUE;
+                if (error.code == 400) {
+                    if (error.userInfo != nil) {
+                        NSString *errorDetail = error.userInfo[@"detail"];
+                        if (errorDetail != nil) {
+                            if ([errorDetail isEqualToString:@"Unable to authorize your phone number. Password may be incorrect."]) {
+                                isNewPhone = FALSE;
+                            }
+                        }
+                    }
+                }
+                if (isNewPhone) {
+                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults synchronize];
+                    [self createHoldAfterAuthorize:phoneNo];
+                }
+                else {
+                      [self openHoldIssueVC];
+                }
+            }
+        }];
+    }
 }
 
 - (void)createHold:(NSString*)phoneNo {
     
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+    if (!self.isForLoginOny) {
+        MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+        
+        NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        
+        NSDictionary *params;
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    
-    NSDictionary *params;
-    
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
-        params =  @{
-                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    //API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    //API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_JSON_PARAMETER:@"YES"
-                    };
+        if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+            params =  @{
+                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                        API_BODY_JSON_PARAMETER:@"YES"
+                        };
+        }
+        else {
+            params =  @{
+                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
+                        API_BODY_PHONE_NUMBER: phoneNo,
+                        API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
+                        API_BODY_DEVICE_CODE: deviceCode,
+                        API_BODY_JSON_PARAMETER:@"YES"
+                        };
+            
+            if (self.emailId != nil && self.emailId.length > 0)
+            {
+                NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
+                [dict setObject:self.emailId forKey:API_BODY_EMAIL];
+                params = (NSDictionary*)dict;
+            }
+        }
+        
+        [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [hud hideAnimated:TRUE];
+            });
+            
+            if (error == nil) {
+                NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE) {
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
+                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults synchronize];
+                    [self storeDeviceInfoLocally];
+                }
+                
+                NSString *holdId = [NSString stringWithFormat:@"%@",setVal([responseDictionary valueForKey:API_RESPONSE_ID])];
+                self.holdId = holdId;
+                
+                NSString *purchaseCode = [NSString stringWithFormat:@"%@",setVal([responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE])];
+                if ([purchaseCode isKindOfClass:[NSNull class]] == FALSE)
+                {
+                    self.purchaseCode = purchaseCode;
+                } else {
+                    self.purchaseCode = @"";
+                }
+                
+                WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
+                myViewController.phoneNo = phoneNo;
+                myViewController.offerId = self.offerId;
+                myViewController.purchaseCode = self.purchaseCode;
+                myViewController.deviceCode = deviceCode;
+                myViewController.emailId = self.emailId;
+                myViewController.holdId = self.holdId;
+                [self pushViewController:myViewController animated:YES];
+            }
+            else if (error.code == 403 ) {
+                [self resolveActiveHoldIssue:phoneNo];
+            }
+            else if (error.code == 401 ) {
+                [self registerDevice:phoneNo];
+            }
+        }];
     }
     else {
-        params =  @{
-                    //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
-                    API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                    API_BODY_PHONE_NUMBER: phoneNo,
-                    API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                    API_BODY_DEVICE_CODE: deviceCode,
-                    API_BODY_EMAIL: self.emailId,
-                    API_BODY_JSON_PARAMETER:@"YES"
-                    };
+        
+        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+            [self getOrderList];
+        }
+        else {
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Please select an offer and then try to register/login with app." preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                 [self backToMainView];
+            }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }
     }
-    
-    [[APIManager sharedInstance] createHold:params response:^(id responseDict, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [hud hideAnimated:TRUE];
-        });
-        
-        if (error == nil) {
-            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE) {
-                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-                [self.defaults synchronize];
-            }
-        
-            NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
-            self.holdId = holdId;
-            
-            NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
-            self.purchaseCode = purchaseCode;
-            
-            WOCBuyDashStep8ViewController *myViewController = [self getViewController:@"WOCBuyDashStep8ViewController"];
-            myViewController.phoneNo = phoneNo;
-            myViewController.offerId = self.offerId;
-            myViewController.purchaseCode = self.purchaseCode;
-            myViewController.deviceCode = deviceCode;
-            myViewController.emailId = self.emailId;
-            myViewController.holdId = self.holdId;
-            [self pushViewController:myViewController animated:YES];
-        }
-        else if (error.code == 403 ) {
-            [self resolveActiveHoldIssue:phoneNo];
-        }
-        else if (error.code == 401 ) {
-            [self registerDevice:phoneNo];
-        }
-    }];
 }
 
 -(void)resolveActiveHoldIssue:(NSString*)phoneNo {
@@ -281,32 +315,36 @@
             
       
             NSString *deviceID = [self getDeviceIDFromPhoneNumber:phoneNo];
-            if (deviceID != nil)
-            {
+             if (deviceID.length > 0 && [deviceID isEqualToString:@"(null)"] == FALSE) {
+           
                 [self.defaults setObject:deviceID forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                 [self.defaults synchronize];
                 [self login:phoneNo];
             }
             else
             {
-                /*
-                 IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE DASH WITH CASH" button), and when they press that button, you will bring them to this website link:
-                 https://wallofcoins.com/signin/1-2397776832/
-                 https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
-                 */
-                NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
-                WOCHoldIssueViewController *aViewController = [self getViewController:@"WOCHoldIssueViewController"];
-                aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
-                [self pushViewController:aViewController animated:YES];
+                [self openHoldIssueVC];
             }
         }
     }
 }
 
+-(void)openHoldIssueVC {
+    /*
+     IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE {Crypto Currency} WITH CASH" button), and when they press that button, you will bring them to this website link:
+     https://wallofcoins.com/signin/1-2397776832/
+     https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
+     */
+    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    WOCHoldIssueViewController *aViewController = [self getViewController:@"WOCHoldIssueViewController"];
+    aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
+    [self pushViewController:aViewController animated:YES];
+}
+
 -(void)resolvePandingOrderIssue {
     
-    [self getOrders];
+    [self getOrderList];
 }
 
 - (void)getHold {
@@ -314,55 +352,41 @@
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSLog(@"Hold with Hold Id: %@.",responseDict);
-            
-            NSArray *holdArray = (NSArray*)responseDict;
-            if (holdArray.count > 0) {
-                NSUInteger count = holdArray.count;
-                NSUInteger activeHodCount = 0;
-                
-                for (int i = 0; i < holdArray.count; i++) {
-                    count -= count;
+            if ([responseDict isKindOfClass:[NSArray class]]) {
+                NSArray *holdArray = (NSArray*)responseDict;
+                if (holdArray.count > 0) {
+                    NSUInteger count = holdArray.count;
+                    NSUInteger activeHodCount = 0;
                     
-                    NSDictionary *holdDict = [holdArray objectAtIndex:i];
-                    NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                    NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
-                   
-                    if (holdStatus != nil) {
-                        if ([holdStatus isEqualToString:@"AC"]) {
+                    for (int i = 0; i < holdArray.count; i++) {
+                        count -= count;
+                        
+                        NSDictionary *holdDict = [holdArray objectAtIndex:i];
+                        NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
+                        NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                        
+                        if (holdStatus != nil) {
+                            if ([holdStatus isEqualToString:@"AC"]) {
+                                if (holdId) {
+                                    activeHodCount = activeHodCount + 1;
+                                    [self deleteHold:holdId count:count];
+                                }
+                            }
+                        }
+                        else {
                             if (holdId) {
                                 activeHodCount = activeHodCount + 1;
                                 [self deleteHold:holdId count:count];
                             }
                         }
-                    }// Handle as per Old Response
-//                    else if ([holdDict valueForKey:API_RESPONSE_Holds] != nil) {
-//
-//                        if ([[holdDict valueForKey:API_RESPONSE_Holds] isKindOfClass:[NSArray class]]) {
-//                            NSArray *holdDetailArray = (NSArray *) [holdDict valueForKey:API_RESPONSE_Holds];
-//
-//                            if (holdDetailArray.count > 0) {
-//                                NSDictionary *holdSubDict = [holdDetailArray objectAtIndex:0];
-//                                NSString *holdStatus = [holdSubDict valueForKey:API_RESPONSE_Holds_Status];
-//
-//                                if ([holdStatus isEqualToString:@"AC"])  {
-//
-//                                    if (holdId) {
-//                                        [self deleteHold:holdId count:count];
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-                    else {
-                        if (holdId) {
-                            activeHodCount = activeHodCount + 1;
-                            [self deleteHold:holdId count:count];
-                        }
+                    }
+                    
+                    if (activeHodCount == 0 ) {
+                        [self resolvePandingOrderIssue];
                     }
                 }
-
-                if (activeHodCount == 0 ) {
-                     [self resolvePandingOrderIssue];
+                else {
+                    [self resolvePandingOrderIssue];
                 }
             }
             else {
@@ -378,8 +402,7 @@
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count {
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
         if (error == nil) {
@@ -387,9 +410,6 @@
             
             NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [self createHoldAfterAuthorize:phoneNo];
-        }
-        else {
-           //[[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
     }];
 }
@@ -433,14 +453,12 @@
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                              API_BODY_DEVICE_CODE: deviceCode,
                              API_BODY_JSON_PARAMETER: @"YES"
                              };
     
     if (deviceId != nil && [deviceId isEqualToString:@"(null)"] == FALSE) {
         params = @{
-                   //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_BODY_DEVICE_CODE: deviceCode,
                    API_BODY_DEVICE_ID: deviceId,
                    API_BODY_JSON_PARAMETER: @"YES"
@@ -467,14 +485,11 @@
             [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
             [self.defaults synchronize];
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-
-            //[self createHold:phoneNo];
         }
     }];
 }
 
-- (void)createHoldAfterAuthorize:(NSString*)phoneNo
-{
+- (void)createHoldAfterAuthorize:(NSString*)phoneNo {
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
     if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
@@ -495,59 +510,6 @@
              [self createHold:phoneNo];
         }
     }
-}
-
-- (void)getOrders
-{
-    MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-    
-    NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
-    
-    [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [hud hideAnimated:TRUE];
-        });
-        
-        if (error == nil) {
-            NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            if (orders.count > 0) {
-                NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-                NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
-                NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
-                
-                if ([status isEqualToString:@"WD"]) {
-
-                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.holdId = self.holdId;
-                    myViewController.isFromSend = YES;
-                    myViewController.isFromOffer = NO;
-                    myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                    [self pushViewController:myViewController animated:YES];
-                }
-                else if (orders.count > 0) {
-                    
-                    WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.orders = orders;
-                    myViewController.isFromSend = YES;
-                    [self pushViewController:myViewController animated:YES];
-                }
-                else {
-                    
-                    [self backToMainView];
-                }
-            }
-        }
-        else {
-            
-            [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-        }
-    }];
 }
 
 // MARK: - IBAction
@@ -572,29 +534,24 @@
 
 // MARK: - UIPickerView Delegates
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView
-{
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
     return 1;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component
-{
+- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
     return self.countries.count;
 }
 
-- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
+- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     return [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
     self.countryCode = [NSString stringWithFormat:@"%@",self.countries[row][@"code"]];
 }
 
-- (void)pushToStep1
-{
+- (void)pushToStep1 {
     [self storeDeviceInfoLocally];
     [self backToMainView];
 }

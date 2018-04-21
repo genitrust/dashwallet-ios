@@ -37,6 +37,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
+#import "WOCAsyncImageView.h"
 
 @interface WOCBuyingSummaryViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate>
 
@@ -58,8 +59,13 @@
     
     if (self.orders.count == 0) {
         
+        [self reloadOrderTable];
+
         [self getOrders];
-        [self displayAlert];
+        
+        if (self.hideSuccessAlert == FALSE) {
+            [self displayAlert];
+        }
     }
     else {
         
@@ -73,7 +79,7 @@
         
         NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
         
-        [self.tableView reloadData];
+         [self reloadOrderTable];
     }
 }
 
@@ -134,7 +140,7 @@
 
 - (void)displayAlert {
     
-    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:@"Thank you for making the payment!\nOnce we verify your payment, we will send the Dash to your wallet!" viewController:self];
+    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:[NSString stringWithFormat:@"Thank you for making the payment!\nOnce we verify your payment, we will send the %@ to your wallet!",WOC_CURRENTCY] viewController:self];
 }
 
 // MARK: - IBAction
@@ -158,14 +164,12 @@
 }
 
 // MARK: - API
-
 - (void)getOrders {
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             //API_BODY_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
-                             };
+                            };
     
     [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -173,27 +177,41 @@
         });
         
         if (error == nil) {
-            NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-            self.orders = response;
-            
-            NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
-            NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
-            self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
-            
-            NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV' || status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
-            NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
-            self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
-            
-            NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
-            
-            [self.tableView reloadData];
+            if ([responseDict isKindOfClass:[NSArray class]]) {
+                NSArray *response = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
+                self.orders = response;
+                
+                NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
+                NSArray *wdvArray = [self.orders filteredArrayUsingPredicate:wdvPredicate];
+                self.wdOrders = [[NSArray alloc] initWithArray:wdvArray];
+                
+                NSPredicate *otherPredicate = [NSPredicate predicateWithFormat:@"status == 'WDV' || status == 'RERR' || status == 'DERR' || status == 'RSD' || status == 'RMIT' || status == 'UCRV' || status == 'PAYP' || status == 'SENT' || status == 'ACAN'"];
+                NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
+                self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
+                
+                NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
+            }
         }
         else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
+        
+        [self reloadOrderTable];
+
     }];
 }
 
+-(void)reloadOrderTable{
+    if (self.orders.count > 0) {
+        self.txtInstruction.text = @"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins.";
+    }
+    else {
+        self.txtInstruction.text = [NSString stringWithFormat:@"You have no order history with %@ for iOS. To see your full order history across all devices, visit %@",CRYPTO_CURRENTCY,BASE_URL_PRODUCTION];
+    }
+    self.lblInstruction.hidden  = TRUE;
+    self.txtInstruction.hidden  = FALSE;
+    [self.tableView reloadData];
+}
 #pragma mark - UITableView DataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -230,7 +248,12 @@
         return cell;
     }
     else {
+        
+        static const NSInteger IMAGE_VIEW_TAG = 98;
+        NSString *cellIdentifier = @"offerCell";
+        
         WOCSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell"];
+        
         NSDictionary *orderDict = [[NSDictionary alloc] init];
         
         if (indexPath.section == 0) {
@@ -240,49 +263,69 @@
                 if ([[orderDict valueForKey:@"account"] length] > 16) {
                     cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
                     
-                    NSArray *accountArray = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-                    
+                    NSArray *accountArr = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+                    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"displaySort" ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
+                        float aObj1 = [(NSString *)obj1 floatValue];
+                        float aObj2 = [(NSString *)obj2 floatValue];
+                        return aObj1 > aObj2;
+                    }];
+                    NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
                     cell.lblPhone.hidden = YES;
-                    cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",[[accountArray objectAtIndex:0] valueForKey:@"value"]];
-                    cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",[[accountArray objectAtIndex:1] valueForKey:@"value"]];
-                    cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",[[accountArray objectAtIndex:2] valueForKey:@"value"]];
-                    cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",[[accountArray objectAtIndex:3] valueForKey:@"value"]];
+                    if (accountArray.count > 0) {
+                        cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",setVal([[accountArray objectAtIndex:0] valueForKey:@"value"])];
+                    }
+                    if (accountArray.count > 2) {
+                        cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",setVal([[accountArray objectAtIndex:2] valueForKey:@"value"])];
+                    }
+                    if (accountArray.count > 3) {
+                        cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
+                    }
+                    if (accountArray.count > 1) {
+                        cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
+                    }
                 }
             }
         }
-        else{
+        else {
             orderDict = self.otherOrders[indexPath.row];
         }
         
-        NSString *bankLogo = [orderDict valueForKey:@"bankLogo"];
-        NSString *bankIcon = [orderDict valueForKey:@"bankIcon"];
-        NSString *bankName = [orderDict valueForKey:@"bankName"];
-        NSString *phoneNo = [NSString stringWithFormat:@"%@",[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"]];
+        NSString *bankLogo = setVal([orderDict valueForKey:@"bankLogo"]);
+        NSString *bankIcon = setVal([orderDict valueForKey:@"bankIcon"]);
+        NSString *bankName = setVal([orderDict valueForKey:@"bankName"]);
+        NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
         float depositAmount = [[orderDict valueForKey:@"payment"] floatValue];
-        NSString *totalDash = [orderDict valueForKey:@"total"];
-        NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
+        NSString *totalDash = setVal([orderDict valueForKey:@"total"]);
+        NSString *status = [NSString stringWithFormat:@"%@",setVal([orderDict valueForKey:@"status"])];
         
+        UIView *cellView = cell.imgView.superview;
+        
+        WOCAsyncImageView *imageView = (WOCAsyncImageView *)[cellView viewWithTag:IMAGE_VIEW_TAG];
+        
+        if (imageView == nil) {
+            imageView = [[WOCAsyncImageView alloc] initWithFrame:cell.imgView.frame];
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.clipsToBounds = YES;
+            imageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+            imageView.tag = IMAGE_VIEW_TAG;
+            [cellView addSubview:imageView];
+        }
+        
+        cell.imgView.hidden = TRUE;
+        imageView.hidden = FALSE;
+        
+        //get image view
+        //cancel loading previous image for cell
+        [[AsyncImageLoader sharedLoader] cancelLoadingImagesForTarget:imageView];
         //bankLogo
-        if (![[orderDict valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
-            if ([bankLogo hasPrefix:@"https://"]) {
-                NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]]];
-                cell.imgView.image = [UIImage imageWithData: imageData];
-            }
-            else {
-                cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-            }
+        if ([bankLogo length] > 0) {
+            
+            imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
         }
-        else if (![[orderDict valueForKey:@"bankIcon"] isEqual:[NSNull null]] && [bankIcon length] > 0) {
-            if ([bankLogo hasPrefix:@"https://"]) {
-                NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]]];
-                cell.imgView.image = [UIImage imageWithData: imageData];
-            }
-            else {
-                cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
-            }
-        }
-        else {
-            cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        else if ([bankIcon length] > 0) {
+            
+            imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
+            //cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
         
         cell.lblName.text = bankName;
@@ -294,11 +337,16 @@
         
         NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
         NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+        [numFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+        [numFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        //[numFormatter setAllowsFloats:YES];
+        [numFormatter setAlwaysShowsDecimalSeparator:YES];
+        //[numFormatter setDecimalSeparator:@"."];
         [numFormatter setUsesGroupingSeparator:YES];
         [numFormatter setGroupingSeparator:@","];
         [numFormatter setGroupingSize:3];
         NSString *stringNum = [numFormatter stringFromNumber:num];
-        cell.lblTotalDash.text = [NSString stringWithFormat:@"Total Dash: %@ (%@ dots)",totalDash,stringNum];
+        cell.lblTotalDash.text = [NSString stringWithFormat:@"Total %@: %@ (%@ %@)",WOC_CURRENTCY_SPECIAL,totalDash,stringNum,WOC_CURRENTCY_SYMBOL_MINOR];
         cell.lblStatus.text = [self checkStatus:status];
         
         return cell;

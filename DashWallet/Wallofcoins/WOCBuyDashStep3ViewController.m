@@ -40,10 +40,12 @@
     
     [[APIManager sharedInstance] getAvailablePaymentCenters:^(id responseDict, NSError *error) {
         if (error == nil) {
-            NSArray *responseArray = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
-            NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-            self.paymentCenters = [responseArray sortedArrayUsingDescriptors:@[sort]];
-            [self.pickerView reloadAllComponents];
+            if ([responseDict isKindOfClass:[NSArray class]]) {
+                NSArray *responseArray = [[NSArray alloc] initWithArray:(NSArray *)responseDict];
+                NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+                self.paymentCenters = [responseArray sortedArrayUsingDescriptors:@[sort]];
+                [self.pickerView reloadAllComponents];
+            }
         }
     }];
 }
@@ -59,7 +61,7 @@
         return;
     }
     else {
-        [[WOCAlertController sharedInstance] alertshowWithTitle:@"Dash" message:@"Select payment center." viewController:self.navigationController.visibleViewController];
+        [[WOCAlertController sharedInstance] alertshowWithTitle:ALERT_TITLE message:@"Select payment center." viewController:self.navigationController.visibleViewController];
     }
 }
 

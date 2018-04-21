@@ -16,15 +16,13 @@
 #endif
 #define Str(str) (str != [NSNull null])?str:@""
 
-#define WALLOFCOINS_PUBLISHER_ID "52"
-
 //#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
 #define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
 
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
 
-#define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+#define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ"
 #define LOCAL_DATE_FORMAT @"yyyy-MM-dd HH:mm:ss"
 
 #pragma mark - USER DEFAULT KEYS
@@ -64,7 +62,7 @@
 #define API_BODY_CODE @"code"
 #define API_BODY_NAME @"name"
 #define API_BODY_PHONE_NUMBER @"phone"
-#define API_BODY_DEVICE_NAME_IOS @"Dash Wallet (iOS)"
+#define API_BODY_DEVICE_NAME_IOS [NSString stringWithFormat:@"%@ Wallet (iOS)",WOC_CURRENTCY]
 #define API_BODY_EMAIL @"email"
 #define API_BODY_JSON_PARAMETER @"JSONPara"
 #define API_BODY_VERIFICATION_CODE @"verificationCode"
@@ -72,6 +70,8 @@
 #define API_BODY_LATITUDE @"latitude"
 #define API_BODY_LONGITUDE @"longitude"
 #define API_BODY_BROWSERLOCATION @"browserLocation"
+#define API_BODY_COUNTRY @"country"
+#define API_BODY_COUNTRY_CODE @"CountryCode"
 
 #pragma mark - API PARAMETERS KEYS
 
@@ -84,6 +84,29 @@
 
 #pragma mark - OTHER
 #define STORYBOARD_DASH @"buyDash"
-#define ALERT_TITLE @"Dash"
 
-#endif /* WOCUserDefaultsConstants_h */
+/*
+#define WALLOFCOINS_PUBLISHER_ID "46"
+#define WOC_CURRENTCY @"PIV"
+#define WOC_CURRENTCY_SPECIAL @"ⱣIV"
+#define WOC_CURRENTCY_MINOR_SPECIAL @"µⱣiv"
+#define WOC_CURRENTCY_SYMBOL @"Ᵽ"
+#define WOC_CURRENTCY_SYMBOL_MINOR @"µⱣiv"
+#define CRYPTO_CURRENTCY_SMALL @"uPiv"
+#define CRYPTO_CURRENTCY @"PIVX"
+//*/
+///*
+#define WALLOFCOINS_PUBLISHER_ID "52"
+#define WOC_CURRENTCY @"Dash"
+#define WOC_CURRENTCY_SPECIAL @"ĐASH"
+#define WOC_CURRENTCY_MINOR_SPECIAL @"đots"
+#define WOC_CURRENTCY_SYMBOL @"Đ"
+#define WOC_CURRENTCY_SYMBOL_MINOR @"đ"
+#define CRYPTO_CURRENTCY_SMALL @"dots"
+#define CRYPTO_CURRENTCY @"DASH"
+//*/
+#define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOC_CURRENTCY]
+
+#define setVal(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
+
+#endif
