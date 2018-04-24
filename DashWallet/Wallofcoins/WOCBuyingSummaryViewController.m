@@ -29,8 +29,8 @@
 #import "WOCBuyingSummaryViewController.h"
 #import "WOCSummaryCell.h"
 #import "WOCSignOutCell.h"
-#import "WOCBuyDashStep1ViewController.h"
-#import "WOCBuyDashStep4ViewController.h"
+#import "WOCBuyingWizardHomeViewController.h"
+#import "WOCBuyingWizardInputAmountViewController.h"
 #import "APIManager.h"
 #import "BRRootViewController.h"
 #import "BRAppDelegate.h"
@@ -54,16 +54,13 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     
-    [self setShadow:self.btnBuyMoreDash];
+    [self setShadowOnButton:self.btnBuyMoreDash];
     [self setAttributedString];
     
     if (self.orders.count == 0) {
-        
         [self reloadOrderTable];
-
         [self getOrders];
-        
-        if (self.hideSuccessAlert == FALSE) {
+        if (!self.hideSuccessAlert) {
             [self displayAlert];
         }
     }
@@ -208,8 +205,8 @@
     else {
         self.txtInstruction.text = [NSString stringWithFormat:@"You have no order history with %@ for iOS. To see your full order history across all devices, visit %@",CRYPTO_CURRENTCY,BASE_URL_PRODUCTION];
     }
-    self.lblInstruction.hidden  = TRUE;
-    self.txtInstruction.hidden  = FALSE;
+    self.lblInstruction.hidden  = YES;
+    self.txtInstruction.hidden  = NO;
     [self.tableView reloadData];
 }
 #pragma mark - UITableView DataSource
@@ -248,7 +245,6 @@
         return cell;
     }
     else {
-        
         static const NSInteger IMAGE_VIEW_TAG = 98;
         NSString *cellIdentifier = @"offerCell";
         
@@ -262,7 +258,6 @@
             if (![[orderDict valueForKey:@"account"] isEqual:[NSNull null]]) {
                 if ([[orderDict valueForKey:@"account"] length] > 16) {
                     cell = [tableView dequeueReusableCellWithIdentifier:@"summaryCell1"];
-                    
                     NSArray *accountArr = [NSJSONSerialization JSONObjectWithData:[[orderDict valueForKey:@"account"] dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
                     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"displaySort" ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
                         float aObj1 = [(NSString *)obj1 floatValue];
@@ -272,16 +267,16 @@
                     NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
                     cell.lblPhone.hidden = YES;
                     if (accountArray.count > 0) {
-                        cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",setVal([[accountArray objectAtIndex:0] valueForKey:@"value"])];
+                        cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:0] valueForKey:@"value"])];
                     }
                     if (accountArray.count > 2) {
-                        cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",setVal([[accountArray objectAtIndex:2] valueForKey:@"value"])];
+                        cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:2] valueForKey:@"value"])];
                     }
                     if (accountArray.count > 3) {
-                        cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
+                        cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:3] valueForKey:@"value"])];
                     }
                     if (accountArray.count > 1) {
-                        cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
+                        cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:1] valueForKey:@"value"])];
                     }
                 }
             }
@@ -290,13 +285,13 @@
             orderDict = self.otherOrders[indexPath.row];
         }
         
-        NSString *bankLogo = setVal([orderDict valueForKey:@"bankLogo"]);
-        NSString *bankIcon = setVal([orderDict valueForKey:@"bankIcon"]);
-        NSString *bankName = setVal([orderDict valueForKey:@"bankName"]);
-        NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
+        NSString *bankLogo = REMOVE_NULL_VALUE([orderDict valueForKey:@"bankLogo"]);
+        NSString *bankIcon = REMOVE_NULL_VALUE([orderDict valueForKey:@"bankIcon"]);
+        NSString *bankName = REMOVE_NULL_VALUE([orderDict valueForKey:@"bankName"]);
+        NSString *phoneNo = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
         float depositAmount = [[orderDict valueForKey:@"payment"] floatValue];
-        NSString *totalDash = setVal([orderDict valueForKey:@"total"]);
-        NSString *status = [NSString stringWithFormat:@"%@",setVal([orderDict valueForKey:@"status"])];
+        NSString *totalDash = REMOVE_NULL_VALUE([orderDict valueForKey:@"total"]);
+        NSString *status = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([orderDict valueForKey:@"status"])];
         
         UIView *cellView = cell.imgView.superview;
         
@@ -311,19 +306,17 @@
             [cellView addSubview:imageView];
         }
         
-        cell.imgView.hidden = TRUE;
-        imageView.hidden = FALSE;
+        cell.imgView.hidden = YES;
+        imageView.hidden = NO;
         
         //get image view
         //cancel loading previous image for cell
         [[AsyncImageLoader sharedLoader] cancelLoadingImagesForTarget:imageView];
         //bankLogo
         if ([bankLogo length] > 0) {
-            
             imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
         }
         else if ([bankIcon length] > 0) {
-            
             imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
             //cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
@@ -368,7 +361,7 @@
         lblTitle.layer.cornerRadius = 10.0;
         lblTitle.layer.masksToBounds = YES;
         
-        [self setShadow:lblTitle];
+        [self setShadowOnButton:lblTitle];
         [headerView addSubview:lblTitle];
         return headerView;
     }

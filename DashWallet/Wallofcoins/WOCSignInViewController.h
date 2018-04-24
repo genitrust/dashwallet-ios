@@ -1,5 +1,5 @@
 //
-//  WOCBuyDashStep5ViewController.h
+//  WOCBuyingWizardOfferListViewController.h
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 24/01/18.

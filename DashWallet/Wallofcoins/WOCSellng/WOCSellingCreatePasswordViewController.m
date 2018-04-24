@@ -26,7 +26,7 @@
     
     [super viewDidLoad];
     
-    [self setShadow:self.btnPurchaseCode];
+    [self setShadowOnButton:self.btnPurchaseCode];
     
     NSString *userDeviceName = @"";
     if (self.deviceName != nil) {
@@ -34,8 +34,9 @@
     }
     self.descLable.text = [NSString stringWithFormat:@"You are already signed up with an app %@. Congratulations! Now type a secure password to continue.",userDeviceName];
     if (self.purchaseCode != nil) {
-        self.txtPurchaseCode.text = setVal(self.purchaseCode);
-    } else {
+        self.txtPurchaseCode.text = REMOVE_NULL_VALUE(self.purchaseCode);
+    }
+    else {
         self.txtPurchaseCode.text = @"";
     }
     self.txtPurchaseCode.delegate = self;
@@ -47,7 +48,7 @@
     {
         [self performSelector:@selector(confirmPurchaseCodeClicked:) withObject:self afterDelay:1.0];
     }
-    return TRUE;
+    return YES;
 }
 
 // MARK: - IBAction
@@ -56,19 +57,16 @@
     NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([txtCode length] == 5) {
-
-        WOCSellingInstructionsViewController *myViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
-        myViewController.purchaseCode = txtCode;
-        myViewController.holdId = self.holdId;
-        myViewController.phoneNo = self.phoneNo;
-        [self pushViewController:myViewController animated:YES];
+        WOCSellingInstructionsViewController *instructionsViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
+        instructionsViewController.purchaseCode = txtCode;
+        instructionsViewController.holdId = self.holdId;
+        instructionsViewController.phoneNo = self.phoneNo;
+        [self pushViewController:instructionsViewController animated:YES];
     }
-    else if ([txtCode length] == 0 ) {
-        
+    else if ([txtCode length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Purchase Code" viewController:self.navigationController.visibleViewController];
     }
-    else if ([txtCode length] != 5 ) {
-        
+    else if ([txtCode length] != 5) {
          [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Valid Purchase Code" viewController:self.navigationController.visibleViewController];
     }
 }

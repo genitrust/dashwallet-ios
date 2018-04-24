@@ -27,8 +27,6 @@
 - (void)push:(NSString*)viewControllerStr ;
 - (void)clearLocalStorage;
 
-- (void)setShadow:(UIView *)view;
-
 - (id)getViewController:(NSString*)viewControllerStr;
 - (void)pushViewControllerStr:(NSString*)viewControllerStr;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
@@ -39,4 +37,7 @@
 - (IBAction)signOutClicked:(id)sender;
 - (IBAction)backToMainViewBtnClicked:(id)sender;
 - (BOOL)isValidEmail:(NSString *)checkString;
+- (void)setShadowOnView:(UIView *)view;
+- (void)setShadowOnButton:(UIButton *)button;
+
 @end

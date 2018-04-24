@@ -12,6 +12,7 @@
 #import "APIManager.h"
 #import "WOCConstants.h"
 
+
 @interface WOCSellingAdsInstructionsViewController ()
 
 @property (strong, nonatomic) NSArray *countries;
@@ -27,9 +28,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadow:self.btnNext];
+    [self setShadowOnButton:self.btnNext];
     
-    if (self.accountInfoStr != nil && self.accountInfoStr.length > 0){
+    if (self.accountInfoStr != nil && self.accountInfoStr.length > 0) {
         self.txtAccountCode.text = self.accountInfoStr;
     }
     
@@ -40,36 +41,35 @@
     self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOC_CURRENTCY_SYMBOL];
     
     NSString *emailAddress = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL];
-    if (emailAddress != nil && emailAddress.length > 0){
+    if (emailAddress != nil && emailAddress.length > 0) {
         self.txtEmail.text = emailAddress;
     }
     
     NSString *bankAccountInfo = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_INFO];
-    if (bankAccountInfo != nil && bankAccountInfo.length > 0){
+    if (bankAccountInfo != nil && bankAccountInfo.length > 0) {
         self.txtAccountCode.text = bankAccountInfo;
     }
     
     NSString *bankAccount = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT_NUMBER];
-    if (bankAccount != nil && bankAccount.length > 0){
+    if (bankAccount != nil && bankAccount.length > 0) {
         self.txtAccountNumber.text = bankAccount;
     }
     
     NSString *bankName = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_NAME];
-    if (bankName != nil && bankName.length > 0){
+    if (bankName != nil && bankName.length > 0) {
         self.txtAccountName.text = bankName;
     }
     
     NSString *currentPrice = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_PRICE];
-    if (currentPrice != nil && currentPrice.length > 0){
+    if (currentPrice != nil && currentPrice.length > 0) {
         self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",currentPrice];
     }
-    
-    self.txtAccountNumber.userInteractionEnabled = FALSE;
-    self.txtAccountName.userInteractionEnabled = FALSE;
-    self.txtAccountCode.userInteractionEnabled = FALSE;
-    self.txtAvailableCrypto.userInteractionEnabled = FALSE;
-    self.txtCurrentPrice.userInteractionEnabled = FALSE;
-    self.txtEmail.userInteractionEnabled = FALSE;
+    self.txtAccountNumber.userInteractionEnabled = NO;
+    self.txtAccountName.userInteractionEnabled = NO;
+    self.txtAccountCode.userInteractionEnabled = NO;
+    self.txtAvailableCrypto.userInteractionEnabled = NO;
+    self.txtCurrentPrice.userInteractionEnabled = NO;
+    self.txtEmail.userInteractionEnabled = NO;
     [self loadAdData];
 }
 
@@ -82,11 +82,11 @@
             self.txtAccountCode.text = self.accountInfoStr;
             self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOC_CURRENTCY_SYMBOL];
             
-            //self.txtEmail.text = setVal(responseDict[@""]);
-            self.txtAccountCode.text = setVal(responseDict[@""]);
-            self.txtAccountNumber.text = setVal(responseDict[@""]);
-            self.txtAccountName.text = setVal(responseDict[@""]);
-            self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",setVal(responseDict[@"currentPrice"])];
+            //self.txtEmail.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.txtAccountCode.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.txtAccountNumber.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.txtAccountName.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",REMOVE_NULL_VALUE(responseDict[@"currentPrice"])];
            
             /*
              balance = "0.00000000";
@@ -111,10 +111,9 @@
     }
 }
 
-- (IBAction)AdvancedOptionsClicked:(id)sender
-{
-    WOCSellingAdvancedOptionsInstructionsViewController *myViewController = [self getViewController:@"WOCSellingAdvancedOptionsInstructionsViewController"];
-    [self pushViewController:myViewController animated:YES];
+- (IBAction)AdvancedOptionsClicked:(id)sender {
+    WOCSellingAdvancedOptionsInstructionsViewController *sellingAdvancedOptionsInstructionsViewController = [self getViewController:@"WOCSellingAdvancedOptionsInstructionsViewController"];
+    [self pushViewController:sellingAdvancedOptionsInstructionsViewController animated:YES];
 }
 
 - (IBAction)backToHomeScreenAction:(id)sender {

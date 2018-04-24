@@ -230,7 +230,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -271,7 +271,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -301,7 +301,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -322,7 +322,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -342,7 +342,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -405,7 +405,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -426,7 +426,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -448,7 +448,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -469,7 +469,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -522,7 +522,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -546,7 +546,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -569,7 +569,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -608,7 +608,7 @@
                              API_HEADER_CONTENT_TYPE:@"application/json"
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token,
@@ -629,7 +629,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -661,7 +661,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -684,7 +684,7 @@
                              API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID
                              };
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         header = @{
                    API_HEADER_PUBLISHER_ID: @WALLOFCOINS_PUBLISHER_ID,
                    API_HEADER_TOKEN: token
@@ -706,17 +706,14 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:apiURL] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT_INTERVAL];
     
-    if ([httpMethord isEqualToString:@"GET"] == FALSE) {
-        
+    if (![httpMethord isEqualToString:@"GET"]) {
         [request setHTTPMethod:httpMethord];
         
         if ([parameter isKindOfClass:[NSDictionary class]]) {
-            
             APILog(@"**>API REQUEST Parameter: \n%@",parameter);
             NSDictionary *para = (NSDictionary*)parameter;
             
             if ([[para allKeys] containsObject:JSONParameter]) {
-                
                 NSData *postData = [NSJSONSerialization dataWithJSONObject:parameter options:0 error:nil];
                 [request setHTTPBody:postData];
             }
@@ -726,8 +723,7 @@
         }
     }
     
-    if (header!= nil) {
-        
+    if (header != nil) {
         APILog(@"**>API REQUEST Header: \n%@",header);
         [request setAllHTTPHeaderFields:header];
     }
@@ -739,12 +735,10 @@
         APILog(@"==>API Response statusCode [%ld]",((NSHTTPURLResponse*)response).statusCode);
 
         if (data != nil) {
-            
             id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
              APILog(@"==>API RESPONSE : \n%@",dictionary);
 
             if (connectionError != nil) {
-                
                 APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
             }
             
@@ -752,25 +746,20 @@
                 
                 NSError * returnError = connectionError;
                 if (!returnError) {
-                    
                     if (dictionary[@"detail"] != nil) {
-                        
                         returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:dictionary];
                     }
                     else {
-                        
                         returnError = [NSError errorWithDomain:API_ERROR_TITLE code:((NSHTTPURLResponse*)response).statusCode userInfo:nil];
                     }
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    
                     completionBlock(nil,returnError);
                 });
                 return;
             }
             else if (((NSHTTPURLResponse*)response).statusCode == 204) {
-                
-                NSDictionary *responseDict = @{@"content":@"NO"} ;
+                NSDictionary *responseDict = @{@"content" : @"NO"} ;
                 completionBlock(responseDict,nil);
                 return;
             }
@@ -784,17 +773,15 @@
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (dictionary != nil) {
-                   
                     completionBlock(dictionary,nil);
                 }
                 else {
-                    APILog(@"==>API RESPONSE : \n%@",@{@"response":@"error"});
+                    APILog(@"==>API RESPONSE : \n%@",@{@"response" : @"error"});
                     completionBlock(@{@"response":@"error"},nil);
                 }
             });
         }
         else {
-            
             APILog(@"==>API RESPONSE : \n%@",@{@"response":@"error"});
             completionBlock(@{@"response":@"error"},nil);
         }
@@ -807,7 +794,6 @@
     [paramDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
         
         if ([obj isKindOfClass:[NSString class]]) {
-            
             NSString *param = [NSString stringWithFormat:@"%@=%@", key, [obj stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
             [parameterArray addObject:param];
         }

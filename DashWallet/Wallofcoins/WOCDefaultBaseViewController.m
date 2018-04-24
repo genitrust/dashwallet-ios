@@ -8,8 +8,8 @@
 
 #import "WOCDefaultBaseViewController.h"
 
-#define MAIN_VIEWCONTROLLER @"WOCBuyDashStep1ViewController"
-#define MAIN_VIEWCONTROLLER_SELL @"WOCSellingStep1ViewController"
+#define MAIN_VIEWCONTROLLER @"WOCBuyingWizardHomeViewController"
+#define MAIN_VIEWCONTROLLER_SELL @"WOCSellingWizardHomeViewController"
 
 @interface WOCDefaultBaseViewController ()
 
@@ -34,7 +34,6 @@
     NSLog(@"------------> You are In %@",[super class]);
     
     if (self.requiredBackButton) {
-        
         if ([self.navigationController.visibleViewController isKindOfClass:NSClassFromString(MAIN_VIEWCONTROLLER)]) {
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backToRoot)];
         }
@@ -48,8 +47,7 @@
     [super viewWillAppear:animated];
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
     
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
-        
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
         NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
     }
@@ -60,7 +58,7 @@
     
 }
 
-- (void)setShadow:(UIView *)view {
+- (void)setShadowOnView:(UIView *)view {
     
     view.layer.cornerRadius = 3.0;
     view.layer.masksToBounds = YES;
@@ -68,9 +66,20 @@
     view.layer.shadowOffset = CGSizeMake(0, 1);
     view.layer.shadowRadius = 1;
     view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
+    view.layer.masksToBounds = NO;
 }
 
+
+- (void)setShadowOnButton:(UIButton *)button {
+    
+    button.layer.cornerRadius = 3.0;
+    button.layer.masksToBounds = YES;
+    button.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    button.layer.shadowOffset = CGSizeMake(0, 1);
+    button.layer.shadowRadius = 1;
+    button.layer.shadowOpacity = 1;
+    button.layer.masksToBounds = NO;
+}
 -(BOOL) isValidEmail:(NSString *)checkString
 {
     BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
@@ -116,7 +125,7 @@
     if (pushViewController != nil) {
         if ([pushViewController isKindOfClass:NSClassFromString(viewControllerStr)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                 if ([self.navigationController.visibleViewController isKindOfClass:NSClassFromString(viewControllerStr)] == FALSE) {
+                 if (![self.navigationController.visibleViewController isKindOfClass:NSClassFromString(viewControllerStr)]) {
                      [self.navigationController pushViewController:pushViewController animated:YES];
                  }
             });
@@ -163,13 +172,12 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        if ([self.navigationController.visibleViewController isKindOfClass:NSClassFromString(viewControllerStr)] == FALSE) {
-            BOOL mainViewFound = FALSE;
+        if (![self.navigationController.visibleViewController isKindOfClass:NSClassFromString(viewControllerStr)]) {
+            BOOL mainViewFound = NO;
             for (UIViewController *vc in self.navigationController.viewControllers) {
-                
-                if ([vc isKindOfClass:NSClassFromString(viewControllerStr)] == TRUE) {
-                    mainViewFound = TRUE;
-                    [self.navigationController popToViewController:vc animated:TRUE];
+                if ([vc isKindOfClass:NSClassFromString(viewControllerStr)]) {
+                    mainViewFound = YES;
+                    [self.navigationController popToViewController:vc animated:YES];
                 }
             }
             
@@ -189,19 +197,19 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        if ([self.navigationController.visibleViewController isKindOfClass:[viewController class]] == FALSE) {
-            BOOL mainViewFound = FALSE;
+        if (![self.navigationController.visibleViewController isKindOfClass:[viewController class]]) {
+            BOOL mainViewFound = NO;
             for (UIViewController *vc in self.navigationController.viewControllers) {
                 
-                if ([vc isKindOfClass:[viewController class]] == TRUE) {
-                    mainViewFound = TRUE;
+                if ([vc isKindOfClass:[viewController class]]) {
+                    mainViewFound = YES;
                     [self.navigationController popToViewController:vc animated:animated];
                 }
             }
             
             if (!mainViewFound) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([self.navigationController.visibleViewController isKindOfClass:[viewController class]] == FALSE) {
+                    if (![self.navigationController.visibleViewController isKindOfClass:[viewController class]]) {
                         [self.navigationController pushViewController:viewController animated:animated];
                     }
                 });

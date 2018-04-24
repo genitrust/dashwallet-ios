@@ -1,5 +1,5 @@
 //
-//  WOCSellingStep3ViewController.h
+//  WOCSellingWizardPaymentCenterViewController.h
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 23/01/18.

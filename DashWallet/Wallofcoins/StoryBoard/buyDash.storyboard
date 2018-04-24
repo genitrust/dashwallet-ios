@@ -34,10 +34,10 @@
             </objects>
             <point key="canvasLocation" x="-5321" y="3792"/>
         </scene>
-        <!--Buy Dash Step1 View Controller-->
+        <!--Buying Wizard Home View Controller-->
         <scene sceneID="rf7-7e-poQ">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep1ViewController" id="BZs-Dv-J9R" customClass="WOCBuyDashStep1ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardHomeViewController" id="BZs-Dv-J9R" customClass="WOCBuyingWizardHomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sak-WA-cSb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -201,10 +201,10 @@
             </objects>
             <point key="canvasLocation" x="-4299" y="3791"/>
         </scene>
-        <!--Buy Dash Step2 View Controller-->
+        <!--Buying Wizard Zip Code View Controller-->
         <scene sceneID="2dC-D2-D22">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep2ViewController" id="7Hl-XP-CEu" customClass="WOCBuyDashStep2ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardZipCodeViewController" id="7Hl-XP-CEu" customClass="WOCBuyingWizardZipCodeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V9w-yk-WYd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -316,10 +316,10 @@
             </objects>
             <point key="canvasLocation" x="-3613" y="3792"/>
         </scene>
-        <!--Buy Dash Step4 View Controller-->
+        <!--Buying Wizard Input Amount View Controller-->
         <scene sceneID="0sW-2C-J4Z">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep4ViewController" id="mKY-uE-PMF" customClass="WOCBuyDashStep4ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardInputAmountViewController" id="mKY-uE-PMF" customClass="WOCBuyingWizardInputAmountViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EJ8-nd-rzz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -472,10 +472,10 @@
             </objects>
             <point key="canvasLocation" x="-2925" y="3792"/>
         </scene>
-        <!--Buy Dash Step5 View Controller-->
+        <!--Buying Wizard Offer List View Controller-->
         <scene sceneID="pkn-9V-I3i">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep5ViewController" id="UM8-OT-Ead" customClass="WOCBuyDashStep5ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardOfferListViewController" id="UM8-OT-Ead" customClass="WOCBuyingWizardOfferListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d3o-LE-HgC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -704,10 +704,10 @@
             </objects>
             <point key="canvasLocation" x="-2242" y="3792"/>
         </scene>
-        <!--Buy Dash Step6 View Controller-->
+        <!--Buying Wizard Input Email View Controller-->
         <scene sceneID="SgI-VV-fCa">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep6ViewController" id="LL8-yH-U1T" customClass="WOCBuyDashStep6ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardInputEmailViewController" id="LL8-yH-U1T" customClass="WOCBuyingWizardInputEmailViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pYv-CL-djQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -833,10 +833,10 @@
             </objects>
             <point key="canvasLocation" x="-1557" y="3792"/>
         </scene>
-        <!--Buy Dash Step7 View Controller-->
+        <!--Buying Wizard Input Phone Number View Controller-->
         <scene sceneID="mGy-78-fyG">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep7ViewController" id="K66-Y9-kRH" customClass="WOCBuyDashStep7ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardInputPhoneNumberViewController" id="K66-Y9-kRH" customClass="WOCBuyingWizardInputPhoneNumberViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Fq-c5-SmL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -988,10 +988,10 @@
             </objects>
             <point key="canvasLocation" x="-858" y="3792"/>
         </scene>
-        <!--Buy Dash Step8 View Controller-->
+        <!--Buying Wizard Input Varification Code View Controller-->
         <scene sceneID="62w-xK-wRP">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep8ViewController" id="7MS-bV-LaT" customClass="WOCBuyDashStep8ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardInputVarificationCodeViewController" id="7MS-bV-LaT" customClass="WOCBuyingWizardInputVarificationCodeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BFA-pW-txj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2069,10 +2069,10 @@ Help is also available on the website.</string>
             </objects>
             <point key="canvasLocation" x="-859" y="4560"/>
         </scene>
-        <!--Buy Dash Step3 View Controller-->
+        <!--Buying Wizard Payment Center View Controller-->
         <scene sceneID="I0d-1F-cmn">
             <objects>
-                <viewController storyboardIdentifier="WOCBuyDashStep3ViewController" id="1Te-OB-Qe8" customClass="WOCBuyDashStep3ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCBuyingWizardPaymentCenterViewController" id="1Te-OB-Qe8" customClass="WOCBuyingWizardPaymentCenterViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="u4R-BJ-zLc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

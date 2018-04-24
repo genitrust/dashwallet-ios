@@ -1,5 +1,5 @@
 //
-//  WOCBuyDashStep5ViewController.m
+//  WOCBuyingWizardOfferListViewController.m
 //  Wallofcoins
 //
 //  Created by Sujal Bandhara on 24/01/18.
@@ -7,7 +7,7 @@
 //
 
 #import "WOCSignInViewController.h"
-#import "WOCBuyDashStep7ViewController.h"
+#import "WOCBuyingWizardInputPhoneNumberViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "BRRootViewController.h"
@@ -17,7 +17,7 @@
 #import "BRWalletManager.h"
 #import "WOCAlertController.h"
 #import "MBProgressHUD.h"
-#import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingWizardHomeViewController.h"
 
 @interface WOCSignInViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -32,8 +32,8 @@
     [super viewDidLoad];
     
     self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
-     [self setShadow:self.signupBtn];
-     [self setShadow:self.sighInBtn];
+     [self setShadowOnButton:self.signupBtn];
+     [self setShadowOnButton:self.sighInBtn];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -78,12 +78,11 @@
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
                 
-                if ([[responseDictionary valueForKey:@"singleDeposit"] isKindOfClass:[NSArray class]])
-                {
+                if ([[responseDictionary valueForKey:@"singleDeposit"] isKindOfClass:[NSArray class]]) {
                     NSArray *offersArray = [[NSArray alloc] initWithArray:(NSArray*)[responseDictionary valueForKey:@"singleDeposit"]];
                     self.offers = [[NSArray alloc] initWithArray:offersArray];
                     
-                    if ([[responseDictionary valueForKey:@"incremented"] boolValue] == true) {
+                    if ([[responseDictionary valueForKey:@"incremented"] boolValue]) {
                         self.incremented = true;
                         self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
@@ -95,7 +94,6 @@
                 [self.tableView reloadData];
             }
             else {
-                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.userInfo != nil) {
                         if (error.userInfo[@"detail"] != nil) {
@@ -123,15 +121,12 @@
     [[APIManager sharedInstance] getOrders:nil response:^(id responseDict, NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            [hud hideAnimated:TRUE];
+            [hud hideAnimated:YES];
         });
         
         if (error == nil) {
-            
             if ([responseDict isKindOfClass:[NSArray class]]) {
-                
                 NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
-                
                 if (orders.count > 0) {
                     NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                     NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
@@ -140,21 +135,19 @@
                     NSString *status = [NSString stringWithFormat:@"%@",[orderDict valueForKey:@"status"]];
                     
                     if ([status isEqualToString:@"WD"]) {
-                        
-                        WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                        myViewController.phoneNo = phoneNo;
-                        myViewController.isFromSend = YES;
-                        myViewController.isFromOffer = NO;
-                        myViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
-                        [self pushViewController:myViewController animated:YES];
+                        WOCBuyingInstructionsViewController *buyingInstructionsViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                        buyingInstructionsViewController.phoneNo = phoneNo;
+                        buyingInstructionsViewController.isFromSend = YES;
+                        buyingInstructionsViewController.isFromOffer = NO;
+                        buyingInstructionsViewController.orderDict = (NSDictionary*)[orders objectAtIndex:0];
+                        [self pushViewController:buyingInstructionsViewController animated:YES];
                     }
                     else if (orders.count > 0) {
-                        
-                        WOCBuyingSummaryViewController *myViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
-                        myViewController.phoneNo = phoneNo;
-                        myViewController.orders = orders;
-                        myViewController.isFromSend = YES;
-                        [self pushViewController:myViewController animated:YES];
+                        WOCBuyingSummaryViewController *buyingSummaryViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
+                        buyingSummaryViewController.phoneNo = phoneNo;
+                        buyingSummaryViewController.orders = orders;
+                        buyingSummaryViewController.isFromSend = YES;
+                        [self pushViewController:buyingSummaryViewController animated:YES];
                     }
                     else {
                         [self backToMainView];
@@ -162,26 +155,26 @@
                 }
                 else {
                     NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                    myViewController.phoneNo = phoneNo;
-                    myViewController.isFromSend = NO;
-                    myViewController.isFromOffer = YES;
+                    WOCBuyingInstructionsViewController *buyingInstructionsViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                    buyingInstructionsViewController.phoneNo = phoneNo;
+                    buyingInstructionsViewController.isFromSend = NO;
+                    buyingInstructionsViewController.isFromOffer = YES;
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
                     NSDictionary *offerDict = self.offers[indexPath.row];
-                    myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
-                    [self pushViewController:myViewController animated:YES];
+                    buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+                    [self pushViewController:buyingInstructionsViewController animated:YES];
                 }
             }
             else {
                 NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                WOCBuyingInstructionsViewController *myViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
-                myViewController.phoneNo = phoneNo;
-                myViewController.isFromSend = NO;
-                myViewController.isFromOffer = YES;
+                WOCBuyingInstructionsViewController *buyingInstructionsViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
+                buyingInstructionsViewController.phoneNo = phoneNo;
+                buyingInstructionsViewController.isFromSend = NO;
+                buyingInstructionsViewController.isFromOffer = YES;
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
                 NSDictionary *offerDict = self.offers[indexPath.row];
-                myViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
-                [self pushViewController:myViewController animated:YES];
+                buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+                [self pushViewController:buyingInstructionsViewController animated:YES];
             }
         }
         else {
@@ -200,7 +193,7 @@
 // MARK: - IBAction
 - (IBAction)signInPhoneClicked:(id)sender {
     NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-    if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+    if (token != nil && (![token isEqualToString:@"(null)"])) {
         [self getOrderList];
     }
     else {
@@ -209,9 +202,9 @@
 }
 
 - (IBAction)existingAccoutClick:(id)sender {
-    WOCBuyDashStep7ViewController *myViewController = [self getViewController:@"WOCBuyDashStep7ViewController"];
-    myViewController.isForLoginOny = TRUE;
-    [self pushViewController:myViewController animated:YES];
+    WOCBuyingWizardInputPhoneNumberViewController *buyingWizardInputPhoneNumberViewController = [self getViewController:@"WOCBuyingWizardInputPhoneNumberViewController"];
+    buyingWizardInputPhoneNumberViewController.isForLoginOny = YES;
+    [self pushViewController:buyingWizardInputPhoneNumberViewController animated:YES];
 }
 
 - (IBAction)signUpClick:(id)sender {

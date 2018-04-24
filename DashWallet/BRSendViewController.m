@@ -52,7 +52,7 @@
 
 //WallOfCoins imports
 #import "BRAppDelegate.h"
-#import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingWizardHomeViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "APIManager.h"

@@ -7,7 +7,7 @@
 //
 
 #import "WOCPasswordViewController.h"
-#import "WOCBuyDashStep8ViewController.h"
+#import "WOCBuyingWizardInputVarificationCodeViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "WOCAlertController.h"
@@ -27,8 +27,8 @@
     self.mainView.layer.cornerRadius = 3.0;
     self.mainView.layer.masksToBounds = YES;
     
-    [self setShadow:self.btnLogin];
-    [self setShadow:self.btnForgotPassword];
+    [self setShadowOnButton:self.btnLogin];
+    [self setShadowOnButton:self.btnForgotPassword];
     
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:self.btnWOCLink.titleLabel.text];
     [titleString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(29, 13)];
@@ -41,13 +41,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setShadow:(UIView *)view {
-    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    view.layer.shadowOffset = CGSizeMake(0, 1);
-    view.layer.shadowRadius = 1;
-    view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
-}
 
 // MARK: - API
 
@@ -99,7 +92,7 @@
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [hud hideAnimated:TRUE];
+            [hud hideAnimated:YES];
         });
         
         if (error == nil) {
@@ -121,7 +114,7 @@
         
         [[APIManager sharedInstance] getDevice:^(id responseDict, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^(void){
-                [hud hideAnimated:TRUE];
+                [hud hideAnimated:YES];
             });
             
             if (error == nil) {
@@ -131,7 +124,7 @@
                         NSDictionary *dictionary = [response lastObject];
                         NSString *deviceId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
                         
-                        if (deviceId.length > 0 && [deviceId isEqualToString:@"(null)"] == FALSE) {
+                        if (deviceId.length > 0 && (![deviceId isEqualToString:@"(null)"])) {
                             [self.defaults setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
                             [self.defaults synchronize];
                             [self authorize:phoneNo deviceId:deviceId];
@@ -167,7 +160,7 @@
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            [hud hideAnimated:TRUE];
+            [hud hideAnimated:YES];
         });
         
         if (error == nil) {

@@ -34,10 +34,10 @@
             </objects>
             <point key="canvasLocation" x="-5321" y="3792"/>
         </scene>
-        <!--Selling Step1 View Controller-->
+        <!--Selling Wizard Home View Controller-->
         <scene sceneID="rf7-7e-poQ">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep1ViewController" id="BZs-Dv-J9R" customClass="WOCSellingStep1ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardHomeViewController" id="BZs-Dv-J9R" customClass="WOCSellingWizardHomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sak-WA-cSb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -185,10 +185,10 @@
             </objects>
             <point key="canvasLocation" x="-3869" y="3695"/>
         </scene>
-        <!--Selling Step2 View Controller-->
+        <!--Selling Wizard Zip Code View Controller-->
         <scene sceneID="2dC-D2-D22">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep2ViewController" id="7Hl-XP-CEu" customClass="WOCSellingStep2ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardZipCodeViewController" id="7Hl-XP-CEu" customClass="WOCSellingWizardZipCodeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V9w-yk-WYd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -300,10 +300,10 @@
             </objects>
             <point key="canvasLocation" x="-5114" y="5467"/>
         </scene>
-        <!--Selling Step4 View Controller-->
+        <!--Selling Wizard Input Amount View Controller-->
         <scene sceneID="0sW-2C-J4Z">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep4ViewController" id="mKY-uE-PMF" customClass="WOCSellingStep4ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardInputAmountViewController" id="mKY-uE-PMF" customClass="WOCSellingWizardInputAmountViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EJ8-nd-rzz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -457,10 +457,10 @@
             </objects>
             <point key="canvasLocation" x="-253" y="3695"/>
         </scene>
-        <!--Selling Step5 View Controller-->
+        <!--Selling Wizard Offer List View Controller-->
         <scene sceneID="pkn-9V-I3i">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep5ViewController" id="UM8-OT-Ead" customClass="WOCSellingStep5ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardOfferListViewController" id="UM8-OT-Ead" customClass="WOCSellingWizardOfferListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d3o-LE-HgC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -689,10 +689,10 @@
             </objects>
             <point key="canvasLocation" x="-4302" y="5467"/>
         </scene>
-        <!--Selling Step6 View Controller-->
+        <!--Selling Wizard Input Email View Controller-->
         <scene sceneID="SgI-VV-fCa">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep6ViewController" id="LL8-yH-U1T" customClass="WOCSellingStep6ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardInputEmailViewController" id="LL8-yH-U1T" customClass="WOCSellingWizardInputEmailViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pYv-CL-djQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -831,10 +831,10 @@
             </objects>
             <point key="canvasLocation" x="-2072" y="3695"/>
         </scene>
-        <!--Selling Step7 View Controller-->
+        <!--Selling Wizard Input Phoine Number View Controller-->
         <scene sceneID="mGy-78-fyG">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep7ViewController" id="K66-Y9-kRH" customClass="WOCSellingStep7ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardInputPhoineNumberViewController" id="K66-Y9-kRH" customClass="WOCSellingWizardInputPhoineNumberViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Fq-c5-SmL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2121,10 +2121,10 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
             </objects>
             <point key="canvasLocation" x="3013" y="3694"/>
         </scene>
-        <!--Selling Step8 View Controller-->
+        <!--Selling Wizard Confirm Code View Controller-->
         <scene sceneID="62w-xK-wRP">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep8ViewController" id="7MS-bV-LaT" customClass="WOCSellingStep8ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardConfirmCodeViewController" id="7MS-bV-LaT" customClass="WOCSellingWizardConfirmCodeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BFA-pW-txj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3379,10 +3379,10 @@ Help is also available on the website.</string>
             </objects>
             <point key="canvasLocation" x="-1142" y="4547"/>
         </scene>
-        <!--Selling Step3 View Controller-->
+        <!--Selling Wizard Payment Center View Controller-->
         <scene sceneID="I0d-1F-cmn">
             <objects>
-                <viewController storyboardIdentifier="WOCSellingStep3ViewController" id="1Te-OB-Qe8" customClass="WOCSellingStep3ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WOCSellingWizardPaymentCenterViewController" id="1Te-OB-Qe8" customClass="WOCSellingWizardPaymentCenterViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="u4R-BJ-zLc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

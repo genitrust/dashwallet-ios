@@ -17,7 +17,7 @@
     self.mainView.layer.cornerRadius = 10.0;
     self.mainView.layer.masksToBounds = YES;
     
-    [self setShadow:self.mainView];
+    [self setShadowOnMainView:self.mainView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -26,12 +26,12 @@
     // Configure the view for the selected state
 }
 
-- (void)setShadow:(UIView *)view {
+- (void)setShadowOnMainView:(UIView *)view {
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     view.layer.shadowOffset = CGSizeMake(0, 1);
     view.layer.shadowRadius = 1;
     view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
+    view.layer.masksToBounds = NO;
 }
 
 @end

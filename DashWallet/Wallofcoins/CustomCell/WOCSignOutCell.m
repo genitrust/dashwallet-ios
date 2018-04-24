@@ -14,7 +14,7 @@
     [super awakeFromNib];
     // Initialization code
         
-    [self setShadow:self.mainView];
+    [self setShadowOnMainView:self.mainView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -23,7 +23,7 @@
     // Configure the view for the selected state
 }
 
-- (void)setShadow:(UIView *)view {
+- (void)setShadowOnMainView:(UIView *)view {
     view.layer.cornerRadius = 3.0;
     view.layer.masksToBounds = YES;
     
@@ -31,7 +31,7 @@
     view.layer.shadowOffset = CGSizeMake(0, 0);
     view.layer.shadowRadius = 1;
     view.layer.shadowOpacity = 1;
-    view.layer.masksToBounds = false;
+    view.layer.masksToBounds = NO;
 }
 
 @end

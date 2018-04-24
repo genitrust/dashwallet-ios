@@ -8,7 +8,7 @@
 
 #import "WOCSellingInstructionsViewController.h"
 #import "WOCSellingSummaryViewController.h"
-#import "WOCSellingStep1ViewController.h"
+#import "WOCSellingWizardHomeViewController.h"
 #import "APIManager.h"
 #import "WOCConstants.h"
 #import "BRRootViewController.h"
@@ -31,10 +31,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadow:self.btnDepositFinished];
-    [self setShadow:self.btnCancelOrder];
-    [self setShadow:self.btnWallOfCoins];
-    [self setShadow:self.btnSignOut];
+    [self setShadowOnButton:self.btnDepositFinished];
+    [self setShadowOnButton:self.btnCancelOrder];
+    [self setShadowOnButton:self.btnWallOfCoins];
+    [self setShadowOnButton:self.btnSignOut];
     
     NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
@@ -89,10 +89,10 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_BUY bundle:nil];
-        WOCSellingStep1ViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCSellingStep1ViewController"];
+        WOCSellingWizardHomeViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCSellingWizardHomeViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
         BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
         appDelegate.window.rootViewController = navigationController;
     });
@@ -101,7 +101,7 @@
     BOOL viewFound = NO;
     
     for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[WOCSellingStep1ViewController class]]) {
+        if ([controller isKindOfClass:[WOCSellingWizardHomeViewController class]]) {
             [self.navigationController popToViewController:controller animated:NO];
             viewFound = YES;
             break;
@@ -110,8 +110,8 @@
     
     if (viewFound == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            WOCSellingStep1ViewController *myViewController = [self getViewController:@"WOCSellingStep1ViewController"];
-            [self pushViewController:myViewController animated:YES];
+            WOCSellingWizardHomeViewController *homeViewController = [self getViewController:@"WOCSellingWizardHomeViewController"];
+            [self pushViewController:homeViewController animated:YES];
         });
     }
 }
@@ -122,10 +122,10 @@
 
 - (void)pushToBuyingSummary {
     dispatch_async(dispatch_get_main_queue(), ^{
-        WOCSellingSummaryViewController *myViewController = [self getViewController:@"WOCSellingSummaryViewController"];
-        myViewController.phoneNo = self.phoneNo;
-        myViewController.hideSuccessAlert = TRUE;
-        [self pushViewController:myViewController animated:YES];
+        WOCSellingSummaryViewController *summaryViewController = [self getViewController:@"WOCSellingSummaryViewController"];
+        summaryViewController.phoneNo = self.phoneNo;
+        summaryViewController.hideSuccessAlert = YES;
+        [self pushViewController:summaryViewController animated:YES];
     });
 }
 
@@ -179,15 +179,15 @@
 }
 
 - (void)updateData:(NSDictionary*)dictionary {
-    NSString *bankLogo = setVal([dictionary valueForKey:@"bankLogo"]);
-    NSString *bankName = setVal([dictionary valueForKey:@"bankName"]);
-    NSString *phoneNo = [NSString stringWithFormat:@"%@",setVal([[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
-    NSString *accountName = setVal([dictionary valueForKey:@"nameOnAccount"]);
-    NSString *accountNo = setVal([dictionary valueForKey:@"account"]);
+    NSString *bankLogo = REMOVE_NULL_VALUE([dictionary valueForKey:@"bankLogo"]);
+    NSString *bankName = REMOVE_NULL_VALUE([dictionary valueForKey:@"bankName"]);
+    NSString *phoneNo = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([[dictionary valueForKey:@"nearestBranch"] valueForKey:@"phone"])];
+    NSString *accountName = REMOVE_NULL_VALUE([dictionary valueForKey:@"nameOnAccount"]);
+    NSString *accountNo = REMOVE_NULL_VALUE([dictionary valueForKey:@"account"]);
     float depositAmount = [[dictionary valueForKey:@"payment"] floatValue];
-    NSString *depositDue = setVal([dictionary valueForKey:@"paymentDue"]);
-    NSString *totalDash = setVal([dictionary valueForKey:@"total"]);
-    self.orderId = setVal([dictionary valueForKey:@"id"]);
+    NSString *depositDue = REMOVE_NULL_VALUE([dictionary valueForKey:@"paymentDue"]);
+    NSString *totalDash = REMOVE_NULL_VALUE([dictionary valueForKey:@"total"]);
+    self.orderId = REMOVE_NULL_VALUE([dictionary valueForKey:@"id"]);
     
     //bankLogo
     if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
@@ -267,15 +267,15 @@
         
         NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
         if (accountArray.count > 2) {
-            self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",setVal([[accountArray objectAtIndex:0] valueForKey:@"value"]), setVal([[accountArray objectAtIndex:2] valueForKey:@"value"])];
+            self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:0] valueForKey:@"value"]), REMOVE_NULL_VALUE([[accountArray objectAtIndex:2] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 3) {
-        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",setVal([[accountArray objectAtIndex:3] valueForKey:@"value"])];
+        self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:3] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 1) {
-        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",setVal([[accountArray objectAtIndex:1] valueForKey:@"value"])];
+        self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:1] valueForKey:@"value"])];
         }
     }
 }
@@ -360,7 +360,7 @@
         NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
         NSDictionary *params ;
         
-        if (token != nil && [token isEqualToString:@"(null)"] == FALSE) {
+        if (token != nil && (![token isEqualToString:@"(null)"])) {
             params = @{
                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
                        API_BODY_JSON_PARAMETER:@"YES"
@@ -383,7 +383,7 @@
             
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && [[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"] == FALSE)
+                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && (![[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"]))
                 {
                     [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
                     [self.defaults setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
@@ -505,7 +505,7 @@
         }
         else {
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
-            [self.navigationController popViewControllerAnimated:TRUE];
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }];
 }

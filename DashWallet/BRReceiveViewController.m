@@ -39,7 +39,7 @@
 
 
 //WallOfCoins
-#import "WOCBuyDashStep1ViewController.h"
+#import "WOCBuyingWizardHomeViewController.h"
 #import "WOCBuyingInstructionsViewController.h"
 #import "WOCBuyingSummaryViewController.h"
 #import "WOCConstants.h"

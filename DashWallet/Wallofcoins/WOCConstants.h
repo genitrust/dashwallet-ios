@@ -17,10 +17,10 @@
 #define Str(str) (str != [NSNull null])?str:@""
 #define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOC_CURRENTCY]
 
-#define setVal(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
+#define REMOVE_NULL_VALUE(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
 //#define IS_PRODUCTION TRUE // IF MAINNET SET DASH_TESTNET = 0
-#define IS_PRODUCTION FALSE  //  IF TESTNET SET DASH_TESTNET = 1
+#define IS_PRODUCTION NO  //  IF TESTNET SET DASH_TESTNET = 1
 
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
