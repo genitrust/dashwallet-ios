@@ -84,10 +84,10 @@
 - (void)checkPhone:(NSString*)phone code:(NSString*)countryCode {
     
     NSDictionary *params = @{
-                            };
+                             };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
-   
+    
     
     [[APIManager sharedInstance] authorizeDevice:nil phone:phoneNo response:^(id responseDict, NSError *error) {
         
@@ -123,7 +123,7 @@
                 [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
                 [self.defaults synchronize];
-
+                
                 [self createHold:phoneNo];
             }
             else {
@@ -153,7 +153,7 @@
     
     NSDictionary *params = @{
                              API_BODY_DEVICE_CODE: deviceCode
-                            };
+                             };
     
     if (deviceId != nil) {
         
@@ -165,7 +165,7 @@
         
         [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
             
-               NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
+            NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             if (error == nil) {
                 
                 if (responseDictionary != nil) {
@@ -185,6 +185,7 @@
                 [self.defaults synchronize];
 
                 BOOL isNewPhone = YES;
+                
                 if (error.code == 400) {
                     if (error.userInfo != nil) {
                         NSString *errorDetail = error.userInfo[@"detail"];
@@ -201,7 +202,7 @@
                     [self createHoldAfterAuthorize:phoneNo];
                 }
                 else {
-                      [self openHoldIssueVC];
+                    [self openHoldIssueVC];
                 }
             }
         }];

@@ -111,9 +111,14 @@
     }
 }
 
-- (IBAction)AdvancedOptionsClicked:(id)sender {
+- (IBAction)AdvancedOptionsClicked:(id)sender
+{
+    [self.defaults setBool:NO forKey:@"beforeCreateAd"];
+    [self.defaults synchronize];
+    
     WOCSellingAdvancedOptionsInstructionsViewController *sellingAdvancedOptionsInstructionsViewController = [self getViewController:@"WOCSellingAdvancedOptionsInstructionsViewController"];
     [self pushViewController:sellingAdvancedOptionsInstructionsViewController animated:YES];
+    [sellingAdvancedOptionsInstructionsViewController setupUI];
 }
 
 - (IBAction)backToHomeScreenAction:(id)sender {

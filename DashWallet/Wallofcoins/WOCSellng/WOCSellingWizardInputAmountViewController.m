@@ -16,6 +16,7 @@
 #import "WOCAlertController.h"
 #import "BRAppDelegate.h"
 #import "WOCSellingVerifyDetailViewController.h"
+#import "WOCSellingAdvancedOptionsInstructionsViewController.h"
 
 #define dashTextField 101
 #define dollarTextField 102
@@ -150,14 +151,18 @@
     }];
 }
 
-- (void)loadVarificationScreen {
-    WOCSellingVerifyDetailViewController *verifyDetailViewController = (WOCSellingVerifyDetailViewController*)[self getViewController:@"WOCSellingVerifyDetailViewController"];;
-    verifyDetailViewController.currentPriceStr = self.txtDollar.text;
+
+-(void)loadVarificationScreen {
+    
     [self.defaults setObject:self.txtDollar.text forKey:USER_DEFAULTS_LOCAL_PRICE];
     [self.defaults synchronize];
-    verifyDetailViewController.accountInfoStr = [NSString stringWithFormat:@"Bank (%@)",self.bankId];
     
-    [self pushViewController:verifyDetailViewController animated:YES];
+    [self.defaults setBool:YES forKey:@"beforeCreateAd"];
+    [self.defaults synchronize];
+    
+    WOCSellingAdvancedOptionsInstructionsViewController *sellingAdvancedOptionsInstructionsViewController = [self getViewController:@"WOCSellingAdvancedOptionsInstructionsViewController"];
+    [self pushViewController:sellingAdvancedOptionsInstructionsViewController animated:YES];
+    [sellingAdvancedOptionsInstructionsViewController setupUI];
 }
 
 // MARK: - UITextField Delegates

@@ -173,6 +173,7 @@
 }
 
 - (void)backToMainView {
+    
     [super backToMainView];
     [self storeDeviceInfoLocally];
 }
