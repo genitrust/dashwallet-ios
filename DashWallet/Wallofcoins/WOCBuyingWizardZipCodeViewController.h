@@ -12,10 +12,10 @@
 // Enter ZipCode
 @interface WOCBuyingWizardZipCodeViewController : WOCBaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *txtZipCode;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (assign) BOOL isZipCodeBlank;
+@property (weak, nonatomic) IBOutlet UITextField *zipCodeTextField;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (assign, nonatomic) BOOL isZipCodeBlank;
 
-- (IBAction)nextClicked:(id)sender;
+- (IBAction)onNextButtonClick:(id)sender;
 
 @end

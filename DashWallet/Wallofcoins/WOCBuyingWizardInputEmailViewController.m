@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.nextButton];
 }
 
 - (BOOL)validateEmailWithString:(NSString*)checkString {
@@ -35,17 +35,16 @@
 
 // MARK: - IBAction
 
-- (IBAction)doNotSendMeEmailClicked:(id)sender {
-    
+- (IBAction)onDoNotSendMeEmailButtonClicked:(id)sender {
     WOCBuyingWizardInputPhoneNumberViewController *inputPhoneNumberViewController = [self getViewController:@"WOCBuyingWizardInputPhoneNumberViewController"];
     inputPhoneNumberViewController.offerId = self.offerId;
     inputPhoneNumberViewController.emailId = @"";
     [self pushViewController:inputPhoneNumberViewController animated:YES];
 }
 
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)onNextButtonClicked:(id)sender {
     
-    NSString *emailStr = [self.txtEmail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *emailStr = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([emailStr length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter email." viewController:self.navigationController.visibleViewController];

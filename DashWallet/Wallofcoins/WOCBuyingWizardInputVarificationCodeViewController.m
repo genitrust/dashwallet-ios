@@ -26,30 +26,30 @@
     
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnPurchaseCode];
+    [self setShadowOnButton:self.purchaseCodeButton];
     
     if (self.purchaseCode != nil) {
-        self.txtPurchaseCode.text = REMOVE_NULL_VALUE(self.purchaseCode);
+        self.purchaseCodeTextField.text = REMOVE_NULL_VALUE(self.purchaseCode);
     }
     else {
-        self.txtPurchaseCode.text = @"";
+        self.purchaseCodeTextField.text = @"";
     }
-    self.txtPurchaseCode.delegate = self;
+    self.purchaseCodeTextField.delegate = self;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     if(textField.text.length == 4 && string.length == 1) {
-        [self performSelector:@selector(confirmPurchaseCodeClicked:) withObject:self afterDelay:1.0];
+        [self performSelector:@selector(onConfirmPurchaseCodeButtonClick:) withObject:self afterDelay:1.0];
     }
     return YES;
 }
 
 // MARK: - IBAction
 
-- (IBAction)confirmPurchaseCodeClicked:(id)sender {
+- (IBAction)onConfirmPurchaseCodeButtonClick:(id)sender {
     
-    NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtCode = [self.purchaseCodeTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([txtCode length] == 5) {
         WOCBuyingInstructionsViewController *buyingInstructionsViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
         buyingInstructionsViewController.purchaseCode = txtCode;

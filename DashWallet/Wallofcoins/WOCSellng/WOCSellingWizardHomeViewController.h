@@ -15,15 +15,15 @@
 @interface WOCSellingWizardHomeViewController : WOCBaseViewController
 
 @property (weak, nonatomic) IBOutlet UIView *signoutView;
-@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
-@property (weak, nonatomic) IBOutlet UIButton *btnSignOut;
-@property (weak, nonatomic) IBOutlet UIButton *orderListBtn;
-@property (weak, nonatomic) IBOutlet UIButton *btnSellYourCrypto;
-@property (assign) BOOL isFromSend;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *signOutButton;
+@property (weak, nonatomic) IBOutlet UIButton *orderListButton;
+@property (weak, nonatomic) IBOutlet UIButton *sellYourCryptoButton;
+@property (assign, nonatomic) BOOL isFromSend;
 
 - (void)setLogoutButton;
 - (IBAction)backBtnClicked:(id)sender;
-- (IBAction)signOutClicked:(id)sender;
-- (IBAction)sellYourCryptoClicked:(id)sender;
+- (IBAction)onSignOutButtonClick:(id)sender;
+- (IBAction)onSellYourCryptoButtonClick:(id)sender;
 
 @end

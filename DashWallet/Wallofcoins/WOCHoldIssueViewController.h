@@ -11,5 +11,6 @@
 @interface WOCHoldIssueViewController : WOCBaseViewController
 
 @property (strong, nonatomic) NSString *phoneNo;
+- (IBAction)onSignInButtonClick:(id)sender;
 
 @end

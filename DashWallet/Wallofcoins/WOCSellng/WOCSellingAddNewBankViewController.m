@@ -62,16 +62,16 @@
         inputAmountViewController.bankId = self.bankId;
         
         NSString *bankInfo = [NSString stringWithFormat:@"%@ (-%@)",self.txtPaymentCenter.text,self.bankId];
-        [self.defaults setObject:bankInfo forKey:USER_DEFAULTS_LOCAL_BANK_INFO];
+        [self.defaults setObject:bankInfo forKey:WOCUserDefaultsLocalBankInfo];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.txtAccoutName.text forKey:USER_DEFAULTS_LOCAL_BANK_NAME];
+        [self.defaults setObject:self.txtAccoutName.text forKey:WOCUserDefaultsLocalBankName];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.txtConfirmAccoutNumber.text forKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT_NUMBER];
+        [self.defaults setObject:self.txtConfirmAccoutNumber.text forKey:WOCUserDefaultsLocalBankAccountNumber];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.bankId forKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT];
+        [self.defaults setObject:self.bankId forKey:WOCUserDefaultsLocalBankAccount];
         [self.defaults synchronize];
         
         [self pushViewController:inputAmountViewController animated:YES];

@@ -15,10 +15,10 @@
 
 @property (strong, nonatomic) NSString *offerId;
 
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 
-- (IBAction)doNotSendMeEmailClicked:(id)sender;
-- (IBAction)nextClicked:(id)sender;
+- (IBAction)onDoNotSendMeEmailButtonClick:(id)sender;
+- (IBAction)onNextButtonClick:(id)sender;
 
 @end

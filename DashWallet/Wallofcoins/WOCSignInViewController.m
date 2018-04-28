@@ -31,25 +31,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
-     [self setShadowOnButton:self.signupBtn];
-     [self setShadowOnButton:self.sighInBtn];
+    self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+     [self setShadowOnButton:self.signupButton];
+     [self setShadowOnButton:self.sighInButton];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
      [self getLocalDevices];
      self.title = @"SignIN";
 }
 
 - (void)getLocalDevices {
     
-    if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] != nil) {
+    if ([self.defaults objectForKey:WOCUserDefaultsLocalDeviceInfo] != nil) {
         
-        if ([[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO] isKindOfClass:[NSDictionary class]]) {
-            NSMutableDictionary *deviceInfoDict = [NSMutableDictionary dictionaryWithDictionary:[self.defaults objectForKey:USER_DEFAULTS_LOCAL_DEVICE_INFO]];
+        if ([[self.defaults objectForKey:WOCUserDefaultsLocalDeviceInfo] isKindOfClass:[NSDictionary class]]) {
+            NSMutableDictionary *deviceInfoDict = [NSMutableDictionary dictionaryWithDictionary:[self.defaults objectForKey:WOCUserDefaultsLocalDeviceInfo]];
             if (deviceInfoDict != nil) {
                 self.offers = deviceInfoDict.allKeys;
-                 [self.tableView reloadData];
+                 [self.numberListingTableView reloadData];
             }
         }
     }
@@ -65,7 +65,7 @@
     NSString *phoneNumber = self.offers[indexPath.row];
     NSLog(@"phoneNumber = %@",phoneNumber);
     
-    [self.defaults setObject:phoneNumber forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    [self.defaults setObject:phoneNumber forKey:WOCUserDefaultsLocalPhoneNumber];
     [self.defaults synchronize];
     [self refereshToken];
     [self performSelector:@selector(backToMainView) withObject:nil afterDelay:2.0];
@@ -84,14 +84,14 @@
                     
                     if ([[responseDictionary valueForKey:@"incremented"] boolValue]) {
                         self.incremented = true;
-                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
                     else {
                         self.incremented = false;
-                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
                 }
-                [self.tableView reloadData];
+                [self.numberListingTableView reloadData];
             }
             else {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -128,7 +128,7 @@
             if ([responseDict isKindOfClass:[NSArray class]]) {
                 NSArray *orders = [[NSArray alloc] initWithArray:(NSArray*)responseDict];
                 if (orders.count > 0) {
-                    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
                     NSPredicate *wdvPredicate = [NSPredicate predicateWithFormat:@"status == 'WD'"];
                     NSArray *wdArray = [orders filteredArrayUsingPredicate:wdvPredicate];
                     NSDictionary *orderDict = (NSDictionary*)[orders objectAtIndex:0];
@@ -154,26 +154,26 @@
                     }
                 }
                 else {
-                    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
                     WOCBuyingInstructionsViewController *buyingInstructionsViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
                     buyingInstructionsViewController.phoneNo = phoneNo;
                     buyingInstructionsViewController.isFromSend = NO;
                     buyingInstructionsViewController.isFromOffer = YES;
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
                     NSDictionary *offerDict = self.offers[indexPath.row];
-                    buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+                    buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:WOCApiResponseId]];
                     [self pushViewController:buyingInstructionsViewController animated:YES];
                 }
             }
             else {
-                NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
                 WOCBuyingInstructionsViewController *buyingInstructionsViewController = [self getViewController:@"WOCBuyingInstructionsViewController"];
                 buyingInstructionsViewController.phoneNo = phoneNo;
                 buyingInstructionsViewController.isFromSend = NO;
                 buyingInstructionsViewController.isFromOffer = YES;
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
                 NSDictionary *offerDict = self.offers[indexPath.row];
-                buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+                buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:WOCApiResponseId]];
                 [self pushViewController:buyingInstructionsViewController animated:YES];
             }
         }
@@ -192,7 +192,7 @@
 
 // MARK: - IBAction
 - (IBAction)signInPhoneClicked:(id)sender {
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     if (token != nil && (![token isEqualToString:@"(null)"])) {
         [self getOrderList];
     }
@@ -201,13 +201,13 @@
     }
 }
 
-- (IBAction)existingAccoutClick:(id)sender {
+- (IBAction)onExistingAccoutButtonClick:(id)sender {
     WOCBuyingWizardInputPhoneNumberViewController *buyingWizardInputPhoneNumberViewController = [self getViewController:@"WOCBuyingWizardInputPhoneNumberViewController"];
     buyingWizardInputPhoneNumberViewController.isForLoginOny = YES;
     [self pushViewController:buyingWizardInputPhoneNumberViewController animated:YES];
 }
 
-- (IBAction)signUpClick:(id)sender {
+- (IBAction)onSignUpButtonClick:(id)sender {
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/signup/"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
@@ -238,10 +238,10 @@
     WOCOfferCell *cell = [tableView dequeueReusableCellWithIdentifier:@"offerCell"];
     cell.backgroundColor = [UIColor clearColor];
     NSString *phoneNumber = self.offers[indexPath.row];
-    [cell.btnOrder setTitle:[NSString stringWithFormat:@"SIGN IN: %@",phoneNumber] forState:UIControlStateNormal];
-    [cell.btnOrder setTitle:@"" forState:UIControlStateSelected];
-    [cell.btnOrder addTarget:self action:@selector(signInPhoneClicked:) forControlEvents:UIControlEventTouchUpInside];
-    cell.btnOrder.tag = indexPath.row;
+    [cell.orderButton setTitle:[NSString stringWithFormat:@"SIGN IN: %@",phoneNumber] forState:UIControlStateNormal];
+    [cell.orderButton setTitle:@"" forState:UIControlStateSelected];
+    [cell.orderButton addTarget:self action:@selector(signInPhoneClicked:) forControlEvents:UIControlEventTouchUpInside];
+    cell.orderButton.tag = indexPath.row;
     
     return cell;
 }

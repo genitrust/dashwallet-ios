@@ -16,7 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtZipCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (assign) BOOL isZipCodeBlank;
+@property (assign, nonatomic) BOOL isZipCodeBlank;
 
 - (IBAction)nextClicked:(id)sender;
 

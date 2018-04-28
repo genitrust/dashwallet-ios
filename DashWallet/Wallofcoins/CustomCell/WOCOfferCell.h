@@ -11,14 +11,14 @@
 @interface WOCOfferCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
-@property (weak, nonatomic) IBOutlet UIImageView *imgView;
-@property (weak, nonatomic) IBOutlet UIImageView *otherBankImgView;
-@property (weak, nonatomic) IBOutlet UILabel *lblDashTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblDashSubTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblBankName;
-@property (weak, nonatomic) IBOutlet UILabel *lblLocation;
-@property (weak, nonatomic) IBOutlet UIButton *btnOrder;
-@property (weak, nonatomic) IBOutlet UIButton *btnLocation;
-@property (weak, nonatomic) IBOutlet UILabel *lblDollar;
+@property (weak, nonatomic) IBOutlet UIImageView *bankImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *otherBankImageView;
+@property (weak, nonatomic) IBOutlet UILabel *dashTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dashSubTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bankNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UIButton *orderButton;
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+@property (weak, nonatomic) IBOutlet UILabel *dollarLabel;
 
 @end

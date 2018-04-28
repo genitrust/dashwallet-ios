@@ -14,15 +14,15 @@
 @property (strong, nonatomic) NSString *phoneNo;
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
-@property (weak, nonatomic) IBOutlet UILabel *lblWOCLink;
-@property (weak, nonatomic) IBOutlet UIButton *btnWOCLink;
-@property (weak, nonatomic) IBOutlet UITextField *txtPassword;
-@property (weak, nonatomic) IBOutlet UIButton *btnLogin;
-@property (weak, nonatomic) IBOutlet UIButton *btnForgotPassword;
+@property (weak, nonatomic) IBOutlet UILabel *WOCLinkLabel;
+@property (weak, nonatomic) IBOutlet UIButton *WOCLinkButton;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 
-- (IBAction)linkClicked:(id)sender;
-- (IBAction)loginClicked:(id)sender;
-- (IBAction)forgotPasswordClicked:(id)sender;
-- (IBAction)closeClicked:(id)sender;
+- (IBAction)onLinkButtonClick:(id)sender;
+- (IBAction)onLoginButtonClick:(id)sender;
+- (IBAction)onForgotPasswordButtonClick:(id)sender;
+- (IBAction)onCloseButtonClick:(id)sender;
 
 @end

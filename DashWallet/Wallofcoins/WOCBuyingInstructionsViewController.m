@@ -31,14 +31,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnDepositFinished];
-    [self setShadowOnButton:self.btnCancelOrder];
-    [self setShadowOnButton:self.btnWallOfCoins];
-    [self setShadowOnButton:self.btnSignOut];
+    [self setShadowOnButton:self.depositFinishedButton];
+    [self setShadowOnButton:self.cancelOrderButton];
+    [self setShadowOnButton:self.wallOfCoinsButton];
+    [self setShadowOnButton:self.signOutButton];
     
-    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
-    self.lblLoginPhone.text = loginPhone;
+    self.loginPhoneLabel.text = loginPhone;
     
     if (self.orderDict.count > 0) {
         [self updateData:self.orderDict];
@@ -55,7 +55,7 @@
         }
     }
     else if (self.isFromOffer) {
-        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
         if (self.offerId != nil && [self.offerId length] > 0) {
             [self createHold:self.offerId phoneNo:phoneNo];
         }
@@ -79,15 +79,15 @@
                                      };
     
     // assume that textView is a UITextView previously created (either by code or Interface Builder)
-    self.txtInstruction.linkTextAttributes = linkAttributes; // customizes the appearance of links
-    self.txtInstruction.attributedText = attributedString;
-    self.txtInstruction.delegate = self;
+    self.instructionTextField.linkTextAttributes = linkAttributes; // customizes the appearance of links
+    self.instructionTextField.attributedText = attributedString;
+    self.instructionTextField.delegate = self;
 }
 
 - (void)pushToHome
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_BUY bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:WOCBuyingStoryboard bundle:nil];
         WOCBuyingWizardHomeViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCBuyingWizardHomeViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -123,7 +123,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         WOCBuyingSummaryViewController *summaryViewController = [self getViewController:@"WOCBuyingSummaryViewController"];
         summaryViewController.phoneNo = self.phoneNo;
-        summaryViewController.hideSuccessAlert = YES;
+        summaryViewController.isHideSuccessAlert = YES;
         [self pushViewController:summaryViewController animated:YES];
     });
 }
@@ -191,7 +191,7 @@
     
     //bankLogo
     if (![[dictionary valueForKey:@"bankLogo"] isEqual:[NSNull null]] && [bankLogo length] > 0) {
-        self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        self.bankImageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                        ^{
                            NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankLogo]];
@@ -202,38 +202,38 @@
                                //If self.image is atomic (not declared with nonatomic)
                                // you could have set it directly above
                                if (imageData != nil) {
-                                   self.imgView.image = [UIImage imageWithData:imageData];
+                                   self.bankImageView.image = [UIImage imageWithData:imageData];
                                }
                                else {
-                                   self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+                                   self.bankImageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
                                }
                            });
                        });
     }
     else {
-        self.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        self.bankImageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     }
     
     //bankLocationUrl
     if ([dictionary valueForKey:@"bankUrl"] != [NSNull null]) {
-        [self.btnCheckLocation setTitle:@"Check locations" forState:UIControlStateNormal];
+        [self.checkLocationButton setTitle:@"Check locations" forState:UIControlStateNormal];
         self.locationUrl = [dictionary valueForKey:@"bankUrl"];
         if ([[dictionary valueForKey:@"nearestBranch"] class] != [NSNull class]) {
             if([dictionary valueForKey:@"nearestBranch"][@"address"] != nil) {
                 if ([[[dictionary valueForKey:@"nearestBranch"] valueForKey:@"address"] length] > 0) {
-                    [self.btnCheckLocation setHidden:YES];
+                    [self.checkLocationButton setHidden:YES];
                 }}
         }
     }
     
-    self.lblBankName.text = bankName;
-    self.lblPhone.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];
-    self.lblAccountName.text = [NSString stringWithFormat:@"Name on Account: %@",accountName];
-    self.lblAccountNo.text = [NSString stringWithFormat:@"Account #: %@",accountNo];
-    self.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
+    self.bankNameLabel.text = bankName;
+    self.phoneLabel.text = [NSString stringWithFormat:@"Location's phone #: %@",phoneNo];
+    self.accountNameLabel.text = [NSString stringWithFormat:@"Name on Account: %@",accountName];
+    self.accountNumberLabel.text = [NSString stringWithFormat:@"Account #: %@",accountNo];
+    self.cashDepositLabel.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
     
     NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
-    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ %@ (%@ %@)",totalDash,WOC_CURRENTCY_SPECIAL, [self getCryptoPrice:num],WOC_CURRENTCY_SYMBOL_MINOR];
+    self.instructionsLabel.text = [NSString stringWithFormat:@"You are ordering: %@ %@ (%@ %@)",totalDash,WOCCurrencySpecial, [self getCryptoPrice:num],WOCCurrencySymbolMinor];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;
@@ -252,7 +252,7 @@
     NSMutableAttributedString *dueString = [[NSMutableAttributedString alloc] initWithString:@"Deposit Due: "];
     [dueString appendAttributedString:timeString];
     
-    self.lblDepositDue.attributedText = dueString;
+    self.depositDueLabel.attributedText = dueString;
     
     self.timer = [[NSTimer alloc] init];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkTime) userInfo:nil repeats:YES];
@@ -267,15 +267,15 @@
         
         NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
         if (accountArray.count > 2) {
-            self.lblPhone.text = [NSString stringWithFormat:@"Name: %@ %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:0] valueForKey:@"value"]), REMOVE_NULL_VALUE([[accountArray objectAtIndex:2] valueForKey:@"value"])];
+            self.phoneLabel.text = [NSString stringWithFormat:@"Name: %@ %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:0] valueForKey:@"value"]), REMOVE_NULL_VALUE([[accountArray objectAtIndex:2] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 3) {
-            self.lblAccountName.text = [NSString stringWithFormat:@"Country of Birth: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:3] valueForKey:@"value"])];
+            self.accountNameLabel.text = [NSString stringWithFormat:@"Country of Birth: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:3] valueForKey:@"value"])];
         }
         
         if (accountArray.count > 1) {
-            self.lblAccountNo.text = [NSString stringWithFormat:@"Pick-up State: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:1] valueForKey:@"value"])];
+            self.accountNumberLabel.text = [NSString stringWithFormat:@"Pick-up State: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:1] valueForKey:@"value"])];
         }
     }
 }
@@ -289,10 +289,10 @@
         NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:self.dueTime];
         NSMutableAttributedString *dueString = [[NSMutableAttributedString alloc] initWithString:@"Deposit Due: "];
         [dueString appendAttributedString:timeString];
-        self.lblDepositDue.attributedText = dueString;
+        self.depositDueLabel.attributedText = dueString;
     }
     else {
-        self.lblDepositDue.text = @"Deposit Due: time expired";
+        self.depositDueLabel.text = @"Deposit Due: time expired";
         [self stopTimer];
     }
 }
@@ -356,23 +356,23 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
         
-        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-        NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+        NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
+        NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
         NSDictionary *params ;
         
         if (token != nil && (![token isEqualToString:@"(null)"])) {
             params = @{
-                       API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                       API_BODY_JSON_PARAMETER:@"YES"
+                       WOCApiBodyOffer: [NSString stringWithFormat:@"%@==",offerId],
+                       WOCApiBodyJsonParameter:@"YES"
                        };
         }
         else {
             params = @{
-                       API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                       API_BODY_PHONE_NUMBER: phone,
-                       API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                       API_BODY_DEVICE_CODE: deviceCode,
-                       API_BODY_JSON_PARAMETER:@"YES"
+                       WOCApiBodyOffer: [NSString stringWithFormat:@"%@==",offerId],
+                       WOCApiBodyPhoneNumber: phone,
+                       WOCApiBodyDeviceName: WOCApiBodyDeviceName_IOS,
+                       WOCApiBodyDeviceCode: deviceCode,
+                       WOCApiBodyJsonParameter:@"YES"
                        };
         }
         
@@ -383,18 +383,18 @@
             
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && (![[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"])) {
+                if ([responseDictionary valueForKey:WOCApiResponseToken] != nil && (![[responseDictionary valueForKey:WOCApiResponseToken] isEqualToString:@"(null)"])) {
                     
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                    [self.defaults setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponseToken]] forKey:WOCUserDefaultsAuthToken];
+                    [self.defaults setValue:phone forKey:WOCUserDefaultsLocalPhoneNumber];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiBodyDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
                     [self.defaults synchronize];
                 }
                 
-                NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+                NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponseId]];
                 self.holdId = holdId;
                 
-                NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+                NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponsePurchaseCde]];
                 self.purchaseCode = purchaseCode;
                 
                 [self captureHold:purchaseCode holdId:holdId];
@@ -425,8 +425,8 @@
                         count -= count;
                         
                         NSDictionary *holdDict = [holdArray objectAtIndex:i];
-                        NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                        NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                        NSString *holdId = [holdDict valueForKey:WOCApiResponseId];
+                        NSString *holdStatus = [holdDict valueForKey:WOCApiResponseHoldsStatus];
                         if (holdStatus != nil) {
                             if ([holdStatus isEqualToString:@"AC"]) {
                                 if (holdId) {
@@ -471,7 +471,7 @@
         if (error == nil) {
             NSLog(@"Hold deleted.");
             
-            NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
             [self createHold:self.offerId phoneNo:phoneNo];
         }
         else {
@@ -485,8 +485,8 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             API_BODY_VERIFICATION_CODE: purchaseCode,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyVerificationCode: purchaseCode,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
@@ -580,9 +580,9 @@
     }
 }
 
-// MARK: - IBAction
+// MARK: -  button actions
 
-- (IBAction)showMapClicked:(id)sender {
+- (IBAction)onShowMapButtonClicked:(id)sender {
     if (self.locationUrl != nil) {
         if (![self.locationUrl hasPrefix:@"http"]) {
             self.locationUrl = [NSString stringWithFormat:@"https://%@",self.locationUrl];
@@ -596,8 +596,8 @@
     }
     else {
         // Your location from latitude and longitude
-        double latitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE] doubleValue];
-        double longitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE] doubleValue];
+        double latitude = [[self.defaults valueForKey:WOCUserDefaultsLocalLocationLatitude] doubleValue];
+        double longitude = [[self.defaults valueForKey:WOCUserDefaultsLocalLocationLongitude] doubleValue];
         
         NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", latitude, longitude, latitude, longitude];
         if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
@@ -606,19 +606,19 @@
     }
 }
 
-- (IBAction)depositFinishedClicked:(id)sender {
+- (IBAction)onDepositFinishedButtonClicked:(id)sender {
     [self showDepositAlert];
 }
 
-- (IBAction)cancelOrderClicked:(id)sender {
+- (IBAction)onCancelOrderButtonClicked:(id)sender {
     [self showCancelOrderAlert];
 }
 
-- (IBAction)wallOfCoinsClicked:(id)sender {
+- (IBAction)onWallOfCoinsButtonClicked:(id)sender {
     [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
 }
 
-- (IBAction)signOutClicked:(id)sender {
+- (IBAction)onSignOutButtonClicked:(id)sender {
     [self signOutWOC];
 }
 

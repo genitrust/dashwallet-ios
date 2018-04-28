@@ -12,18 +12,18 @@
 // Find My Location Screen
 @interface WOCBuyingWizardHomeViewController : WOCBaseViewController
 
-@property (weak, nonatomic) IBOutlet UIButton *btnLocation;
-@property (weak, nonatomic) IBOutlet UIButton *btnNoThanks;
-@property (weak, nonatomic) IBOutlet UILabel *lblDescription;
-@property (weak, nonatomic) IBOutlet UIButton *btnSignOut;
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+@property (weak, nonatomic) IBOutlet UIButton *noThanksButton;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *signoutButton;
 @property (weak, nonatomic) IBOutlet UIView *signoutView;
-@property (weak, nonatomic) IBOutlet UIButton *orderListBtn;
-@property (assign) BOOL isFromSend;
+@property (weak, nonatomic) IBOutlet UIButton *orderListButton;
+@property (assign, nonatomic) BOOL isFromSend;
 
 - (void)setLogoutButton;
 - (IBAction)backBtnClicked:(id)sender;
-- (IBAction)findLocationClicked:(id)sender;
-- (IBAction)noThanksClicked:(id)sender;
-- (IBAction)signOutClicked:(id)sender;
+- (IBAction)onFindLocationButtonClick:(id)sender;
+- (IBAction)noThanksButtonClick:(id)sender;
+- (IBAction)onSignOutButtonClick:(id)sender;
 
 @end

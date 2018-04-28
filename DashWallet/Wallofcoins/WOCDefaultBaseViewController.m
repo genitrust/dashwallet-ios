@@ -33,8 +33,9 @@
    
     NSLog(@"------------> You are In %@",[super class]);
     
-    if (self.requiredBackButton) {
-        if ([self.navigationController.visibleViewController isKindOfClass:NSClassFromString(MAIN_VIEWCONTROLLER)]) {
+    if (self.isBackButtonRequire) {
+      
+        if ([self.navigationController.visibleViewController isKindOfClass:NSClassFromString(MAIN_VIEWCONTROLLER)] || [self.navigationController.visibleViewController isKindOfClass:NSClassFromString(MAIN_VIEWCONTROLLER_SELL)]) {
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(backToRoot)];
         }
         else {
@@ -45,10 +46,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     if (token != nil && (![token isEqualToString:@"(null)"])) {
-        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
         NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
     }
 }
@@ -80,7 +81,7 @@
     button.layer.shadowOpacity = 1;
     button.layer.masksToBounds = NO;
 }
--(BOOL) isValidEmail:(NSString *)checkString
+- (BOOL) isValidEmail:(NSString *)checkString
 {
     BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
     NSString *stricterFilterString = @"^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
@@ -102,7 +103,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
--(NSString*)getCryptoPrice:(NSNumber*)number
+- (NSString*)getCryptoPrice:(NSNumber*)number
 {
     NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
     [numFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
@@ -153,7 +154,7 @@
 - (void)backToMainView {
     
     NSString * storyboardName = [self.storyboard valueForKey:@"name"];
-    if ([storyboardName isEqualToString:STORYBOARD_WOC_BUY]) {
+    if ([storyboardName isEqualToString:WOCBuyingStoryboard]) {
         [self push:MAIN_VIEWCONTROLLER];
     }
     else {
@@ -161,7 +162,7 @@
     }
 }
 
--(id)getViewController:(NSString*)viewControllerStr  {
+- (id)getViewController:(NSString*)viewControllerStr  {
     
     NSString * storyboardName = [self.storyboard valueForKey:@"name"];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
@@ -187,7 +188,7 @@
         }
         else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_1 object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:WOCNotificationObserverNameBuyDashStep1 object:nil];
             });
         }
     });
@@ -217,13 +218,13 @@
         }
         else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_1 object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:WOCNotificationObserverNameBuyDashStep1 object:nil];
             });
         }
     });
 }
 
--(void)back {
+- (void)back {
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];

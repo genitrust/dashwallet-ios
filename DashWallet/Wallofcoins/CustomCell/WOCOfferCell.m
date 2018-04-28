@@ -15,11 +15,11 @@
     [super awakeFromNib];
     // Initialization code
     
-    self.btnOrder.layer.cornerRadius = 3.0;
-    self.btnOrder.layer.masksToBounds = YES;
+    self.orderButton.layer.cornerRadius = 3.0;
+    self.orderButton.layer.masksToBounds = YES;
     
-    self.btnLocation.layer.cornerRadius = 3.0;
-    self.btnLocation.layer.masksToBounds = YES;
+    self.locationButton.layer.cornerRadius = 3.0;
+    self.locationButton.layer.masksToBounds = YES;
     
     [self setShadowOnMainView:self.mainView];
 }

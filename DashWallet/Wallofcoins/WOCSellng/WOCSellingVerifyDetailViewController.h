@@ -12,19 +12,19 @@
 // Enter Phone Number Screen
 @interface WOCSellingVerifyDetailViewController : WOCBaseViewController
 
-@property (strong, nonatomic) NSString *accountInfoStr;
-@property (strong, nonatomic) NSString *currentPriceStr;
-@property (weak, nonatomic) IBOutlet UITextField *txtAccountCode;
-@property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;
-@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
-@property (weak, nonatomic) IBOutlet UITextField *txtCurrentPrice;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-- (IBAction)nextClicked:(id)sender;
+@property (strong, nonatomic) NSString *accountInformation;
+@property (strong, nonatomic) NSString *currentPrice;
+@property (weak, nonatomic) IBOutlet UITextField *accountCodeTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *currentPriceTextfield;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *emailId;
-@property (assign, readwrite) BOOL isActiveHoldChecked;
-@property (assign, readwrite) BOOL isForLoginOny;
-@property (weak, nonatomic) IBOutlet UITextField *txtConfirmEmail;
+@property (assign, nonatomic) BOOL isActiveHoldChecked;
+@property (assign, nonatomic) BOOL isForLoginOny;
+@property (weak, nonatomic) IBOutlet UITextField *confirmEmailTextfield;
 
+- (IBAction)onNextButtonClick:(id)sender;
 @end

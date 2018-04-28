@@ -11,16 +11,18 @@
 @interface WOCSummaryCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
-@property (weak, nonatomic) IBOutlet UIImageView *imgView;
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
-@property (weak, nonatomic) IBOutlet UILabel *lblPhone;
-@property (weak, nonatomic) IBOutlet UILabel *lblCashDeposit;
-@property (weak, nonatomic) IBOutlet UILabel *lblTotalDash;
+@property (weak, nonatomic) IBOutlet UIImageView *bankImageView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *phoneLabel;
+@property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lastNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *birthCountryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pickupStateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cashDepositLabel;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
-@property (weak, nonatomic) IBOutlet UILabel *lblStatus;
-@property (weak, nonatomic) IBOutlet UILabel *lblFirstName;
-@property (weak, nonatomic) IBOutlet UILabel *lblLastName;
-@property (weak, nonatomic) IBOutlet UILabel *lblBirthCountry;
-@property (weak, nonatomic) IBOutlet UILabel *lblPickupState;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *totalDashLabel;
+
+
 
 @end

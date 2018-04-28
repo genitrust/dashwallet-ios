@@ -30,18 +30,18 @@
 
 - (void)viewDidLoad {
     
-    self.requiredBackButton = YES;
+    self.isBackButtonRequire = YES;
     
     [super viewDidLoad];
     
-    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    [self.defaults removeObjectForKey:WOCUserDefaultsLocalLocationLatitude];
+    [self.defaults removeObjectForKey:WOCUserDefaultsLocalLocationLongitude];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_1];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setLogoutButton) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_1 object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:WOCNotificationObserverNameBuyDashStep1];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setLogoutButton) name:WOCNotificationObserverNameBuyDashStep1 object:nil];
     
-    [self.btnSellYourCrypto setTitle:[NSString stringWithFormat:@"SELL YOUR %@",WOC_CURRENTCY_SPECIAL] forState:UIControlStateNormal];
-    [self setShadowOnButton:self.btnSellYourCrypto];
+    [self.sellYourCryptoButton setTitle:[NSString stringWithFormat:@"SELL YOUR %@",WOCCurrencySpecial] forState:UIControlStateNormal];
+    [self setShadowOnButton:self.sellYourCryptoButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -55,28 +55,28 @@
     [super viewWillDisappear:animated];
 }
 
--(void)setLogoutButton {
+- (void)setLogoutButton {
     
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     if (token != nil && (![token isEqualToString:@"(null)"])) {
-        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
         NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
-        self.lblDescription.text = loginPhone;
-        [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
+        self.descriptionLabel.text = loginPhone;
+        [self.signOutButton setTitle:@"SIGN OUT" forState:UIControlStateNormal];
         self.signoutView.hidden = NO;
-        self.orderListBtn.hidden = NO;
+        self.orderListButton.hidden = NO;
     }
     else {
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
-        self.lblDescription.text = loginPhone;
-        [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
+        self.descriptionLabel.text = loginPhone;
+        [self.signOutButton setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
         self.signoutView.hidden = NO;
-        self.orderListBtn.hidden = YES;
+        self.orderListButton.hidden = YES;
     }
     
-    [self setShadowOnButton:self.btnSignOut];
-    [self setShadowOnButton:self.orderListBtn];
+    [self setShadowOnButton:self.signOutButton];
+    [self setShadowOnButton:self.orderListButton];
 }
 
 - (void)back:(id)sender {
@@ -98,11 +98,8 @@
 // MARK: - IBAction
 
 - (IBAction)backBtnClicked:(id)sender {
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self backToRoot];
-        self.navigationController.navigationBar.hidden = NO;
-    });
+    NSLog(@"backBtnClicked");
+    [self backToRoot];
 }
 
 - (IBAction)signOutClicked:(id)sender {
@@ -122,7 +119,7 @@
 - (IBAction)sellYourCryptoClicked:(id)sender {
     
     [self refereshToken];
-    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     
     if (phoneNo == nil || phoneNo.length == 0)
     {

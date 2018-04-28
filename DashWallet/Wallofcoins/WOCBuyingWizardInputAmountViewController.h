@@ -15,14 +15,14 @@
 @property (strong, nonatomic) NSString *bankId;
 @property (strong, nonatomic) NSString *zipCode;
 
-@property (weak, nonatomic) IBOutlet UITextField *txtDash;
-@property (weak, nonatomic) IBOutlet UITextField *txtDollar;
-@property (weak, nonatomic) IBOutlet UIView *line1;
-@property (weak, nonatomic) IBOutlet UIView *line2;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *line1Height;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *line2Height;
-@property (weak, nonatomic) IBOutlet UIButton *btnGetOffers;
+@property (weak, nonatomic) IBOutlet UITextField *dashTextField;
+@property (weak, nonatomic) IBOutlet UITextField *dollarTextField;
+@property (weak, nonatomic) IBOutlet UIView *line1View;
+@property (weak, nonatomic) IBOutlet UIView *line2View;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *line1HeightConstant;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *line2HeightConstant;
+@property (weak, nonatomic) IBOutlet UIButton *offerButton;
 
-- (IBAction)getOffersClicked:(id)sender;
+- (IBAction)onGetOffersButtonClick:(id)sender;
 
 @end

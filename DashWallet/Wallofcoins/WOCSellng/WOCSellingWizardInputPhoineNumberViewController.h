@@ -15,12 +15,12 @@
 
 @property (strong, nonatomic) NSString *offerId;
 @property (strong, nonatomic) NSString *emailId;
-@property (assign, readwrite) BOOL isActiveHoldChecked;
-@property (assign, readwrite) BOOL isForLoginOny;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (weak, nonatomic) IBOutlet UITextField *txtCountryCode;
-@property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;
+@property (assign, nonatomic) BOOL isActiveHoldChecked;
+@property (assign, nonatomic) BOOL isForLoginOny;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UITextField *countryCodeTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextfield;
 
-- (IBAction)nextClicked:(id)sender;
+- (IBAction)onNextButtonClicked:(id)sender;
 
 @end

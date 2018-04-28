@@ -24,18 +24,18 @@
     [super viewDidLoad];
     
     [self.navigationItem.backBarButtonItem setTitle:@""];
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.nextButton];
 }
 
 // MARK: - IBAction
 
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)onNextButtonClick:(id)sender {
     
-    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
     
     [self.defaults synchronize];
     
-    NSString *zipCode = [self.txtZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *zipCode = [self.zipCodeTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([zipCode length] == 0) {
         [self push:@"WOCBuyingWizardPaymentCenterViewController"];
@@ -64,7 +64,7 @@
         [geoCoder geocodePostalAddress:postalAddress completionHandler:^(NSArray *placemarks, NSError *error) {
             if ([placemarks count] > 0) {
                 CLPlacemark* placemark = [placemarks objectAtIndex:0];
-                [self.defaults setObject:[placemark ISOcountryCode].lowercaseString forKey:API_BODY_COUNTRY_CODE];
+                [self.defaults setObject:[placemark ISOcountryCode].lowercaseString forKey:WOCApiBodyCountryCode];
                 [self.defaults synchronize];
                 NSLog(@"%@",[placemark description]);
                 NSLog(@"======> country code is %@",[placemark ISOcountryCode]);
@@ -85,7 +85,7 @@
                                  NSString* state = placemark.addressDictionary[(NSString*)kABPersonAddressStateKey];
                                  NSString* country = placemark.addressDictionary[(NSString*)kABPersonAddressCountryCodeKey];
                                  
-                                 [self.defaults setObject:country.lowercaseString forKey:API_BODY_COUNTRY_CODE];
+                                 [self.defaults setObject:country.lowercaseString forKey:WOCApiBodyCountryCode];
                                  [self.defaults synchronize];
                                  NSLog(@"%@",[placemark description]);
                                  NSLog(@"======> country code is city [%@] state [%@] country [%@]",city,state,country);

@@ -33,7 +33,7 @@
 }
 
 // MARK: - IBAction
-- (IBAction)signInBtnClicked:(id)sender {
+- (IBAction)onSignInButtonClick:(id)sender {
     if (self.phoneNo != nil) {
         [self openSite:[NSURL URLWithString:[NSString stringWithFormat:@"https://wallofcoins.com/signin/%@/",self.phoneNo]]];
     }

@@ -42,7 +42,7 @@
     self.txtPurchaseCode.delegate = self;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     if(textField.text.length == 4 && string.length == 1)
     {

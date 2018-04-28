@@ -248,7 +248,7 @@ extern NSString *const AsyncImageErrorKey;
  * this value should bet set *before* setting the imageURL. Setting this value
  * when loading is already in progress will have no effect. Defaults to YES.
  */
-@property (nonatomic, assign) BOOL showActivityIndicator;
+@property (assign, nonatomic) BOOL showActivityIndicator;
 
 /**
  * The style that will be used for the UIActivityIndicator (if enabled). Note

@@ -17,7 +17,7 @@
 @interface WOCDefaultBaseViewController : UIViewController
 
 @property (strong, nonatomic) NSUserDefaults *defaults;
-@property (assign) BOOL requiredBackButton;
+@property (assign, nonatomic) BOOL isBackButtonRequire;
 
 + (instancetype) sharedInstance;
 
@@ -31,7 +31,7 @@
 - (void)pushViewControllerStr:(NSString*)viewControllerStr;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
--(NSString*)getCryptoPrice:(NSNumber*)number;
+- (NSString*)getCryptoPrice:(NSNumber*)number;
 
 - (IBAction)backBtnClicked:(id)sender;
 - (IBAction)signOutClicked:(id)sender;

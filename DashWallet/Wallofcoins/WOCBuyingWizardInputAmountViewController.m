@@ -16,8 +16,9 @@
 #import "WOCAlertController.h"
 #import "BRAppDelegate.h"
 
-#define dashTextField 101
-#define dollarTextField 102
+
+static const int dashTextFieldTag = 101;
+static const int dollarTextFieldTag = 102;
 
 @interface WOCBuyingWizardInputAmountViewController () <UITextFieldDelegate>
 
@@ -27,22 +28,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self setShadowOnButton:self.btnGetOffers];
-    self.txtDash.text = [NSString stringWithFormat:@"to acquire %@ (%@) (1,000,000 %@ = 1 %@)",WOC_CURRENTCY,WOC_CURRENTCY_SYMBOL,WOC_CURRENTCY_MINOR_SPECIAL,WOC_CURRENTCY_SPECIAL];
-    self.txtDash.delegate = self;
-    self.txtDollar.delegate = self;
-    [self.txtDash setUserInteractionEnabled:NO];
-    self.line1Height.constant = 1;
-    self.line2Height.constant = 2;
-    [self.txtDollar becomeFirstResponder];
+    [self setShadowOnButton:self.offerButton];
+    self.dashTextField.text = [NSString stringWithFormat:@"to acquire %@ (%@) (1,000,000 %@ = 1 %@)",WOCCurrency,WOCCurrencySymbol,WOCCurrencyMinorSpecial,WOCCurrencySpecial];
+    self.dashTextField.delegate = self;
+    self.dollarTextField.delegate = self;
+    [self.dashTextField setUserInteractionEnabled:NO];
+    self.line1HeightConstant.constant = 1;
+    self.line2HeightConstant.constant = 2;
+    [self.dollarTextField becomeFirstResponder];
 }
 
 // MARK: - IBAction
 
-- (IBAction)getOffersClicked:(id)sender {
+- (IBAction)onGetOffersButtonClick:(id)sender {
     
-    NSString *dollarString = [self.txtDollar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *dollarString = [self.dollarTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([dollarString length] > 0 && [dollarString intValue] != 0) {
         if ([dollarString intValue] >= 5) {
@@ -75,11 +75,11 @@
 // MARK: - API
 - (void)sendUserData:(NSString*)amount zipCode:(NSString*)zipCode bankId:(NSString*)bankId {
     
-    if (self.txtDash != nil) {
-        [self.txtDash resignFirstResponder];
+    if (self.dashTextField != nil) {
+        [self.dashTextField resignFirstResponder];
     }
-    if (self.txtDollar != nil) {
-        [self.txtDollar resignFirstResponder];
+    if (self.dollarTextField != nil) {
+        [self.dollarTextField resignFirstResponder];
     }
     
     BRWalletManager *manager = [BRWalletManager sharedInstance];
@@ -87,16 +87,16 @@
     NSLog(@"cryptoAddress = %@",cryptoAddress);
     
     NSDictionary *params = @{
-                             API_BODY_CRYPTO_AMOUNT: @"0",
-                             API_BODY_USD_AMOUNT: amount,
-                             API_BODY_CRYPTO: CRYPTO_CURRENTCY,
-                             API_BODY_CRYPTO_ADDRESS:cryptoAddress,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyCryptoAmount: @"0",
+                             WOCApiBodyUsdAmount: amount,
+                             WOCApiBodyCrypto: WOCCryptoCurrency,
+                             WOCApiBodyCryptoAddress:cryptoAddress,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     //Receive Crypto Currency Address...
-    NSString *latitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    NSString *longitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    NSString *latitude = [self.defaults valueForKey:WOCUserDefaultsLocalLocationLatitude];
+    NSString *longitude = [self.defaults valueForKey:WOCUserDefaultsLocalLocationLongitude];
     
     if (latitude == nil && longitude == nil) {
         latitude = @"";
@@ -105,37 +105,37 @@
    
     if (latitude.length > 0 && longitude.length > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-        [dict setObject:@{API_BODY_LATITUDE:latitude ,
-                          API_BODY_LONGITUDE:longitude } forKey:API_BODY_BROWSERLOCATION];
+        [dict setObject:@{WOCApiBodyLatitude:latitude ,
+                          WOCApiBodyLongitude:longitude } forKey:WOCApiBodyBrowserLocation];
         params = (NSDictionary*)dict;
     }
     
     if (zipCode != nil && zipCode.length > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-        [dict setObject:zipCode forKey:API_BODY_ZIP_CODE];
+        [dict setObject:zipCode forKey:WOCApiBodyZipCode];
         params = (NSDictionary*)dict;
     }
     
     if (bankId != nil && bankId.length > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-        [dict setObject:bankId forKey:API_BODY_BANK];
+        [dict setObject:bankId forKey:WOCApiBodyBank];
         params = (NSDictionary*)dict;
     }
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
     
     if (bankId == nil || bankId.length == 0) {
-        NSString *countryCodeFromLatLong = [self.defaults objectForKey:API_BODY_COUNTRY_CODE];
+        NSString *countryCodeFromLatLong = [self.defaults objectForKey:WOCApiBodyCountryCode];
         
         if (countryCodeFromLatLong == nil) {
             NSString *countryCode = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
-            [dict setObject:countryCode.lowercaseString forKey:API_BODY_COUNTRY];
+            [dict setObject:countryCode.lowercaseString forKey:WOCApiBodyCountry];
         }
         else {
-            [dict setObject:countryCodeFromLatLong.lowercaseString forKey:API_BODY_COUNTRY];
+            [dict setObject:countryCodeFromLatLong.lowercaseString forKey:WOCApiBodyCountry];
         }
     }
-    //[dict setObject:@"us" forKey:API_BODY_COUNTRY];
+    //[dict setObject:@"us" forKey:WOCApiBodyCountry];
 
     params = (NSDictionary*)dict;
     
@@ -146,7 +146,7 @@
             if ([dictionary valueForKey:@"id"] != nil) {
                 WOCBuyingWizardOfferListViewController *offerListViewController = (WOCBuyingWizardOfferListViewController*)[self getViewController:@"WOCBuyingWizardOfferListViewController"];;
                 offerListViewController.discoveryId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
-                offerListViewController.amount = self.txtDollar.text;
+                offerListViewController.amount = self.dollarTextField.text;
                 [self pushViewController:offerListViewController animated:YES];
             }
             else {
@@ -164,13 +164,13 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     
-    if (textField.tag == dashTextField) {
-        self.line1Height.constant = 2;
-        self.line2Height.constant = 1;
+    if (textField.tag == dashTextFieldTag) {
+        self.line1HeightConstant.constant = 2;
+        self.line2HeightConstant.constant = 1;
     }
     else {
-        self.line1Height.constant = 1;
-        self.line2Height.constant = 2;
+        self.line1HeightConstant.constant = 1;
+        self.line2HeightConstant.constant = 2;
     }
 }
 

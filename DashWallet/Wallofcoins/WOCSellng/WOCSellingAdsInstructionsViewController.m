@@ -30,37 +30,37 @@
     
     [self setShadowOnButton:self.btnNext];
     
-    if (self.accountInfoStr != nil && self.accountInfoStr.length > 0) {
-        self.txtAccountCode.text = self.accountInfoStr;
+    if (self.accountInformation != nil && self.accountInformation.length > 0) {
+        self.txtAccountCode.text = self.accountInformation;
     }
     
-//    if (self.currentPriceStr != nil && self.currentPriceStr.length > 0){
-//        self.txtCurrentPrice.text = self.currentPriceStr;
+//    if (self.currentPrice != nil && self.currentPrice.length > 0){
+//        self.txtCurrentPrice.text = self.currentPrice;
 //    }
     
-    self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOC_CURRENTCY_SYMBOL];
+    self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
     
-    NSString *emailAddress = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL];
+    NSString *emailAddress = [self.defaults objectForKey:WOCUserDefaultsLocalEmail];
     if (emailAddress != nil && emailAddress.length > 0) {
         self.txtEmail.text = emailAddress;
     }
     
-    NSString *bankAccountInfo = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_INFO];
+    NSString *bankAccountInfo = [self.defaults objectForKey:WOCUserDefaultsLocalBankInfo];
     if (bankAccountInfo != nil && bankAccountInfo.length > 0) {
         self.txtAccountCode.text = bankAccountInfo;
     }
     
-    NSString *bankAccount = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT_NUMBER];
+    NSString *bankAccount = [self.defaults objectForKey:WOCUserDefaultsLocalBankAccountNumber];
     if (bankAccount != nil && bankAccount.length > 0) {
         self.txtAccountNumber.text = bankAccount;
     }
     
-    NSString *bankName = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_NAME];
+    NSString *bankName = [self.defaults objectForKey:WOCUserDefaultsLocalBankName];
     if (bankName != nil && bankName.length > 0) {
         self.txtAccountName.text = bankName;
     }
     
-    NSString *currentPrice = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_PRICE];
+    NSString *currentPrice = [self.defaults objectForKey:WOCUserDefaultsLocalPrice];
     if (currentPrice != nil && currentPrice.length > 0) {
         self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",currentPrice];
     }
@@ -75,12 +75,12 @@
 
 - (void)loadAdData
 {
-    if (self.AdId != nil && self.AdId.length > 0) {
-        [[APIManager sharedInstance] getDetailFromADId:self.AdId  response:^(id responseDict, NSError *error) {
+    if (self.AdvertiseId != nil && self.AdvertiseId.length > 0) {
+        [[APIManager sharedInstance] getDetailFromADId:self.AdvertiseId  response:^(id responseDict, NSError *error) {
             NSLog(@"responseDict = %@",responseDict);
             
-            self.txtAccountCode.text = self.accountInfoStr;
-            self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOC_CURRENTCY_SYMBOL];
+            self.txtAccountCode.text = self.accountInformation;
+            self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
             
             //self.txtEmail.text = REMOVE_NULL_VALUE(responseDict[@""]);
             self.txtAccountCode.text = REMOVE_NULL_VALUE(responseDict[@""]);
@@ -113,7 +113,7 @@
 
 - (IBAction)AdvancedOptionsClicked:(id)sender
 {
-    [self.defaults setBool:NO forKey:@"beforeCreateAd"];
+    [self.defaults setBool:NO forKey:@"isBeforeCreateAd"];
     [self.defaults synchronize];
     
     WOCSellingAdvancedOptionsInstructionsViewController *sellingAdvancedOptionsInstructionsViewController = [self getViewController:@"WOCSellingAdvancedOptionsInstructionsViewController"];

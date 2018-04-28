@@ -28,22 +28,22 @@
 
 - (void)viewDidLoad {
     
-    self.requiredBackButton = YES;
+    self.isBackButtonRequire = YES;
     
     [super viewDidLoad];
     
-    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    [self.defaults removeObjectForKey:WOCUserDefaultsLocalLocationLatitude];
+    [self.defaults removeObjectForKey:WOCUserDefaultsLocalLocationLongitude];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_1];
-    [[NSNotificationCenter defaultCenter] removeObserver:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2];
-    [[NSNotificationCenter defaultCenter] removeObserver:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setLogoutButton) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_1 object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findZipCode) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:WOCNotificationObserverNameBuyDashStep1];
+    [[NSNotificationCenter defaultCenter] removeObserver:WOCNotificationObserverNameBuyDashStep2];
+    [[NSNotificationCenter defaultCenter] removeObserver:WOCNotificationObserverNameBuyDashStep4];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setLogoutButton) name:WOCNotificationObserverNameBuyDashStep1 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep2) name:WOCNotificationObserverNameBuyDashStep2 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findZipCode) name:WOCNotificationObserverNameBuyDashStep4 object:nil];
     
-    [self setShadowOnButton:self.btnLocation];
-    [self setShadowOnButton:self.btnNoThanks];
+    [self setShadowOnButton:self.locationButton];
+    [self setShadowOnButton:self.noThanksButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -53,31 +53,31 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.btnLocation setUserInteractionEnabled:YES];
+    [self.locationButton setUserInteractionEnabled:YES];
 }
 
 - (void) setLogoutButton {
     
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     if (token != nil && (![token isEqualToString:@"(null)"])) {
-        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
         NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
-        self.lblDescription.text = loginPhone;
-        [self.btnSignOut setTitle:@"SIGN OUT" forState:UIControlStateNormal];
+        self.descriptionLabel.text = loginPhone;
+        [self.signoutButton setTitle:@"SIGN OUT" forState:UIControlStateNormal];
         [self.signoutView setHidden:NO];
-        [self.orderListBtn setHidden:NO];
+        [self.orderListButton setHidden:NO];
     }
     else {
         NSString *loginPhone = [NSString stringWithFormat:@"Do you already have an order?"];
-        self.lblDescription.text = loginPhone;
-        [self.btnSignOut setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
-        [self.orderListBtn setHidden:YES];
+        self.descriptionLabel.text = loginPhone;
+        [self.signoutButton setTitle:@"SIGN IN HERE" forState:UIControlStateNormal];
+        [self.orderListButton setHidden:YES];
         [self.signoutView setHidden:NO];
     }
     
-    [self setShadowOnButton:self.btnSignOut];
-    [self setShadowOnButton:self.orderListBtn];
+    [self setShadowOnButton:self.signoutButton];
+    [self setShadowOnButton:self.orderListButton];
 }
 
 - (void) openBuyDashStep2 {
@@ -121,11 +121,11 @@
 
 - (void)findZipCode {
     
-    [self.btnLocation setUserInteractionEnabled:YES];
+    [self.locationButton setUserInteractionEnabled:YES];
     
     // Your location from latitude and longitude
-    NSString *latitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-    NSString *longitude = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+    NSString *latitude = [self.defaults valueForKey:WOCUserDefaultsLocalLocationLatitude];
+    NSString *longitude = [self.defaults valueForKey:WOCUserDefaultsLocalLocationLongitude];
     
     if (latitude != nil && longitude != nil) {
         CLLocation *location = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
@@ -140,7 +140,7 @@
             NSLog(@"address informations : %@", placeDetail);
             NSLog(@"ZIP code : %@", [placeDetail valueForKey:@"ZIP"]);
             
-            [self.defaults setObject:[placeDetail valueForKey:API_BODY_COUNTRY_CODE] forKey:API_BODY_COUNTRY_CODE];
+            [self.defaults setObject:[placeDetail valueForKey:WOCApiBodyCountryCode] forKey:WOCApiBodyCountryCode];
             [self.defaults synchronize];
             self.zipCode = [placeDetail valueForKey:@"ZIP"];
             [self openBuyDashStep4];
@@ -149,13 +149,13 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [hud hideAnimated:YES];
             });
-            [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+            [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
             NSLog(@"Error : %@", error);
         }];
     }
     else {
         
-        [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+        [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
         [[WOCLocationManager sharedInstance] startLocationService];
     }
 }
@@ -189,7 +189,6 @@
 }
 
 // MARK: - IBAction
-
 - (IBAction)backBtnClicked:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
@@ -197,29 +196,29 @@
     });
 }
 
-- (IBAction)findLocationClicked:(id)sender {
+- (IBAction)onFindLocationButtonClick:(id)sender {
     
     [self refereshToken];
-    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
     [self.defaults synchronize];
     if ([[WOCLocationManager sharedInstance] locationServiceEnabled]) {
         [self findZipCode];
-        [self.btnLocation setUserInteractionEnabled:NO];
+        [self.locationButton setUserInteractionEnabled:NO];
     }
     else {
         // Enable Location services
         [[WOCLocationManager sharedInstance] startLocationService];
-        [self.btnLocation setUserInteractionEnabled:NO];
+        [self.locationButton setUserInteractionEnabled:NO];
     }
 }
 
-- (IBAction)noThanksClicked:(id)sender {
-    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+- (IBAction)noThanksButtonClick:(id)sender {
+    [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
     [self.defaults synchronize];
     [self showAlert];
 }
 
-- (IBAction)signOutClicked:(id)sender {
+- (IBAction)onSignOutButtonClick:(id)sender {
    
     UIButton * btn = (UIButton*) sender;
     if (btn != nil) {

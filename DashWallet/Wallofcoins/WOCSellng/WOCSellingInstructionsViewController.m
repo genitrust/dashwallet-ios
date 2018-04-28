@@ -36,7 +36,7 @@
     [self setShadowOnButton:self.btnWallOfCoins];
     [self setShadowOnButton:self.btnSignOut];
     
-    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
     self.lblLoginPhone.text = loginPhone;
     
@@ -55,7 +55,7 @@
         }
     }
     else if (self.isFromOffer) {
-        NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
         if (self.offerId != nil && [self.offerId length] > 0) {
             [self createHold:self.offerId phoneNo:phoneNo];
         }
@@ -88,7 +88,7 @@
 - (void)pushToHome
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_BUY bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:WOCBuyingStoryboard bundle:nil];
         WOCSellingWizardHomeViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"WOCSellingWizardHomeViewController"];
         vc.isFromSend = YES;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -124,7 +124,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         WOCSellingSummaryViewController *summaryViewController = [self getViewController:@"WOCSellingSummaryViewController"];
         summaryViewController.phoneNo = self.phoneNo;
-        summaryViewController.hideSuccessAlert = YES;
+        summaryViewController.isHideSuccessAlert = YES;
         [self pushViewController:summaryViewController animated:YES];
     });
 }
@@ -233,7 +233,7 @@
     self.lblCashDeposit.text = [NSString stringWithFormat:@"Cash to Deposit: $%.02f",depositAmount];
     
     NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
-    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ %@ (%@ %@)",totalDash,WOC_CURRENTCY_SPECIAL, [self getCryptoPrice:num],WOC_CURRENTCY_SYMBOL_MINOR];
+    self.lblInstructions.text = [NSString stringWithFormat:@"You are ordering: %@ %@ (%@ %@)",totalDash,WOCCurrencySpecial, [self getCryptoPrice:num],WOCCurrencySymbolMinor];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;
@@ -356,23 +356,23 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
         
-        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
-        NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+        NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
+        NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
         NSDictionary *params ;
         
         if (token != nil && (![token isEqualToString:@"(null)"])) {
             params = @{
-                       API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                       API_BODY_JSON_PARAMETER:@"YES"
+                       WOCApiBodyOffer: [NSString stringWithFormat:@"%@==",offerId],
+                       WOCApiBodyJsonParameter:@"YES"
                        };
         }
         else {
             params = @{
-                       API_BODY_OFFER: [NSString stringWithFormat:@"%@==",offerId],
-                       API_BODY_PHONE_NUMBER: phone,
-                       API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                       API_BODY_DEVICE_CODE: deviceCode,
-                       API_BODY_JSON_PARAMETER:@"YES"
+                       WOCApiBodyOffer: [NSString stringWithFormat:@"%@==",offerId],
+                       WOCApiBodyPhoneNumber: phone,
+                       WOCApiBodyDeviceName: WOCApiBodyDeviceName_IOS,
+                       WOCApiBodyDeviceCode: deviceCode,
+                       WOCApiBodyJsonParameter:@"YES"
                        };
         }
         
@@ -383,18 +383,18 @@
             
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && (![[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"]))
+                if ([responseDictionary valueForKey:WOCApiResponseToken] != nil && (![[responseDictionary valueForKey:WOCApiResponseToken] isEqualToString:@"(null)"]))
                 {
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                    [self.defaults setValue:phone forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponseToken]] forKey:WOCUserDefaultsAuthToken];
+                    [self.defaults setValue:phone forKey:WOCUserDefaultsLocalPhoneNumber];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiBodyDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
                     [self.defaults synchronize];
                 }
                 
-                NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_ID]];
+                NSString *holdId = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponseId]];
                 self.holdId = holdId;
                 
-                NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE]];
+                NSString *purchaseCode = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponsePurchaseCde]];
                 self.purchaseCode = purchaseCode;
                 
                 [self captureHold:purchaseCode holdId:holdId];
@@ -424,8 +424,8 @@
                         count -= count;
                         
                         NSDictionary *holdDict = [holdArray objectAtIndex:i];
-                        NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                        NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                        NSString *holdId = [holdDict valueForKey:WOCApiResponseId];
+                        NSString *holdStatus = [holdDict valueForKey:WOCApiResponseHoldsStatus];
                         if (holdStatus != nil) {
                             if ([holdStatus isEqualToString:@"AC"]) {
                                 if (holdId) {
@@ -470,7 +470,7 @@
         if (error == nil) {
             NSLog(@"Hold deleted.");
             
-            NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
             [self createHold:self.offerId phoneNo:phoneNo];
         }
         else {
@@ -483,8 +483,8 @@
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
     NSDictionary *params = @{
-                             API_BODY_VERIFICATION_CODE: purchaseCode,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyVerificationCode: purchaseCode,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     [[APIManager sharedInstance] captureHold:params holdId:self.holdId response:^(id responseDict, NSError *error) {
@@ -594,8 +594,8 @@
     }
     else {
         // Your location from latitude and longitude
-        double latitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE] doubleValue];
-        double longitude = [[self.defaults valueForKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE] doubleValue];
+        double latitude = [[self.defaults valueForKey:WOCUserDefaultsLocalLocationLatitude] doubleValue];
+        double longitude = [[self.defaults valueForKey:WOCUserDefaultsLocalLocationLongitude] doubleValue];
         
         NSString* directionsURL = [NSString stringWithFormat:@"http://maps.apple.com/?saddr=%f,%f&daddr=%f,%f", latitude, longitude, latitude, longitude];
         if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {

@@ -41,5 +41,5 @@
 - (void)createAd:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
 
 - (void)getAllAds:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock;
-- (void)getDetailFromADId:(NSString*)AdId response:(void (^)(id responseDict, NSError *error))completionBlock;
+- (void)getDetailFromADId:(NSString*)AdvertiseId response:(void (^)(id responseDict, NSError *error))completionBlock;
 @end

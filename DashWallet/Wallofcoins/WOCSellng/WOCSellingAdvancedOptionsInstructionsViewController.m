@@ -21,26 +21,26 @@
     
     [self setShadowOnButton:self.btnNext];
     
-    NSString *minDeposit = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_MIN_DEPOSIT];
+    NSString *minDeposit = [self.defaults objectForKey:WOCUserDefaultsLocalMinDeposit];
     if (minDeposit != nil && minDeposit.length > 0){
         self.txtMinLimit.text = minDeposit;
     }
     
-    NSString *maxDeposit = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_MAX_DEPOSIT];
+    NSString *maxDeposit = [self.defaults objectForKey:WOCUserDefaultsLocalMaxDeposit];
     if (maxDeposit != nil && maxDeposit.length > 0){
         self.txtMaxLimit.text = maxDeposit;
     }
 }
 
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     
     [self setupUI];
 }
 
--(void)setupUI {
+- (void)setupUI {
     
-    self.beforeCreateAd = [self.defaults boolForKey:@"beforeCreateAd"];
-    if (self.beforeCreateAd == YES) {
+    self.isBeforeCreateAd = [self.defaults boolForKey:@"isBeforeCreateAd"];
+    if (self.isBeforeCreateAd == YES) {
         [self.btnNext setTitle:@"NEXT" forState:UIControlStateNormal];
     }
     else {
@@ -59,13 +59,13 @@
     }
     else {
         
-        [self.defaults setObject:self.txtMinLimit.text forKey:USER_DEFAULTS_LOCAL_MIN_DEPOSIT];
+        [self.defaults setObject:self.txtMinLimit.text forKey:WOCUserDefaultsLocalMinDeposit];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.txtMaxLimit.text forKey:USER_DEFAULTS_LOCAL_MAX_DEPOSIT];
+        [self.defaults setObject:self.txtMaxLimit.text forKey:WOCUserDefaultsLocalMaxDeposit];
         [self.defaults synchronize];
         
-        if (self.beforeCreateAd) {
+        if (self.isBeforeCreateAd) {
             [self loadVarificationScreen];
         }
         else {
@@ -75,7 +75,7 @@
     }
 }
 
--(void)loadVarificationScreen {
+- (void)loadVarificationScreen {
     WOCSellingVerifyDetailViewController *verifyDetailViewController = (WOCSellingVerifyDetailViewController*)[self getViewController:@"WOCSellingVerifyDetailViewController"];
     [self pushViewController:verifyDetailViewController animated:YES];
 }

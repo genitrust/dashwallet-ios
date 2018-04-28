@@ -71,14 +71,14 @@
 
 - (void)openStep4 {
     if (self.lastLocation != nil) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_4 object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WOCNotificationObserverNameBuyDashStep4 object:nil];
     }
 }
 
 - (void)showLocationAlertPopup {
     
     UIAlertController *alert = [UIAlertController
-                                alertControllerWithTitle:[NSString stringWithFormat:@"Allow \"%@\" to Access Your Location While You Use the App?",WOC_CURRENTCY] message:@"Your current location will be used to show you birds nearby."preferredStyle:UIAlertControllerStyleAlert];
+                                alertControllerWithTitle:[NSString stringWithFormat:@"Allow \"%@\" to Access Your Location While You Use the App?",WOCCurrency] message:@"Your current location will be used to show you birds nearby."preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *yesButton = [UIAlertAction
                                 actionWithTitle:@"Don't Allow"
@@ -112,18 +112,18 @@
         self.lastLocation = [locations lastObject];
         
         if ([NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] != nil) {
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LATITUDE];
-            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:USER_DEFAULTS_LOCAL_LOCATION_LONGITUDE];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.latitude] forKey:WOCUserDefaultsLocalLocationLatitude];
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%f",self.lastLocation.coordinate.longitude] forKey:WOCUserDefaultsLocalLocationLongitude];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
 }
 
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     
     if (status == kCLAuthorizationStatusDenied) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_2 object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WOCNotificationObserverNameBuyDashStep2 object:nil];
         
     } else if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         

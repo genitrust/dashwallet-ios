@@ -36,50 +36,50 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.nextButton];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:WOCNotificationObserverNameBuyDashStep8 object:nil];
     
-    if (self.accountInfoStr != nil && self.accountInfoStr.length > 0) {
-        self.txtAccountCode.text = self.accountInfoStr;
+    if (self.accountInformation != nil && self.accountInformation.length > 0) {
+        self.accountCodeTextfield.text = self.accountInformation;
     }
-    if (self.currentPriceStr != nil && self.currentPriceStr.length > 0) {
-        self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",self.currentPriceStr];
+    if (self.currentPrice != nil && self.currentPrice.length > 0) {
+        self.currentPriceTextfield.text = [NSString stringWithFormat:@"$ %@",self.currentPrice];
     }
     
-    NSString *phoneNumber = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNumber = [self.defaults objectForKey:WOCUserDefaultsLocalPhoneNumber];
     if (phoneNumber != nil && phoneNumber.length > 0) {
-        self.txtPhoneNumber.text = phoneNumber;
+        self.phoneNumberTextfield.text = phoneNumber;
     }
     
-    NSString *emailAddress = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL];
+    NSString *emailAddress = [self.defaults objectForKey:WOCUserDefaultsLocalEmail];
     if (emailAddress != nil && emailAddress.length > 0) {
-        self.txtEmail.text = emailAddress;
+        self.emailTextfield.text = emailAddress;
     }
     else {
-        self.txtEmail.text = @"";
+        self.emailTextfield.text = @"";
     }
     
-    NSString *bankInfo = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_INFO];
+    NSString *bankInfo = [self.defaults objectForKey:WOCUserDefaultsLocalBankInfo];
     if (bankInfo != nil && bankInfo.length > 0) {
-        self.txtAccountCode.text = bankInfo;
+        self.accountCodeTextfield.text = bankInfo;
     }
     else {
-        self.txtAccountCode.text = @"";
+        self.accountCodeTextfield.text = @"";
     }
    
-    NSString *txtCurrentPrice = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_PRICE];
+    NSString *txtCurrentPrice = [self.defaults objectForKey:WOCUserDefaultsLocalPrice];
     if (txtCurrentPrice != nil && txtCurrentPrice.length > 0) {
-        self.txtCurrentPrice.text = txtCurrentPrice;
+        self.currentPriceTextfield.text = txtCurrentPrice;
     }
     else {
-        self.txtCurrentPrice.text = @"0";
+        self.currentPriceTextfield.text = @"0";
     }
     
-    self.txtAccountCode.userInteractionEnabled = NO;
-    self.txtPhoneNumber.userInteractionEnabled = NO;
-    self.txtCurrentPrice.userInteractionEnabled = NO;
-    self.txtEmail.userInteractionEnabled = NO;
+    self.accountCodeTextfield.userInteractionEnabled = NO;
+    self.phoneNumberTextfield.userInteractionEnabled = NO;
+    self.currentPriceTextfield.userInteractionEnabled = NO;
+    self.emailTextfield.userInteractionEnabled = NO;
 }
 
 - (void)loadCountyData {
@@ -104,7 +104,7 @@
     
     self.countries = countries;
     if (self.countries.count > 0) {
-        self.txtAccountCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[0][@"name"],self.countries[0][@"code"]];
+        self.accountCodeTextfield.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[0][@"name"],self.countries[0][@"code"]];
         self.countryCode = [NSString stringWithFormat:@"%@",self.countries[0][@"code"]];
     }
     
@@ -114,7 +114,7 @@
 - (void)openBuyDashStep8:(NSNotification*)notification {
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@",notification.object];
-    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
     [self.defaults synchronize];
     
     [self createHoldAfterAuthorize:phoneNo];
@@ -128,7 +128,7 @@
                             };
     
     NSString *phoneNo = [NSString stringWithFormat:@"%@%@",countryCode,phone];
-    [self.defaults setObject:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    [self.defaults setObject:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
     [self.defaults synchronize];
     
     [[APIManager sharedInstance] authorizeDevice:nil phone:phoneNo response:^(id responseDict, NSError *error) {
@@ -144,7 +144,7 @@
                 NSArray *availableAuthSource = (NSArray*)[responseDictionary valueForKey:@"availableAuthSources"];
                 if (availableAuthSource.count > 0) {
                     if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]) {
-                        [self login:phoneNo password:self.txtCurrentPrice.text];
+                        [self login:phoneNo password:self.currentPriceTextfield.text];
                     }
                     else if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]) {
                         //[self createHoldAfterAuthorize:phoneNo];
@@ -154,9 +154,9 @@
             }
             else if ([responseDictionary valueForKey:@"response"] != nil) {
                 if ([[responseDictionary valueForKey:@"response"] isEqualToString:@"error"]) {
-                    [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-                    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults removeObjectForKey:WOCUserDefaultsAuthToken];
+                    [self.defaults removeObjectForKey:WOCUserDefaultsLocalPhoneNumber];
+                    [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
                     [self.defaults synchronize];
                     [self resetPassword];
                 }
@@ -166,9 +166,9 @@
             
             if ([error code] == 404 || [error code] == 0) {
                 //new number
-                [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults removeObjectForKey:WOCUserDefaultsAuthToken];
+                [self.defaults removeObjectForKey:WOCUserDefaultsLocalPhoneNumber];
+                [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
                 [self.defaults synchronize];
                 [self registerUser];
                 //[self createHold:phoneNo];
@@ -194,28 +194,28 @@
 
 - (void)login:(NSString*)phoneNo {
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *deviceId = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
+    NSString *deviceId = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceId];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *params = @{
-                             API_BODY_DEVICE_CODE: deviceCode
+                             WOCApiBodyDeviceCode: deviceCode
                             };
     
     if (deviceId != nil) {
         params = @{
-                   API_BODY_DEVICE_CODE: deviceCode,
-                   API_BODY_DEVICE_ID: deviceId,
-                   API_BODY_JSON_PARAMETER: @"YES"
+                   WOCApiBodyDeviceCode: deviceCode,
+                   WOCApiBodyDeviceId: deviceId,
+                   WOCApiBodyJsonParameter: @"YES"
                    };
         [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
             
                NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
             if (error == nil) {
                 if (responseDictionary != nil) {
-                    [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                    [self.defaults setValue:[responseDictionary valueForKey:WOCApiResponseToken] forKey:WOCUserDefaultsAuthToken];
+                    [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiBodyDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
                     [self.defaults synchronize];
                     [self storeDeviceInfoLocally];
                     [self backToMainView];
@@ -223,9 +223,9 @@
             }
             else {
                 
-                [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults removeObjectForKey:WOCUserDefaultsAuthToken];
+                [self.defaults removeObjectForKey:WOCUserDefaultsLocalPhoneNumber];
+                [self.defaults removeObjectForKey:WOCUserDefaultsLocalDeviceId];
                 [self.defaults synchronize];
 
                 BOOL isNewPhone = YES;
@@ -240,7 +240,7 @@
                     }
                 }
                 if (isNewPhone) {
-                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
                     [self.defaults synchronize];
                     [self backToMainView];
                 }
@@ -257,29 +257,29 @@
     if (!self.isForLoginOny) {
         MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
         
-        NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
+        NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
         
         NSDictionary *params;
     
         if (token != nil && (![token isEqualToString:@"(null)"])) {
             params =  @{
-                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                        API_BODY_JSON_PARAMETER:@"YES"
+                        WOCApiBodyOffer: [NSString stringWithFormat:@"%@==",self.offerId],
+                        WOCApiBodyJsonParameter:@"YES"
                         };
         }
         else {
             params =  @{
-                        API_BODY_OFFER: [NSString stringWithFormat:@"%@==",self.offerId],
-                        API_BODY_PHONE_NUMBER: phoneNo,
-                        API_BODY_DEVICE_NAME: API_BODY_DEVICE_NAME_IOS,
-                        API_BODY_DEVICE_CODE: deviceCode,
-                        API_BODY_JSON_PARAMETER:@"YES"
+                        WOCApiBodyOffer: [NSString stringWithFormat:@"%@==",self.offerId],
+                        WOCApiBodyPhoneNumber: phoneNo,
+                        WOCApiBodyDeviceName: WOCApiBodyDeviceName_IOS,
+                        WOCApiBodyDeviceCode: deviceCode,
+                        WOCApiBodyJsonParameter:@"YES"
                         };
             
             if (self.emailId != nil && self.emailId.length > 0) {
                 NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:params];
-                [dict setObject:self.emailId forKey:API_BODY_EMAIL];
+                [dict setObject:self.emailId forKey:WOCApiBodyEmail];
                 params = (NSDictionary*)dict;
             }
         }
@@ -291,18 +291,18 @@
             
             if (error == nil) {
                 NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-                if ([responseDictionary valueForKey:API_RESPONSE_TOKEN] != nil && (![[responseDictionary valueForKey:API_RESPONSE_TOKEN] isEqualToString:@"(null)"])) {
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_TOKEN]] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                    [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                if ([responseDictionary valueForKey:WOCApiResponseToken] != nil && (![[responseDictionary valueForKey:WOCApiResponseToken] isEqualToString:@"(null)"])) {
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponseToken]] forKey:WOCUserDefaultsAuthToken];
+                    [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
+                    [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiBodyDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
                     [self.defaults synchronize];
                     [self storeDeviceInfoLocally];
                 }
                 
-                NSString *holdId = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([responseDictionary valueForKey:API_RESPONSE_ID])];
+                NSString *holdId = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([responseDictionary valueForKey:WOCApiResponseId])];
                 self.holdId = holdId;
                 
-                NSString *purchaseCode = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([responseDictionary valueForKey:API_RESPONSE_PURCHASE_CODE])];
+                NSString *purchaseCode = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([responseDictionary valueForKey:WOCApiResponsePurchaseCde])];
                 if (![purchaseCode isKindOfClass:[NSNull class]]) {
                     self.purchaseCode = purchaseCode;
                 }
@@ -329,7 +329,7 @@
     }
     else {
         
-        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
         if (token != nil && (![token isEqualToString:@"(null)"])) {
             [self getOrderList];
         }
@@ -351,7 +351,7 @@
 -(void)resolveActiveHoldIssue:(NSString*)phoneNo {
     
     if (!self.isActiveHoldChecked) {
-        NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+        NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
         
         if (token != nil && (![token isEqualToString:@"(null)"])) {
             /*you receive Status 403 from POST /api/v1/holds/
@@ -363,7 +363,7 @@
         else {
             NSString *deviceID = [self getDeviceIDFromPhoneNumber:phoneNo];
              if (deviceID.length > 0 && (![deviceID isEqualToString:@"(null)"])) {
-                [self.defaults setObject:deviceID forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults setObject:deviceID forKey:WOCUserDefaultsLocalDeviceId];
                 [self.defaults synchronize];
                 [self login:phoneNo];
             }
@@ -374,20 +374,20 @@
     }
 }
 
--(void)openHoldIssueVC {
+- (void)openHoldIssueVC {
     /*
      IF YOU DO NOT HAVE the token or deviceId/deviceCode in local storage, then you will need to show a new view that says, "You already have an open hold or a pending order with Wall of Coins. Before you can create a new order, you must finish these orders." and then show a yellow button w/ blue text (just like the "BUY MORE {Crypto Currency} WITH CASH" button), and when they press that button, you will bring them to this website link:
      https://wallofcoins.com/signin/1-2397776832/
      https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
      */
-    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtPhone = [self.phoneNumberTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *txtAccountCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     WOCHoldIssueViewController *aViewController = [self getViewController:@"WOCHoldIssueViewController"];
     aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtAccountCode,txtPhone];
     [self pushViewController:aViewController animated:YES];
 }
 
--(void)resolvePandingOrderIssue {
+- (void)resolvePandingOrderIssue {
     
     [self getOrderList];
 }
@@ -407,8 +407,8 @@
                         count -= count;
                         
                         NSDictionary *holdDict = [holdArray objectAtIndex:i];
-                        NSString *holdId = [holdDict valueForKey:API_RESPONSE_ID];
-                        NSString *holdStatus = [holdDict valueForKey:API_RESPONSE_Holds_Status];
+                        NSString *holdId = [holdDict valueForKey:WOCApiResponseId];
+                        NSString *holdStatus = [holdDict valueForKey:WOCApiResponseHoldsStatus];
                         
                         if (holdStatus != nil) {
                             if ([holdStatus isEqualToString:@"AC"]) {
@@ -453,7 +453,7 @@
         if (error == nil) {
             NSLog(@"Hold deleted.");
             
-            NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
             [self createHoldAfterAuthorize:phoneNo];
         }
     }];
@@ -463,13 +463,13 @@
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *params =  @{
-                              API_BODY_NAME: API_BODY_DEVICE_NAME_IOS,
-                              API_BODY_CODE: deviceCode,
-                              API_BODY_JSON_PARAMETER:@"YES"
+                              WOCApiBodyName: WOCApiBodyDeviceName_IOS,
+                              WOCApiBodyCode: deviceCode,
+                              WOCApiBodyJsonParameter:@"YES"
                               };
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
@@ -480,7 +480,7 @@
         if (error == nil) {
             NSDictionary *response = (NSDictionary*)responseDict;
             if (response.count > 0) {
-                NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:API_RESPONSE_ID]];
+                NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:WOCApiResponseId]];
                 [self authorize:phoneNo deviceId:deviceId];
             }
         }
@@ -493,28 +493,28 @@
 
 - (void)authorize:(NSString*)phoneNo deviceId:(NSString*)deviceId {
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *params = @{
-                             API_BODY_DEVICE_CODE: deviceCode,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyDeviceCode: deviceCode,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     if (deviceId != nil && (![deviceId isEqualToString:@"(null)"])) {
         params = @{
-                   API_BODY_DEVICE_CODE: deviceCode,
-                   API_BODY_DEVICE_ID: deviceId,
-                   API_BODY_JSON_PARAMETER: @"YES"
+                   WOCApiBodyDeviceCode: deviceCode,
+                   WOCApiBodyDeviceId: deviceId,
+                   WOCApiBodyJsonParameter: @"YES"
                    };
     }
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults setValue:[responseDictionary valueForKey:WOCApiResponseToken] forKey:WOCUserDefaultsAuthToken];
+            [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
+            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiBodyDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
             [self.defaults synchronize];
             
             [self storeDeviceInfoLocally];
@@ -522,10 +522,10 @@
             //[self createHoldAfterAuthorize:phoneNo];
         }
         else {
-            [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self.defaults removeObjectForKey:WOCUserDefaultsAuthToken];
+            [self.defaults removeObjectForKey:WOCUserDefaultsLocalPhoneNumber];
+            [self.defaults removeObjectForKey:WOCUserDefaultsLocalDeviceId];
+            [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
             [self.defaults synchronize];
             [[WOCAlertController sharedInstance] alertshowWithError:error viewController:self.navigationController.visibleViewController];
         }
@@ -533,7 +533,7 @@
 }
 
 - (void)createHoldAfterAuthorize:(NSString*)phoneNo {
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     if (token != nil && (![token isEqualToString:@"(null)"])) {
         [self createHold:phoneNo];
@@ -541,7 +541,7 @@
     else {
         NSString *deviceID = [self getDeviceIDFromPhoneNumber:phoneNo];
         if (deviceID != nil) {
-            [self.defaults setObject:deviceID forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults setObject:deviceID forKey:WOCUserDefaultsLocalDeviceId];
             [self.defaults synchronize];
             [self login:phoneNo];
         }
@@ -552,20 +552,20 @@
 }
 
 // MARK: - IBAction
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)onNextButtonClick:(id)sender {
     
-    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtPhone = [self.phoneNumberTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([txtPhone length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter phone number." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self.txtEmail.text length] == 0) {
+    else if ([self.emailTextfield.text length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter email number." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self isValidEmail:self.txtEmail.text] == 0) {
+    else if ([self isValidEmail:self.emailTextfield.text] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter valid email number." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self.txtCurrentPrice.text length] == 0) {
+    else if ([self.currentPriceTextfield.text length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter password number." viewController:self.navigationController.visibleViewController];
     }
     else if ([txtPhone length] > 10) {
@@ -591,7 +591,7 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.txtAccountCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
+    self.accountCodeTextfield.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
     self.countryCode = [NSString stringWithFormat:@"%@",self.countries[row][@"code"]];
 }
 
@@ -602,15 +602,15 @@
 
 - (void)registerUser {
     
-    NSString *phoneNumber = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *phoneNumber = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *params = @{
-                   API_BODY_PHONE_NUMBER: phoneNumber,
-                   API_BODY_EMAIL: self.txtEmail.text,
-                   API_BODY_PASSWORD: self.txtCurrentPrice.text,
-                   API_BODY_JSON_PARAMETER: @"YES"
+                   WOCApiBodyPhoneNumber: phoneNumber,
+                   WOCApiBodyEmail: self.emailTextfield.text,
+                   WOCApiBodyPassword: self.currentPriceTextfield.text,
+                   WOCApiBodyJsonParameter: @"YES"
                    };
         
         [[APIManager sharedInstance] registerUser:params  response:^(id responseDict, NSError *error) {
@@ -631,14 +631,14 @@
                     [self openHoldIssueVC];
                 }
                 else {
-                    [self login:phoneNumber password:self.txtCurrentPrice.text];
+                    [self login:phoneNumber password:self.currentPriceTextfield.text];
                 }
             }
             else {
                 
-                [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults removeObjectForKey:WOCUserDefaultsAuthToken];
+                [self.defaults removeObjectForKey:WOCUserDefaultsLocalPhoneNumber];
+                [self.defaults removeObjectForKey:WOCUserDefaultsLocalDeviceId];
                 [self.defaults synchronize];
                 
                 BOOL isNewPhone = YES;
@@ -654,7 +654,7 @@
                 }
                 
                 if (isNewPhone) {
-                    [self.defaults setValue:phoneNumber forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                    [self.defaults setValue:phoneNumber forKey:WOCUserDefaultsLocalPhoneNumber];
                     [self.defaults synchronize];
                     
                     [self registrationCompleted];
@@ -668,12 +668,12 @@
 
 - (void)resetPassword {
     
-    NSString *phoneNumber = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNumber = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     
     NSDictionary *params = @{
-               @"password1": self.txtCurrentPrice.text,
-               @"password2": self.txtCurrentPrice.text,
-               API_BODY_JSON_PARAMETER: @"YES"
+               @"password1": self.currentPriceTextfield.text,
+               @"password2": self.currentPriceTextfield.text,
+               WOCApiBodyJsonParameter: @"YES"
                };
     
     [[APIManager sharedInstance] resetPassword:params phone:phoneNumber response:^(id responseDict, NSError *error) {
@@ -691,9 +691,9 @@
             }
         }
         else {
-            [self.defaults removeObjectForKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults removeObjectForKey:WOCUserDefaultsAuthToken];
+            [self.defaults removeObjectForKey:WOCUserDefaultsLocalPhoneNumber];
+            [self.defaults removeObjectForKey:WOCUserDefaultsLocalDeviceId];
             [self.defaults synchronize];
             
             BOOL isNewPhone = YES;
@@ -709,7 +709,7 @@
             }
             
             if (isNewPhone) {
-                [self.defaults setValue:phoneNumber forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+                [self.defaults setValue:phoneNumber forKey:WOCUserDefaultsLocalPhoneNumber];
                 [self.defaults synchronize];
                 //[self createHoldAfterAuthorize:phoneNumber];
                 [self registrationCompleted];
@@ -723,16 +723,16 @@
 
 - (void)login:(NSString*)phoneNo password:(NSString*)password {
     NSDictionary *params = @{
-                             API_BODY_PASSWORD: password,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyPassword: password,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDictionary, NSError *error) {
         if (error == nil) {
             if (responseDictionary != nil) {
-                [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-                [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_BODY_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                [self.defaults setValue:[responseDictionary valueForKey:WOCApiResponseToken] forKey:WOCUserDefaultsAuthToken];
+                [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
+                [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiBodyDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
                 [self.defaults synchronize];
                 [self registerDevice:phoneNo];
                 [self backToMainView];
@@ -756,10 +756,10 @@
     }];
 }
 
--(void)registrationCompleted {
+- (void)registrationCompleted {
     
-    NSString *phoneNumber = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *phoneNumber = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
 
     WOCSellingCreatePasswordViewController *createPasswordViewController = [self getViewController:@"WOCSellingCreatePasswordViewController"];
     
@@ -775,10 +775,10 @@
     //[self login:phoneNumber];
 }
 
--(void)openVerificationCodeScreen {
+- (void)openVerificationCodeScreen {
     
-    NSString *phoneNumber = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *phoneNumber = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
     
     WOCSellingWizardConfirmCodeViewController *confirmCodeViewController = [self getViewController:@"WOCSellingWizardConfirmCodeViewController"];
     confirmCodeViewController.emailId = self.emailId;

@@ -21,11 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.nextButton];
     
-    if ([self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL] != nil) {
-        NSString *emailStr = [self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL];
-        self.txtEmail.text = emailStr;
+    if ([self.defaults objectForKey:WOCUserDefaultsLocalEmail] != nil) {
+        NSString *emailStr = [self.defaults objectForKey:WOCUserDefaultsLocalEmail];
+        self.emailTextField.text = emailStr;
     }
 }
 
@@ -41,17 +41,17 @@
 
 // MARK: - IBAction
 
-- (IBAction)doNotSendMeEmailClicked:(id)sender {
+- (IBAction)onDoNotSendMeEmailButtonClick:(id)sender {
     
-    [self.defaults removeObjectForKey:USER_DEFAULTS_LOCAL_EMAIL];
+    [self.defaults removeObjectForKey:WOCUserDefaultsLocalEmail];
     
     WOCSellingWizardPaymentCenterViewController *paymentCenterViewController = [self getViewController:@"WOCSellingWizardPaymentCenterViewController"];
     [self pushViewController:paymentCenterViewController animated:YES];
 }
 
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)onNextButtonClick:(id)sender {
     
-    NSString *emailStr = [self.txtEmail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *emailStr = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([emailStr length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter email." viewController:self.navigationController.visibleViewController];
@@ -61,7 +61,7 @@
     }
     else {
 
-        [self.defaults setObject:emailStr forKey:USER_DEFAULTS_LOCAL_EMAIL];
+        [self.defaults setObject:emailStr forKey:WOCUserDefaultsLocalEmail];
         WOCSellingWizardPaymentCenterViewController *paymentCenterViewController = [self getViewController:@"WOCSellingWizardPaymentCenterViewController"];
         [self pushViewController:paymentCenterViewController animated:YES];
     }

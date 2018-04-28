@@ -20,11 +20,11 @@
 @property (strong, nonatomic) NSString *emailId;
 @property (strong, nonatomic) NSString *deviceCode;
 
-@property (weak, nonatomic) IBOutlet UILabel *descLable;
-@property (weak, nonatomic) IBOutlet UITextField *txtPurchaseCode;
-@property (weak, nonatomic) IBOutlet UIButton *btnPurchaseCode;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UITextField *confirmCodeTextfield;
+@property (weak, nonatomic) IBOutlet UIButton *confirmVarificationCodeButton;
 
-- (IBAction)confirmPurchaseCodeClicked:(id)sender;
+- (IBAction)onConfirmVarificationCodeClicked:(id)sender;
 
 
 @end

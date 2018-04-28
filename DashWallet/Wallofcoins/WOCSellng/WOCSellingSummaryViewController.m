@@ -54,7 +54,7 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navigation_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
     
-    [self setShadowOnButton:self.btnBuyMoreDash];
+    [self setShadowOnButton:self.buyMoreDashButton];
     [self setAttributedString];
     
     if (self.orders.count == 0) {
@@ -63,7 +63,7 @@
 
         [self getOrders];
         
-        if (!self.hideSuccessAlert) {
+        if (!self.isHideSuccessAlert) {
             [self displayAlert];
         }
     }
@@ -96,9 +96,9 @@
                                      NSUnderlineColorAttributeName: [UIColor blackColor],
                                      NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
     
-    self.txtInstruction.linkTextAttributes = linkAttributes;
-    self.txtInstruction.attributedText = attributedString;
-    self.txtInstruction.delegate = self;
+    self.instructionTextField.linkTextAttributes = linkAttributes;
+    self.instructionTextField.attributedText = attributedString;
+    self.instructionTextField.delegate = self;
 }
 
 - (void)back:(id)sender {
@@ -140,7 +140,7 @@
 
 - (void)displayAlert {
     
-    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:[NSString stringWithFormat:@"Thank you for making the payment!\nOnce we verify your payment, we will send the %@ to your wallet!",WOC_CURRENTCY] viewController:self];
+    [[WOCAlertController sharedInstance] alertshowWithTitle:@"" message:[NSString stringWithFormat:@"Thank you for making the payment!\nOnce we verify your payment, we will send the %@ to your wallet!",WOCCurrency] viewController:self];
 }
 
 // MARK: - IBAction
@@ -201,16 +201,16 @@
     }];
 }
 
--(void)reloadOrderTable{
+- (void)reloadOrderTable{
     if (self.orders.count > 0) {
-        self.txtInstruction.text = @"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins.";
+        self.instructionTextField.text = @"Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins.";
     }
     else {
-        self.txtInstruction.text = [NSString stringWithFormat:@"You have no order history with %@ for iOS. To see your full order history across all devices, visit %@",CRYPTO_CURRENTCY,BASE_URL_PRODUCTION];
+        self.instructionTextField.text = [NSString stringWithFormat:@"You have no order history with %@ for iOS. To see your full order history across all devices, visit %@",WOCCryptoCurrency,BASE_URL_PRODUCTION];
     }
-    self.lblInstruction.hidden  = YES;
-    self.txtInstruction.hidden  = NO;
-    [self.tableView reloadData];
+    self.instructionLabel.hidden  = YES;
+    self.instructionTextField.hidden  = NO;
+    [self.sellingSummaryTableView reloadData];
 }
 
 #pragma mark - UITableView DataSource
@@ -239,13 +239,13 @@
     
     if (indexPath.section == 1) {
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"linkCell"];
-        [cell.btnSignOut addTarget:self action:@selector(wallOfCoinsClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.signOutButton addTarget:self action:@selector(wallOfCoinsClicked:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     }
     else if (indexPath.section == 2) {
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
-        cell.lblDescription.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
-        [cell.btnSignOut addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
+        cell.descriptionLabel.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
+        [cell.signOutButton addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     }
     else {
@@ -311,24 +311,24 @@
                     return aObj1 > aObj2;
                 }];
                 NSArray *accountArray = [accountArr sortedArrayUsingDescriptors:@[sort]];
-                cell.lblPhone.hidden = YES;
+                cell.phoneLabel.hidden = YES;
                 if (accountArray.count > 0) {
-                    cell.lblFirstName.text = [NSString stringWithFormat:@"First Name: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:0] valueForKey:@"value"])];
+                    cell.firstNameLabel.text = [NSString stringWithFormat:@"First Name: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:0] valueForKey:@"value"])];
                 }
                 if (accountArray.count > 2) {
-                    cell.lblLastName.text = [NSString stringWithFormat:@"Last Name: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:2] valueForKey:@"value"])];
+                    cell.lastNameLabel.text = [NSString stringWithFormat:@"Last Name: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:2] valueForKey:@"value"])];
                 }
                 if (accountArray.count > 3) {
-                    cell.lblBirthCountry.text = [NSString stringWithFormat:@"Country of Birth: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:3] valueForKey:@"value"])];
+                    cell.birthCountryLabel.text = [NSString stringWithFormat:@"Country of Birth: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:3] valueForKey:@"value"])];
                 }
                 if (accountArray.count > 1) {
-                    cell.lblPickupState.text = [NSString stringWithFormat:@"Pick-up State: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:1] valueForKey:@"value"])];
+                    cell.pickupStateLabel.text = [NSString stringWithFormat:@"Pick-up State: %@",REMOVE_NULL_VALUE([[accountArray objectAtIndex:1] valueForKey:@"value"])];
                 }
             }
         }
         else {
              NSString *phoneNo = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([[orderDict valueForKey:@"bankAccount"] valueForKey:@"number"])];
-            cell.lblPhone.text = [NSString stringWithFormat:@"Acct: -%@",phoneNo];
+            cell.phoneLabel.text = [NSString stringWithFormat:@"Acct: -%@",phoneNo];
 
         }
         NSString *bankLogo = REMOVE_NULL_VALUE([sellingOrderDict valueForKey:@"logo"]);
@@ -339,12 +339,12 @@
         NSString *totalDash = REMOVE_NULL_VALUE([orderDict valueForKey:@"gross"]);
         NSString *status = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([orderDict valueForKey:@"status"])];
         
-        UIView *cellView = cell.imgView.superview;
+        UIView *cellView = cell.bankImageView.superview;
         
         WOCAsyncImageView *imageView = (WOCAsyncImageView *)[cellView viewWithTag:IMAGE_VIEW_TAG];
         
         if (imageView == nil) {
-            imageView = [[WOCAsyncImageView alloc] initWithFrame:cell.imgView.frame];
+            imageView = [[WOCAsyncImageView alloc] initWithFrame:cell.bankImageView.frame];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
             imageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
@@ -352,7 +352,7 @@
             [cellView addSubview:imageView];
         }
         
-        cell.imgView.hidden = YES;
+        cell.bankImageView.hidden = YES;
         imageView.hidden = NO;
         
         //get image view
@@ -369,11 +369,11 @@
             //cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
         }
         
-        cell.lblName.text = bankName;
+        cell.nameLabel.text = bankName;
         if ([[[orderDict valueForKey:@"nearestBranch"] valueForKey:@"phone"] isEqual:[NSNull null]]) {
-            [cell.lblPhone setHidden:YES];
+            [cell.phoneLabel setHidden:YES];
         }
-        cell.lblCashDeposit.text = [NSString stringWithFormat:@"Verified Deposits: $%.02f",depositAmount];
+        cell.cashDepositLabel.text = [NSString stringWithFormat:@"Verified Deposits: $%.02f",depositAmount];
         
         NSNumber *num = [NSNumber numberWithDouble:([totalDash doubleValue] * 1000000)];
         NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
@@ -386,8 +386,8 @@
         [numFormatter setGroupingSeparator:@","];
         [numFormatter setGroupingSize:3];
         NSString *stringNum = [numFormatter stringFromNumber:num];
-        cell.lblTotalDash.text = [NSString stringWithFormat:@"Available %@: %@ (%@ %@)",WOC_CURRENTCY_SPECIAL,totalDash,stringNum,WOC_CURRENTCY_SYMBOL_MINOR];
-        cell.lblStatus.text = [self checkStatus:status];
+        cell.totalDashLabel.text = [NSString stringWithFormat:@"Available %@: %@ (%@ %@)",WOCCurrencySpecial,totalDash,stringNum,WOCCurrencySymbolMinor];
+        cell.statusLabel.text = [self checkStatus:status];
         
         return cell;
     }
@@ -398,7 +398,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     if (section == 3) {
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.sellingSummaryTableView.frame.size.width, 50)];
         headerView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
         UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, headerView.frame.size.width - 30, headerView.frame.size.height - 15)];
         lblTitle.text = @"Incoming Order History";
@@ -408,7 +408,7 @@
         lblTitle.layer.cornerRadius = 10.0;
         lblTitle.layer.masksToBounds = YES;
         
-        [self setShadowOnButton:lblTitle];
+        [self setShadowOnView:lblTitle];
         [headerView addSubview:lblTitle];
         return headerView;
     }

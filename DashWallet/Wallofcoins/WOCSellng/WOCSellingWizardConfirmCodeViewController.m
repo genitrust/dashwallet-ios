@@ -26,71 +26,71 @@
     
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnPurchaseCode];
+    [self setShadowOnButton:self.confirmVarificationCodeButton];
     
-    NSString *phoneNo = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+    NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     
-    self.descLable.text = [NSString stringWithFormat:@"The Mobile phone %@ will receive a verification code within 10 seconds.When you receive the code, input it below.",phoneNo];
+    self.descriptionLabel.text = [NSString stringWithFormat:@"The Mobile phone %@ will receive a verification code within 10 seconds.When you receive the code, input it below.",phoneNo];
     if (self.purchaseCode != nil) {
-        self.txtPurchaseCode.text = REMOVE_NULL_VALUE(self.purchaseCode);
+        self.confirmCodeTextfield.text = REMOVE_NULL_VALUE(self.purchaseCode);
     } else {
-        self.txtPurchaseCode.text = @"";
+        self.confirmCodeTextfield.text = @"";
     }
-    self.txtPurchaseCode.delegate = self;
-    [self.txtPurchaseCode becomeFirstResponder] ;
+    self.confirmCodeTextfield.delegate = self;
+    [self.confirmCodeTextfield becomeFirstResponder] ;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     if(textField.text.length == 4 && string.length == 1)
     {
-        [self performSelector:@selector(confirmPurchaseCodeClicked:) withObject:self afterDelay:1.0];
+        [self performSelector:@selector(onConfirmVarificationCodeClicked:) withObject:self afterDelay:1.0];
     }
     return YES;
 }
 
 // MARK: - IBAction
 
-- (IBAction)confirmPurchaseCodeClicked:(id)sender {
+- (IBAction)onConfirmVarificationCodeClicked:(id)sender {
     
-    NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtCode = [self.confirmCodeTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([txtCode length] == 5) {
     
-        NSString *emailAddress = REMOVE_NULL_VALUE([self.defaults objectForKey:USER_DEFAULTS_LOCAL_EMAIL]);
-        NSString *bankAccountInfo = REMOVE_NULL_VALUE([self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_INFO]);
-        NSString *bankAccountID = REMOVE_NULL_VALUE([self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT]);
-        NSString *bankAccount = REMOVE_NULL_VALUE([self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT_NUMBER]);
-        NSString *bankName = REMOVE_NULL_VALUE([self.defaults objectForKey:USER_DEFAULTS_LOCAL_BANK_NAME]);
-        NSString *currentPrice = REMOVE_NULL_VALUE([self.defaults objectForKey:USER_DEFAULTS_LOCAL_PRICE]);
-        NSString *deviceCode = REMOVE_NULL_VALUE([self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE]);
-        NSString *deviceId = REMOVE_NULL_VALUE([self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_ID]);
-        NSString *token = REMOVE_NULL_VALUE([self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN]);
-        NSString *phoneNumber = REMOVE_NULL_VALUE([self.defaults valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER]);
-        NSString *phoneCode = REMOVE_NULL_VALUE([self.defaults valueForKey:USER_DEFAULTS_LOCAL_COUNTRY_CODE]);
+        NSString *emailAddress = REMOVE_NULL_VALUE([self.defaults objectForKey:WOCUserDefaultsLocalEmail]);
+        NSString *bankAccountInfo = REMOVE_NULL_VALUE([self.defaults objectForKey:WOCUserDefaultsLocalBankInfo]);
+        NSString *bankAccountID = REMOVE_NULL_VALUE([self.defaults objectForKey:WOCUserDefaultsLocalBankAccount]);
+        NSString *bankAccount = REMOVE_NULL_VALUE([self.defaults objectForKey:WOCUserDefaultsLocalBankAccountNumber]);
+        NSString *bankName = REMOVE_NULL_VALUE([self.defaults objectForKey:WOCUserDefaultsLocalBankName]);
+        NSString *currentPrice = REMOVE_NULL_VALUE([self.defaults objectForKey:WOCUserDefaultsLocalPrice]);
+        NSString *deviceCode = REMOVE_NULL_VALUE([self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode]);
+        NSString *deviceId = REMOVE_NULL_VALUE([self.defaults valueForKey:WOCUserDefaultsLocalDeviceId]);
+        NSString *token = REMOVE_NULL_VALUE([self.defaults valueForKey:WOCUserDefaultsAuthToken]);
+        NSString *phoneNumber = REMOVE_NULL_VALUE([self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber]);
+        NSString *phoneCode = REMOVE_NULL_VALUE([self.defaults valueForKey:WOCUserDefaultsLocalCountryCode]);
         phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@",phoneCode] withString:@""];
         phoneCode = [phoneCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
 
         NSDictionary *params = @{
-                                 API_BODY_DEVICE_CODE: deviceCode
+                                 WOCApiBodyDeviceCode: deviceCode
                                  };
         
         if (deviceId != nil) {
             
             params = @{
-                       API_BODY_PHONE_NUMBER:phoneNumber,
-                       API_BODY_EMAIL:emailAddress,
+                       WOCApiBodyPhoneNumber:phoneNumber,
+                       WOCApiBodyEmail:emailAddress,
                        @"phoneCode": phoneCode,
                        @"bankBusiness": bankAccountID,
-                       @"sellCrypto": CRYPTO_CURRENTCY,
+                       @"sellCrypto": WOCCryptoCurrency,
                        @"userEnabled": @"true",
                        @"dynamicPrice": @"false",
                        @"currentPrice": currentPrice,
                        @"name": bankName,
                        @"number":  bankAccount,
                        @"number2": bankAccount,
-                       API_BODY_DEVICE_CODE: deviceCode,
-                       API_BODY_DEVICE_ID: deviceId,
-                       API_BODY_JSON_PARAMETER: @"YES"
+                       WOCApiBodyDeviceCode: deviceCode,
+                       WOCApiBodyDeviceId: deviceId,
+                       WOCApiBodyJsonParameter: @"YES"
                        };
             [[APIManager sharedInstance] createAd:params response:^(id responseDict, NSError *error) {
                 
@@ -99,7 +99,7 @@
                 }
                 
                 WOCSellingAdsInstructionsViewController *adsInstructionsViewController = [self getViewController:@"WOCSellingAdsInstructionsViewController"];
-                adsInstructionsViewController.AdId = @"90";
+                adsInstructionsViewController.AdvertiseId = @"90";
                 [self pushViewController:adsInstructionsViewController animated:YES];
             }];
         }

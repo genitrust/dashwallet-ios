@@ -12,8 +12,8 @@
 // Enter Phone Number Screen
 @interface WOCSellingAdsInstructionsViewController : WOCBaseViewController
 
-@property (strong, nonatomic) NSString *accountInfoStr;
-@property (strong, nonatomic) NSString *currentPriceStr;
+@property (strong, nonatomic) NSString *accountInformation;
+@property (strong, nonatomic) NSString *currentPrice;
 @property (weak, nonatomic) IBOutlet UITextField *txtAccountCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtAccountName;
 @property (weak, nonatomic) IBOutlet UITextField *txtAccountNumber;
@@ -21,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UITextField *txtCurrentPrice;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (strong, nonatomic) NSString *AdId;
+@property (strong, nonatomic) NSString *AdvertiseId;
 - (IBAction)backToHomeScreenAction:(id)sender;
 
 @end

@@ -24,12 +24,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.nextButton];
     
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
-    self.txtPaymentCenter.inputView = self.pickerView;
+    self.paymentCenterTextfield.inputView = self.pickerView;
     
     [self getPaymentCenters];
 }
@@ -52,19 +52,19 @@
 
 // MARK: - IBAction
 
-- (IBAction)nextStepClicked:(id)sender {
+- (IBAction)onNextButtonClick:(id)sender {
     
     if ([self.bankId length] > 0) {
         WOCSellingWizardInputAmountViewController *inputAmountViewController = (WOCSellingWizardInputAmountViewController*)[self getViewController:@"WOCSellingWizardInputAmountViewController"];;
         inputAmountViewController.bankId = self.bankId;
-        NSString *bankInfo = [NSString stringWithFormat:@"%@ (-%@)",self.txtPaymentCenter.text,self.bankId];
-        [self.defaults setObject:bankInfo forKey:USER_DEFAULTS_LOCAL_BANK_INFO];
+        NSString *bankInfo = [NSString stringWithFormat:@"%@ (-%@)",self.paymentCenterTextfield.text,self.bankId];
+        [self.defaults setObject:bankInfo forKey:WOCUserDefaultsLocalBankInfo];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.txtPaymentCenter.text forKey:USER_DEFAULTS_LOCAL_BANK_NAME];
+        [self.defaults setObject:self.paymentCenterTextfield.text forKey:WOCUserDefaultsLocalBankName];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.bankId forKey:USER_DEFAULTS_LOCAL_BANK_ACCOUNT];
+        [self.defaults setObject:self.bankId forKey:WOCUserDefaultsLocalBankAccount];
         [self.defaults synchronize];
         
         [self pushViewController:inputAmountViewController animated:YES];
@@ -75,7 +75,7 @@
     }
 }
 
-- (IBAction)useNewAccountClick:(id)sender {
+- (IBAction)onUseNewAccountButtonClick:(id)sender {
     
     WOCSellingAddNewBankViewController *addNewBankViewController = (WOCSellingAddNewBankViewController*)[self getViewController:@"WOCSellingAddNewBankViewController"];
     [self pushViewController:addNewBankViewController animated:YES];
@@ -96,7 +96,7 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.txtPaymentCenter.text = self.paymentCenters[row][@"name"];
+    self.paymentCenterTextfield.text = self.paymentCenters[row][@"name"];
     self.bankId = [NSString stringWithFormat:@"%@",self.paymentCenters[row][@"id"]];
 }
 

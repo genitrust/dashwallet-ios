@@ -27,13 +27,13 @@
     self.mainView.layer.cornerRadius = 3.0;
     self.mainView.layer.masksToBounds = YES;
     
-    [self setShadowOnButton:self.btnLogin];
-    [self setShadowOnButton:self.btnForgotPassword];
+    [self setShadowOnButton:self.loginButton];
+    [self setShadowOnButton:self.forgotPasswordButton];
     
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:self.btnWOCLink.titleLabel.text];
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:self.WOCLinkButton.titleLabel.text];
     [titleString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(29, 13)];
     [titleString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(29, 13)];
-    [self.btnWOCLink setAttributedTitle:titleString forState:UIControlStateNormal];
+    [self.WOCLinkButton setAttributedTitle:titleString forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,15 +46,15 @@
 
 - (void)login:(NSString*)phoneNo password:(NSString*)password {
     NSDictionary *params = @{
-                             API_BODY_PASSWORD: password,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyPassword: password,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
         if (error == nil) {
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+            [self.defaults setValue:[responseDictionary valueForKey:WOCApiResponseToken] forKey:WOCUserDefaultsAuthToken];
+            [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
             [self.defaults synchronize];
             [self storeDeviceInfoLocally];
 
@@ -81,13 +81,13 @@
 - (void)registerDevice:(NSString*)phoneNo {
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *params =  @{
-                              API_BODY_NAME: API_BODY_DEVICE_NAME_IOS,
-                              API_BODY_CODE: deviceCode,
-                              API_BODY_JSON_PARAMETER:@"YES"
+                              WOCApiBodyName: WOCApiBodyDeviceName_IOS,
+                              WOCApiBodyCode: deviceCode,
+                              WOCApiBodyJsonParameter:@"YES"
                               };
     
     [[APIManager sharedInstance] registerDevice:params response:^(id responseDict, NSError *error) {
@@ -98,7 +98,7 @@
         if (error == nil) {
             NSDictionary *response = (NSDictionary*)responseDict;
             if (response.count > 0) {
-                NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:API_RESPONSE_ID]];
+                NSString *deviceId = [NSString stringWithFormat:@"%@",[response valueForKey:WOCApiResponseId]];
                 [self authorize:phoneNo deviceId:deviceId];
             }
         }
@@ -125,7 +125,7 @@
                         NSString *deviceId = [NSString stringWithFormat:@"%@",[dictionary valueForKey:@"id"]];
                         
                         if (deviceId.length > 0 && (![deviceId isEqualToString:@"(null)"])) {
-                            [self.defaults setValue:deviceId forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+                            [self.defaults setValue:deviceId forKey:WOCUserDefaultsLocalDeviceId];
                             [self.defaults synchronize];
                             [self authorize:phoneNo deviceId:deviceId];
                         }
@@ -150,12 +150,12 @@
     
     MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSString *deviceCode = [self.defaults valueForKey:USER_DEFAULTS_LOCAL_DEVICE_CODE];
+    NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
     
     NSDictionary *params = @{
-                             API_BODY_DEVICE_CODE: deviceCode,
-                             API_BODY_DEVICE_ID: deviceId,
-                             API_BODY_JSON_PARAMETER: @"YES"
+                             WOCApiBodyDeviceCode: deviceCode,
+                             WOCApiBodyDeviceId: deviceId,
+                             WOCApiBodyJsonParameter: @"YES"
                              };
     
     [[APIManager sharedInstance] login:params phone:phoneNo response:^(id responseDict, NSError *error) {
@@ -165,16 +165,16 @@
         
         if (error == nil) {
             NSDictionary *responseDictionary = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)responseDict];
-            [self.defaults setValue:[responseDictionary valueForKey:API_RESPONSE_TOKEN] forKey:USER_DEFAULTS_AUTH_TOKEN];
-            [self.defaults setValue:phoneNo forKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
-            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:API_RESPONSE_DEVICE_ID]] forKey:USER_DEFAULTS_LOCAL_DEVICE_ID];
+            [self.defaults setValue:[responseDictionary valueForKey:WOCApiResponseToken] forKey:WOCUserDefaultsAuthToken];
+            [self.defaults setValue:phoneNo forKey:WOCUserDefaultsLocalPhoneNumber];
+            [self.defaults setValue:[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:WOCApiResponseDeviceId]] forKey:WOCUserDefaultsLocalDeviceId];
             [self.defaults synchronize];
             [self storeDeviceInfoLocally];
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self dismissViewControllerAnimated:YES completion:nil];
                 //move to step 8
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OBSERVER_NAME_BUY_DASH_STEP_8 object:phoneNo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:WOCNotificationObserverNameBuyDashStep8 object:phoneNo];
             });
         }
         else {
@@ -187,15 +187,15 @@
 }
 // MARK: - IBAction
 
-- (IBAction)linkClicked:(id)sender {
+- (IBAction)onLinkButtonClick:(id)sender {
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
     }
 }
 
-- (IBAction)loginClicked:(id)sender {
-    NSString *password = [self.txtPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+- (IBAction)onLoginButtonClick:(id)sender {
+    NSString *password = [self.passwordTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([password length] > 0) {
         [self login:self.phoneNo password:password];
     }
@@ -204,14 +204,14 @@
     }
 }
 
-- (IBAction)forgotPasswordClicked:(id)sender {
+- (IBAction)onForgotPasswordButtonClick:(id)sender {
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/en/forgotPassword/"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
     }
 }
 
-- (IBAction)closeClicked:(id)sender {
+- (IBAction)onCloseButtonClick:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

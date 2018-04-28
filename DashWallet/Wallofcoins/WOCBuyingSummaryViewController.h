@@ -12,14 +12,14 @@
 
 @property (strong, nonatomic) NSString *phoneNo;
 @property (strong, nonatomic) NSArray *orders;
-@property (assign) BOOL isFromSend;
-@property (assign) BOOL hideSuccessAlert;
-@property (weak, nonatomic) IBOutlet UITextView *txtInstruction;
-@property (weak, nonatomic) IBOutlet UILabel *lblInstruction;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIButton *btnBuyMoreDash;
+@property (assign, nonatomic) BOOL isFromSend;
+@property (assign, nonatomic) BOOL isHideSuccessAlert;
+@property (weak, nonatomic) IBOutlet UITextView *instructionTextField;
+@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
+@property (weak, nonatomic) IBOutlet UITableView *buyingSummaryTableView;
+@property (weak, nonatomic) IBOutlet UIButton *buyMoreDashButton;
 
-- (IBAction)buyMoreDashClicked:(id)sender;
+- (IBAction)onBuyMoreDashButtonClick:(id)sender;
 - (void)displayAlert;
 
 @end

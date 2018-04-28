@@ -1655,7 +1655,7 @@ static NSString *sanitizeString(NSString *s)
     [sender setEnabled:NO];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:STORYBOARD_WOC_SELL bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:WOCsellingStoryboard bundle:nil];
         UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
         [navController.navigationBar setTintColor:[UIColor whiteColor]];
         BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];

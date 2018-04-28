@@ -17,8 +17,8 @@
 @property (strong, nonatomic) NSString *discoveryId;
 @property (strong, nonatomic) NSString *amount;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblInstruction;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
+@property (weak, nonatomic) IBOutlet UITableView *offerListtTableView;
 
 - (IBAction)orderClicked:(id)sender;
 - (NSIndexPath*)getIndexPathfromTag:(NSInteger)tag;

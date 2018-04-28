@@ -32,7 +32,7 @@
 
 - (IBAction)nextClicked:(id)sender {
     
-    [self.defaults removeObjectForKey:API_BODY_COUNTRY_CODE];
+    [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
     
     [self.defaults synchronize];
     
@@ -53,7 +53,7 @@
     }
 }
 
--(void)setCountryWithZipCode:(NSString*)zipCode {
+- (void)setCountryWithZipCode:(NSString*)zipCode {
     
     CLGeocoder* geoCoder = [[CLGeocoder alloc] init];
     CNMutablePostalAddress *postalAddress = [[CNMutablePostalAddress alloc] init];
@@ -64,7 +64,7 @@
         [geoCoder geocodePostalAddress:postalAddress completionHandler:^(NSArray *placemarks, NSError *error) {
             if ([placemarks count] > 0) {
                 CLPlacemark* placemark = [placemarks objectAtIndex:0];
-                [self.defaults setObject:[placemark ISOcountryCode].lowercaseString forKey:API_BODY_COUNTRY_CODE];
+                [self.defaults setObject:[placemark ISOcountryCode].lowercaseString forKey:WOCApiBodyCountryCode];
                 [self.defaults synchronize];
                 NSLog(@"%@",[placemark description]);
                 NSLog(@"======> country code is %@",[placemark ISOcountryCode]);
@@ -85,7 +85,7 @@
                                  NSString* state = placemark.addressDictionary[(NSString*)kABPersonAddressStateKey];
                                  NSString* country = placemark.addressDictionary[(NSString*)kABPersonAddressCountryCodeKey];
                                  
-                                 [self.defaults setObject:country.lowercaseString forKey:API_BODY_COUNTRY_CODE];
+                                 [self.defaults setObject:country.lowercaseString forKey:WOCApiBodyCountryCode];
                                  [self.defaults synchronize];
                                  NSLog(@"%@",[placemark description]);
                                  NSLog(@"======> country code is city [%@] state [%@] country [%@]",city,state,country);

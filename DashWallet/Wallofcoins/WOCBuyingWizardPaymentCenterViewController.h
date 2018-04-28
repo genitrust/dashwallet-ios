@@ -12,9 +12,9 @@
 
 @interface WOCBuyingWizardPaymentCenterViewController : WOCBaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *txtPaymentCenter;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
+@property (weak, nonatomic) IBOutlet UITextField *paymentCenterTextField;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
-- (IBAction)nextStepClicked:(id)sender;
+- (IBAction)onNextButtonClick:(id)sender;
 
 @end

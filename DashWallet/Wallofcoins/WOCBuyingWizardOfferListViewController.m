@@ -25,8 +25,8 @@
 @property (strong, nonatomic) NSArray *offers;
 @property (strong, nonatomic) NSMutableDictionary *offersDict;
 
-@property (assign) BOOL incremented;
-@property (assign) BOOL isExtendedSearch;
+@property (assign, nonatomic) BOOL incremented;
+@property (assign, nonatomic) BOOL isExtendedSearch;
 @end
 
 @implementation WOCBuyingWizardOfferListViewController
@@ -34,7 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+    self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
     [self getOffers];
 }
 
@@ -68,18 +68,18 @@
                 if ([[responseDictionary valueForKey:@"isExtendedSearch"] boolValue]) {
                     self.isExtendedSearch = YES;
                     
-                    self.lblInstruction.text = [NSString stringWithFormat:@"Most Convenient Options While $%@ is not available, we gathered the closest options.You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                    self.instructionLabel.text = [NSString stringWithFormat:@"Most Convenient Options While $%@ is not available, we gathered the closest options.You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                 }
                 else {
                     self.isExtendedSearch = NO;
                     
                     if ([[responseDictionary valueForKey:@"incremented"] boolValue]) {
                         self.incremented = YES;
-                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
                     else {
                         self.incremented = NO;
-                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
                 }
                 
@@ -100,11 +100,11 @@
                         NSArray *doubleOffer = [self getOffersFromDoubleDeposit:offersArray];
                         if (doubleOffer.count > 0) {
                             if (self.isExtendedSearch) {
-                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for under $%@ cash.",WOC_CURRENTCY,self.amount];
+                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for under $%@ cash.",WOCCurrency,self.amount];
                                self.offersDict[key] = doubleOffer;
                             }
                             else {
-                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for $%@ cash.",WOC_CURRENTCY,self.amount];
+                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for $%@ cash.",WOCCurrency,self.amount];
                                 self.offersDict[key] = doubleOffer;
                             }
                         }
@@ -117,11 +117,11 @@
                         NSArray *multipleBankOffer = [self getOffersFromDoubleDeposit:offersArray]; NSArray *doubleOffer = [self getOffersFromDoubleDeposit:offersArray];
                         if (multipleBankOffer.count > 0) {
                             if (self.isExtendedSearch) {
-                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for under $%@ cash from multiple banks.",WOC_CURRENTCY,self.amount];
+                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for under $%@ cash from multiple banks.",WOCCurrency,self.amount];
                                 self.offersDict[key] = multipleBankOffer;
                             }
                             else {
-                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for $%@ cash from multiple banks.",WOC_CURRENTCY,self.amount];
+                                NSString *key = [NSString stringWithFormat:@"Best Value options: more %@ for $%@ cash from multiple banks.",WOCCurrency,self.amount];
                                 self.offersDict[key] = multipleBankOffer;
                             }
                         }
@@ -129,7 +129,7 @@
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                  [self.tableView reloadData];
+                  [self.offerListTableView reloadData];
                 });
                 
             }
@@ -152,7 +152,7 @@
     }
 }
 
--(NSArray*)getOffersFromDoubleDeposit:(NSArray*)doubleDepositOffers
+- (NSArray*)getOffersFromDoubleDeposit:(NSArray*)doubleDepositOffers
 {
     NSMutableArray *signleDepositOfferArray = [NSMutableArray arrayWithCapacity:0];
     for (NSDictionary *offerDictionary in doubleDepositOffers)
@@ -196,18 +196,18 @@
                 NSDictionary *amountDict = firstOfferDict[@"amount"];
                 NSDictionary *secondAmountDict = offerDictionary[@"secondOffer"];
                 
-                NSNumber *firstOfferMinorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(firstOfferDict[@"amount"][CRYPTO_CURRENTCY_SMALL]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
+                NSNumber *firstOfferMinorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(firstOfferDict[@"amount"][WOCCryptoCurrencySmall]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
                 
-                NSNumber *secondOfferMinorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(secondOffer[@"amount"][CRYPTO_CURRENTCY_SMALL]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
+                NSNumber *secondOfferMinorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(secondOffer[@"amount"][WOCCryptoCurrencySmall]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
                 
                 NSNumber *totoalMinorNumber =  [NSNumber numberWithFloat:(firstOfferMinorNumber.longLongValue + secondOfferMinorNumber.floatValue)] ;
                 
                 NSString *totalMinorStr = [self getCryptoPrice:totoalMinorNumber];
                 NSLog(@"totalMinorStr = %@",totalMinorStr);
                 
-                NSNumber *firstOfferMajorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(firstOfferDict[@"amount"][CRYPTO_CURRENTCY]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
+                NSNumber *firstOfferMajorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(firstOfferDict[@"amount"][WOCCryptoCurrency]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
                 
-                NSNumber *secondOfferMajorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(secondOffer[@"amount"][CRYPTO_CURRENTCY]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
+                NSNumber *secondOfferMajorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(secondOffer[@"amount"][WOCCryptoCurrency]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
                 
                 NSNumber *totoalMajorNumber =  [NSNumber numberWithFloat:(firstOfferMajorNumber.longLongValue + secondOfferMajorNumber.floatValue)] ;
                 
@@ -215,8 +215,8 @@
                 NSLog(@"totalMajorStr = %@",totalMajorStr);
 
                 reviceOfferDict[@"amount"] = @{
-                                            CRYPTO_CURRENTCY : totalMajorStr,
-                                            CRYPTO_CURRENTCY_SMALL : totalMinorStr,
+                                            WOCCryptoCurrency : totalMajorStr,
+                                            WOCCryptoCurrencySmall : totalMinorStr,
                                             @"bits" : [NSNumber numberWithFloat:([amountDict[@"bits"] floatValue] + [secondAmountDict[@"bits"] floatValue])],
                                             @"BTC" : [NSNumber numberWithFloat:([amountDict[@"BTC"] floatValue] + [secondAmountDict[@"BTC"] floatValue])]
                                             };
@@ -241,7 +241,7 @@
             [hud hideAnimated:YES];
         });
         
-        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:USER_DEFAULTS_LOCAL_PHONE_NUMBER];
+        NSString *phoneNo = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsLocalPhoneNumber];
 
         if (error == nil) {
             if ([responseDict isKindOfClass:[NSArray class]]) {
@@ -276,7 +276,7 @@
             NSArray *offerArray = self.offersDict[key];
             NSDictionary *offerDict = offerArray[indexPath.row];
             
-            buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:API_RESPONSE_ID]];
+            buyingInstructionsViewController.offerId = [NSString stringWithFormat:@"%@",[offerDict valueForKey:WOCApiResponseId]];
             [self pushViewController:buyingInstructionsViewController animated:YES];
         }
         else {
@@ -288,9 +288,9 @@
 
 // MARK: - IBAction
 
-- (IBAction)orderClicked:(id)sender {
+- (IBAction)onOrderButtonClicked:(id)sender {
     
-    NSString *token = [self.defaults valueForKey:USER_DEFAULTS_AUTH_TOKEN];
+    NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     if (token != nil && (![token isEqualToString:@"(null)"])) {
         [self getOrders:[sender tag]];
     }
@@ -317,7 +317,7 @@
 }
 
 // MARK: - UITableView DataSource
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return self.offersDict.allKeys.count;
 }
@@ -335,13 +335,13 @@
     static const NSInteger OTHER_IMAGE_VIEW_TAG = 99;
     NSString *cellIdentifier = @"offerCell";
     WOCOfferCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    UIView *cellView = cell.imgView.superview;
+    UIView *cellView = cell.bankImageView.superview;
     
     WOCAsyncImageView *imageView = (WOCAsyncImageView *)[cellView viewWithTag:IMAGE_VIEW_TAG];
     WOCAsyncImageView *otherImageView = (WOCAsyncImageView *)[cellView viewWithTag:OTHER_IMAGE_VIEW_TAG];
     
     if (imageView == nil) {
-        imageView = [[WOCAsyncImageView alloc] initWithFrame:cell.imgView.frame];
+        imageView = [[WOCAsyncImageView alloc] initWithFrame:cell.bankImageView.frame];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         imageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
@@ -351,7 +351,7 @@
     
     if (otherImageView == nil) {
         
-        otherImageView = [[WOCAsyncImageView alloc] initWithFrame:cell.otherBankImgView.frame];
+        otherImageView = [[WOCAsyncImageView alloc] initWithFrame:cell.otherBankImageView.frame];
         otherImageView.contentMode = UIViewContentModeScaleAspectFill;
         otherImageView.clipsToBounds = YES;
         otherImageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
@@ -360,8 +360,8 @@
         otherImageView.hidden = YES;
     }
     
-    cell.imgView.hidden = YES;
-    cell.otherBankImgView.hidden = YES;
+    cell.bankImageView.hidden = YES;
+    cell.otherBankImageView.hidden = YES;
     otherImageView.hidden = YES;
     imageView.hidden = NO;
     
@@ -375,14 +375,14 @@
     
     NSDictionary *offerDict = offerArray[indexPath.row];
     if (self.incremented || self.isExtendedSearch) {
-        [cell.lblDollar setHidden:NO];
+        [cell.dollarLabel setHidden:NO];
     }
     else {
-        [cell.lblDollar setHidden:NO];
+        [cell.dollarLabel setHidden:NO];
     }
     
-    NSString *dashAmount = [NSString stringWithFormat:@"%@ %@",WOC_CURRENTCY_SYMBOL,REMOVE_NULL_VALUE([[offerDict valueForKey:@"amount"] valueForKey:CRYPTO_CURRENTCY])];
-    NSString *bits = [NSString stringWithFormat:@"(%@ %@)",WOC_CURRENTCY_SYMBOL_MINOR,REMOVE_NULL_VALUE([[offerDict valueForKey:@"amount"] valueForKey:CRYPTO_CURRENTCY_SMALL])];
+    NSString *dashAmount = [NSString stringWithFormat:@"%@ %@",WOCCurrencySymbol,REMOVE_NULL_VALUE([[offerDict valueForKey:@"amount"] valueForKey:WOCCryptoCurrency])];
+    NSString *bits = [NSString stringWithFormat:@"(%@ %@)",WOCCurrencySymbolMinor,REMOVE_NULL_VALUE([[offerDict valueForKey:@"amount"] valueForKey:WOCCryptoCurrencySmall])];
     NSString *dollarAmount = [NSString stringWithFormat:@"Pay $%@",REMOVE_NULL_VALUE([[offerDict valueForKey:@"deposit"] valueForKey:@"amount"])];
     NSString *bankName = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([offerDict valueForKey:@"bankName"])];
     NSString *bankAddress = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([offerDict valueForKey:@"address"])];
@@ -391,17 +391,17 @@
     NSString *bankIcon = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([offerDict valueForKey:@"bankIcon"])];
     NSString *otherbankLogo = [NSString stringWithFormat:@"%@",REMOVE_NULL_VALUE([offerDict valueForKey:@"otherBankLogo"])];
 
-    cell.lblLocation.font = [UIFont systemFontOfSize:12];
-    cell.lblDashTitle.text = dashAmount;
-    cell.lblDashSubTitle.text = bits;
-    cell.lblDollar.text = dollarAmount;
-    cell.lblBankName.text = bankName;
-    cell.lblLocation.text = bankAddress;
+    cell.locationLabel.font = [UIFont systemFontOfSize:12];
+    cell.dashTitleLabel.text = dashAmount;
+    cell.dashSubTitleLabel.text = bits;
+    cell.dollarLabel.text = dollarAmount;
+    cell.bankNameLabel.text = bankName;
+    cell.locationLabel.text = bankAddress;
     
     if (bankLocationUrl.length > 0) {
-        [cell.btnLocation setHidden:NO];
-        cell.btnLocation.tag = indexPath.section * 100000 + indexPath.row;
-        [cell.btnLocation addTarget:self action:@selector(checkLocationClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.locationButton setHidden:NO];
+        cell.locationButton.tag = indexPath.section * 100000 + indexPath.row;
+        [cell.locationButton addTarget:self action:@selector(checkLocationClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (offerDict[@"isMultipleBank"] != nil) {
@@ -410,7 +410,7 @@
         
         if (isMultipleBank) {
             bankAddress = [offerDict valueForKey:@"otherBankName"];
-            cell.lblLocation.font = cell.lblBankName.font;
+            cell.locationLabel.font = cell.bankNameLabel.font;
         }
     
         
@@ -431,11 +431,11 @@
         
         imageView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",bankIcon]];
         
-        cell.imgView.image = [UIImage imageNamed:@"ic_account_balance_black"];
+        cell.bankImageView.image = [UIImage imageNamed:@"ic_account_balance_black"];
     }
     
-    cell.btnOrder.tag = indexPath.section * 100000 + indexPath.row;
-    [cell.btnOrder addTarget:self action:@selector(orderClicked:) forControlEvents:UIControlEventTouchUpInside];
+    cell.orderButton.tag = indexPath.section * 100000 + indexPath.row;
+    [cell.orderButton addTarget:self action:@selector(onOrderButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -456,12 +456,7 @@
     return 125.0;
 }
 
-//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    NSString *key = self.offersDict.allKeys[section];
-//    return key;
-//}
-
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     float height = 20.0;
     if (section > 0) {
         height = 50.0;
@@ -477,14 +472,14 @@
     return headerView;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section > 0){
         return 50.0;
     }
     return 20.0;
 }
 
--(NSIndexPath*)getIndexPathfromTag:(NSInteger)tag {
+- (NSIndexPath*)getIndexPathfromTag:(NSInteger)tag {
     
     int row = tag % 100000;
     int section = tag / 100000;

@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vuo-Gb-kP9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vuo-Gb-kP9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Helvetica.ttc">
+            <string>Helvetica</string>
+            <string>Helvetica-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="g3g-Mk-ryX">
@@ -83,7 +89,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="sellYourCryptoClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="tLZ-kt-jpu"/>
+                                            <action selector="onSellYourCryptoButtonClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="dgI-sj-BFC"/>
                                         </connections>
                                     </button>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZF7-ZD-36h" userLabel="signoutView">
@@ -103,7 +109,7 @@
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="signOutClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="MKw-7w-xKW"/>
+                                                    <action selector="onSignOutButtonClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="1Oz-Tv-7ZI"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QvD-N7-3xq">
@@ -113,9 +119,6 @@
                                                 <state key="normal" title="ORDER LISTING">
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="onOrderListClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="egG-KK-abk"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -168,10 +171,10 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnSellYourCrypto" destination="JMG-98-Lub" id="UPx-LX-E2n"/>
-                        <outlet property="btnSignOut" destination="ZqV-rz-NfQ" id="7dO-Vg-HjV"/>
-                        <outlet property="lblDescription" destination="imh-jL-JKc" id="jls-kg-ZRa"/>
-                        <outlet property="orderListBtn" destination="QvD-N7-3xq" id="dKC-KF-tL9"/>
+                        <outlet property="descriptionLabel" destination="imh-jL-JKc" id="Plh-pB-dYc"/>
+                        <outlet property="orderListButton" destination="QvD-N7-3xq" id="31M-zf-BYC"/>
+                        <outlet property="sellYourCryptoButton" destination="JMG-98-Lub" id="Dym-Vv-rEa"/>
+                        <outlet property="signOutButton" destination="ZqV-rz-NfQ" id="n0T-bw-o0P"/>
                         <outlet property="signoutView" destination="ZF7-ZD-36h" id="jQz-NE-nNa"/>
                     </connections>
                 </viewController>
@@ -399,7 +402,7 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="getOffersClicked:" destination="mKY-uE-PMF" eventType="touchUpInside" id="h5b-fD-YVg"/>
+                                            <action selector="getOffersButtonClick:" destination="mKY-uE-PMF" eventType="touchUpInside" id="KCG-X6-1xQ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -439,12 +442,12 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnGetOffers" destination="O1X-wd-ScQ" id="PKI-Nz-Zrj"/>
+                        <outlet property="dashTextfield" destination="XyP-LS-ZgF" id="0Q3-2a-KiS"/>
+                        <outlet property="dollarTextfield" destination="zUZ-uy-hoO" id="2I8-4L-Hua"/>
+                        <outlet property="getOffersButton" destination="O1X-wd-ScQ" id="0id-g6-h9W"/>
                         <outlet property="line2" destination="23U-Yd-dX5" id="vxY-DH-cTn"/>
-                        <outlet property="line2Height" destination="aCd-fh-s5S" id="g5H-XT-fxo"/>
-                        <outlet property="titleLable" destination="i4l-0S-g4e" id="qkX-I2-OdB"/>
-                        <outlet property="txtDash" destination="XyP-LS-ZgF" id="y4f-an-Zpf"/>
-                        <outlet property="txtDollar" destination="zUZ-uy-hoO" id="qPx-Ue-BnG"/>
+                        <outlet property="line2HeightConstant" destination="aCd-fh-s5S" id="3jv-BE-PiP"/>
+                        <outlet property="titleLabel" destination="i4l-0S-g4e" id="Sp1-Sg-jv7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgx-M3-9Nb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -628,22 +631,22 @@
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
-                                                    <outlet property="btnLocation" destination="zCI-r8-N0O" id="EHk-Pa-DNG"/>
-                                                    <outlet property="btnOrder" destination="Ojl-6K-3k2" id="d9Y-vn-sxJ"/>
-                                                    <outlet property="imgView" destination="RJh-hJ-szA" id="gm7-Gg-QL4"/>
-                                                    <outlet property="lblBankName" destination="Rnf-dC-1XZ" id="y9n-9d-92c"/>
-                                                    <outlet property="lblDashSubTitle" destination="tmj-Ru-eun" id="38n-QQ-JUL"/>
-                                                    <outlet property="lblDashTitle" destination="Vha-Rc-84C" id="cGt-w8-32I"/>
-                                                    <outlet property="lblDollar" destination="Pdu-xK-0C0" id="P7R-xl-oFf"/>
-                                                    <outlet property="lblLocation" destination="mJ7-qW-1nh" id="Ymw-iJ-Yjn"/>
+                                                    <outlet property="bankImageView" destination="RJh-hJ-szA" id="6j6-K2-ctb"/>
+                                                    <outlet property="bankNameLabel" destination="Rnf-dC-1XZ" id="k1S-u3-QRe"/>
+                                                    <outlet property="dashSubTitleLabel" destination="tmj-Ru-eun" id="QIP-hD-D1s"/>
+                                                    <outlet property="dashTitleLabel" destination="Vha-Rc-84C" id="3Xh-ch-Mgz"/>
+                                                    <outlet property="dollarLabel" destination="Pdu-xK-0C0" id="2X1-Em-oul"/>
+                                                    <outlet property="locationButton" destination="zCI-r8-N0O" id="0b4-qo-pic"/>
+                                                    <outlet property="locationLabel" destination="mJ7-qW-1nh" id="v4L-aH-mLt"/>
                                                     <outlet property="mainView" destination="EnV-jE-hm5" id="JdO-Z3-NDL"/>
-                                                    <outlet property="otherBankImgView" destination="HVK-Bm-0bi" id="puE-hp-BTP"/>
+                                                    <outlet property="orderButton" destination="Ojl-6K-3k2" id="Chd-Fj-wfT"/>
+                                                    <outlet property="otherBankImageView" destination="HVK-Bm-0bi" id="S0Z-xJ-IOZ"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
                                             <outlet property="dataSource" destination="UM8-OT-Ead" id="rdg-zG-PQm"/>
-                                            <outlet property="delegate" destination="UM8-OT-Ead" id="xNU-Ht-GOe"/>
+                                            <outlet property="delegate" destination="UM8-OT-Ead" id="gZj-3Y-1DI"/>
                                         </connections>
                                     </tableView>
                                 </subviews>
@@ -675,8 +678,9 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
+                        <outlet property="instructionLabel" destination="Lyl-eJ-WEn" id="CvP-6p-i3D"/>
                         <outlet property="lblInstruction" destination="Lyl-eJ-WEn" id="8Zr-Tq-aer"/>
-                        <outlet property="tableView" destination="HnD-od-cii" id="3B2-uP-BXf"/>
+                        <outlet property="offerListtTableView" destination="HnD-od-cii" id="dx6-fX-7jh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QVC-1u-n5d" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -759,9 +763,6 @@
                                         <state key="normal" title="[Do Not send me email]">
                                             <color key="titleColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
-                                        <connections>
-                                            <action selector="doNotSendMeEmailClicked:" destination="LL8-yH-U1T" eventType="touchUpInside" id="2IZ-JI-TnA"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oTs-kG-ZhV">
                                         <rect key="frame" x="168.5" y="143.5" width="78" height="45"/>
@@ -771,7 +772,8 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="nextClicked:" destination="LL8-yH-U1T" eventType="touchUpInside" id="t8r-W1-9QQ"/>
+                                            <action selector="onDoNotSendMeEmailButtonClick:" destination="LL8-yH-U1T" eventType="touchUpInside" id="XrY-Zn-PJt"/>
+                                            <action selector="onNextButtonClick:" destination="LL8-yH-U1T" eventType="touchUpInside" id="SeA-rc-OmZ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -817,8 +819,8 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnNext" destination="oTs-kG-ZhV" id="6dR-Tk-Jso"/>
-                        <outlet property="txtEmail" destination="Wf9-Ih-ptu" id="Hkv-8i-9I8"/>
+                        <outlet property="emailTextField" destination="Wf9-Ih-ptu" id="JBk-V6-38j"/>
+                        <outlet property="nextButton" destination="oTs-kG-ZhV" id="UMv-Dy-Ka6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yrr-Zp-yX3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -939,7 +941,7 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="nextClicked:" destination="K66-Y9-kRH" eventType="touchUpInside" id="U6S-TN-6ly"/>
+                                            <action selector="onNextButtonClicked:" destination="K66-Y9-kRH" eventType="touchUpInside" id="LoH-F0-lul"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -998,9 +1000,9 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnNext" destination="Oqc-hI-Ecl" id="91O-ES-QI4"/>
-                        <outlet property="txtCountryCode" destination="rtR-D1-uuY" id="7EN-DO-VJn"/>
-                        <outlet property="txtPhoneNumber" destination="6sm-T9-wiC" id="fwA-Xd-mcf"/>
+                        <outlet property="countryCodeTextfield" destination="rtR-D1-uuY" id="g1M-jH-pql"/>
+                        <outlet property="nextButton" destination="Oqc-hI-Ecl" id="asV-4L-joy"/>
+                        <outlet property="phoneNumberTextfield" destination="6sm-T9-wiC" id="UXK-Kj-GYh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oPx-x6-zcP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1425,7 +1427,7 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="nextClicked:" destination="sbX-Gh-pIb" eventType="touchUpInside" id="bH9-cO-BmF"/>
+                                            <action selector="onNextButtonClick:" destination="sbX-Gh-pIb" eventType="touchUpInside" id="8PA-Kl-7fQ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1503,11 +1505,11 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnNext" destination="Hia-S7-umP" id="9rV-qC-uj6"/>
-                        <outlet property="txtAccountCode" destination="C40-0f-tLl" id="QMv-m0-A2y"/>
-                        <outlet property="txtCurrentPrice" destination="Lx8-dd-KkR" id="nXq-AQ-04C"/>
-                        <outlet property="txtEmail" destination="k2u-nJ-h4x" id="mk2-8n-gG9"/>
-                        <outlet property="txtPhoneNumber" destination="fio-Th-NLH" id="7Zw-ge-BjC"/>
+                        <outlet property="accountCodeTextfield" destination="C40-0f-tLl" id="Noj-bp-6kE"/>
+                        <outlet property="currentPriceTextfield" destination="Lx8-dd-KkR" id="upC-It-Nl0"/>
+                        <outlet property="emailTextfield" destination="k2u-nJ-h4x" id="Dix-AC-sgh"/>
+                        <outlet property="nextButton" destination="Hia-S7-umP" id="YIc-mT-gGy"/>
+                        <outlet property="phoneNumberTextfield" destination="fio-Th-NLH" id="qtt-9a-eXH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bWJ-BU-Koh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2203,7 +2205,7 @@ When you receive the code, input it below.</string>
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="confirmPurchaseCodeClicked:" destination="7MS-bV-LaT" eventType="touchUpInside" id="kxo-kv-PWE"/>
+                                            <action selector="onConfirmVarificationCodeClicked:" destination="7MS-bV-LaT" eventType="touchUpInside" id="zRx-V1-K5W"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2245,9 +2247,9 @@ When you receive the code, input it below.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnPurchaseCode" destination="9Mt-YR-Bwm" id="D6O-hj-in1"/>
-                        <outlet property="descLable" destination="skx-xX-JdP" id="tm1-rJ-gOr"/>
-                        <outlet property="txtPurchaseCode" destination="QSZ-sO-pAr" id="eE6-We-GQx"/>
+                        <outlet property="confirmCodeTextfield" destination="QSZ-sO-pAr" id="RGi-fC-5HX"/>
+                        <outlet property="confirmVarificationCodeButton" destination="9Mt-YR-Bwm" id="b6N-mY-IXJ"/>
+                        <outlet property="descriptionLabel" destination="skx-xX-JdP" id="brn-sX-0b5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HYD-ra-F5D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2830,22 +2832,22 @@ Help is also available on the website.</string>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gaK-EJ-hkc" userLabel="bottomView">
-                                <rect key="frame" x="0.0" y="20" width="414" height="687"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="716"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y4f-dL-mfu" userLabel="buDashView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="155"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="161.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyi-2f-nQu">
-                                                <rect key="frame" x="12" y="15" width="390" height="40.5"/>
+                                                <rect key="frame" x="12" y="15" width="390" height="42"/>
                                                 <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                 <state key="normal" title="SELLING ACCOUNT"/>
                                                 <connections>
-                                                    <action selector="buyMoreDashClicked:" destination="dX6-gs-QNJ" eventType="touchUpInside" id="nw8-hu-KSB"/>
+                                                    <action selector="onBuyMoreDashButtonClick:" destination="dX6-gs-QNJ" eventType="touchUpInside" id="hB3-Eg-pP7"/>
                                                 </connections>
                                             </button>
                                             <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="asE-Y9-ygt">
-                                                <rect key="frame" x="22" y="64.5" width="370" height="83"/>
+                                                <rect key="frame" x="22" y="66" width="370" height="86.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <string key="text">Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -2853,7 +2855,7 @@ Help is also available on the website.</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GD-KR-ElS">
-                                                <rect key="frame" x="12" y="62" width="390" height="88"/>
+                                                <rect key="frame" x="12" y="63.5" width="390" height="91.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">Wall of Coins will verify your payment. This usually takes up to 10 minutes. To expedite your order, take a picture of your receipt and click here to email your receipt to Wall of Coins.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -2882,7 +2884,7 @@ Help is also available on the website.</string>
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="unJ-V2-uuc">
-                                        <rect key="frame" x="0.0" y="163" width="414" height="524"/>
+                                        <rect key="frame" x="0.0" y="169.5" width="414" height="546.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="summaryCell1" rowHeight="250" id="3el-fd-dvJ" customClass="WOCSummaryCell">
@@ -3016,18 +3018,21 @@ Help is also available on the website.</string>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
+                                                    <outlet property="bankImageView" destination="whn-Le-bqK" id="0QK-id-AQt"/>
+                                                    <outlet property="birthCountryLabel" destination="Txu-el-gov" id="dcy-w4-NTY"/>
+                                                    <outlet property="cashDepositLabel" destination="dQT-ee-hgs" id="Aqd-f1-at6"/>
+                                                    <outlet property="firstNameLabel" destination="ETa-8C-ZDv" id="oSP-Xk-0lk"/>
                                                     <outlet property="imgView" destination="whn-Le-bqK" id="bDw-S8-QtZ"/>
-                                                    <outlet property="lblBirthCountry" destination="Txu-el-gov" id="aNt-EU-Kg2"/>
-                                                    <outlet property="lblCashDeposit" destination="dQT-ee-hgs" id="UWy-eK-uWf"/>
-                                                    <outlet property="lblFirstName" destination="ETa-8C-ZDv" id="OwY-8P-GE5"/>
-                                                    <outlet property="lblLastName" destination="6rg-MG-qMF" id="EA5-1x-9Ue"/>
+                                                    <outlet property="lastNameLabel" destination="6rg-MG-qMF" id="D3g-47-cKy"/>
                                                     <outlet property="lblName" destination="8pM-qZ-H0I" id="r3E-Hb-ld2"/>
                                                     <outlet property="lblPhone" destination="YC0-Z2-xyH" id="gcC-gh-oiV"/>
-                                                    <outlet property="lblPickupState" destination="1zG-E7-N1S" id="WCO-dz-OuL"/>
-                                                    <outlet property="lblStatus" destination="hp4-EJ-INd" id="TdQ-RP-j1w"/>
-                                                    <outlet property="lblTotalDash" destination="mTS-8Q-zff" id="bEB-If-oEu"/>
                                                     <outlet property="mainView" destination="4ug-w8-sIE" id="gG2-6t-3Hr"/>
+                                                    <outlet property="nameLabel" destination="8pM-qZ-H0I" id="7ZP-DH-C1c"/>
+                                                    <outlet property="phoneLabel" destination="YC0-Z2-xyH" id="fcv-HB-Muo"/>
+                                                    <outlet property="pickupStateLabel" destination="1zG-E7-N1S" id="mzm-gf-TuQ"/>
+                                                    <outlet property="statusLabel" destination="hp4-EJ-INd" id="HQ3-0e-itW"/>
                                                     <outlet property="statusView" destination="bxi-VY-sz2" id="ey2-Xb-9au"/>
+                                                    <outlet property="totalDashLabel" destination="mTS-8Q-zff" id="JOt-7A-Dxu"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="summaryCell" rowHeight="185" id="zym-Sb-DWW" customClass="WOCSummaryCell">
@@ -3126,14 +3131,14 @@ Help is also available on the website.</string>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
-                                                    <outlet property="imgView" destination="z2t-zq-e3V" id="lSA-Gn-31h"/>
-                                                    <outlet property="lblCashDeposit" destination="dMV-2Z-bkl" id="MCZ-KG-6JX"/>
-                                                    <outlet property="lblName" destination="uNe-gp-vmD" id="bzm-eU-VBV"/>
-                                                    <outlet property="lblPhone" destination="E3J-Db-1OW" id="X93-zE-xvh"/>
-                                                    <outlet property="lblStatus" destination="TB7-nm-oIA" id="tqg-Dh-owL"/>
-                                                    <outlet property="lblTotalDash" destination="fxg-77-GKN" id="aov-Ch-8Mf"/>
+                                                    <outlet property="bankImageView" destination="z2t-zq-e3V" id="YHM-Fv-FDe"/>
+                                                    <outlet property="cashDepositLabel" destination="dMV-2Z-bkl" id="DMQ-cO-WZ8"/>
                                                     <outlet property="mainView" destination="G77-Th-ndU" id="B0f-b9-kTL"/>
+                                                    <outlet property="nameLabel" destination="uNe-gp-vmD" id="XmO-18-iHb"/>
+                                                    <outlet property="phoneLabel" destination="E3J-Db-1OW" id="onC-JR-kjP"/>
+                                                    <outlet property="statusLabel" destination="TB7-nm-oIA" id="Zmf-M0-CKF"/>
                                                     <outlet property="statusView" destination="4sN-bO-v0e" id="JmS-ng-zQN"/>
+                                                    <outlet property="totalDashLabel" destination="fxg-77-GKN" id="Vio-6X-DmE"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="linkCell" rowHeight="115" id="yGt-sH-d77" customClass="WOCSignOutCell">
@@ -3185,16 +3190,16 @@ Help is also available on the website.</string>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
-                                                    <outlet property="btnSignOut" destination="d6M-7B-iQk" id="WnI-Wf-0H0"/>
-                                                    <outlet property="lblDescription" destination="g5y-JV-UgM" id="h6f-dr-cpp"/>
+                                                    <outlet property="descriptionLabel" destination="g5y-JV-UgM" id="Gqf-5P-k0g"/>
                                                     <outlet property="mainView" destination="7KM-VX-ULW" id="VGT-fF-wXa"/>
+                                                    <outlet property="signOutButton" destination="d6M-7B-iQk" id="7JU-pm-72p"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="signOutCell" rowHeight="115" id="dl4-bN-kgJ" customClass="WOCSignOutCell">
                                                 <rect key="frame" x="0.0" y="551" width="414" height="115"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dl4-bN-kgJ" id="6lt-HD-acS">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="114.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="115"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqg-DR-fFF">
@@ -3237,9 +3242,9 @@ Help is also available on the website.</string>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
-                                                    <outlet property="btnSignOut" destination="CXD-0i-PrO" id="4kM-Lq-ukE"/>
-                                                    <outlet property="lblDescription" destination="feb-xX-zZP" id="E8D-XD-5H1"/>
+                                                    <outlet property="descriptionLabel" destination="feb-xX-zZP" id="5AZ-y7-bQe"/>
                                                     <outlet property="mainView" destination="cqg-DR-fFF" id="tdk-hT-Jf7"/>
+                                                    <outlet property="signOutButton" destination="CXD-0i-PrO" id="0pl-uK-s6b"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -3277,15 +3282,16 @@ Help is also available on the website.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnBuyMoreDash" destination="kyi-2f-nQu" id="cTJ-ha-4Vg"/>
-                        <outlet property="lblInstruction" destination="asE-Y9-ygt" id="GJy-u2-YW7"/>
+                        <outlet property="buyMoreDashButton" destination="kyi-2f-nQu" id="U50-0N-J3v"/>
+                        <outlet property="instructionLabel" destination="asE-Y9-ygt" id="jtA-be-hUw"/>
+                        <outlet property="instructionTextField" destination="1GD-KR-ElS" id="B2g-BV-LxL"/>
+                        <outlet property="sellingSummaryTableView" destination="unJ-V2-uuc" id="nxz-ym-U6y"/>
                         <outlet property="tableView" destination="unJ-V2-uuc" id="ODg-OU-qRc"/>
-                        <outlet property="txtInstruction" destination="1GD-KR-ElS" id="px3-ck-rfZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdO-KY-2eD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3864" y="3694"/>
+            <point key="canvasLocation" x="3901" y="3654"/>
         </scene>
         <!--Hold Issue View Controller-->
         <scene sceneID="qWK-PH-c69">
@@ -3466,7 +3472,7 @@ Help is also available on the website.</string>
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="nextStepClicked:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="bsb-pa-do0"/>
+                                            <action selector="onNextButtonClick:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="9aH-kt-QYs"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8f-8i-vm4">
@@ -3475,7 +3481,7 @@ Help is also available on the website.</string>
                                             <color key="titleColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="useNewAccountClick:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="GBA-tV-hFr"/>
+                                            <action selector="onUseNewAccountButtonClick:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="Ee5-Ot-zug"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3528,8 +3534,8 @@ Help is also available on the website.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnNext" destination="UWv-RW-Hmf" id="1oJ-Xr-k8v"/>
-                        <outlet property="txtPaymentCenter" destination="LAR-DE-N53" id="Zqg-yc-7W6"/>
+                        <outlet property="nextButton" destination="UWv-RW-Hmf" id="dLW-xF-1Al"/>
+                        <outlet property="paymentCenterTextfield" destination="LAR-DE-N53" id="ANj-ks-ivP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="26L-r9-tAm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4071,8 +4077,8 @@ Help is also available on the website.</string>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
-                                                    <outlet property="btnOrder" destination="Q87-Eo-A14" id="LfP-Gc-cdl"/>
                                                     <outlet property="mainView" destination="qla-EO-Xv7" id="bUF-hp-hhE"/>
+                                                    <outlet property="orderButton" destination="Q87-Eo-A14" id="m90-FH-PhF"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>

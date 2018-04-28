@@ -19,9 +19,9 @@
 @property (strong, nonatomic) NSString *emailId;
 @property (strong, nonatomic) NSString *deviceCode;
 
-@property (weak, nonatomic) IBOutlet UITextField *txtPurchaseCode;
-@property (weak, nonatomic) IBOutlet UIButton *btnPurchaseCode;
+@property (weak, nonatomic) IBOutlet UITextField *purchaseCodeTextField;
+@property (weak, nonatomic) IBOutlet UIButton *purchaseCodeButton;
 
-- (IBAction)confirmPurchaseCodeClicked:(id)sender;
+- (IBAction)onConfirmPurchaseCodeButtonClick:(id)sender;
 
 @end
