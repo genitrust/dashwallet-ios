@@ -191,7 +191,7 @@
 }
 
 // MARK: - IBAction
-- (IBAction)signInPhoneClicked:(id)sender {
+- (void)signInPhoneButtonClick:(UIButton *)sender {
     NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     if (token != nil && (![token isEqualToString:@"(null)"])) {
         [self getOrderList];
@@ -240,7 +240,7 @@
     NSString *phoneNumber = self.offers[indexPath.row];
     [cell.orderButton setTitle:[NSString stringWithFormat:@"SIGN IN: %@",phoneNumber] forState:UIControlStateNormal];
     [cell.orderButton setTitle:@"" forState:UIControlStateSelected];
-    [cell.orderButton addTarget:self action:@selector(signInPhoneClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.orderButton addTarget:self action:@selector(signInPhoneButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     cell.orderButton.tag = indexPath.row;
     
     return cell;

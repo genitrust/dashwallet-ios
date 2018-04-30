@@ -616,7 +616,7 @@
     [self openSite:[NSURL URLWithString:@"https://wallofcoins.com"]];
 }
 
-- (IBAction)signOutClicked:(id)sender {
+- (IBAction)onSignOutButtonClick:(id)sender {
     [self signOutWOC];
 }
 

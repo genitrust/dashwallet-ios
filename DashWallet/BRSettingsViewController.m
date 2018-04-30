@@ -777,5 +777,7 @@ error:(NSError *)error
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
-
+- (void)touchIdLimit:(UIButton *)button {
+    
+}
 @end

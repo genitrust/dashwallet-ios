@@ -81,6 +81,9 @@
     button.layer.shadowOpacity = 1;
     button.layer.masksToBounds = NO;
 }
+- (void)setButtonColor:(UIButton *)button {
+    button.backgroundColor = WOCTHEMECOLOR;
+}
 - (BOOL) isValidEmail:(NSString *)checkString
 {
     BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
@@ -234,14 +237,16 @@
 
 // MARK: - IBAction
 
-- (IBAction)backBtnClicked:(id)sender {
+- (IBAction)onBackButtonClick:(id)sender {
     [self back];
 }
 
-- (IBAction)backToMainViewBtnClicked:(id)sender {
+- (IBAction)onBackToMainViewButtonClick:(id)sender {
     [self backToMainView];
 }
 
+- (IBAction)onSignOutButtonClick:(id)sender {
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

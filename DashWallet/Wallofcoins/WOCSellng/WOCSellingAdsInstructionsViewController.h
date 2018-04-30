@@ -14,14 +14,17 @@
 
 @property (strong, nonatomic) NSString *accountInformation;
 @property (strong, nonatomic) NSString *currentPrice;
-@property (weak, nonatomic) IBOutlet UITextField *txtAccountCode;
-@property (weak, nonatomic) IBOutlet UITextField *txtAccountName;
-@property (weak, nonatomic) IBOutlet UITextField *txtAccountNumber;
-@property (weak, nonatomic) IBOutlet UITextField *txtAvailableCrypto;
-@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
-@property (weak, nonatomic) IBOutlet UITextField *txtCurrentPrice;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
 @property (strong, nonatomic) NSString *AdvertiseId;
+@property (weak, nonatomic) IBOutlet UITextField *bankNameTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *accountNameTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *accountNumberTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *availableCryptoTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
+@property (weak, nonatomic) IBOutlet UITextField *currentPriceTextfield;
+@property (weak, nonatomic) IBOutlet UIButton *editYourCurrentRateButton;
+@property (strong, nonatomic) IBOutlet UIButton *advancedOptionsButton;
+- (IBAction)onEditYourCurrentRateButtonClick:(UIButton *)sender;
 - (IBAction)backToHomeScreenAction:(id)sender;
+- (IBAction)onAdvancedOptionsButtonClick:(UIButton *)sender;
 
 @end

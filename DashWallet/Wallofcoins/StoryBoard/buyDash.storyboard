@@ -54,7 +54,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="imi-OQ-rYZ"/>
+                                            <action selector="onBackButtonClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="F1V-Q6-sW6"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -221,7 +221,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="7Hl-XP-CEu" eventType="touchUpInside" id="kHf-xe-TYY"/>
+                                            <action selector="onBackButtonClick:" destination="7Hl-XP-CEu" eventType="touchUpInside" id="JHh-aO-Ype"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -339,7 +339,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="mKY-uE-PMF" eventType="touchUpInside" id="LqH-JJ-hmv"/>
+                                            <action selector="onBackButtonClick:" destination="mKY-uE-PMF" eventType="touchUpInside" id="pXt-rn-yLc"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -495,7 +495,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="UM8-OT-Ead" eventType="touchUpInside" id="AIE-xo-TOS"/>
+                                            <action selector="onBackButtonClick:" destination="UM8-OT-Ead" eventType="touchUpInside" id="209-28-Gj0"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -730,7 +730,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="LL8-yH-U1T" eventType="touchUpInside" id="B1N-1d-MbW"/>
+                                            <action selector="onBackButtonClick:" destination="LL8-yH-U1T" eventType="touchUpInside" id="H4p-9F-fVy"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -859,7 +859,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="K66-Y9-kRH" eventType="touchUpInside" id="EMr-HN-sVT"/>
+                                            <action selector="onBackButtonClick:" destination="K66-Y9-kRH" eventType="touchUpInside" id="1mR-os-Z9c"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1014,7 +1014,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="7MS-bV-LaT" eventType="touchUpInside" id="G7M-6a-B4x"/>
+                                            <action selector="onBackButtonClick:" destination="7MS-bV-LaT" eventType="touchUpInside" id="7RV-Jw-nYO"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1505,7 +1505,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="dX6-gs-QNJ" eventType="touchUpInside" id="rF3-iy-4jq"/>
+                                            <action selector="onBackButtonClick:" destination="dX6-gs-QNJ" eventType="touchUpInside" id="ATP-hm-F95"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2091,7 +2091,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="jwx-K1-dRP"/>
+                                            <action selector="onBackButtonClick:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="gbd-gM-l09"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2218,7 +2218,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="Uay-Pv-htB" eventType="touchUpInside" id="Bsl-w4-eZC"/>
+                                            <action selector="onBackButtonClick:" destination="Uay-Pv-htB" eventType="touchUpInside" id="dYL-ZC-HCf"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2421,7 +2421,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="GKx-NV-b5B" eventType="touchUpInside" id="xwI-CX-nyZ"/>
+                                            <action selector="onBackButtonClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="6yg-uR-JDr"/>
                                         </connections>
                                     </button>
                                 </subviews>

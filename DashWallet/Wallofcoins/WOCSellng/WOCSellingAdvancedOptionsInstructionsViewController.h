@@ -12,11 +12,10 @@
 // Enter Phone Number Screen
 @interface WOCSellingAdvancedOptionsInstructionsViewController : WOCBaseViewController
 @property (assign, nonatomic) BOOL isBeforeCreateAd;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (weak, nonatomic) IBOutlet UITextField *txtMaxLimit;
-@property (weak, nonatomic) IBOutlet UITextField *txtMinLimit;
-
-- (IBAction)nextClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet UITextField *maxLimitTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *minLimitTextfield;
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
+- (IBAction)onSaveButtonClick:(id)sender;
 - (void)loadVarificationScreen;
 - (void)setupUI;
 @end

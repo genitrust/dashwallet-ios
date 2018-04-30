@@ -33,11 +33,12 @@
 
 - (NSString*)getCryptoPrice:(NSNumber*)number;
 
-- (IBAction)backBtnClicked:(id)sender;
-- (IBAction)signOutClicked:(id)sender;
-- (IBAction)backToMainViewBtnClicked:(id)sender;
+- (IBAction)onBackButtonClick:(id)sender;
+- (IBAction)onSignOutButtonClick:(id)sender;
+- (IBAction)onBackToMainViewButtonClick:(id)sender;
 - (BOOL)isValidEmail:(NSString *)checkString;
 - (void)setShadowOnView:(UIView *)view;
 - (void)setShadowOnButton:(UIButton *)button;
+- (void)setButtonColor: (UIButton *)button;
 
 @end

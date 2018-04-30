@@ -11,7 +11,7 @@
 
 @interface WOCBaseViewController : WOCDefaultBaseViewController
 
-- (IBAction)signOutClicked:(id)sender;
+- (IBAction)onSignOutButtonClick:(id)sender;
 
 - (void)loginWOC;
 - (void)signOutWOC;

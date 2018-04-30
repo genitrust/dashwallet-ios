@@ -25,12 +25,12 @@
     [super viewDidLoad];
     
     [self setShadowOnButton:self.nextButton];
-    
+    [self setButtonColor:self.nextButton];
+
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
     self.paymentCenterTextField.inputView = self.pickerView;
-    
     [self getPaymentCenters];
 }
 

@@ -54,7 +54,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="imi-OQ-rYZ"/>
+                                            <action selector="onBackButtonClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="DEr-8y-ZZs"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -74,14 +74,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dMX-Fv-pNB" userLabel="bottomView">
                                 <rect key="frame" x="0.0" y="20" width="414" height="716"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selling wizard" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="JHo-YN-2Qe">
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selling wizard" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="JHo-YN-2Qe">
                                         <rect key="frame" x="45.5" y="8" width="323" height="64.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                         <color key="textColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JMG-98-Lub">
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JMG-98-Lub">
                                         <rect key="frame" x="10.5" y="79.5" width="393" height="40.5"/>
                                         <color key="backgroundColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="15"/>
@@ -95,13 +95,13 @@
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZF7-ZD-36h" userLabel="signoutView">
                                         <rect key="frame" x="15" y="551" width="384" height="150"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imh-jL-JKc">
+                                            <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet is signed into Wall of Coins using your mobile number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imh-jL-JKc">
                                                 <rect key="frame" x="8" y="0.0" width="368" height="59"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15.5"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-rz-NfQ">
+                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-rz-NfQ">
                                                 <rect key="frame" x="10" y="59" width="364" height="38"/>
                                                 <color key="backgroundColor" red="0.83921568629999999" green="0.84313725490000002" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -112,7 +112,7 @@
                                                     <action selector="onSignOutButtonClick:" destination="BZs-Dv-J9R" eventType="touchUpInside" id="1Oz-Tv-7ZI"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QvD-N7-3xq">
+                                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QvD-N7-3xq">
                                                 <rect key="frame" x="10" y="104.5" width="364" height="38"/>
                                                 <color key="backgroundColor" red="0.98823529409999999" green="0.76470588240000004" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -202,7 +202,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="7Hl-XP-CEu" eventType="touchUpInside" id="kHf-xe-TYY"/>
+                                            <action selector="onBackButtonClick:" destination="7Hl-XP-CEu" eventType="touchUpInside" id="4On-uf-bNt"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -317,7 +317,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="mKY-uE-PMF" eventType="touchUpInside" id="LqH-JJ-hmv"/>
+                                            <action selector="onBackButtonClick:" destination="mKY-uE-PMF" eventType="touchUpInside" id="APi-Ol-xLp"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -474,7 +474,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="UM8-OT-Ead" eventType="touchUpInside" id="AIE-xo-TOS"/>
+                                            <action selector="onBackButtonClick:" destination="UM8-OT-Ead" eventType="touchUpInside" id="bjp-0A-aup"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -707,7 +707,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="LL8-yH-U1T" eventType="touchUpInside" id="B1N-1d-MbW"/>
+                                            <action selector="onBackButtonClick:" destination="LL8-yH-U1T" eventType="touchUpInside" id="MA4-58-5G3"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -847,7 +847,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="K66-Y9-kRH" eventType="touchUpInside" id="EMr-HN-sVT"/>
+                                            <action selector="onBackButtonClick:" destination="K66-Y9-kRH" eventType="touchUpInside" id="VeI-W7-ItF"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1029,7 +1029,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="KqW-gx-SMM" eventType="touchUpInside" id="TYW-Fr-U9G"/>
+                                            <action selector="onBackButtonClick:" destination="KqW-gx-SMM" eventType="touchUpInside" id="6Be-u0-LMZ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1176,7 +1176,7 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="nextClicked:" destination="KqW-gx-SMM" eventType="touchUpInside" id="pjk-uy-Ile"/>
+                                            <action selector="onNextButtonClick:" destination="KqW-gx-SMM" eventType="touchUpInside" id="vbt-If-bBL"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1259,12 +1259,12 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnNext" destination="lWb-dW-SAa" id="BLJ-89-4C4"/>
-                        <outlet property="txtConfirmEmail" destination="GGy-T9-KZP" id="ZEN-Pm-0dt"/>
-                        <outlet property="txtCountryCode" destination="tzf-tv-Kfq" id="Cg8-fx-grn"/>
-                        <outlet property="txtEmail" destination="EKb-ue-JHI" id="jtC-Ko-7an"/>
-                        <outlet property="txtPasword" destination="Igl-Go-mmk" id="xC2-h5-SNj"/>
-                        <outlet property="txtPhoneNumber" destination="KCd-Jr-PNG" id="YCm-gY-jpq"/>
+                        <outlet property="confirmEmailTextfield" destination="GGy-T9-KZP" id="Oy5-Ly-AgM"/>
+                        <outlet property="countryCodeTextfield" destination="tzf-tv-Kfq" id="kt6-sm-2s2"/>
+                        <outlet property="emailTextfield" destination="EKb-ue-JHI" id="GcL-Qk-XW2"/>
+                        <outlet property="nextButton" destination="lWb-dW-SAa" id="DG6-I0-GSE"/>
+                        <outlet property="passwordTextfield" destination="Igl-Go-mmk" id="q4p-CC-7sv"/>
+                        <outlet property="phoneNumberTextfield" destination="KCd-Jr-PNG" id="dOK-iW-p4M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lpb-s4-aq7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1291,7 +1291,7 @@
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="sbX-Gh-pIb" eventType="touchUpInside" id="kWh-e5-3hu"/>
+                                            <action selector="onBackButtonClick:" destination="sbX-Gh-pIb" eventType="touchUpInside" id="Vqo-KZ-w0j"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1692,12 +1692,6 @@
                                                 <color key="textColor" white="0.0" alpha="0.79954335389999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your Current Rate" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eTI-JI-daB">
-                                                <rect key="frame" x="20.5" y="612" width="373" height="25"/>
-                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t9Z-Kq-ee5">
                                                 <rect key="frame" x="20.5" y="635" width="373" height="2"/>
                                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1712,6 +1706,9 @@
                                                 <state key="normal" title="Edit Your Current Rate:">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onEditYourCurrentRateButtonClick:" destination="nMN-Rt-BhJ" eventType="touchUpInside" id="QFZ-dJ-G0z"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1L-Xu-taM">
                                                 <rect key="frame" x="20.5" y="682" width="373" height="25"/>
@@ -1721,7 +1718,7 @@
                                                     <color key="titleColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="AdvancedOptionsClicked:" destination="nMN-Rt-BhJ" eventType="touchUpInside" id="ONz-Ch-d3l"/>
+                                                    <action selector="onAdvancedOptionsButtonClick:" destination="nMN-Rt-BhJ" eventType="touchUpInside" id="pgy-TK-fYJ"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SMS Verification Notice" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="gBR-xa-Hx1">
@@ -1766,6 +1763,12 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                                                 <color key="textColor" white="0.0" alpha="0.79954335389999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your Current Rate" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eTI-JI-daB">
+                                                <rect key="frame" x="20" y="612" width="373" height="25"/>
+                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
                                         </subviews>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -1897,13 +1900,13 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="1036"/>
                     <connections>
-                        <outlet property="btnNext" destination="bMy-TY-VpA" id="Nmy-2I-6vV"/>
-                        <outlet property="txtAccountCode" destination="125-68-61V" id="81e-BN-uAC"/>
-                        <outlet property="txtAccountName" destination="y8H-R6-77R" id="YeZ-F1-KpE"/>
-                        <outlet property="txtAccountNumber" destination="lYq-mv-NY3" id="U48-CL-Ewc"/>
-                        <outlet property="txtAvailableCrypto" destination="LHE-6W-Pg7" id="3fN-Ed-gcF"/>
-                        <outlet property="txtCurrentPrice" destination="eTI-JI-daB" id="R0Q-te-url"/>
-                        <outlet property="txtEmail" destination="lYq-mv-NY3" id="6zQ-V9-mbN"/>
+                        <outlet property="accountNameTextfield" destination="y8H-R6-77R" id="b9S-x0-s5m"/>
+                        <outlet property="accountNumberTextfield" destination="lYq-mv-NY3" id="cIX-K4-QjH"/>
+                        <outlet property="advancedOptionsButton" destination="Q1L-Xu-taM" id="105-0o-Egv"/>
+                        <outlet property="availableCryptoTextfield" destination="LHE-6W-Pg7" id="ZfB-RN-eJG"/>
+                        <outlet property="bankNameTextfield" destination="125-68-61V" id="FLB-tG-MSk"/>
+                        <outlet property="currentPriceTextfield" destination="eTI-JI-daB" id="jf7-Zh-QRQ"/>
+                        <outlet property="editYourCurrentRateButton" destination="bMy-TY-VpA" id="uS1-XI-JoR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wn3-4P-TGP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1930,7 +1933,7 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash With Cash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="rfp-Vp-ALd" eventType="touchUpInside" id="RhR-Ak-yIn"/>
+                                            <action selector="onBackButtonClick:" destination="rfp-Vp-ALd" eventType="touchUpInside" id="YCw-3Q-HOy"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2025,7 +2028,7 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="nextClicked:" destination="rfp-Vp-ALd" eventType="touchUpInside" id="Y7N-9z-EyO"/>
+                                                    <action selector="onSaveButtonClick:" destination="rfp-Vp-ALd" eventType="touchUpInside" id="oZb-x7-Cuz"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nnr-ef-WcZ">
@@ -2036,7 +2039,7 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                                                     <color key="titleColor" red="0.21176470589999999" green="0.4823529412" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="backBtnClicked:" destination="rfp-Vp-ALd" eventType="touchUpInside" id="BD9-ty-p1s"/>
+                                                    <action selector="onBackButtonClick:" destination="rfp-Vp-ALd" eventType="touchUpInside" id="oHB-cd-csu"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -2113,9 +2116,9 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="768"/>
                     <connections>
-                        <outlet property="btnNext" destination="Wzg-hZ-z18" id="0P2-kx-2Ds"/>
-                        <outlet property="txtMaxLimit" destination="fWL-7R-vIn" id="2Yd-HI-tiK"/>
-                        <outlet property="txtMinLimit" destination="9Sr-Kc-ciT" id="BoC-uN-3Cc"/>
+                        <outlet property="maxLimitTextfield" destination="fWL-7R-vIn" id="jGN-ZR-bZK"/>
+                        <outlet property="minLimitTextfield" destination="9Sr-Kc-ciT" id="1IA-Vi-g9e"/>
+                        <outlet property="saveButton" destination="Wzg-hZ-z18" id="GKs-rj-125"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FX7-d3-bxd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2142,7 +2145,7 @@ Contact our support at 866-841-COIN (866-841-2646).</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="7MS-bV-LaT" eventType="touchUpInside" id="G7M-6a-B4x"/>
+                                            <action selector="onBackButtonClick:" destination="7MS-bV-LaT" eventType="touchUpInside" id="5bG-xB-K72"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2276,7 +2279,7 @@ When you receive the code, input it below.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="iQr-F0-9Xl" eventType="touchUpInside" id="TxV-YN-WqW"/>
+                                            <action selector="onBackButtonClick:" destination="iQr-F0-9Xl" eventType="touchUpInside" id="vaN-F5-ees"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2346,7 +2349,7 @@ Congratulations! Now type a secure password to continue.</string>
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="confirmPurchaseCodeClicked:" destination="iQr-F0-9Xl" eventType="touchUpInside" id="xCN-In-RIJ"/>
+                                            <action selector="onConfirmVerificationCode:" destination="iQr-F0-9Xl" eventType="touchUpInside" id="GyS-Yl-KHG"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlj-la-bRe">
@@ -2360,7 +2363,7 @@ Congratulations! Now type a secure password to continue.</string>
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="nextClicked:" destination="KqW-gx-SMM" eventType="touchUpInside" id="3dI-hn-8D3"/>
+                                            <action selector="onResendCodeButtonClick:" destination="iQr-F0-9Xl" eventType="touchUpInside" id="tV0-L1-qTt"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2408,9 +2411,9 @@ Congratulations! Now type a secure password to continue.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnPurchaseCode" destination="LPs-zh-36L" id="dFw-Jr-7YA"/>
-                        <outlet property="descLable" destination="UVG-nV-kZQ" id="seX-Xs-YTB"/>
-                        <outlet property="txtPurchaseCode" destination="Ffm-Iy-8Gc" id="7er-bJ-gvC"/>
+                        <outlet property="confirmVarificationCodeButton" destination="LPs-zh-36L" id="upw-iB-rZv"/>
+                        <outlet property="descLabel" destination="UVG-nV-kZQ" id="dI7-R1-gPN"/>
+                        <outlet property="purchaseCodeTextfield" destination="Ffm-Iy-8Gc" id="5tz-n1-rIC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGP-AB-AAf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2437,7 +2440,7 @@ Congratulations! Now type a secure password to continue.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="SIk-RQ-6HJ" eventType="touchUpInside" id="MzR-gS-hu9"/>
+                                            <action selector="onBackButtonClick:" destination="SIk-RQ-6HJ" eventType="touchUpInside" id="mW1-22-cgJ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2696,7 +2699,7 @@ Help is also available on the website.</string>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                                 <state key="normal" title="SIGN OUT"/>
                                                                 <connections>
-                                                                    <action selector="signOutClicked:" destination="SIk-RQ-6HJ" eventType="touchUpInside" id="A6T-l0-gnW"/>
+                                                                    <action selector="onSignOutButtonClick:" destination="SIk-RQ-6HJ" eventType="touchUpInside" id="sQT-Ds-xPw"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -2814,7 +2817,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="dX6-gs-QNJ" eventType="touchUpInside" id="rF3-iy-4jq"/>
+                                            <action selector="onBackButtonClick:" destination="dX6-gs-QNJ" eventType="touchUpInside" id="vL9-w8-PHZ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3022,10 +3025,7 @@ Help is also available on the website.</string>
                                                     <outlet property="birthCountryLabel" destination="Txu-el-gov" id="dcy-w4-NTY"/>
                                                     <outlet property="cashDepositLabel" destination="dQT-ee-hgs" id="Aqd-f1-at6"/>
                                                     <outlet property="firstNameLabel" destination="ETa-8C-ZDv" id="oSP-Xk-0lk"/>
-                                                    <outlet property="imgView" destination="whn-Le-bqK" id="bDw-S8-QtZ"/>
                                                     <outlet property="lastNameLabel" destination="6rg-MG-qMF" id="D3g-47-cKy"/>
-                                                    <outlet property="lblName" destination="8pM-qZ-H0I" id="r3E-Hb-ld2"/>
-                                                    <outlet property="lblPhone" destination="YC0-Z2-xyH" id="gcC-gh-oiV"/>
                                                     <outlet property="mainView" destination="4ug-w8-sIE" id="gG2-6t-3Hr"/>
                                                     <outlet property="nameLabel" destination="8pM-qZ-H0I" id="7ZP-DH-C1c"/>
                                                     <outlet property="phoneLabel" destination="YC0-Z2-xyH" id="fcv-HB-Muo"/>
@@ -3286,7 +3286,6 @@ Help is also available on the website.</string>
                         <outlet property="instructionLabel" destination="asE-Y9-ygt" id="jtA-be-hUw"/>
                         <outlet property="instructionTextField" destination="1GD-KR-ElS" id="B2g-BV-LxL"/>
                         <outlet property="sellingSummaryTableView" destination="unJ-V2-uuc" id="nxz-ym-U6y"/>
-                        <outlet property="tableView" destination="unJ-V2-uuc" id="ODg-OU-qRc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdO-KY-2eD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3404,7 +3403,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="jwx-K1-dRP"/>
+                                            <action selector="onBackButtonClick:" destination="1Te-OB-Qe8" eventType="touchUpInside" id="B5C-4o-ET0"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3562,7 +3561,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="66S-1S-gnj" eventType="touchUpInside" id="gnU-9l-pOi"/>
+                                            <action selector="onBackButtonClick:" destination="66S-1S-gnj" eventType="touchUpInside" id="ViP-FK-yH1"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3816,7 +3815,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="Uay-Pv-htB" eventType="touchUpInside" id="Bsl-w4-eZC"/>
+                                            <action selector="onBackButtonClick:" destination="Uay-Pv-htB" eventType="touchUpInside" id="E3t-Qi-0Wp"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3852,7 +3851,7 @@ Help is also available on the website.</string>
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="linkClicked:" destination="Uay-Pv-htB" eventType="touchUpInside" id="Lyn-ee-BUl"/>
+                                                    <action selector="onLinkButtonClick:" destination="Uay-Pv-htB" eventType="touchUpInside" id="DAQ-Js-ccz"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Input your password below:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Sd5-0t-Cws">
@@ -3892,7 +3891,7 @@ Help is also available on the website.</string>
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="loginClicked:" destination="Uay-Pv-htB" eventType="touchUpInside" id="8Yw-sP-kkv"/>
+                                                    <action selector="onLoginButtonClick:" destination="Uay-Pv-htB" eventType="touchUpInside" id="Jhf-PZ-dMx"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Je6-fi-O7S">
@@ -3903,7 +3902,7 @@ Help is also available on the website.</string>
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="forgotPasswordClicked:" destination="Uay-Pv-htB" eventType="touchUpInside" id="zum-Ig-J9k"/>
+                                                    <action selector="onForgotPasswordButtonClick:" destination="Uay-Pv-htB" eventType="touchUpInside" id="c1B-tX-bz9"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNi-FA-gJM">
@@ -3914,7 +3913,7 @@ Help is also available on the website.</string>
                                                 </constraints>
                                                 <state key="normal" image="x"/>
                                                 <connections>
-                                                    <action selector="closeClicked:" destination="Uay-Pv-htB" eventType="touchUpInside" id="9nq-cr-QKj"/>
+                                                    <action selector="onCloseButtonClick:" destination="Uay-Pv-htB" eventType="touchUpInside" id="NvI-kW-eL8"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -3984,12 +3983,12 @@ Help is also available on the website.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="btnForgotPassword" destination="Je6-fi-O7S" id="hYu-yM-3Wt"/>
-                        <outlet property="btnLogin" destination="FFe-Bx-a6t" id="WL9-7i-Uha"/>
-                        <outlet property="btnWOCLink" destination="ZgC-1s-jiq" id="Yrj-xT-nJ5"/>
-                        <outlet property="lblWOCLink" destination="HHD-ya-1Wy" id="Crq-sL-SY9"/>
+                        <outlet property="WOCLinkButton" destination="ZgC-1s-jiq" id="Nce-8I-TdU"/>
+                        <outlet property="WOCLinkLabel" destination="HHD-ya-1Wy" id="afj-2t-h82"/>
+                        <outlet property="forgotPasswordButton" destination="Je6-fi-O7S" id="8t5-LP-y5s"/>
+                        <outlet property="loginButton" destination="FFe-Bx-a6t" id="hzu-G0-cLF"/>
                         <outlet property="mainView" destination="Q0o-QK-cGQ" id="G4Z-Xo-MT9"/>
-                        <outlet property="txtPassword" destination="e2a-qB-fgi" id="tay-KF-kNJ"/>
+                        <outlet property="passwordTextField" destination="e2a-qB-fgi" id="dZh-3s-sYg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="psd-oQ-hkQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4016,7 +4015,7 @@ Help is also available on the website.</string>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Buy Dash" image="ic_arrow_back_white"/>
                                         <connections>
-                                            <action selector="backBtnClicked:" destination="GKx-NV-b5B" eventType="touchUpInside" id="xwI-CX-nyZ"/>
+                                            <action selector="onBackButtonClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="Qba-HU-wlq"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4098,7 +4097,7 @@ Help is also available on the website.</string>
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="signUpClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="G5C-VC-tw3"/>
+                                                    <action selector="onSignUpButtonClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="MNG-Y0-F9b"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -4115,7 +4114,7 @@ Help is also available on the website.</string>
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="existingAccoutClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="ovc-SH-fk5"/>
+                                                    <action selector="onExistingAccoutButtonClick:" destination="GKx-NV-b5B" eventType="touchUpInside" id="fSS-F8-jxl"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -4154,10 +4153,10 @@ Help is also available on the website.</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                     <connections>
-                        <outlet property="sighInBtn" destination="T2H-UI-wgU" id="Mwb-0i-B0t"/>
-                        <outlet property="signupBtn" destination="9KH-bz-c6f" id="JGg-6E-Gtf"/>
+                        <outlet property="numberListTableView" destination="DhW-Vv-WBP" id="lG6-hn-Yjq"/>
+                        <outlet property="sighInButton" destination="T2H-UI-wgU" id="6P4-NZ-Nv3"/>
+                        <outlet property="signupButton" destination="9KH-bz-c6f" id="tbt-pT-p3q"/>
                         <outlet property="tableHeighConstrain" destination="WpL-en-vgM" id="dbh-GG-QJi"/>
-                        <outlet property="tableView" destination="DhW-Vv-WBP" id="rUP-S4-4QV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hUr-we-9cs" userLabel="First Responder" sceneMemberID="firstResponder"/>

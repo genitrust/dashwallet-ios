@@ -25,6 +25,7 @@
     
     [self.navigationItem.backBarButtonItem setTitle:@""];
     [self setShadowOnButton:self.nextButton];
+    [self setButtonColor:self.nextButton];
 }
 
 // MARK: - IBAction

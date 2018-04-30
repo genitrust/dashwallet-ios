@@ -53,7 +53,7 @@
     self.title = @"";
 }
 
-- (IBAction)signOutClicked:(id)sender {
+- (IBAction)onSignOutButtonClick:(id)sender {
     [self signOutWOC];
 }
 

@@ -97,12 +97,12 @@
 
 // MARK: - IBAction
 
-- (IBAction)backBtnClicked:(id)sender {
-    NSLog(@"backBtnClicked");
+- (IBAction)onBackButtonClick:(id)sender {
+    NSLog(@"onBackButtonClick");
     [self backToRoot];
 }
 
-- (IBAction)signOutClicked:(id)sender {
+- (IBAction)onSignOutButtonClick:(id)sender {
    
     UIButton * btn = (UIButton*) sender;
     if (btn != nil) {
@@ -116,7 +116,7 @@
     [self performSelector:@selector(setLogoutButton) withObject:nil afterDelay:1.0];
 }
 
-- (IBAction)sellYourCryptoClicked:(id)sender {
+- (IBAction)onSellYourCryptoButtonClick:(id)sender {
     
     [self refereshToken];
     NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];

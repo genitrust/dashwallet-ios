@@ -32,9 +32,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
-     [self setShadowOnButton:self.signupBtn];
-     [self setShadowOnButton:self.sighInBtn];
+    self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+     [self setShadowOnButton:self.signupButton];
+     [self setShadowOnButton:self.signupButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -49,7 +49,7 @@
             NSMutableDictionary *deviceInfoDict = [NSMutableDictionary dictionaryWithDictionary:[self.defaults objectForKey:WOCUserDefaultsLocalDeviceInfo]];
             if (deviceInfoDict != nil) {
                 self.offers = deviceInfoDict.allKeys;
-                 [self.tableView reloadData];
+                 [self.numberListTableView reloadData];
             }
         }
     }
@@ -84,14 +84,14 @@
                     
                     if ([[responseDictionary valueForKey:@"incremented"] boolValue]) {
                         self.incremented = true;
-                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
                     else {
                         self.incremented = false;
-                        self.lblInstruction.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
+                        self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
                     }
                 }
-                [self.tableView reloadData];
+                [self.numberListTableView reloadData];
             }
             else {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -192,9 +192,8 @@
 - (void)pushToStep1 {
     [self backToMainView];
 }
-
 // MARK: - IBAction
-- (IBAction)signInPhoneClicked:(id)sender {
+- (void)signInPhoneClicked:(UIButton *)sender {
     NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
     if (token != nil && (![token isEqualToString:@"(null)"])) {
         [self getOrderList];
@@ -204,13 +203,12 @@
     }
 }
 
-- (IBAction)existingAccoutClick:(id)sender {
+- (IBAction)onExistingAccoutButtonClick:(id)sender {
     WOCSellingWizardInputPhoineNumberViewController *sellingWizardInputPhoneNumberViewController = [self getViewController:@"WOCSellingWizardInputPhoineNumberViewController"];
     sellingWizardInputPhoneNumberViewController.isForLoginOny = YES;
     [self pushViewController:sellingWizardInputPhoneNumberViewController animated:YES];
 }
-
-- (IBAction)signUpClick:(id)sender {
+- (IBAction)onSignUpButtonClick:(id)sender {
     
     WOCSellingSingUpViewController *singUpViewController = [self getViewController:@"WOCSellingSingUpViewController"];
     [self pushViewController:singUpViewController animated:YES];

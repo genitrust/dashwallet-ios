@@ -36,14 +36,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.nextButton];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openBuyDashStep8:) name:WOCNotificationObserverNameBuyDashStep8 object:nil];
     
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
-    self.txtCountryCode.inputView = self.pickerView;
+    self.countryCodeTextfield.inputView = self.pickerView;
     
     [self loadJSON];
 }
@@ -62,7 +62,7 @@
     
     self.countries = countries;
     if (self.countries.count > 0) {
-        self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[0][@"name"],self.countries[0][@"code"]];
+        self.countryCodeTextfield.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[0][@"name"],self.countries[0][@"code"]];
         self.countryCode = [NSString stringWithFormat:@"%@",self.countries[0][@"code"]];
     }
     
@@ -101,7 +101,7 @@
                 NSArray *availableAuthSource = (NSArray*)[responseDictionary valueForKey:@"availableAuthSources"];
                 if (availableAuthSource.count > 0) {
                     if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"password"]) {
-                        [self login:phoneNo password:self.txtPasword.text];
+                        [self login:phoneNo password:self.passwordTextfield.text];
                     }
                     else if ([[availableAuthSource objectAtIndex:0] isEqualToString:@"device"]) {
                         //[self createHoldAfterAuthorize:phoneNo];
@@ -332,7 +332,7 @@
      https://wallofcoins.com/signin/1-2397776832/
      https://wallofcoins.com/signin/{phone_country_code}-{local_phone_number}/
      */
-    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtPhone = [self.phoneNumberTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *txtcountryCode = [self.countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     WOCHoldIssueViewController *aViewController = [self getViewController:@"WOCHoldIssueViewController"];
     aViewController.phoneNo = [NSString stringWithFormat:@"%@-%@",txtcountryCode,txtPhone];
@@ -507,9 +507,9 @@
 }
 
 // MARK: - IBAction
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)onNextButtonClick:(id)sender {
     
-    NSString *txtPhone = [self.txtPhoneNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *txtPhone = [self.phoneNumberTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([self.countryCode length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Select country code." viewController:self.navigationController.visibleViewController];
@@ -517,16 +517,16 @@
     else if ([txtPhone length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter phone number." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self.txtEmail.text length] == 0) {
+    else if ([self.emailTextfield.text length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter email number." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self isValidEmail:self.txtEmail.text] == 0) {
+    else if ([self isValidEmail:self.emailTextfield.text] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter valid email number." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self.txtPasword.text length] == 0) {
+    else if ([self.passwordTextfield.text length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter password number." viewController:self.navigationController.visibleViewController];
     }
-    else if (![self.txtEmail.text isEqualToString:self.txtConfirmEmail.text]) {
+    else if (![self.emailTextfield.text isEqualToString:self.confirmEmailTextfield.text]) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter email and confirm email does not metched." viewController:self.navigationController.visibleViewController];
     }
     else if ([txtPhone length] == 10) {
@@ -553,7 +553,7 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    self.txtCountryCode.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
+    self.countryCodeTextfield.text = [NSString stringWithFormat:@"%@ (%@)",self.countries[row][@"name"],self.countries[row][@"code"]];
     self.countryCode = [NSString stringWithFormat:@"%@",self.countries[row][@"code"]];
 }
 
@@ -570,8 +570,8 @@
     
     NSDictionary *params = @{
                    WOCApiBodyPhoneNumber: phoneNumber,
-                   WOCApiBodyEmail: self.txtEmail.text,
-                   WOCApiBodyPassword: self.txtPasword.text,
+                   WOCApiBodyEmail: self.emailTextfield.text,
+                   WOCApiBodyPassword: self.passwordTextfield.text,
                    WOCApiBodyJsonParameter: @"YES"
                    };
         
@@ -594,7 +594,7 @@
                     [self openHoldIssueVC];
                 }
                 else {
-                    [self login:phoneNumber password:self.txtPasword.text];
+                    [self login:phoneNumber password:self.passwordTextfield.text];
                 }
             }
             else {
@@ -633,8 +633,8 @@
     NSString *phoneNumber = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     
     NSDictionary *params = @{
-               @"password1": self.txtPasword.text,
-               @"password2": self.txtPasword.text,
+               @"password1": self.passwordTextfield.text,
+               @"password2": self.passwordTextfield.text,
                WOCApiBodyJsonParameter: @"YES"
                };
     

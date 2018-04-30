@@ -40,7 +40,7 @@
 - (IBAction)depositFinishedClicked:(id)sender;
 - (IBAction)cancelOrderClicked:(id)sender;
 - (IBAction)wallOfCoinsClicked:(id)sender;
-- (IBAction)signOutClicked:(id)sender;
+- (IBAction)onSignOutButtonClick:(id)sender;
 - (void)captureHold:(NSString*)purchaseCode holdId:(NSString*)holdId ;
 - (void)deleteHold:(NSString*)holdId count:(NSUInteger)count;
 

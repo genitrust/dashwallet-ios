@@ -26,35 +26,35 @@
     
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnPurchaseCode];
+    [self setShadowOnButton:self.confirmVarificationCodeButton];
     
     NSString *userDeviceName = @"";
     if (self.deviceName != nil) {
         userDeviceName = [NSString stringWithFormat:@"named %@",self.deviceName];
     }
-    self.descLable.text = [NSString stringWithFormat:@"You are already signed up with an app %@. Congratulations! Now type a secure password to continue.",userDeviceName];
+    self.descLabel.text = [NSString stringWithFormat:@"You are already signed up with an app %@. Congratulations! Now type a secure password to continue.",userDeviceName];
     if (self.purchaseCode != nil) {
-        self.txtPurchaseCode.text = REMOVE_NULL_VALUE(self.purchaseCode);
+        self.purchaseCodeTextfield.text = REMOVE_NULL_VALUE(self.purchaseCode);
     }
     else {
-        self.txtPurchaseCode.text = @"";
+        self.purchaseCodeTextfield.text = @"";
     }
-    self.txtPurchaseCode.delegate = self;
+    self.purchaseCodeTextfield.delegate = self;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     if(textField.text.length == 4 && string.length == 1)
     {
-        [self performSelector:@selector(confirmPurchaseCodeClicked:) withObject:self afterDelay:1.0];
+        [self performSelector:@selector(onConfirmVerificationCode:) withObject:self afterDelay:1.0];
     }
     return YES;
 }
 
 // MARK: - IBAction
-- (IBAction)confirmPurchaseCodeClicked:(id)sender {
-    
-    NSString *txtCode = [self.txtPurchaseCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+- (IBAction)onConfirmVerificationCode:(UIButton *)sender {
+
+    NSString *txtCode = [self.purchaseCodeTextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([txtCode length] == 5) {
         WOCSellingInstructionsViewController *instructionsViewController = [self getViewController:@"WOCSellingInstructionsViewController"];
@@ -69,6 +69,10 @@
     else if ([txtCode length] != 5) {
          [[WOCAlertController sharedInstance] alertshowWithTitle:@"Error" message:@"Enter Valid Purchase Code" viewController:self.navigationController.visibleViewController];
     }
+}
+
+- (IBAction)onResendCodeButtonClick:(UIButton *)sender {
+    NSLog(@"onResendCodeButtonClick");
 }
 @end
 /* Resend Code

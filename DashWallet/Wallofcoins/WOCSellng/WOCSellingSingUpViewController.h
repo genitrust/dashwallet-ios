@@ -16,13 +16,13 @@
 @property (strong, nonatomic) NSString *emailId;
 @property (assign, nonatomic) BOOL isActiveHoldChecked;
 @property (assign, nonatomic) BOOL isForLoginOny;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-@property (weak, nonatomic) IBOutlet UITextField *txtCountryCode;
-@property (weak, nonatomic) IBOutlet UITextField *txtPhoneNumber;
-@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
-@property (weak, nonatomic) IBOutlet UITextField *txtConfirmEmail;
-@property (weak, nonatomic) IBOutlet UITextField *txtPasword;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UITextField *countryCodeTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *confirmEmailTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 
-- (IBAction)nextClicked:(id)sender;
+- (IBAction)onNextButtonClick:(id)sender;
 
 @end

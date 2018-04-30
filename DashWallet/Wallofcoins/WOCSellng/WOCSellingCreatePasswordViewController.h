@@ -18,10 +18,10 @@
 @property (strong, nonatomic) NSString *deviceCode;
 @property (strong, nonatomic) NSString *deviceName;
 
-@property (weak, nonatomic) IBOutlet UILabel *descLable;
-@property (weak, nonatomic) IBOutlet UITextField *txtPurchaseCode;
-@property (weak, nonatomic) IBOutlet UIButton *btnPurchaseCode;
-
-- (IBAction)confirmPurchaseCodeClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *descLabel;
+@property (weak, nonatomic) IBOutlet UITextField *purchaseCodeTextfield;
+@property (weak, nonatomic) IBOutlet UIButton *confirmVarificationCodeButton;
+- (IBAction)onConfirmVerificationCode:(UIButton *)sender;
+- (IBAction)onResendCodeButtonClick:(UIButton *)sender;
 
 @end

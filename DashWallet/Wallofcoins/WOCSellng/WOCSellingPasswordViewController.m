@@ -27,13 +27,13 @@
     self.mainView.layer.cornerRadius = 3.0;
     self.mainView.layer.masksToBounds = YES;
     
-    [self setShadowOnButton:self.btnLogin];
-    [self setShadowOnButton:self.btnForgotPassword];
+    [self setShadowOnButton:self.loginButton];
+    [self setShadowOnButton:self.forgotPasswordButton];
     
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:self.btnWOCLink.titleLabel.text];
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:self.WOCLinkButton.titleLabel.text];
     [titleString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(29, 13)];
     [titleString addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(29, 13)];
-    [self.btnWOCLink setAttributedTitle:titleString forState:UIControlStateNormal];
+    [self.WOCLinkButton setAttributedTitle:titleString forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -186,15 +186,15 @@
 }
 // MARK: - IBAction
 
-- (IBAction)linkClicked:(id)sender {
+- (IBAction)onLinkButtonClick:(id)sender {
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
     }
 }
 
-- (IBAction)loginClicked:(id)sender {
-    NSString *password = [self.txtPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+- (IBAction)onLoginButtonClick:(id)sender {
+    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([password length] > 0) {
         [self login:self.phoneNo password:password];
     }
@@ -203,14 +203,14 @@
     }
 }
 
-- (IBAction)forgotPasswordClicked:(id)sender {
+- (IBAction)onForgotPasswordButtonClick:(id)sender {
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com/en/forgotPassword/"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
     }
 }
 
-- (IBAction)closeClicked:(id)sender {
+- (IBAction)onCloseButtonClick:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -28,17 +28,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.editYourCurrentRateButton];
     
     if (self.accountInformation != nil && self.accountInformation.length > 0) {
-        self.txtAccountCode.text = self.accountInformation;
+        self.bankNameTextfield.text = self.accountInformation;
     }
     
 //    if (self.currentPrice != nil && self.currentPrice.length > 0){
 //        self.txtCurrentPrice.text = self.currentPrice;
 //    }
     
-    self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
+    self.availableCryptoTextfield.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
     
     NSString *emailAddress = [self.defaults objectForKey:WOCUserDefaultsLocalEmail];
     if (emailAddress != nil && emailAddress.length > 0) {
@@ -47,28 +47,28 @@
     
     NSString *bankAccountInfo = [self.defaults objectForKey:WOCUserDefaultsLocalBankInfo];
     if (bankAccountInfo != nil && bankAccountInfo.length > 0) {
-        self.txtAccountCode.text = bankAccountInfo;
+        self.bankNameTextfield.text = bankAccountInfo;
     }
     
     NSString *bankAccount = [self.defaults objectForKey:WOCUserDefaultsLocalBankAccountNumber];
     if (bankAccount != nil && bankAccount.length > 0) {
-        self.txtAccountNumber.text = bankAccount;
+        self.accountNumberTextfield.text = bankAccount;
     }
     
     NSString *bankName = [self.defaults objectForKey:WOCUserDefaultsLocalBankName];
     if (bankName != nil && bankName.length > 0) {
-        self.txtAccountName.text = bankName;
+        self.accountNameTextfield.text = bankName;
     }
     
     NSString *currentPrice = [self.defaults objectForKey:WOCUserDefaultsLocalPrice];
     if (currentPrice != nil && currentPrice.length > 0) {
-        self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",currentPrice];
+        self.currentPriceTextfield.text = [NSString stringWithFormat:@"$ %@",currentPrice];
     }
-    self.txtAccountNumber.userInteractionEnabled = NO;
-    self.txtAccountName.userInteractionEnabled = NO;
-    self.txtAccountCode.userInteractionEnabled = NO;
-    self.txtAvailableCrypto.userInteractionEnabled = NO;
-    self.txtCurrentPrice.userInteractionEnabled = NO;
+    self.accountNumberTextfield.userInteractionEnabled = NO;
+    self.accountNameTextfield.userInteractionEnabled = NO;
+    self.bankNameTextfield.userInteractionEnabled = NO;
+    self.availableCryptoTextfield.userInteractionEnabled = NO;
+    self.currentPriceTextfield.userInteractionEnabled = NO;
     self.txtEmail.userInteractionEnabled = NO;
     [self loadAdData];
 }
@@ -79,14 +79,14 @@
         [[APIManager sharedInstance] getDetailFromADId:self.AdvertiseId  response:^(id responseDict, NSError *error) {
             NSLog(@"responseDict = %@",responseDict);
             
-            self.txtAccountCode.text = self.accountInformation;
-            self.txtAvailableCrypto.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
+            self.bankNameTextfield.text = self.accountInformation;
+            self.availableCryptoTextfield.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
             
             //self.txtEmail.text = REMOVE_NULL_VALUE(responseDict[@""]);
-            self.txtAccountCode.text = REMOVE_NULL_VALUE(responseDict[@""]);
-            self.txtAccountNumber.text = REMOVE_NULL_VALUE(responseDict[@""]);
-            self.txtAccountName.text = REMOVE_NULL_VALUE(responseDict[@""]);
-            self.txtCurrentPrice.text = [NSString stringWithFormat:@"$ %@",REMOVE_NULL_VALUE(responseDict[@"currentPrice"])];
+            self.bankNameTextfield.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.accountNumberTextfield.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.accountNameTextfield.text = REMOVE_NULL_VALUE(responseDict[@""]);
+            self.currentPriceTextfield.text = [NSString stringWithFormat:@"$ %@",REMOVE_NULL_VALUE(responseDict[@"currentPrice"])];
            
             /*
              balance = "0.00000000";
@@ -111,7 +111,7 @@
     }
 }
 
-- (IBAction)AdvancedOptionsClicked:(id)sender
+- (IBAction)onAdvancedOptionsButtonClick:(id)sender
 {
     [self.defaults setBool:NO forKey:@"isBeforeCreateAd"];
     [self.defaults synchronize];
@@ -121,8 +121,13 @@
     [sellingAdvancedOptionsInstructionsViewController setupUI];
 }
 
+- (IBAction)onEditYourCurrentRateButtonClick:(UIButton *)sender {
+    NSLog(@"Edit Your current rate button clicked");
+}
+
 - (IBAction)backToHomeScreenAction:(id)sender {
     [self backToMainView];
 }
+
 @end
 

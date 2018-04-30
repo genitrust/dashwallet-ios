@@ -146,7 +146,7 @@
     [self backToMainView];
 }
 
-- (IBAction)signOutClicked:(id)sender {
+- (IBAction)onSignOutButtonClick:(id)sender {
     [self signOutWOC];
 }
 
@@ -241,7 +241,7 @@
     else if (indexPath.section == 2) {
         WOCSignOutCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signOutCell"];
         cell.descriptionLabel.text = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",self.phoneNo];
-        [cell.signOutButton addTarget:self action:@selector(signOutClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.signOutButton addTarget:self action:@selector(onSignOutButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     }
     else {

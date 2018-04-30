@@ -19,16 +19,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setShadowOnButton:self.btnNext];
+    [self setShadowOnButton:self.saveButton];
     
     NSString *minDeposit = [self.defaults objectForKey:WOCUserDefaultsLocalMinDeposit];
     if (minDeposit != nil && minDeposit.length > 0){
-        self.txtMinLimit.text = minDeposit;
+        self.minLimitTextfield.text = minDeposit;
     }
     
     NSString *maxDeposit = [self.defaults objectForKey:WOCUserDefaultsLocalMaxDeposit];
     if (maxDeposit != nil && maxDeposit.length > 0){
-        self.txtMaxLimit.text = maxDeposit;
+        self.maxLimitTextfield.text = maxDeposit;
     }
 }
 
@@ -41,28 +41,28 @@
     
     self.isBeforeCreateAd = [self.defaults boolForKey:@"isBeforeCreateAd"];
     if (self.isBeforeCreateAd == YES) {
-        [self.btnNext setTitle:@"NEXT" forState:UIControlStateNormal];
+        [self.saveButton setTitle:@"NEXT" forState:UIControlStateNormal];
     }
     else {
-        [self.btnNext setTitle:@"Save" forState:UIControlStateNormal];
+        [self.saveButton setTitle:@"Save" forState:UIControlStateNormal];
     }
 }
 
 // MARK: - IBAction
-- (IBAction)nextClicked:(id)sender {
+- (IBAction)onSaveButtonClick:(id)sender {
     
-    if ([self.txtMinLimit.text length] == 0) {
+    if ([self.minLimitTextfield.text length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter minimum deposit limit." viewController:self.navigationController.visibleViewController];
     }
-    else if ([self.txtMaxLimit.text length] == 0) {
+    else if ([self.maxLimitTextfield.text length] == 0) {
         [[WOCAlertController sharedInstance] alertshowWithTitle:@"Alert" message:@"Enter maximum deposit limit." viewController:self.navigationController.visibleViewController];
     }
     else {
         
-        [self.defaults setObject:self.txtMinLimit.text forKey:WOCUserDefaultsLocalMinDeposit];
+        [self.defaults setObject:self.minLimitTextfield.text forKey:WOCUserDefaultsLocalMinDeposit];
         [self.defaults synchronize];
         
-        [self.defaults setObject:self.txtMaxLimit.text forKey:WOCUserDefaultsLocalMaxDeposit];
+        [self.defaults setObject:self.maxLimitTextfield.text forKey:WOCUserDefaultsLocalMaxDeposit];
         [self.defaults synchronize];
         
         if (self.isBeforeCreateAd) {

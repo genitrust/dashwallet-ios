@@ -44,6 +44,7 @@
     
     [self setShadowOnButton:self.locationButton];
     [self setShadowOnButton:self.noThanksButton];
+    [self setButtonColor:self.locationButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -189,7 +190,7 @@
 }
 
 // MARK: - IBAction
-- (IBAction)backBtnClicked:(id)sender {
+- (IBAction)onBackButtonClick:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
         [self.navigationController.navigationBar setHidden:NO];

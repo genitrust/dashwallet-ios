@@ -22,7 +22,7 @@
 @property (assign, nonatomic) BOOL isFromSend;
 
 - (void)setLogoutButton;
-- (IBAction)backBtnClicked:(id)sender;
+- (IBAction)onBackButtonClick:(id)sender;
 - (IBAction)onSignOutButtonClick:(id)sender;
 - (IBAction)onSellYourCryptoButtonClick:(id)sender;
 
