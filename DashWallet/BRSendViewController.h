@@ -39,5 +39,5 @@
 - (void)handleURL:(NSURL *)url;
 - (void)handleFile:(NSData *)file;
 - (void)updateClipboardText;
-
+- (IBAction)sellYourDash:(id)sender;
 @end
