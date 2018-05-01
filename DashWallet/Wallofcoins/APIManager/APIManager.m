@@ -647,7 +647,7 @@
 - (void)getDetailFromADId:(NSString*)AdvertiseId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
 //    [self getAllAds:nil response:^(id responseDict, NSError *error) {
-//        NSLog(@"responseDict %@",responseDict);
+//        APILog(@"responseDict %@",responseDict);
 //    }];
     
     NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/ad/%@/",BASE_URL,AdvertiseId];
@@ -733,11 +733,11 @@
         
         NSError *error = nil;
         APILog(@"==>API Response statusCode [%ld]",((NSHTTPURLResponse*)response).statusCode);
-
+        
         if (data != nil) {
             id dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-             APILog(@"==>API RESPONSE : \n%@",dictionary);
-
+            APILog(@"==>API RESPONSE : \n%@",dictionary);
+            
             if (connectionError != nil) {
                 APILog(@"XX>API RESPONSE ERROR: [%ld]\n%@ ",((NSHTTPURLResponse*)response).statusCode,connectionError.localizedDescription);
             }

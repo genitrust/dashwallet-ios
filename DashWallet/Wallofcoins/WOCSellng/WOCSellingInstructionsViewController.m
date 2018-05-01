@@ -136,7 +136,7 @@
 - (void)openSite:(NSURL*)url {
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"URL opened...");
+            APILog(@"URL opened...");
         }];
     }
 }
@@ -238,15 +238,15 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = API_DATE_FORMAT;
     NSDate *local = [formatter dateFromString:depositDue];
-    NSLog(@"local: %@",local);
+    APILog(@"local: %@",local);
     
     formatter.dateFormat = LOCAL_DATE_FORMAT;
     NSString *localTime = [formatter stringFromDate:local];
-    NSLog(@"localTime: %@",localTime);
+    APILog(@"localTime: %@",localTime);
     self.dueTime = localTime;
     
     NSString *currentTime = [formatter stringFromDate:[NSDate date]];
-    NSLog(@"currentTime UTC : %@",currentTime);
+    APILog(@"currentTime UTC : %@",currentTime);
     
     NSMutableAttributedString *timeString = [self dateDiffrenceBetweenTwoDates:currentTime endDate:localTime];
     NSMutableAttributedString *dueString = [[NSMutableAttributedString alloc] initWithString:@"Deposit Due: "];
@@ -412,7 +412,7 @@
 - (void)getHold {
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
         if (error == nil) {
-            NSLog(@"Hold with Hold Id: %@.",responseDict);
+            APILog(@"Hold with Hold Id: %@.",responseDict);
             
             if ([responseDict isKindOfClass:[NSArray class]]) {
                 NSArray *holdArray = (NSArray*)responseDict;
@@ -468,7 +468,7 @@
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
         
         if (error == nil) {
-            NSLog(@"Hold deleted.");
+            APILog(@"Hold deleted.");
             
             NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
             [self createHold:self.offerId phoneNo:phoneNo];
@@ -588,7 +588,7 @@
         
         if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:self.locationUrl]]) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.locationUrl] options:@{} completionHandler:^(BOOL success) {
-                NSLog(@"URL opened.");
+                APILog(@"URL opened.");
             }];
         }
     }

@@ -79,7 +79,7 @@ static const int dollarTextField = 102;
     
     BRWalletManager *manager = [BRWalletManager sharedInstance];
     NSString *cryptoAddress = manager.wallet.receiveAddress;
-    NSLog(@"cryptoAddress = %@",cryptoAddress);
+    APILog(@"cryptoAddress = %@",cryptoAddress);
     
     NSDictionary *params = @{
                              WOCApiBodyCryptoAmount: @"0",

@@ -72,7 +72,7 @@
 }
 
 - (IBAction)onResendCodeButtonClick:(UIButton *)sender {
-    NSLog(@"onResendCodeButtonClick");
+    APILog(@"onResendCodeButtonClick");
 }
 @end
 /* Resend Code

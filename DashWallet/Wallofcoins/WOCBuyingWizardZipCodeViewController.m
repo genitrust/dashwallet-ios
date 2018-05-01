@@ -67,11 +67,11 @@
                 CLPlacemark* placemark = [placemarks objectAtIndex:0];
                 [self.defaults setObject:[placemark ISOcountryCode].lowercaseString forKey:WOCApiBodyCountryCode];
                 [self.defaults synchronize];
-                NSLog(@"%@",[placemark description]);
-                NSLog(@"======> country code is %@",[placemark ISOcountryCode]);
+                APILog(@"%@",[placemark description]);
+                APILog(@"======> country code is %@",[placemark ISOcountryCode]);
             }
             else {
-                NSLog(@"Error in featching Country =");
+                APILog(@"Error in featching Country =");
             }
         }];
     }
@@ -88,12 +88,12 @@
                                  
                                  [self.defaults setObject:country.lowercaseString forKey:WOCApiBodyCountryCode];
                                  [self.defaults synchronize];
-                                 NSLog(@"%@",[placemark description]);
-                                 NSLog(@"======> country code is city [%@] state [%@] country [%@]",city,state,country);
+                                 APILog(@"%@",[placemark description]);
+                                 APILog(@"======> country code is city [%@] state [%@] country [%@]",city,state,country);
                                  
                              } else {
                                  // Lookup Failed
-                                 NSLog(@"Error in featching Country =");
+                                 APILog(@"Error in featching Country =");
                              }
                          }];
     }

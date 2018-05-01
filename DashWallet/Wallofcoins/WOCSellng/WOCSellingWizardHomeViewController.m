@@ -98,7 +98,7 @@
 // MARK: - IBAction
 
 - (IBAction)onBackButtonClick:(id)sender {
-    NSLog(@"onBackButtonClick");
+    APILog(@"onBackButtonClick");
     [self backToRoot];
 }
 

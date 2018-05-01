@@ -9,8 +9,10 @@
 #ifndef WOCConstants_h
 #define WOCConstants_h
 
+#define SHOW_LOGS NO
+
 #ifdef SHOW_LOGS
-#define APILog(x, ...) NSLog(@"\n\n%s %d: \n" x, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define APILog(x, ...) //NSLog(@"\n\n%s %d: \n" x, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define APILog(x, ...)
 #endif
