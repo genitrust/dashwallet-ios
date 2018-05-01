@@ -28,7 +28,7 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.genitrust.wallofcoins</string>
+	<string>com.genitrust.wallofcoins.dashwallet</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>
