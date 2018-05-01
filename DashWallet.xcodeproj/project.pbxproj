@@ -1427,6 +1427,7 @@
 					};
 					75D5F3BD191EC270004AB296 = {
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1448,14 +1449,17 @@
 					BA913BDD1BD57E4D005A7C0E = {
 						CreatedOnToolsVersion = 7.0.1;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 					};
 					BA913BE91BD57E4D005A7C0E = {
 						CreatedOnToolsVersion = 7.0.1;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 					};
 					BAE12BE41B2DEE7F00895CC5 = {
 						CreatedOnToolsVersion = 6.3.2;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1962,6 +1966,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Y74D498FXY;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2024,6 +2029,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Y74D498FXY;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2058,6 +2064,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2076,6 +2084,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2089,6 +2098,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2107,6 +2118,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2118,12 +2130,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -2136,12 +2151,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -2152,12 +2170,15 @@
 		BA913BFD1BD57E4E005A7C0E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp.TodayExtension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
@@ -2170,12 +2191,15 @@
 		BA913BFE1BD57E4E005A7C0E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp.TodayExtension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
@@ -2189,6 +2213,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwalletTodayExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = Y74D498FXY;
@@ -2199,6 +2225,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2209,6 +2236,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwalletTodayExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -2220,6 +2249,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2254,6 +2284,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Y74D498FXY;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2290,6 +2321,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2308,6 +2341,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2318,6 +2352,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwalletTodayExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -2329,6 +2365,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2347,12 +2384,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -2363,12 +2403,15 @@
 		CEE253D91E26A9BC00A25B15 /* Testflight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp.TodayExtension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
@@ -2406,6 +2449,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Y74D498FXY;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2448,6 +2492,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwallet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2466,6 +2512,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2476,6 +2523,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = dashwallet/dashwalletTodayExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = Y74D498FXY;
@@ -2486,6 +2535,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2504,12 +2554,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -2520,12 +2573,15 @@
 		FB9CC1A11F8511620079309F /* Testnet */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y74D498FXY;
 				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.genitrust.wallofcoins.dashwallet.watchkitapp.TodayExtension;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WatchApp Extension/WatchApp Extension-Bridging-Header.h";
