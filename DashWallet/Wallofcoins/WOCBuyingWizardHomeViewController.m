@@ -138,8 +138,8 @@
                 [hud hideAnimated:YES];
             });
             
-            NSLog(@"address informations : %@", placeDetail);
-            NSLog(@"ZIP code : %@", [placeDetail valueForKey:@"ZIP"]);
+            APILog(@"address informations : %@", placeDetail);
+            APILog(@"ZIP code : %@", [placeDetail valueForKey:@"ZIP"]);
             
             [self.defaults setObject:[placeDetail valueForKey:WOCApiBodyCountryCode] forKey:WOCApiBodyCountryCode];
             [self.defaults synchronize];
@@ -151,7 +151,7 @@
                 [hud hideAnimated:YES];
             });
             [self.defaults removeObjectForKey:WOCApiBodyCountryCode];
-            NSLog(@"Error : %@", error);
+            APILog(@"Error : %@", error);
         }];
     }
     else {

@@ -63,7 +63,7 @@
 - (void)pushToStep7:(NSInteger)sender {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender inSection:0];
     NSString *phoneNumber = self.offers[indexPath.row];
-    NSLog(@"phoneNumber = %@",phoneNumber);
+    APILog(@"phoneNumber = %@",phoneNumber);
     
     [self.defaults setObject:phoneNumber forKey:WOCUserDefaultsLocalPhoneNumber];
     [self.defaults synchronize];
@@ -222,7 +222,7 @@
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
         if ([[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-                NSLog(@"URL opened!");
+                APILog(@"URL opened!");
             }];
         }
     }

@@ -31,7 +31,7 @@
     
     self.defaults = [NSUserDefaults standardUserDefaults];
    
-    NSLog(@"------------> You are In %@",[super class]);
+    APILog(@"------------> You are In %@",[super class]);
     
     if (self.isBackButtonRequire) {
       

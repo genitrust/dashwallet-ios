@@ -77,7 +77,7 @@
 {
     if (self.AdvertiseId != nil && self.AdvertiseId.length > 0) {
         [[APIManager sharedInstance] getDetailFromADId:self.AdvertiseId  response:^(id responseDict, NSError *error) {
-            NSLog(@"responseDict = %@",responseDict);
+            APILog(@"responseDict = %@",responseDict);
             
             self.bankNameTextfield.text = self.accountInformation;
             self.availableCryptoTextfield.text = [NSString stringWithFormat:@"%@ 0.000",WOCCurrencySymbol];
@@ -122,7 +122,7 @@
 }
 
 - (IBAction)onEditYourCurrentRateButtonClick:(UIButton *)sender {
-    NSLog(@"Edit Your current rate button clicked");
+    APILog(@"Edit Your current rate button clicked");
 }
 
 - (IBAction)backToHomeScreenAction:(id)sender {

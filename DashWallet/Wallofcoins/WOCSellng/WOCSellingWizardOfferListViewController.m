@@ -211,7 +211,7 @@
                 NSNumber *totoalMinorNumber =  [NSNumber numberWithFloat:(firstOfferMinorNumber.longLongValue + secondOfferMinorNumber.floatValue)] ;
                 
                 NSString *totalMinorStr = [self getCryptoPrice:totoalMinorNumber];
-                NSLog(@"totalMinorStr = %@",totalMinorStr);
+                APILog(@"totalMinorStr = %@",totalMinorStr);
                 
                 NSNumber *firstOfferMajorNumber = [NSNumber numberWithFloat:[NSString stringWithFormat:@"%@",[REMOVE_NULL_VALUE(firstOfferDict[@"amount"][WOCCryptoCurrency]) stringByReplacingOccurrencesOfString:@"," withString:@""]].floatValue];
                 
@@ -220,7 +220,7 @@
                 NSNumber *totoalMajorNumber =  [NSNumber numberWithFloat:(firstOfferMajorNumber.longLongValue + secondOfferMajorNumber.floatValue)] ;
                 
                 NSString *totalMajorStr = [self getCryptoPrice:totoalMajorNumber];
-                NSLog(@"totalMajorStr = %@",totalMajorStr);
+                APILog(@"totalMajorStr = %@",totalMajorStr);
 
                 reviceOfferDict[@"amount"] = @{
                                             WOCCryptoCurrency : totalMajorStr,
@@ -316,7 +316,7 @@
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[offerDict valueForKey:@"bankLocationUrl"]]];
         if ([[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-                NSLog(@"URL opened!");
+                APILog(@"URL opened!");
             }];
         }
     }

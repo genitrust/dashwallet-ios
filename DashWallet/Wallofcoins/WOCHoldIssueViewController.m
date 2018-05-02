@@ -27,7 +27,7 @@
 - (void)openSite:(NSURL*)url {
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"URL opened...");
+            APILog(@"URL opened...");
         }];
     }
 }

@@ -396,7 +396,7 @@
     
     [[APIManager sharedInstance] getHold:^(id responseDict, NSError *error) {
         if (error == nil) {
-            NSLog(@"Hold with Hold Id: %@.",responseDict);
+            APILog(@"Hold with Hold Id: %@.",responseDict);
             if ([responseDict isKindOfClass:[NSArray class]]) {
                 NSArray *holdArray = (NSArray*)responseDict;
                 if (holdArray.count > 0) {
@@ -451,7 +451,7 @@
     
     [[APIManager sharedInstance] deleteHold:holdId response:^(id responseDict, NSError *error) {
         if (error == nil) {
-            NSLog(@"Hold deleted.");
+            APILog(@"Hold deleted.");
             
             NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
             [self createHoldAfterAuthorize:phoneNo];

@@ -9,8 +9,10 @@
 #ifndef WOCConstants_h
 #define WOCConstants_h
 
+#define SHOW_LOGS NO
+
 #ifdef SHOW_LOGS
-#define APILog(x, ...) NSLog(@"\n\n%s %d: \n" x, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define APILog(x, ...) //NSLog(@"\n\n%s %d: \n" x, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define APILog(x, ...)
 #endif
@@ -19,9 +21,11 @@
 
 #define REMOVE_NULL_VALUE(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
-static const BOOL isProduction = NO;
-#define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
+//static const BOOL isProduction = NO; //  IF TESTNET SET DASH_TESTNET = 1
+static const BOOL isProduction = YES; //  IF MAINNET SET DASH_TESTNET = 0
+
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
+#define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
 
 #define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ"
 #define LOCAL_DATE_FORMAT @"yyyy-MM-dd HH:mm:ss"

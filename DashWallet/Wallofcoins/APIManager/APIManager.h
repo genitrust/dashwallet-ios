@@ -6,7 +6,6 @@
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
-#define SHOW_LOGS YES
 #import "WOCConstants.h"
 
 @interface APIManager : NSObject

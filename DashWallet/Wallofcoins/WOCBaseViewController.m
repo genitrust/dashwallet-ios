@@ -97,7 +97,7 @@
         }
     }
     
-    NSLog(@"Device info %@",[self.defaults objectForKey:WOCUserDefaultsLocalDeviceInfo]);
+    APILog(@"Device info %@",[self.defaults objectForKey:WOCUserDefaultsLocalDeviceInfo]);
 }
 
 - (void)clearLocalStorage

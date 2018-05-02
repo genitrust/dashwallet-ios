@@ -77,7 +77,7 @@
         NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
         self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
         
-        NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
+        APILog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
         
          [self reloadOrderTable];
     }
@@ -158,7 +158,7 @@
     NSURL *url = [NSURL URLWithString:@"https://wallofcoins.com"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"URL opened...");
+            APILog(@"URL opened...");
         }];
     }
 }
@@ -189,7 +189,7 @@
                 NSArray *otherArray = [self.orders filteredArrayUsingPredicate:otherPredicate];
                 self.otherOrders = [[NSArray alloc] initWithArray:otherArray];
                 
-                NSLog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
+                APILog(@"wdvArray count: %lu, otherArray count: %lu",(unsigned long)wdvArray.count,(unsigned long)otherArray.count);
             }
         }
         else {
