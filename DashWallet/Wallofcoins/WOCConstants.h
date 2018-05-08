@@ -18,7 +18,6 @@
 #endif
 #define Str(str) (str != [NSNull null])?str:@""
 #define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOCCurrency]
-
 #define REMOVE_NULL_VALUE(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
 //static const BOOL isProduction = NO; //  IF TESTNET SET DASH_TESTNET = 1
@@ -26,6 +25,8 @@ static const BOOL isProduction = YES; //  IF MAINNET SET DASH_TESTNET = 0
 
 #define BASE_URL_PRODUCTION @"https://wallofcoins.com"
 #define BASE_URL_DEVELOPMENT @"https://wallofcoins.com"
+#define API_FOLDER @"api"
+#define API_VERSION @"v1"
 
 #define API_DATE_FORMAT @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ"
 #define LOCAL_DATE_FORMAT @"yyyy-MM-dd HH:mm:ss"

@@ -17,6 +17,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *offerListTableView;
+@property (weak, nonatomic) IBOutlet UILabel *informationLable;
 
 - (IBAction)onOrderButtonClicked:(id)sender;
 - (NSIndexPath*)getIndexPathfromTag:(NSInteger)tag;

@@ -200,9 +200,11 @@
 
 - (void)createHold:(NSString*)phoneNo {
     
+    __block MBProgressHUD *hud;
     if (!self.isForLoginOny) {
-        MBProgressHUD *hud  = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
-        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+        hud = [MBProgressHUD showHUDAddedTo:self.navigationController.topViewController.view animated:YES];
+        });
         NSString *deviceCode = [self.defaults valueForKey:WOCUserDefaultsLocalDeviceCode];
         NSString *token = [self.defaults valueForKey:WOCUserDefaultsAuthToken];
         

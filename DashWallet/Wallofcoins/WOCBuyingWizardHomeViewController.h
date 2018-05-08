@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIView *signoutView;
 @property (weak, nonatomic) IBOutlet UIButton *orderListButton;
 @property (assign, nonatomic) BOOL isFromSend;
+@property (weak, nonatomic) IBOutlet UILabel *informationLable;
 
 - (void)setLogoutButton;
 - (IBAction)onBackButtonClick:(id)sender;

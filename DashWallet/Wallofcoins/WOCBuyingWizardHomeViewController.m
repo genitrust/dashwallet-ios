@@ -45,6 +45,9 @@
     [self setShadowOnButton:self.locationButton];
     [self setShadowOnButton:self.noThanksButton];
     [self setButtonColor:self.locationButton];
+    self.informationLable.textColor =  WOCTHEMECOLOR;
+    [self.orderListButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
+     [self.orderListButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateSelected];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

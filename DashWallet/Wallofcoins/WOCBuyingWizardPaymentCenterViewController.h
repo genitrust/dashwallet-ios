@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *paymentCenterTextField;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UILabel *informationLable;
 
 - (IBAction)onNextButtonClick:(id)sender;
 

@@ -34,6 +34,8 @@
     self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
      [self setShadowOnButton:self.signupButton];
      [self setShadowOnButton:self.sighInButton];
+    [self.signupButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
+    [self.sighInButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -242,6 +244,7 @@
     [cell.orderButton setTitle:@"" forState:UIControlStateSelected];
     [cell.orderButton addTarget:self action:@selector(signInPhoneButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     cell.orderButton.tag = indexPath.row;
+    [cell.orderButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
     
     return cell;
 }

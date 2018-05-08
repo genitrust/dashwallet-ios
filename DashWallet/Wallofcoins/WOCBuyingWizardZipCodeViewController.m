@@ -26,6 +26,7 @@
     [self.navigationItem.backBarButtonItem setTitle:@""];
     [self setShadowOnButton:self.nextButton];
     [self setButtonColor:self.nextButton];
+    self.informationLable.textColor =  WOCTHEMECOLOR;
 }
 
 // MARK: - IBAction

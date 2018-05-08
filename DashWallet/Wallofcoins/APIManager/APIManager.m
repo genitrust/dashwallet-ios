@@ -96,8 +96,8 @@
 
 - (void)getAvailablePaymentCenters:(void (^)(id responseDict, NSError *error))completionBlock {
     NSString *version = @"v1";
-    NSString *constant = @"/banks/";
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/%@%@",BASE_URL,version,constant];
+    NSString *constant = @"banks";
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/%@/",BASE_URL,API_FOLDER,API_VERSION,constant];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId,
@@ -162,7 +162,7 @@
  ```
  */
 - (void)discoverInfo:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/discoveryInputs/",BASE_URL,API_FOLDER,API_VERSION];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId,
@@ -183,7 +183,7 @@
  ```*/
 
 - (void)discoveryInputs:(NSString*)dicoverId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/discoveryInputs/%@/offers/",BASE_URL,dicoverId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/discoveryInputs/%@/offers/",BASE_URL,API_FOLDER,API_VERSION,dicoverId];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId,
@@ -221,7 +221,7 @@
 
 - (void)createHold:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/holds/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *phNo = [NSString stringWithFormat:@"%@",[params valueForKey:WOCUserDefaultsLocalDeviceCode]];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
 
@@ -263,7 +263,7 @@
 
 - (void)captureHold:(NSDictionary*)params holdId:(NSString *)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
    
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/capture/",BASE_URL,holdId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/holds/%@/capture/",BASE_URL,API_FOLDER,API_VERSION,holdId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -293,7 +293,7 @@
  ```*/
 
 - (void)confirmDeposit:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/confirmDeposit/",BASE_URL,orderId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/orders/%@/confirmDeposit/",BASE_URL,API_FOLDER,API_VERSION,orderId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -315,7 +315,7 @@
 }
 
 - (void)cancelOrder:(NSString *)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/%@/",BASE_URL,orderId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/orders/%@/",BASE_URL,API_FOLDER,API_VERSION,orderId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -335,7 +335,7 @@
 }
 
 - (void)getOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/orders/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/orders/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
 
     NSDictionary *header = @{
@@ -358,7 +358,7 @@
 }
 
 - (void)authorizeDevice:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/auth/%@/",BASE_URL,API_FOLDER,API_VERSION,phoneNo];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId
@@ -371,7 +371,7 @@
 
 - (void)login:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/authorize/",BASE_URL,phoneNo];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/auth/%@/authorize/",BASE_URL,API_FOLDER,API_VERSION,phoneNo];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId,
@@ -385,7 +385,7 @@
 
 - (void)signOut:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/",BASE_URL,phoneNo];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/auth/%@/",BASE_URL,API_FOLDER,API_VERSION,phoneNo];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId
@@ -398,7 +398,7 @@
 
 - (void)getDevice:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/devices/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/devices/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
 
     NSDictionary *header = @{
@@ -418,7 +418,7 @@
 }
 
 - (void)registerDevice:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/devices/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/devices/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -441,7 +441,7 @@
 
 - (void)deleteHold:(NSString*)holdId response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/%@/",BASE_URL,holdId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/holds/%@/",BASE_URL,API_FOLDER,API_VERSION,holdId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -462,7 +462,7 @@
 
 - (void)getHold:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/holds/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/holds/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -487,7 +487,7 @@
 }
 // MARK: - SELLING WIZARD
 - (void)registerUser:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/auth/",BASE_URL,API_FOLDER,API_VERSION];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId,
@@ -502,7 +502,7 @@
 //password1=sujal123456&password2=sujal123456
 - (void)resetPassword:(NSDictionary*)params phone:(NSString*)phoneNo response:(void (^)(id responseDict, NSError *error))completionBlock {
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/auth/%@/resetPassword/",BASE_URL,phoneNo];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/auth/%@/resetPassword/",BASE_URL,API_FOLDER,API_VERSION,phoneNo];
     
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId,
@@ -515,7 +515,7 @@
 }
 
 - (void)getIncomingOrders:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/incomingOrders/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/incomingOrders/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -538,7 +538,7 @@
 }
 
 - (void)confirmDepositForIncomingOrdersId:(NSString*)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/incomingOrders/%@/confirmDeposit/",BASE_URL,orderId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/incomingOrders/%@/confirmDeposit/",BASE_URL,API_FOLDER,API_VERSION,orderId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -561,7 +561,7 @@
 }
 
 - (void)invalidateDepositForIncomingOrdersId:(NSString*)orderId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/incomingOrders/%@/invalidateDeposit/",BASE_URL,orderId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/incomingOrders/%@/invalidateDeposit/",BASE_URL,API_FOLDER,API_VERSION,orderId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -600,7 +600,7 @@
  }
 */
 - (void)createAd:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/adcreate/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/ad/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -622,7 +622,7 @@
 }
 
 - (void)getAllAds:(NSDictionary*)params response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/ad/",BASE_URL];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/ad/",BASE_URL,API_FOLDER,API_VERSION];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *header = @{
@@ -650,7 +650,7 @@
 //        APILog(@"responseDict %@",responseDict);
 //    }];
     
-    NSString *apiURL = [NSString stringWithFormat:@"%@/api/v1/ad/%@/",BASE_URL,AdvertiseId];
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/ad/%@/",BASE_URL,API_FOLDER,API_VERSION,AdvertiseId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
     
     NSDictionary *parameter = @{
@@ -676,10 +676,19 @@
     }
 }
 
-- (void)getOrderInstructionFromAdvertiseId:(NSString*)adId response:(void (^)(id responseDict, NSError *error))completionBlock {
-    NSString *apiURL = [NSString stringWithFormat:@"%@/en/orders/sell-instructions/%@/",BASE_URL,adId];
+- (void)getPendingBalanceFromADId:(NSString*)AdvertiseId response:(void (^)(id responseDict, NSError *error))completionBlock {
+    
+    //    [self getAllAds:nil response:^(id responseDict, NSError *error) {
+    //        APILog(@"responseDict %@",responseDict);
+    //    }];
+    
+    NSString *apiURL = [NSString stringWithFormat:@"%@/%@/%@/ad/%@/pendingBalance/",BASE_URL,API_FOLDER,API_VERSION,AdvertiseId];
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:WOCUserDefaultsAuthToken];
-    //https://woc.reference.genitrust.com/en/orders/sell-instructions/88/
+    
+    NSDictionary *parameter = @{
+                                
+                                };
+    
     NSDictionary *header = @{
                              WOCApiHeaderPublisherId: WOCPublisherId
                              };
@@ -689,7 +698,7 @@
                    WOCApiHeaderPublisherId: WOCPublisherId,
                    WOCApiHeaderToken: token
                    };
-        [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: nil header: header andCompletionBlock:^(id responseDict, NSError *error) {
+        [self makeAPIRequestWithURL:apiURL methord:@"GET" parameter: parameter header: header andCompletionBlock:^(id responseDict, NSError *error) {
             completionBlock(responseDict,error);
         }];
     }

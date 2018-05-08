@@ -35,6 +35,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *wallOfCoinsButton;
 @property (weak, nonatomic) IBOutlet UILabel *loginPhoneLabel;
 @property (weak, nonatomic) IBOutlet UIButton *signOutButton;
+@property (weak, nonatomic) IBOutlet UIButton *showOnMapNearbyButton;
+@property (weak, nonatomic) IBOutlet UILabel *orderDetailFirstLable;
 
 - (IBAction)onShowMapButtonClicked:(id)sender;
 - (IBAction)onDepositFinishedButtonClicked:(id)sender;

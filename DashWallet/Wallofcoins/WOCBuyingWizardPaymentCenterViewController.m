@@ -32,6 +32,7 @@
     self.pickerView.dataSource = self;
     self.paymentCenterTextField.inputView = self.pickerView;
     [self getPaymentCenters];
+    self.informationLable.textColor =  WOCTHEMECOLOR;
 }
 
 // MARK: - API

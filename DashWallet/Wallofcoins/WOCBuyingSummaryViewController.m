@@ -78,6 +78,8 @@
         
          [self reloadOrderTable];
     }
+    
+    [self.buyMoreDashButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
 }
 
 - (void)setAttributedString {

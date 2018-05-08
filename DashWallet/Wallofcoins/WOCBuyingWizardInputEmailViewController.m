@@ -21,6 +21,7 @@
     [super viewDidLoad];
     
     [self setShadowOnButton:self.nextButton];
+    [self.doNotSendEmailButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
 }
 
 - (BOOL)validateEmailWithString:(NSString*)checkString {
