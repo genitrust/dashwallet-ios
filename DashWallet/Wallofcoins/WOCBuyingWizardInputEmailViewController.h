@@ -19,5 +19,6 @@
 
 - (IBAction)onDoNotSendMeEmailButtonClicked:(id)sender;
 - (IBAction)onNextButtonClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *doNotSendEmailButton;
 
 @end

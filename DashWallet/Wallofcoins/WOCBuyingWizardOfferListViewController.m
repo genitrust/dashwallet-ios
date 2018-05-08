@@ -36,6 +36,7 @@
     
     self.instructionLabel.text = [NSString stringWithFormat:@"Below are offers for at least $%@. You must click the ORDER button before you receive instructions to pay at the Cash Payment center.",self.amount];
     [self getOffers];
+    self.informationLable.textColor =  WOCTHEMECOLOR;
 }
 
 - (void)pushToStep6:(NSInteger)sender {

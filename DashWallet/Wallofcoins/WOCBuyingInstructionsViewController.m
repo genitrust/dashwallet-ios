@@ -36,6 +36,8 @@
     [self setShadowOnButton:self.wallOfCoinsButton];
     [self setShadowOnButton:self.signOutButton];
     
+    [self.signOutButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
+    [self.showOnMapNearbyButton setTitleColor:WOCTHEMECOLOR forState:UIControlStateNormal];
     NSString *phoneNo = [self.defaults valueForKey:WOCUserDefaultsLocalPhoneNumber];
     NSString *loginPhone = [NSString stringWithFormat:@"Your wallet is signed into Wall of Coins using your mobile number %@",phoneNo];
     self.loginPhoneLabel.text = loginPhone;
@@ -82,6 +84,8 @@
     self.instructionTextField.linkTextAttributes = linkAttributes; // customizes the appearance of links
     self.instructionTextField.attributedText = attributedString;
     self.instructionTextField.delegate = self;
+    
+    self.orderDetailFirstLable.text = [NSString stringWithFormat:@"You must deposit cash at the above Payment Center. Additional fees may apply. Paying in another method other than cash may delay your order.\n\nDo not throw away or misplace your receipt. A receipt is required before you will receive %@!\nFor your convenience, we are texting you these payment instructions.\nWhen you are finished making the payment, you must press Deposit Finished to receive your %@.",WOCCurrency,WOCCurrency];
 }
 
 - (void)pushToHome
