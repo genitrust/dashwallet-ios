@@ -2,7 +2,7 @@
 //  WOCConstants.h
 //  Wallofcoins
 //
-//  Created by Sujal Bandhara on 24/01/18.
+//  Created by Genitrust on 24/01/18.
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 #endif
 #define Str(str) (str != [NSNull null])?str:@""
 #define ALERT_TITLE [NSString stringWithFormat:@"%@ Wallet",WOCCurrency]
+
 #define REMOVE_NULL_VALUE(value) (value == nil)?@"":(![value isEqual:[NSNull null]])?value:@""
 
 //static const BOOL isProduction = NO; //  IF TESTNET SET DASH_TESTNET = 1
@@ -101,18 +102,6 @@ static NSString * const WOCApiResponseHoldsStatus = @"status";
 static NSString * const WOCBuyingStoryboard = @"buyDash";
 static NSString * const WOCsellingStoryboard = @"wocSell";
 
-/*
- static NSString * const WOCPublisherId = @"46";
- static NSString * const WOCCurrency = @"PIV";
- static NSString * const WOCCurrencySpecial = @"ⱣIV";
- static NSString * const WOCCurrencyMinorSpecial = @"µⱣiv";
- static NSString * const WOCCurrencySymbol = @"Ᵽ";
- static NSString * const WOCCurrencySymbolMinor = @"µⱣiv";
- static NSString * const WOCCryptoCurrencySmall = @"uPiv";
- static NSString * const WOCCryptoCurrency = @"PIVX";
- #define WOCTHEMECOLOR [UIColor colorWithRed:85.0/255.0 green:71.0/255.0 blue:108.0/255.0 alpha:1.0]
-//*/
-
 ///*
 static NSString * const WOCPublisherId = @"52";
 static NSString * const WOCCurrency = @"Dash";
@@ -123,7 +112,6 @@ static NSString * const WOCCurrencySymbolMinor = @"đ";
 static NSString * const WOCCryptoCurrencySmall = @"dots";
 static NSString * const WOCCryptoCurrency = @"DASH";
 #define WOCTHEMECOLOR [UIColor colorWithRed:54.0/255.0 green:123.0/255.0 blue:190.0/255.0 alpha:1.0]
-
 //*/
 
 #endif

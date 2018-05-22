@@ -2,7 +2,7 @@
 //  WOCSellingInstructionsViewController.h
 //  Wallofcoins
 //
-//  Created by Sujal Bandhara on 24/01/18.
+//  Created by Genitrust on 24/01/18.
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
