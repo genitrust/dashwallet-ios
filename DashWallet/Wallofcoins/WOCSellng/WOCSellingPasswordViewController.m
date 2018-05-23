@@ -2,7 +2,7 @@
 //  WOCPasswordViewController.m
 //  Wallofcoins
 //
-//  Created by Sujal Bandhara on 27/01/18.
+//  Created by Genitrust on 27/01/18.
 //  Copyright (c) 2018 Wallofcoins. All rights reserved.
 //
 
