@@ -36,16 +36,9 @@
 #import "BRWalletManager.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 
-
-
 //WallOfCoins
-#import "WOCBuyingWizardHomeViewController.h"
-#import "WOCBuyingInstructionsViewController.h"
-#import "WOCBuyingSummaryViewController.h"
 #import "WOCConstants.h"
-#import "MBProgressHUD.h"
 #import "BRAppDelegate.h"
-#import "APIManager.h"
 
 #define QR_TIP      NSLocalizedString(@"Let others scan this QR code to get your dash address. Anyone can send "\
                     "dash to your wallet by transferring them to your address.", nil)
@@ -263,7 +256,6 @@
 {
     if (self.tipView.alpha > 0.5) [self.tipView popOut];
 }
-
 
 // MARK: - IBAction
 

@@ -48,14 +48,8 @@
 #import "BRQRScanViewModel.h"
 
 
-
-
 //WallOfCoins imports
 #import "BRAppDelegate.h"
-#import "WOCBuyingWizardHomeViewController.h"
-#import "WOCBuyingInstructionsViewController.h"
-#import "WOCBuyingSummaryViewController.h"
-#import "APIManager.h"
 #import "WOCConstants.h"
 
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
@@ -91,12 +85,12 @@ static NSString *sanitizeString(NSString *s)
 
 @property (nonatomic, strong) IBOutlet UILabel *sendLabel;
 @property (nonatomic, strong) IBOutlet UISwitch *instantSwitch;
-@property (nonatomic, strong) IBOutlet UIButton *scanButton, *clipboardButton, *buyDashButton;
+@property (nonatomic, strong) IBOutlet UIButton *scanButton, *clipboardButton;
 @property (nonatomic, strong) IBOutlet UIView * shapeshiftView;
 @property (nonatomic, strong) IBOutlet UILabel * shapeshiftLabel;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * NFCWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * leftOfNFCButtonWhitespaceConstraint;
-
+@property (nonatomic, strong) IBOutlet UIButton *buyDashButton;
 @end
 
 @implementation BRSendViewController
@@ -115,6 +109,7 @@ static NSString *sanitizeString(NSString *s)
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.scanButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
+    
     self.buyDashButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
 #pragma clang diagnostic pop
     
@@ -1545,6 +1540,7 @@ static NSString *sanitizeString(NSString *s)
     self.shapeshiftView.hidden = FALSE;
 }
 
+
 // MARK: - IBAction
 
 - (IBAction)tip:(id)sender
@@ -1646,8 +1642,8 @@ static NSString *sanitizeString(NSString *s)
 
 - (IBAction)startNFC:(id)sender NS_AVAILABLE_IOS(11.0) {
     [BREventManager saveEvent:@"send:nfc"];
-    NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
-    [session beginSession];
+        NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
+        [session beginSession];
 }
 
 - (IBAction)sellYourDash:(id)sender
