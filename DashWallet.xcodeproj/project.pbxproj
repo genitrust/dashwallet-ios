@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		043754BE20354F63001A4ED4 /* ActivityLogs.md in Resources */ = {isa = PBXBuildFile; fileRef = 0437549520354F63001A4ED4 /* ActivityLogs.md */; };
 		043754BF20354F63001A4ED4 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549820354F63001A4ED4 /* APIManager.m */; };
 		043754C020354F63001A4ED4 /* WOCOfferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549B20354F63001A4ED4 /* WOCOfferCell.m */; };
 		043754C120354F63001A4ED4 /* WOCSignOutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0437549D20354F63001A4ED4 /* WOCSignOutCell.m */; };
@@ -238,7 +237,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0437549520354F63001A4ED4 /* ActivityLogs.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ActivityLogs.md; sourceTree = "<group>"; };
 		0437549720354F63001A4ED4 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
 		0437549820354F63001A4ED4 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		0437549A20354F63001A4ED4 /* WOCOfferCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOCOfferCell.h; sourceTree = "<group>"; };
@@ -684,7 +682,6 @@
 			isa = PBXGroup;
 			children = (
 				043754D1203550BB001A4ED4 /* StoryBoard */,
-				0437549520354F63001A4ED4 /* ActivityLogs.md */,
 				047C8276205F7F570034684D /* WOCMedia.xcassets */,
 				0437549620354F63001A4ED4 /* APIManager */,
 				0437549920354F63001A4ED4 /* CustomCell */,
@@ -1499,7 +1496,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				043754BE20354F63001A4ED4 /* ActivityLogs.md in Resources */,
 				75D5F3E0191EC270004AB296 /* Images.xcassets in Resources */,
 				757E09991ADB8EEB006FD352 /* Localizable.strings in Resources */,
 				75F2E0D31BE9803900EAE861 /* Launch Screen.storyboard in Resources */,
