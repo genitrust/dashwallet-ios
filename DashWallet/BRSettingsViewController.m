@@ -36,6 +36,11 @@
 #import <netdb.h>
 #import <arpa/inet.h>
 
+
+//WallOfCoins imports
+#import "WOCConstants.h"
+#import "BRAppDelegate.h"
+
 @interface BRSettingsViewController ()
 
 @property (nonatomic, assign) BOOL touchId;
@@ -151,6 +156,18 @@
            [BRPeerManager sharedInstance].estimatedBlockHeight,
            [BRPeerManager sharedInstance].peerCount,
            [BRPeerManager sharedInstance].downloadPeerName];
+}
+
+// MARK: - WallofCoins API
+- (void)checkToken
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:WOCBuyingStoryboard bundle:nil];
+        UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+        [navController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navController;
+    });
 }
 
 // MARK: - IBAction
@@ -342,7 +359,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.selectorController.tableView) return 1;
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -353,6 +370,7 @@
         case 0: return 2;
         case 1: return (self.touchId) ? 3 : 2;
         case 2: return 3;
+        case 3: return 1;
     }
     
     return 0;
@@ -440,6 +458,17 @@ _switch_cell:
                     cell.textLabel.text = NSLocalizedString(@"rescan blockchain", nil);
                     break;
 
+            }
+            break;
+            
+        case 3:
+            switch (indexPath.row) {
+                case 0:
+                    cell = [tableView dequeueReusableCellWithIdentifier:disclosureIdent];
+                    cell.textLabel.text = NSLocalizedString(@"buy dash with cash", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"woc-icon.png"];
+                    break;
+                    
             }
             break;
             
@@ -720,6 +749,15 @@ _deselect_switch:
                     [[BRPeerManager sharedInstance] rescan];
                     [BREventManager saveEvent:@"settings:rescan"];
                     [self done:nil];
+                    break;
+            }
+            
+            break;
+            
+        case 3:
+            switch (indexPath.row) {
+                case 0: // buy dash with cash
+                    [self checkToken];
                     break;
             }
             

@@ -47,6 +47,11 @@
 #import "BRQRScanViewController.h"
 #import "BRQRScanViewModel.h"
 
+
+//WallOfCoins imports
+#import "BRAppDelegate.h"
+#import "WOCConstants.h"
+
 #define SCAN_TIP      NSLocalizedString(@"Scan someone else's QR code to get their dash or bitcoin address. "\
 "You can send a payment to anyone with an address.", nil)
 #define CLIPBOARD_TIP NSLocalizedString(@"Dash addresses can also be copied to the clipboard. "\
@@ -85,7 +90,7 @@ static NSString *sanitizeString(NSString *s)
 @property (nonatomic, strong) IBOutlet UILabel * shapeshiftLabel;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * NFCWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint * leftOfNFCButtonWhitespaceConstraint;
-
+@property (nonatomic, strong) IBOutlet UIButton *buyDashButton;
 @end
 
 @implementation BRSendViewController
@@ -98,11 +103,14 @@ static NSString *sanitizeString(NSString *s)
     // TODO: XXX redesign page with round buttons like the iOS power down screen... apple watch also has round buttons
     self.scanButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.buyDashButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.scanButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
     self.clipboardButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
+    
+    self.buyDashButton.titleLabel.adjustsLetterSpacingToFitWidth = YES;
 #pragma clang diagnostic pop
     
     FBShimmeringView *shimmeringView = [[FBShimmeringView alloc] initWithFrame:CGRectMake(0, self.shapeshiftView.frame.origin.y, self.view.frame.size.width, self.shapeshiftView.frame.size.height)];
@@ -1628,7 +1636,7 @@ static NSString *sanitizeString(NSString *s)
     self.okAddress = self.okIdentity = nil;
     self.clearClipboard = self.useClipboard = NO;
     self.canChangeAmount = self.showBalance = NO;
-    self.scanButton.enabled = self.clipboardButton.enabled = YES;
+    self.scanButton.enabled = self.clipboardButton.enabled = self.buyDashButton.enabled = YES;
     [self updateClipboardText];
 }
 
@@ -1638,6 +1646,19 @@ static NSString *sanitizeString(NSString *s)
         [session beginSession];
 }
 
+- (IBAction)sellYourDash:(id)sender
+{
+    [sender setEnabled:NO];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:WOCsellingStoryboard bundle:nil];
+        UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+        [navController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navController;
+        [sender setEnabled:YES];
+    });
+}
 // MARK: - NFCNDEFReaderSessionDelegate
 
 - (void) readerSession:(nonnull NFCNDEFReaderSession *)session didDetectNDEFs:(nonnull NSArray<NFCNDEFMessage *> *)messages NS_AVAILABLE_IOS(11.0) {

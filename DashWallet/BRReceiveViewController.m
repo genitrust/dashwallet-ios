@@ -36,6 +36,10 @@
 #import "BRWalletManager.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 
+//WallOfCoins
+#import "WOCConstants.h"
+#import "BRAppDelegate.h"
+
 #define QR_TIP      NSLocalizedString(@"Let others scan this QR code to get your dash address. Anyone can send "\
                     "dash to your wallet by transferring them to your address.", nil)
 #define ADDRESS_TIP NSLocalizedString(@"This is your dash address. Tap to copy it or send it by email or sms. The "\
@@ -390,6 +394,20 @@
     
     // Present action sheet.
     [self presentViewController:actionSheet animated:YES completion:nil];
+}
+
+// Added New Button to Buy Dash with cash
+- (IBAction)buyDash:(id)sender
+{
+    [sender setEnabled:NO];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:WOCBuyingStoryboard bundle:nil];
+        UINavigationController *navController = (UINavigationController*) [storyboard instantiateViewControllerWithIdentifier:@"wocNavigationController"];
+        [navController.navigationBar setTintColor:[UIColor whiteColor]];
+        BRAppDelegate *appDelegate = (BRAppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = navController;
+    });
 }
 
 // MARK: - MFMessageComposeViewControllerDelegate
