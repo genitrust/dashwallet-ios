@@ -30,6 +30,8 @@
 #import "BRPhoneWCSessionManager.h"
 #import "DSShapeshiftManager.h"
 #import <UserNotifications/UserNotifications.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 #if DASH_TESTNET
 #pragma message "testnet build"
@@ -54,7 +56,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-
+    [Fabric with:@[[Crashlytics class]]];
     // use background fetch to stay synced with the blockchain
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 
